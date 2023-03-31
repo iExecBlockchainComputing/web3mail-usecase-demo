@@ -18,8 +18,6 @@ export default function Naviguate() {
   useEffect(() => {
     if (isDisconnected) {
       open()
-    } else {
-      naviguate('/protectedData')
     }
   }, [isDisconnected, naviguate, open])
 
