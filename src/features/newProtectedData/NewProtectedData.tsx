@@ -182,8 +182,8 @@ export default function NewProtectedData() {
       {dataType && (
         <TextField
           fullWidth
-          id="name"
-          label="Name"
+          id="Name of your Protected Data"
+          label="Name of your Protected Data"
           variant="outlined"
           value={name}
           onChange={handleNameChange}

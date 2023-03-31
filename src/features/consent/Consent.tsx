@@ -35,7 +35,7 @@ export default function Consent() {
       </Box>
       {
         <Box sx={{ textAlign: 'left', my: 5, mb: 20 }}>
-          <h2>{data.title}</h2>
+          <h2>1 to 1 messaging</h2>
           <ToggleList />
         </Box>
       }
