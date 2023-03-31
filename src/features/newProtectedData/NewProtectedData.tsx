@@ -84,6 +84,7 @@ export default function NewProtectedData() {
         data = age!
         break
       case 'file':
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         data = await create_ArrayBuffer(file)
         break
     }

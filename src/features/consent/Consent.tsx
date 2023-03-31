@@ -1,11 +1,11 @@
 import { useParams } from 'react-router-dom'
 import './Consent.css'
-import { Avatar, Box, Chip } from '@mui/material'
-import { ProtectedDataProps } from '../../components/ProtectedDataCard'
+import { Box, Chip } from '@mui/material'
 import ToggleList from '../../components/ToggleList'
 
 export default function Consent() {
   const { ProtectedDataId } = useParams()
+  console.log(ProtectedDataId)
   const data = {
     title: 'Professional Email',
     date: '28/06/2022',
@@ -27,7 +27,9 @@ export default function Consent() {
             <h6>Data Protected Address: {data.id}</h6>
           </li>
           <li>
-            <h6>IPFS link: /p2p/QmRCfnJVsxyNcCLMLNkBKLat8StxQUgKiQzpRz1MN7MDo3</h6>
+            <h6>
+              IPFS link: /p2p/QmRCfnJVsxyNcCLMLNkBKLat8StxQUgKiQzpRz1MN7MDo3
+            </h6>
           </li>
         </ul>
       </Box>

@@ -1,6 +1,6 @@
 import './Naviguate.css'
-import { AppBar, Button, Container, Toolbar, Typography } from '@mui/material'
-import { useEffect, useState } from 'react'
+import { AppBar, Button, Toolbar, Typography } from '@mui/material'
+import { useEffect } from 'react'
 import { Outlet, useNavigate } from 'react-router-dom'
 import { useAccount, useDisconnect } from 'wagmi'
 import { useWeb3Modal } from '@web3modal/react'
@@ -21,7 +21,7 @@ export default function Naviguate() {
     } else {
       naviguate('/protectedData')
     }
-  }, [isDisconnected, open])
+  }, [isDisconnected, naviguate, open])
 
   return (
     <div>
