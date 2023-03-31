@@ -1,0 +1,18 @@
+#cardContent {
+  padding: 0px;
+  padding-bottom: 10px;
+}
+
+#chipLabel {
+  margin: auto;
+  margin-top: 10px;
+  margin-right: 10px;
+  background-color: #fcd15a;
+}
+
+#chipDate {
+  width: 85px;
+  background-color: #788896;
+  margin: auto;
+  margin-right: -5px;
+}
