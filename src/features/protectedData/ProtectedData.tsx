@@ -5,10 +5,30 @@ import { useNavigate } from 'react-router-dom'
 
 export default function ProtectedData() {
   const data = [
-    { title: 'Professional Email', date: '28/06/2022', dataType: 'email', id: '0x0d76535ac299360a1e14c6cd21662440945ed717' },
-    { title: 'Professional Email', date: '28/06/2022', dataType: 'email', id: '0x5ab61938db5c96b6fbc8c2fc666c42a6c93569fa' },
-    { title: 'Age', date: '17/04/2022', dataType: 'Profile', id: '0x126561e41f561c872f033a80d6eaecd964b6f0d6' },
-    { title: 'ID Card', date: '18/01/2022', dataType: 'Document', id: '0x8ece0c27c52237329aa61f521f77632454754e3c' },
+    {
+      title: 'Professional Email',
+      date: '28/06/2022',
+      dataType: 'email',
+      id: '0x0d76535ac299360a1e14c6cd21662440945ed717',
+    },
+    {
+      title: 'Professional Email',
+      date: '28/06/2022',
+      dataType: 'email',
+      id: '0x5ab61938db5c96b6fbc8c2fc666c42a6c93569fa',
+    },
+    {
+      title: 'Age',
+      date: '17/04/2022',
+      dataType: 'Profile',
+      id: '0x126561e41f561c872f033a80d6eaecd964b6f0d6',
+    },
+    {
+      title: 'ID Card',
+      date: '18/01/2022',
+      dataType: 'Document',
+      id: '0x8ece0c27c52237329aa61f521f77632454754e3c',
+    },
   ]
 
   return (
@@ -31,7 +51,7 @@ export default function ProtectedData() {
           <Box sx={{ mx: 4 }}>
             <Grid container spacing={2}>
               {data.map((e) => (
-                <Grid item>
+                <Grid item key={e.id}>
                   <ProtectedDataCard
                     id={e.id}
                     title={e.title}

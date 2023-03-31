@@ -14,7 +14,7 @@ export default function ProtectedDataCard(props: ProtectedDataProps) {
   return (
     <Card
       sx={{ minWidth: 260 }}
-      onClick={() => naviguate(`/consent/${props.id}`)}
+      onClick={() => naviguate(`/protectedData/consent/${props.id}`)}
     >
       <CardContent id="cardContent">
         <Box

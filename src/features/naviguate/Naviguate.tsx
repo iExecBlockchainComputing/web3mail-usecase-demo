@@ -18,8 +18,11 @@ export default function Naviguate() {
   useEffect(() => {
     if (isDisconnected) {
       open()
+    } else {
+      naviguate('/protectedData')
     }
-  }, [isDisconnected, naviguate, open])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isDisconnected, open])
 
   return (
     <div>

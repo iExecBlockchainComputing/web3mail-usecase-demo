@@ -8,8 +8,11 @@ function App() {
       <Routes>
         <Route path="/" element={<Naviguate />}>
           <Route path="/protectedData" element={<ProtectedData />} />
+          <Route
+            path="/protectedData/consent/:ProtectedDataId"
+            element={<Consent />}
+          />
           <Route path="/newProtectedData" element={<NewProtectedData />} />
-          <Route path="/consent/:ProtectedDataId" element={<Consent />} />
         </Route>
         <Route path="*" element={<Naviguate />} />
       </Routes>
