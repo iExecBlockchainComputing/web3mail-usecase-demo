@@ -11,7 +11,7 @@ import {
 
 export default function ToggleList() {
   const [checked, setChecked] = useState(['Polygone'])
-  const data = ['Polygone', 'PancakeSwap', 'Uniswap', 'SushiSwap']
+  const data = ['Polygone', 'PancakeSwap', 'Uniswap']
 
   const handleToggle = (value: string) => () => {
     const currentIndex = checked.indexOf(value)

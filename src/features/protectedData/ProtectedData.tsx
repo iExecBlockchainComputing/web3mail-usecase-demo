@@ -24,10 +24,16 @@ export default function ProtectedData() {
       id: '0x126561e41f561c872f033a80d6eaecd964b6f0d6',
     },
     {
-      title: 'ID Card',
+      title: 'Date of Birth',
       date: '18/01/2022',
       dataType: 'Document',
       id: '0x8ece0c27c52237329aa61f521f77632454754e3c',
+    },
+    {
+      title: 'Driving License',
+      date: '18/01/2022',
+      dataType: 'Document',
+      id: '0x8ece0c27c52237329aa31f521f77632454754e3c',
     },
   ]
 

@@ -1,6 +1,14 @@
 import './Naviguate.css'
-import { AppBar, Button, Toolbar, Typography } from '@mui/material'
-import { useEffect } from 'react'
+import {
+  AppBar,
+  Box,
+  Button,
+  Tab,
+  Tabs,
+  Toolbar,
+  Typography,
+} from '@mui/material'
+import { useEffect, useState } from 'react'
 import { Outlet, useNavigate } from 'react-router-dom'
 import { useAccount, useDisconnect } from 'wagmi'
 import { useWeb3Modal } from '@web3modal/react'
@@ -10,7 +18,11 @@ export default function Naviguate() {
   const naviguate = useNavigate()
   const { address, isConnected, isDisconnected } = useAccount()
   const { disconnect } = useDisconnect()
+  const [value, setValue] = useState('provider')
 
+  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+    setValue(newValue)
+  }
   const shortAddress = (address: string) => {
     return address.slice(0, 6) + '...' + address.slice(-4)
   }
@@ -21,8 +33,18 @@ export default function Naviguate() {
     } else {
       naviguate('/protectedData')
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isDisconnected, open])
+
+  useEffect(() => {
+    if (value === 'provider') {
+      naviguate('/protectedData')
+    }
+    if (value === 'consumer') {
+      naviguate('/integration')
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [value])
 
   return (
     <div>
@@ -34,6 +56,18 @@ export default function Naviguate() {
             alt="The immage can't be loaded"
             id="logo"
           />
+          <Box sx={{ ml: 8 }}>
+            <Tabs
+              value={value}
+              onChange={handleChange}
+              indicatorColor="secondary"
+              textColor="secondary"
+              sx={{ '& .MuiTab-root': { textTransform: 'none' } }}
+            >
+              <Tab value="provider" label="My Vault" />
+              <Tab value="consumer" label="Integrations" />
+            </Tabs>
+          </Box>
           <Typography
             sx={{
               flexGrow: 1,
@@ -54,7 +88,7 @@ export default function Naviguate() {
           </Button>
         </Toolbar>
       </AppBar>
-      {isConnected && <Outlet />}
+      {isConnected ? <Outlet /> : 'Connect to Your Wallet'}
     </div>
   )
 }

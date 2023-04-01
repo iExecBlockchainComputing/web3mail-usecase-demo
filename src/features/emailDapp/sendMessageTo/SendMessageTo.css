@@ -1,0 +1,18 @@
+#textArea {
+  width: 100%;
+  margin-top: 30;
+  height: 380;
+  border-color: #c4c4c4;
+  border-radius: 4px;
+  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.4375em;
+  letter-spacing: 0.00938em;
+  color: rgba(0, 0, 0, 0.87);
+  box-sizing: border-box;
+}
+
+#textArea:focus {
+  border-color: blueviolet;
+}

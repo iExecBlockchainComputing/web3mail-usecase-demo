@@ -13,7 +13,7 @@ export default function ProtectedDataCard(props: ProtectedDataProps) {
   const naviguate = useNavigate()
   return (
     <Card
-      sx={{ minWidth: 260 }}
+      sx={{ minWidth: 260, cursor: 'pointer' }}
       onClick={() => naviguate(`/protectedData/consent/${props.id}`)}
     >
       <CardContent id="cardContent">

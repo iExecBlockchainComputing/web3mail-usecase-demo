@@ -1,6 +1,14 @@
 import './App.css'
 import { Routes, Route } from 'react-router-dom'
-import { Naviguate, NewProtectedData, ProtectedData, Consent } from './features'
+import {
+  Naviguate,
+  NewProtectedData,
+  ProtectedData,
+  Consent,
+  Integration,
+  EmailDapp,
+  SendMessageTo,
+} from './features'
 
 function App() {
   return (
@@ -13,6 +21,9 @@ function App() {
             element={<Consent />}
           />
           <Route path="/newProtectedData" element={<NewProtectedData />} />
+          <Route path="/integration" element={<Integration />} />
+          <Route path="/integration/app/:appId" element={<EmailDapp />} />
+          <Route path="/integration/app/:appId/sendMessageTo/:receiverId" element={<SendMessageTo />} />
         </Route>
         <Route path="*" element={<Naviguate />} />
       </Routes>
