@@ -1,9 +1,13 @@
-import { Box, Button, Grid } from '@mui/material'
-import './ProtectedData.css'
-import ProtectedDataCard from '../../components/ProtectedDataCard'
-import { useNavigate } from 'react-router-dom'
+import { Box, Button, Grid } from '@mui/material';
+import './ProtectedData.css';
+import ProtectedDataCard from '../../components/ProtectedDataCard';
+import { useNavigate } from 'react-router-dom';
+import { IExecDataProtector } from '@iexec/dataprotector';
+import { useEffect, useState } from 'react';
+import img from '../../assets/noData.png';
 
 export default function ProtectedData() {
+  const [protectedData, setProtectedData] = useState([]);
   const data = [
     {
       title: 'Professional Email',
@@ -11,35 +15,21 @@ export default function ProtectedData() {
       dataType: 'email',
       id: '0x0d76535ac299360a1e14c6cd21662440945ed717',
     },
-    {
-      title: 'Professional Email',
-      date: '28/06/2022',
-      dataType: 'email',
-      id: '0x5ab61938db5c96b6fbc8c2fc666c42a6c93569fa',
-    },
-    {
-      title: 'Age',
-      date: '17/04/2022',
-      dataType: 'Profile',
-      id: '0x126561e41f561c872f033a80d6eaecd964b6f0d6',
-    },
-    {
-      title: 'Date of Birth',
-      date: '18/01/2022',
-      dataType: 'Document',
-      id: '0x8ece0c27c52237329aa61f521f77632454754e3c',
-    },
-    {
-      title: 'Driving License',
-      date: '18/01/2022',
-      dataType: 'Document',
-      id: '0x8ece0c27c52237329aa31f521f77632454754e3c',
-    },
-  ]
+  ];
+
+  const fetchData = async () => {
+    const dataProtector = new IExecDataProtector(window.ethereum);
+    const protectedData = await dataProtector.fetchProtectedData();
+    setProtectedData(protectedData);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <Box sx={{ mx: 10 }}>
-      {data.length !== 0 ? (
+      {protectedData.length !== 0 ? (
         <Box>
           <Box
             sx={{
@@ -71,11 +61,7 @@ export default function ProtectedData() {
         </Box>
       ) : (
         <Box>
-          <img
-            src={require('../../assets/noData.png')}
-            alt="The immage can't be loaded"
-            id="logo"
-          />
+          <img src={img} alt="The immage can't be loaded" id="logo" />
           <p>You have no protected data yet. Go create one!</p>
           <Box sx={{ mt: 7 }}>
             <NewProtectedDataButton />
@@ -83,14 +69,14 @@ export default function ProtectedData() {
         </Box>
       )}
     </Box>
-  )
+  );
 }
 
 function NewProtectedDataButton() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   return (
     <Button variant="contained" onClick={() => navigate('/NewProtectedData')}>
       Protect a new data
     </Button>
-  )
+  );
 }

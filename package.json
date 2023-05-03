@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "format": "prettier --write \"src/**/*.ts\"",
+    "check-format": "prettier --check \"src/**/*.ts\""
   },
   "dependencies": {
     "@emotion/react": "^11.10.6",
@@ -22,7 +23,9 @@
     "@wagmi/connectors": "^0.3.10",
     "@web3modal/ethereum": "^2.2.2",
     "@web3modal/react": "^2.2.2",
-    "ethers": "^5.7.2"
+    "ethers": "^5.7.2",
+    "prettier": "^2.8.4",
+    "@iexec/dataprotector": "file:../SDK/dataprotector-sdk"
   },
   "devDependencies": {
     "@types/react": "^18.0.28",
