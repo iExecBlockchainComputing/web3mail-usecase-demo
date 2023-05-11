@@ -25,13 +25,12 @@ const initialState: AppState = {
 export const initDataProtector = createAsyncThunk(
   'app/initDataProtector',
   async () => {
-    //try {
-    iExecDataProtector = await getIExecDataProtectorAndRefresh();
-    console.log('iExecDataProtector in createAsyncThunk: ', iExecDataProtector);
-    // } catch (e: any) {
-    //   console.log('error in createAsyncThunk: ', e);
-    //   return { error: e.message };
-    // }
+    try {
+      iExecDataProtector = await getIExecDataProtectorAndRefresh();
+    } catch (e: any) {
+      console.log('error in createAsyncThunk: ', e);
+      return { error: e.message };
+    }
   }
 );
 
@@ -62,7 +61,7 @@ export default appSlice.reducer;
 export const { setProtectedDataArray } = appSlice.actions;
 export const selectProtectedDataArray = (state: RootState) =>
   state.app.protectedDataArray;
-export const selectthereIsSomeRequestPending = (state: RootState) =>
+export const selectThereIsSomeRequestPending = (state: RootState) =>
   Object.values(state.api.mutations).some(
     (query) => query?.status === 'pending'
   );
@@ -76,7 +75,6 @@ export const homeApi = api.injectEndpoints({
     fetchProtectedData: builder.mutation<ProtectedData[], string>({
       queryFn: async (owner) => {
         try {
-          console.log('iExecDataProtector Fetch API: ', iExecDataProtector);
           const data = await iExecDataProtector?.fetchProtectedData(owner);
           return { data: data || [] };
         } catch (e: any) {

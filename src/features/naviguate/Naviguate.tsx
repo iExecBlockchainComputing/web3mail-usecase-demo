@@ -16,6 +16,7 @@ import img from '../../assets/logo.png';
 import {
   initDataProtector,
   selectAppIsConnected,
+  selectThereIsSomeRequestPending,
 } from '../../app/appSlice';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 
@@ -27,6 +28,7 @@ export default function Naviguate() {
   const { disconnect } = useDisconnect();
   const [value, setValue] = useState('home');
   const isAccountConnected = useAppSelector(selectAppIsConnected);
+  const loading = useAppSelector(selectThereIsSomeRequestPending);
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
@@ -93,6 +95,7 @@ export default function Naviguate() {
             {isConnected ? 'Disconnect' : 'Connect'}
           </Button>
         </Toolbar>
+        {loading && <div id="loadingBar"></div>}
       </AppBar>
       {isConnected ? <Outlet /> : 'Connect to Your Wallet'}
     </div>
