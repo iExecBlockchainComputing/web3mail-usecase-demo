@@ -9,7 +9,7 @@ import { useAccount } from 'wagmi';
 import {
   setProtectedDataArray,
   selectProtectedDataArray,
-  useFetchProtectedDataMutation,
+  useFetchProtectedDataQuery,
   selectAppIsConnected,
 } from '../../app/appSlice';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
@@ -17,26 +17,14 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 const ITEMS_PER_PAGE = 8;
 
 export default function ProtectedData() {
-  const dispatch = useAppDispatch();
-  const protectedDataArray = useAppSelector(selectProtectedDataArray);
   const { address } = useAccount();
-  const [protectedData, setProtectedData] =
-    useState<ProtectedDataType[]>(protectedDataArray);
-  const [fetchProtectedData, result] = useFetchProtectedDataMutation();
   const isAccountConnected = useAppSelector(selectAppIsConnected);
-
-  useEffect(() => {
-    if (isAccountConnected) {
-      fetchProtectedData(address as string);
+  const { data: protectedData = [] } = useFetchProtectedDataQuery(
+    address as string,
+    {
+      skip: !isAccountConnected,
     }
-  }, [isAccountConnected]);
-
-  useEffect(() => {
-    if (result.data) {
-      setProtectedData(result.data as ProtectedDataType[]);
-      dispatch(setProtectedDataArray(result.data as ProtectedDataType[]));
-    }
-  }, [result.status]);
+  );
 
   //for pagination
   const [currentPage, setCurrentPage] = useState(1);
@@ -48,7 +36,7 @@ export default function ProtectedData() {
   };
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
-  const currentData = protectedData?.slice(startIndex, endIndex);
+  const currentData = protectedData.slice(startIndex, endIndex);
 
   return (
     <Box sx={{ mx: 10 }}>
@@ -69,7 +57,7 @@ export default function ProtectedData() {
           </Box>
           <Box sx={{ mx: 4, paddingBottom: 20 }}>
             <Grid container spacing={2}>
-              {currentData.map((e: ProtectedDataType) => (
+              {currentData?.map((e: ProtectedDataType) => (
                 <Grid item key={e.address}>
                   <ProtectedDataCard
                     id={e.address}

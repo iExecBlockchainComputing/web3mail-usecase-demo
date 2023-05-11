@@ -62,6 +62,9 @@ export const { setProtectedDataArray } = appSlice.actions;
 export const selectProtectedDataArray = (state: RootState) =>
   state.app.protectedDataArray;
 export const selectThereIsSomeRequestPending = (state: RootState) =>
+  Object.values(state.api.queries).some(
+    (query) => query?.status === 'pending'
+  ) ||
   Object.values(state.api.mutations).some(
     (query) => query?.status === 'pending'
   );
@@ -72,10 +75,11 @@ export const selectAppError = (state: RootState) => state.app.error;
 
 export const homeApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    fetchProtectedData: builder.mutation<ProtectedData[], string>({
+    fetchProtectedData: builder.query<ProtectedData[], string>({
       queryFn: async (owner) => {
         try {
           const data = await iExecDataProtector?.fetchProtectedData(owner);
+          console.log('iExecDataProtector: ', iExecDataProtector);
           return { data: data || [] };
         } catch (e: any) {
           return { error: e.message };
@@ -98,5 +102,5 @@ export const homeApi = api.injectEndpoints({
   }),
 });
 
-export const { useFetchProtectedDataMutation, useCreatePotectedDataMutation } =
+export const { useFetchProtectedDataQuery, useCreatePotectedDataMutation } =
   homeApi;

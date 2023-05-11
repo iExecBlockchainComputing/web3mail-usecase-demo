@@ -26,7 +26,7 @@ export default function Naviguate() {
   const naviguate = useNavigate();
   const { address, isConnected, isDisconnected } = useAccount();
   const { disconnect } = useDisconnect();
-  const [value, setValue] = useState('home');
+  const [value, setValue] = useState('myProtectedData');
   const isAccountConnected = useAppSelector(selectAppIsConnected);
   const loading = useAppSelector(selectThereIsSomeRequestPending);
 
@@ -46,7 +46,7 @@ export default function Naviguate() {
   }, [isDisconnected, isAccountConnected]);
 
   useEffect(() => {
-    if (value === 'home') {
+    if (value === 'myProtectedData') {
       naviguate('/protectedData');
     }
     if (value === 'sendMail') {
@@ -72,7 +72,7 @@ export default function Naviguate() {
               textColor="secondary"
               sx={{ '& .MuiTab-root': { textTransform: 'none' } }}
             >
-              <Tab value="home" label="Home" />
+              <Tab value="myProtectedData" label="My Protected Data" />
               <Tab value="sendMail" label="Send Mail" />
             </Tabs>
           </Box>

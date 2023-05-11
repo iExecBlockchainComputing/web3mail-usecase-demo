@@ -15,14 +15,13 @@ import {
 } from '@mui/material';
 import { Verified } from '@mui/icons-material';
 import { useState } from 'react';
-import protectDataFunc from './protectDataFunc';
 import { DataSchema } from '@iexec/dataprotector';
+import { useCreatePotectedDataMutation } from '../../app/appSlice';
+import { useAppSelector } from '../../app/hooks';
 
 export default function NewProtectedData() {
   //global state
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [protectedData, setProtectedData] = useState('');
+  const [createPotectedData, result] = useCreatePotectedDataMutation();
 
   //for name et dataType
   const [name, setName] = useState('');
@@ -84,16 +83,7 @@ export default function NewProtectedData() {
         break;
     }
     if (dataType && name && ((isValidEmail && email) || file)) {
-      try {
-        setLoading(true);
-        const ProtectedDataAddress = await protectDataFunc(data, name);
-        setProtectedData(ProtectedDataAddress);
-        setError('');
-      } catch (error) {
-        setError(String(error));
-        setProtectedData('');
-      }
-      setLoading(false);
+      await createPotectedData({ data, name });
     }
   };
 
@@ -171,13 +161,22 @@ export default function NewProtectedData() {
           sx={{ mt: 3 }}
         />
       )}
-      {error && (
-        <Alert sx={{ mt: 3, mb: 2 }} severity="error">
+      {result.error && (
+        <Alert
+          sx={{
+            margin: 'auto',
+            mt: 3,
+            mb: 2,
+            justifyContent: 'center',
+            maxWidth: '400px',
+          }}
+          severity="error"
+        >
           <Typography variant="h6"> Creation failed </Typography>
-          {error}
+          {result.error.toString()}
         </Alert>
       )}
-      {protectedData && !error && (
+      {result.data && !result.error && (
         <Alert
           sx={{
             margin: 'auto',
@@ -190,19 +189,19 @@ export default function NewProtectedData() {
         >
           <Typography variant="h6"> Your data has been protected!</Typography>
           <Link
-            href={`https://explorer.iex.ec/bellecour/dataset/${protectedData}`}
+            href={`https://explorer.iex.ec/bellecour/dataset/${result.data.dataAddress}`}
             target="_blank"
             sx={{ color: 'green', textDecorationColor: 'green' }}
           >
             You can reach it here
           </Link>
-          <p>Your protected data address: {protectedData}</p>
+          <p>Your protected data address: {result.data.dataAddress}</p>
         </Alert>
       )}
-      {loading && (
+      {result.isLoading && (
         <CircularProgress sx={{ margin: '20px auto' }}></CircularProgress>
       )}
-      {dataType && !loading && (
+      {dataType && !result.isLoading && (
         <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
           <Button sx={{ mt: 9 }} onClick={handleSubmit} variant="contained">
             Protect the data
