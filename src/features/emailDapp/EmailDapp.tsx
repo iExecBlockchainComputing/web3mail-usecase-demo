@@ -1,11 +1,11 @@
-import './EmailDapp.css'
-import { Avatar, Box, Button, InputBase } from '@mui/material'
-import { DataGrid, GridColDef } from '@mui/x-data-grid'
-import SearchIcon from '@mui/icons-material/Search'
-import { useNavigate } from 'react-router-dom'
+import './EmailDapp.css';
+import { Avatar, Box, Button, InputBase } from '@mui/material';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import SearchIcon from '@mui/icons-material/Search';
+import { useNavigate } from 'react-router-dom';
 
 export default function EmailDapp() {
-  const naviguate = useNavigate()
+  const naviguate = useNavigate();
 
   const columns: GridColDef[] = [
     {
@@ -39,7 +39,7 @@ export default function EmailDapp() {
         </Button>
       ),
     },
-  ]
+  ];
 
   const rows = [
     {
@@ -66,12 +66,12 @@ export default function EmailDapp() {
       Eth_Address: '0x12l7....373',
       Subscribe_on: '6/14/2021',
     },
-  ]
+  ];
 
   return (
     <Box sx={{ m: 10, mx: 20 }}>
       <h2>List of integrations to interact with your subscribers</h2>
-      <Box id="search" sx={{mt:5}}>
+      <Box id="search" sx={{ mt: 5 }}>
         <div id="iconWrapper">
           <SearchIcon sx={{ color: '#788896' }} />
         </div>
@@ -91,5 +91,5 @@ export default function EmailDapp() {
         />
       </Box>
     </Box>
-  )
+  );
 }

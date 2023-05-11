@@ -1,31 +1,54 @@
-import { Box, Button, Grid } from '@mui/material';
+import { Box, Button, Grid, Pagination, Paper } from '@mui/material';
 import './ProtectedData.css';
 import ProtectedDataCard from '../../components/ProtectedDataCard';
 import { useNavigate } from 'react-router-dom';
-import { IExecDataProtector } from '@iexec/dataprotector';
+import { ProtectedData as ProtectedDataType } from '@iexec/dataprotector';
 import { useEffect, useState } from 'react';
 import img from '../../assets/noData.png';
+import { useAccount } from 'wagmi';
+import {
+  setProtectedDataArray,
+  selectProtectedDataArray,
+  useFetchProtectedDataMutation,
+  selectAppIsConnected,
+} from '../../app/appSlice';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+
+const ITEMS_PER_PAGE = 8;
 
 export default function ProtectedData() {
-  const [protectedData, setProtectedData] = useState([]);
-  const data = [
-    {
-      title: 'Professional Email',
-      date: '28/06/2022',
-      dataType: 'email',
-      id: '0x0d76535ac299360a1e14c6cd21662440945ed717',
-    },
-  ];
-
-  const fetchData = async () => {
-    const dataProtector = new IExecDataProtector(window.ethereum);
-    const protectedData = await dataProtector.fetchProtectedData();
-    setProtectedData(protectedData);
-  };
+  const dispatch = useAppDispatch();
+  const protectedDataArray = useAppSelector(selectProtectedDataArray);
+  const { address } = useAccount();
+  const [protectedData, setProtectedData] =
+    useState<ProtectedDataType[]>(protectedDataArray);
+  const [fetchProtectedData, result] = useFetchProtectedDataMutation();
+  const isAccountConnected = useAppSelector(selectAppIsConnected);
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    if (isAccountConnected) {
+      fetchProtectedData(address as string);
+    }
+  }, [isAccountConnected]);
+
+  useEffect(() => {
+    if (result.data) {
+      setProtectedData(result.data as ProtectedDataType[]);
+      dispatch(setProtectedDataArray(result.data as ProtectedDataType[]));
+    }
+  }, [result.status]);
+
+  //for pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const handlePageChange = (
+    event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    setCurrentPage(value);
+  };
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  const currentData = protectedData?.slice(startIndex, endIndex);
 
   return (
     <Box sx={{ mx: 10 }}>
@@ -44,19 +67,25 @@ export default function ProtectedData() {
               <NewProtectedDataButton />
             </Box>
           </Box>
-          <Box sx={{ mx: 4 }}>
+          <Box sx={{ mx: 4, paddingBottom: 20 }}>
             <Grid container spacing={2}>
-              {data.map((e) => (
-                <Grid item key={e.id}>
+              {currentData.map((e: ProtectedDataType) => (
+                <Grid item key={e.address}>
                   <ProtectedDataCard
-                    id={e.id}
-                    title={e.title}
-                    date={e.date}
-                    dataType={e.dataType}
+                    id={e.address}
+                    title={e.name || 'Undifined'}
+                    schema={e.schema}
                   />
                 </Grid>
               ))}
             </Grid>
+            <Paper id="pagination">
+              <Pagination
+                count={Math.ceil(protectedData.length / ITEMS_PER_PAGE)}
+                page={currentPage}
+                onChange={handlePageChange}
+              />
+            </Paper>
           </Box>
         </Box>
       ) : (
