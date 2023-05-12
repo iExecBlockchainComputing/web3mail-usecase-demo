@@ -1,4 +1,4 @@
-import './Naviguate.css'
+import "./Naviguate.css";
 import {
   AppBar,
   Box,
@@ -7,52 +7,53 @@ import {
   Tabs,
   Toolbar,
   Typography,
-} from '@mui/material'
-import { useEffect, useState } from 'react'
-import { Outlet, useNavigate } from 'react-router-dom'
-import { useAccount, useDisconnect } from 'wagmi'
-import { useWeb3Modal } from '@web3modal/react'
+} from "@mui/material";
+import { useEffect, useState } from "react";
+import { Outlet, useNavigate } from "react-router-dom";
+import { useAccount, useDisconnect } from "wagmi";
+import { useWeb3Modal } from "@web3modal/react";
+import img from "../../assets/logo.png";
 
 export default function Naviguate() {
-  const { open } = useWeb3Modal()
-  const naviguate = useNavigate()
-  const { address, isConnected, isDisconnected } = useAccount()
-  const { disconnect } = useDisconnect()
-  const [value, setValue] = useState('provider')
+  const { open } = useWeb3Modal();
+  const naviguate = useNavigate();
+  const { address, isConnected, isDisconnected } = useAccount();
+  const { disconnect } = useDisconnect();
+  const [value, setValue] = useState("provider");
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
-    setValue(newValue)
-  }
+    setValue(newValue);
+  };
   const shortAddress = (address: string) => {
-    return address.slice(0, 6) + '...' + address.slice(-4)
-  }
+    return address.slice(0, 6) + "..." + address.slice(-4);
+  };
 
   useEffect(() => {
     if (isDisconnected) {
-      open()
+      open();
     } else {
-      naviguate('/protectedData')
+      naviguate("/protectedData");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isDisconnected, open])
+  }, [isDisconnected, open]);
 
   useEffect(() => {
-    if (value === 'provider') {
-      naviguate('/protectedData')
+    if (value === "provider") {
+      naviguate("/protectedData");
     }
-    if (value === 'consumer') {
-      naviguate('/integration')
+    if (value === "consumer") {
+      naviguate("/integration");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [value])
+  }, [value]);
 
   return (
     <div>
       <AppBar position="static" elevation={0} id="appbar">
         <Toolbar id="tootBar">
           <img
-            onClick={() => naviguate('/protectedData')}
-            src={require('../../assets/logo.png')}
+            onClick={() => naviguate("/protectedData")}
+            src={img}
             alt="The immage can't be loaded"
             id="logo"
           />
@@ -62,7 +63,7 @@ export default function Naviguate() {
               onChange={handleChange}
               indicatorColor="secondary"
               textColor="secondary"
-              sx={{ '& .MuiTab-root': { textTransform: 'none' } }}
+              sx={{ "& .MuiTab-root": { textTransform: "none" } }}
             >
               <Tab value="provider" label="My Vault" />
               <Tab value="consumer" label="Integrations" />
@@ -71,9 +72,9 @@ export default function Naviguate() {
           <Typography
             sx={{
               flexGrow: 1,
-              textAlign: 'right',
+              textAlign: "right",
               mr: 2,
-              fontStyle: 'italic',
+              fontStyle: "italic",
             }}
           >
             {isConnected && shortAddress(address as string)}
@@ -81,14 +82,14 @@ export default function Naviguate() {
           <Button
             variant="contained"
             onClick={() => {
-              isConnected ? disconnect() : open()
+              isConnected ? disconnect() : open();
             }}
           >
-            {isConnected ? 'Disconnect' : 'Connect'}
+            {isConnected ? "Disconnect" : "Connect"}
           </Button>
         </Toolbar>
       </AppBar>
-      {isConnected ? <Outlet /> : 'Connect to Your Wallet'}
+      {isConnected ? <Outlet /> : "Connect to Your Wallet"}
     </div>
-  )
+  );
 }
