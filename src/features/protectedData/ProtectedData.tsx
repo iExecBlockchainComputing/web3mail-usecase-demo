@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { useAccount } from 'wagmi';
 import { Box, Button, Grid, Pagination, Paper } from '@mui/material';
-import { ProtectedData as ProtectedDataType } from '@iexec/dataprotector';
 import {
   useFetchProtectedDataQuery,
   selectAppIsConnected,
@@ -56,12 +55,12 @@ export default function ProtectedData() {
           </Box>
           <Box sx={{ mx: 4, paddingBottom: 20 }}>
             <Grid container spacing={2}>
-              {currentData?.map((e: ProtectedDataType) => (
-                <Grid item key={e.address}>
+              {currentData?.map(({ address, name, schema }) => (
+                <Grid item key={address}>
                   <ProtectedDataCard
-                    id={e.address}
-                    title={e.name || 'Undifined'}
-                    schema={e.schema}
+                    id={address}
+                    title={name || 'Undifined'}
+                    schema={schema}
                   />
                 </Grid>
               ))}
