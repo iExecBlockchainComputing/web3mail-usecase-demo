@@ -11,9 +11,9 @@ import {
   selectAppIsConnected,
 } from '../../app/appSlice';
 import { useAppSelector } from '../../app/hooks';
+import { ITEMS_PER_PAGE } from '../../config/config';
 
 export default function ProtectedData() {
-  const ITEMS_PER_PAGE = 8;
   const { address } = useAccount();
   const isAccountConnected = useAppSelector(selectAppIsConnected);
 
