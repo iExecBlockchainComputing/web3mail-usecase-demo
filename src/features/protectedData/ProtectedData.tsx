@@ -1,18 +1,16 @@
-import { Box, Button, Grid, Pagination, Paper } from '@mui/material';
 import './ProtectedData.css';
 import ProtectedDataCard from '../../components/ProtectedDataCard';
-import { useNavigate } from 'react-router-dom';
-import { ProtectedData as ProtectedDataType } from '@iexec/dataprotector';
-import { useEffect, useState } from 'react';
 import img from '../../assets/noData.png';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import { useAccount } from 'wagmi';
+import { Box, Button, Grid, Pagination, Paper } from '@mui/material';
+import { ProtectedData as ProtectedDataType } from '@iexec/dataprotector';
 import {
-  setProtectedDataArray,
-  selectProtectedDataArray,
   useFetchProtectedDataQuery,
   selectAppIsConnected,
 } from '../../app/appSlice';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { useAppSelector } from '../../app/hooks';
 
 const ITEMS_PER_PAGE = 8;
 

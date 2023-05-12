@@ -1,4 +1,5 @@
 import './Naviguate.css';
+import img from '../../assets/logo.png';
 import {
   AppBar,
   Box,
@@ -12,13 +13,13 @@ import { useEffect, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useAccount, useDisconnect } from 'wagmi';
 import { useWeb3Modal } from '@web3modal/react';
-import img from '../../assets/logo.png';
 import {
   initDataProtector,
   selectAppIsConnected,
   selectThereIsSomeRequestPending,
 } from '../../app/appSlice';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { shortAddress } from '../../utils/utils';
 
 export default function Naviguate() {
   const dispatch = useAppDispatch();
@@ -32,9 +33,6 @@ export default function Naviguate() {
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
-  };
-  const shortAddress = (address: string) => {
-    return address.slice(0, 6) + '...' + address.slice(-4);
   };
 
   useEffect(() => {

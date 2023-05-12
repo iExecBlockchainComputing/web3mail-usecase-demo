@@ -5,19 +5,18 @@ import {
   IExecDataProtector,
   ProtectedDataWithSecretProps,
   ProtectDataParams,
+  GrantedAccess,
 } from '@iexec/dataprotector';
 import { api, getIExecDataProtectorAndRefresh } from './api';
 
 let iExecDataProtector: IExecDataProtector | null = null;
 
 export interface AppState {
-  protectedDataArray: ProtectedData[] | [];
   status: 'Not Connected' | 'Connected' | 'Loading' | 'Failed';
   error: string | null;
 }
 
 const initialState: AppState = {
-  protectedDataArray: [],
   status: 'Not Connected',
   error: null,
 };
@@ -28,7 +27,6 @@ export const initDataProtector = createAsyncThunk(
     try {
       iExecDataProtector = await getIExecDataProtectorAndRefresh();
     } catch (e: any) {
-      console.log('error in createAsyncThunk: ', e);
       return { error: e.message };
     }
   }
@@ -37,11 +35,7 @@ export const initDataProtector = createAsyncThunk(
 export const appSlice = createSlice({
   name: 'app',
   initialState: initialState,
-  reducers: {
-    setProtectedDataArray: (state, action) => {
-      state.protectedDataArray = action.payload;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(initDataProtector.pending, (state) => {
@@ -58,9 +52,6 @@ export const appSlice = createSlice({
 });
 
 export default appSlice.reducer;
-export const { setProtectedDataArray } = appSlice.actions;
-export const selectProtectedDataArray = (state: RootState) =>
-  state.app.protectedDataArray;
 export const selectThereIsSomeRequestPending = (state: RootState) =>
   Object.values(state.api.queries).some(
     (query) => query?.status === 'pending'
@@ -78,9 +69,8 @@ export const homeApi = api.injectEndpoints({
     fetchProtectedData: builder.query<ProtectedData[], string>({
       queryFn: async (owner) => {
         try {
-          const data = await iExecDataProtector?.fetchProtectedData(owner);
-          console.log('iExecDataProtector: ', iExecDataProtector);
-          return { data: data || [] };
+          const data = await iExecDataProtector?.fetchProtectedData({ owner });
+          return { data: data };
         } catch (e: any) {
           return { error: e.message };
         }
@@ -93,7 +83,19 @@ export const homeApi = api.injectEndpoints({
       queryFn: async (args) => {
         try {
           const data = await iExecDataProtector?.protectData(args);
-          return { data: data || {} };
+          return { data: data };
+        } catch (e: any) {
+          return { error: e.message };
+        }
+      },
+    }),
+    fetchGrantedAcces: builder.query<GrantedAccess[], string>({
+      queryFn: async (protectedData) => {
+        try {
+          const data = await iExecDataProtector?.fetchGrantedAccess({
+            protectedData,
+          });
+          return { data: data };
         } catch (e: any) {
           return { error: e.message };
         }
@@ -102,5 +104,8 @@ export const homeApi = api.injectEndpoints({
   }),
 });
 
-export const { useFetchProtectedDataQuery, useCreatePotectedDataMutation } =
-  homeApi;
+export const {
+  useFetchProtectedDataQuery,
+  useCreatePotectedDataMutation,
+  useFetchGrantedAccesQuery,
+} = homeApi;

@@ -17,7 +17,6 @@ import { Verified } from '@mui/icons-material';
 import { useState } from 'react';
 import { DataSchema } from '@iexec/dataprotector';
 import { useCreatePotectedDataMutation } from '../../app/appSlice';
-import { useAppSelector } from '../../app/hooks';
 
 export default function NewProtectedData() {
   //global state

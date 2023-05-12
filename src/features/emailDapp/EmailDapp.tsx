@@ -1,7 +1,7 @@
 import './EmailDapp.css';
+import SearchIcon from '@mui/icons-material/Search';
 import { Avatar, Box, Button, InputBase } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import SearchIcon from '@mui/icons-material/Search';
 import { useNavigate } from 'react-router-dom';
 
 export default function EmailDapp() {

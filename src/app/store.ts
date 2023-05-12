@@ -13,7 +13,6 @@ export const store = configureStore({
         ignoredActions: [
           'app/initDataProtector/fulfilled',
           'app/initDataProtector/rejected',
-          'api/executeMutation/fulfilled',
         ],
         ignoredPaths: ['app.iExecDataProtector', 'api.mutations'],
       },
