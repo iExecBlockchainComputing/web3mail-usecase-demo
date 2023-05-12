@@ -1,45 +1,45 @@
-import { Box, Button, Grid } from '@mui/material'
-import './ProtectedData.css'
-import ProtectedDataCard from '../../components/ProtectedDataCard'
-import { useNavigate } from 'react-router-dom'
+import './ProtectedData.css';
+import ProtectedDataCard from '../../components/ProtectedDataCard';
+import img from '../../assets/noData.png';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { useAccount } from 'wagmi';
+import { Box, Button, Grid, Pagination, Paper } from '@mui/material';
+import { ProtectedData as ProtectedDataType } from '@iexec/dataprotector';
+import {
+  useFetchProtectedDataQuery,
+  selectAppIsConnected,
+} from '../../app/appSlice';
+import { useAppSelector } from '../../app/hooks';
 
 export default function ProtectedData() {
-  const data = [
+  const ITEMS_PER_PAGE = 8;
+  const { address } = useAccount();
+  const isAccountConnected = useAppSelector(selectAppIsConnected);
+
+  //query RTK API as query hook
+  const { data: protectedData = [] } = useFetchProtectedDataQuery(
+    address as string,
     {
-      title: 'Professional Email',
-      date: '28/06/2022',
-      dataType: 'email',
-      id: '0x0d76535ac299360a1e14c6cd21662440945ed717',
-    },
-    {
-      title: 'Professional Email',
-      date: '28/06/2022',
-      dataType: 'email',
-      id: '0x5ab61938db5c96b6fbc8c2fc666c42a6c93569fa',
-    },
-    {
-      title: 'Age',
-      date: '17/04/2022',
-      dataType: 'Profile',
-      id: '0x126561e41f561c872f033a80d6eaecd964b6f0d6',
-    },
-    {
-      title: 'Date of Birth',
-      date: '18/01/2022',
-      dataType: 'Document',
-      id: '0x8ece0c27c52237329aa61f521f77632454754e3c',
-    },
-    {
-      title: 'Driving License',
-      date: '18/01/2022',
-      dataType: 'Document',
-      id: '0x8ece0c27c52237329aa31f521f77632454754e3c',
-    },
-  ]
+      skip: !isAccountConnected,
+    }
+  );
+
+  //for pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const handlePageChange = (
+    event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    setCurrentPage(value);
+  };
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  const currentData = protectedData.slice(startIndex, endIndex);
 
   return (
     <Box sx={{ mx: 10 }}>
-      {data.length !== 0 ? (
+      {protectedData.length !== 0 ? (
         <Box>
           <Box
             sx={{
@@ -54,28 +54,30 @@ export default function ProtectedData() {
               <NewProtectedDataButton />
             </Box>
           </Box>
-          <Box sx={{ mx: 4 }}>
+          <Box sx={{ mx: 4, paddingBottom: 20 }}>
             <Grid container spacing={2}>
-              {data.map((e) => (
-                <Grid item key={e.id}>
+              {currentData?.map((e: ProtectedDataType) => (
+                <Grid item key={e.address}>
                   <ProtectedDataCard
-                    id={e.id}
-                    title={e.title}
-                    date={e.date}
-                    dataType={e.dataType}
+                    id={e.address}
+                    title={e.name || 'Undifined'}
+                    schema={e.schema}
                   />
                 </Grid>
               ))}
             </Grid>
+            <Paper id="pagination">
+              <Pagination
+                count={Math.ceil(protectedData.length / ITEMS_PER_PAGE)}
+                page={currentPage}
+                onChange={handlePageChange}
+              />
+            </Paper>
           </Box>
         </Box>
       ) : (
         <Box>
-          <img
-            src={require('../../assets/noData.png')}
-            alt="The immage can't be loaded"
-            id="logo"
-          />
+          <img src={img} alt="The immage can't be loaded" id="logo" />
           <p>You have no protected data yet. Go create one!</p>
           <Box sx={{ mt: 7 }}>
             <NewProtectedDataButton />
@@ -83,14 +85,14 @@ export default function ProtectedData() {
         </Box>
       )}
     </Box>
-  )
+  );
 }
 
 function NewProtectedDataButton() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   return (
     <Button variant="contained" onClick={() => navigate('/NewProtectedData')}>
       Protect a new data
     </Button>
-  )
+  );
 }
