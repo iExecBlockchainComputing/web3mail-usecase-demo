@@ -1,46 +1,125 @@
-# Getting Started with Create React App
+<p align="center">
+  <a href="https://iex.ec/" rel="noopener" target="_blank"><img width="150" src="./src/assets/logo-readme.jpg" alt="iExec logo"/></a>
+</p>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<h1 align="center">DataProtector</h1>
 
-## Available Scripts
+**DataProtector** offers developers methods to create apps that provide users with unparalleled ownership over their data.
 
-In the project directory, you can run:
+Through DataProtector, users may allow apps to use their data without ever revealing the data itself. This revolutionary approach to data management relies on:
 
-### `npm start`
+- end-to-end encryption backed by a secure hardware environment that prevents apps from accessing users’ unencrypted data
+- smart contracts that manage apps’ rights to use users’ encrypted data.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+DataProtector bundles 5 methods:
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- protectData — that safeguards any type of data via end-to-end encryption and hardware security while recording data ownership on a smart contract to ensure verifiability and traceability
+- grantUsage — that enables an app to use users’ data without ever revealing the data itself
+- revokeUsage — that disables an app to use users’ data without ever disclosing it
+- fetchProtectedData — that retrieves the data that has already been protected by DataProtector
+- fetchGrantedUsage — that provides the list of the apps that are allowed to use existing protected data.
 
-### `npm test`
+<div align="center">
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+**[Stable channel v1](https://iex.ec/)**
 
-### `npm run build`
+[![npm](https://img.shields.io/npm/v/@iexec/dataprotector)](https://www.npmjs.com/package/@iexec/dataprotector) [![license](https://img.shields.io/badge/license-Apache%202-blue)](/LICENSE)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+</div>
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Installation
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### DataProtector
 
-### `npm run eject`
+DataProtector is available as an [npm package](https://www.npmjs.com/package/@iexec/dataprotector).
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+**npm:**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```sh
+npm install @iexec/dataprotector
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+**yarn:**
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+```sh
+yarn add @iexec/dataprotector
+```
+
+## Get started
+
+[//]: # 'Add initialize code for getting started to use SDK'
+
+## Documentation
+
+[//]: # 'Add link to documentation gitbook when published'
+
+- [DataProtector](#documentation)
+
+## License
+
+This project is licensed under the terms of the
+[Apache 2.0](/LICENSE).
+
+
+# Run the use case demo
+
+This project is a simple React TypeScript application bootstrapped with [Vite](https://vitejs.dev/). Vite provides a faster and leaner development experience for modern web projects.
+
+## Prerequisites
+
+Before running this application, make sure you have the following installed:
+
+- [Node.js](https://nodejs.org/) (version 14.0 or later)
+- [Yarn](https://yarnpkg.com/) or [npm](https://www.npmjs.com/)
+
+## Quick start
+
+First, clone the repository with the following command:
+
+```bash
+git clone https://github.com/iExecBlockchainComputing/dataprotector-useCaseDemo.git
+```
+
+Navigate to the project directory:
+
+```bash
+cd dataprotector-useCaseDemo
+```
+
+Install the dependencies:
+
+```bash
+yarn install
+# or
+npm install
+```
+
+Then, you can run the application in development mode:
+
+```bash
+yarn dev
+# or
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:5173) to view it in the browser. The page will automatically reload if you make changes to the code.
+
+## Building for production
+
+To build the application for production, use the following command:
+
+```bash
+yarn build
+# or
+npm run build
+```
+
+This will create a `dist` folder with the compiled assets ready for deployment.
 
 ## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+You can learn more about Vite in the [Vite documentation](https://vitejs.dev/guide/).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
+
+For TypeScript, check out the [TypeScript handbook](https://www.typescriptlang.org/docs/).
