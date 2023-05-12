@@ -9,6 +9,8 @@ import { hasKey } from '../../utils/utils';
 export default function Consent() {
   const { ProtectedDataId } = useParams();
   const { address } = useAccount();
+
+  //query RTK API as query hook
   const { data: protectedData = [] } = useFetchProtectedDataQuery(
     address as string
   );

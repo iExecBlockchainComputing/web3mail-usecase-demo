@@ -5,7 +5,7 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { useNavigate } from 'react-router-dom';
 
 export default function EmailDapp() {
-  const naviguate = useNavigate();
+  const navigate = useNavigate();
 
   const columns: GridColDef[] = [
     {
@@ -33,7 +33,7 @@ export default function EmailDapp() {
         <Button
           variant="contained"
           color="secondary"
-          onClick={() => naviguate(`./sendMessageTo/${params.row.Eth_Address}`)}
+          onClick={() => navigate(`./sendMessageTo/${params.row.Eth_Address}`)}
         >
           Send Message
         </Button>

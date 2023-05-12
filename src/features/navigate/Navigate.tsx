@@ -1,4 +1,4 @@
-import './Naviguate.css';
+import './Navigate.css';
 import img from '../../assets/logo.png';
 import {
   AppBar,
@@ -21,13 +21,15 @@ import {
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { shortAddress } from '../../utils/utils';
 
-export default function Naviguate() {
+export default function Navigate() {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const { open } = useWeb3Modal();
-  const naviguate = useNavigate();
   const { address, isConnected, isDisconnected } = useAccount();
   const { disconnect } = useDisconnect();
   const [value, setValue] = useState('myProtectedData');
+
+  //get the state from the store
   const isAccountConnected = useAppSelector(selectAppIsConnected);
   const loading = useAppSelector(selectThereIsSomeRequestPending);
 
@@ -45,10 +47,10 @@ export default function Naviguate() {
 
   useEffect(() => {
     if (value === 'myProtectedData') {
-      naviguate('/protectedData');
+      navigate('/protectedData');
     }
     if (value === 'sendMail') {
-      naviguate('/sendMail');
+      navigate('/sendMail');
     }
   }, [value]);
 
@@ -57,7 +59,7 @@ export default function Naviguate() {
       <AppBar position="static" elevation={0} id="appbar">
         <Toolbar id="tootBar">
           <img
-            onClick={() => naviguate('/protectedData')}
+            onClick={() => navigate('/protectedData')}
             src={img}
             alt="The immage can't be loaded"
             id="logo"

@@ -11,11 +11,11 @@ export interface ProtectedDataProps {
 }
 
 export default function ProtectedDataCard(props: ProtectedDataProps) {
-  const naviguate = useNavigate();
+  const navigate = useNavigate();
   return (
     <Card
       sx={{ minWidth: 260, cursor: 'pointer' }}
-      onClick={() => naviguate(`/protectedData/consent/${props.id}`)}
+      onClick={() => navigate(`/protectedData/consent/${props.id}`)}
     >
       <CardContent id="cardContent">
         <Box

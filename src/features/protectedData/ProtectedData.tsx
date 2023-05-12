@@ -12,11 +12,12 @@ import {
 } from '../../app/appSlice';
 import { useAppSelector } from '../../app/hooks';
 
-const ITEMS_PER_PAGE = 8;
-
 export default function ProtectedData() {
+  const ITEMS_PER_PAGE = 8;
   const { address } = useAccount();
   const isAccountConnected = useAppSelector(selectAppIsConnected);
+
+  //query RTK API as query hook
   const { data: protectedData = [] } = useFetchProtectedDataQuery(
     address as string,
     {

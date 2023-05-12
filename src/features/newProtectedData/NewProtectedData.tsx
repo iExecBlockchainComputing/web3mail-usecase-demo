@@ -19,7 +19,7 @@ import { DataSchema } from '@iexec/dataprotector';
 import { useCreatePotectedDataMutation } from '../../app/appSlice';
 
 export default function NewProtectedData() {
-  //global state
+  //query RTK API as mutation hook
   const [createPotectedData, result] = useCreatePotectedDataMutation();
 
   //for name et dataType

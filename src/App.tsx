@@ -1,7 +1,7 @@
 import './App.css';
 import { Routes, Route } from 'react-router-dom';
 import {
-  Naviguate,
+  Navigate,
   NewProtectedData,
   ProtectedData,
   Consent,
@@ -13,7 +13,7 @@ function App() {
   return (
     <div className="App">
       <Routes>
-        <Route path="/" element={<Naviguate />}>
+        <Route path="/" element={<Navigate />}>
           <Route path="/protectedData" element={<ProtectedData />} />
           <Route
             path="/protectedData/consent/:ProtectedDataId"
@@ -26,7 +26,7 @@ function App() {
             element={<SendMessageTo />}
           />
         </Route>
-        <Route path="*" element={<Naviguate />} />
+        <Route path="*" element={<Navigate />} />
       </Routes>
     </div>
   );
