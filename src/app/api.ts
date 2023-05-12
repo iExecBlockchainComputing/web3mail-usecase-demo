@@ -1,11 +1,11 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { IExecDataProtector } from '@iexec/dataprotector';
-import { connect, getAccount } from 'wagmi/actions';
+import { connect } from 'wagmi/actions';
 import { InjectedConnector } from '@wagmi/connectors/injected';
 
 export const api = createApi({
   baseQuery: fetchBaseQuery(),
-  endpoints: (builder) => ({}),
+  endpoints: () => ({}),
 });
 
 export const getIExecDataProtectorAndRefresh =
