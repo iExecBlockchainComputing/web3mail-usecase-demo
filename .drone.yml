@@ -1,0 +1,162 @@
+kind: pipeline
+type: docker
+name: default
+
+trigger:
+  event:
+    - push
+
+steps:
+  - name: install
+    image: node:18
+    pull: always
+    commands:
+      - node -v
+      - npm -v
+      - npm ci
+
+  - name: format
+    image: node:18
+    pull: always
+    commands:
+      - npm run check-format
+
+  - name: test
+    image: node:18
+    pull: always
+    commands:
+      - npm run test
+
+  - name: build
+    image: node:18
+    pull: always
+    commands:
+      - npm run build
+
+  # Build a development image when there is a push on develop branch
+  - name: docker build dev
+    image: plugins/docker
+    pull: always
+    settings:
+      repo: your-repo/image
+      tags: dev ${DRONE_COMMIT}
+      dockerfile: path/to/your/Dockerfile
+    when:
+      branch:
+        - develop
+      event:
+        - push
+
+  # Build a production image when there is a push on main branch
+  - name: docker build release
+    image: plugins/docker
+    pull: always
+    settings:
+      repo: your-repo/image
+      tags: ${DRONE_TAG}
+      dockerfile: path/to/your/Dockerfile
+    when:
+      branch:
+        - main
+      event:
+        - push
+
+# Promote a pre-production release from develop branch
+---
+kind: pipeline
+type: docker
+name: deploy-pre-production
+
+trigger:
+  event:
+    - promote
+  target:
+    - pre-production
+
+steps:
+  - name: install
+    image: node:18
+    pull: always
+    commands:
+      - node -v
+      - npm -v
+      - npm ci
+
+  - name: format
+    image: node:18
+    pull: always
+    commands:
+      - npm run check-format
+
+  - name: build
+    image: node:18
+    pull: always
+    commands:
+      - npm run build
+
+  - name: deploy
+    image: plugins/sftp
+    settings:
+      host:
+        from_secret: sftp_host
+      username:
+        from_secret: sftp_username
+      password:
+        from_secret: sftp_password
+      port: 22
+      source: dist/*
+      target: /path/to/your/webserver
+      strip_components: 1
+    when:
+      branch:
+        - develop
+
+# Promote a production release from main branch
+---
+kind: pipeline
+type: docker
+name: deploy-production
+
+trigger:
+  event:
+    - promote
+  target:
+    - production
+
+steps:
+  - name: install
+    image: node:18
+    pull: always
+    commands:
+      - node -v
+      - npm -v
+      - npm ci
+
+  - name: format
+    image: node:18
+    pull: always
+    commands:
+      - npm run check-format
+
+  - name: build
+    image: node:18
+    pull: always
+    commands:
+      - npm run build
+
+  - name: deploy
+    image: plugins/sftp
+    settings:
+      host:
+        from_secret: sftp_host
+      username:
+        from_secret: sftp_username
+      password:
+        from_secret: sftp_password
+      port: 22
+      source: dist/*
+      target: /path/to/your/webserver
+      strip_components: 1
+    when:
+      branch:
+        - main
