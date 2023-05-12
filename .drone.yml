@@ -160,3 +160,61 @@ steps:
     when:
       branch:
         - main
+# ---
+# kind: pipeline
+# type: docker
+# name: deploy-pre-production
+
+# trigger:
+#   event:
+#     - promote
+#   target:
+#     - pre-production
+
+# steps:
+#   - name: deploy
+#     image: dockercraft/ssh
+#     commands:
+#       - sshpass -p ${SFTP_PASSWORD} ssh -o StrictHostKeyChecking=no ${SFTP_USERNAME}@${SFTP_HOST} "docker pull your-repo/image:dev${DRONE_COMMIT}"
+#       - sshpass -p ${SFTP_PASSWORD} ssh -o StrictHostKeyChecking=no ${SFTP_USERNAME}@${SFTP_HOST} "docker stop container-name || true && docker rm container-name || true"
+#       - sshpass -p ${SFTP_PASSWORD} ssh -o StrictHostKeyChecking=no ${SFTP_USERNAME}@${SFTP_HOST} "docker run --name container-name -d your-repo/image:dev${DRONE_COMMIT}"
+#     environment:
+#       SFTP_HOST:
+#         from_secret: sftp_host
+#       SFTP_USERNAME:
+#         from_secret: sftp_username
+#       SFTP_PASSWORD:
+#         from_secret: sftp_password
+#     when:
+#       branch:
+#         - develop
+
+# ---
+# kind: pipeline
+# type: docker
+# name: deploy-production
+
+# trigger:
+#   event:
+#     - promote
+#   target:
+#     - production
+
+# steps:
+#   - name: deploy
+#     image: dockercraft/ssh
+#     commands:
+#       - sshpass -p ${SFTP_PASSWORD} ssh -o StrictHostKeyChecking=no ${SFTP_USERNAME}@${SFTP_HOST} "docker pull your-repo/image:${DRONE_TAG}"
+#       - sshpass -p ${SFTP_PASSWORD} ssh -o StrictHostKeyChecking=no ${SFTP_USERNAME}@${SFTP_HOST} "docker stop container-name || true && docker rm container-name || true"
+#       - sshpass -p ${SFTP_PASSWORD} ssh -o StrictHostKeyChecking=no ${SFTP_USERNAME}@${SFTP_HOST} "docker run --name container-name -d your-repo/image:${DRONE_TAG}"
+#     environment:
+#       SFTP_HOST:
+#         from_secret: sftp_host
+#       SFTP_USERNAME:
+#         from_secret: sftp_username
+#       SFTP_PASSWORD:
+#         from_secret: sftp_password
+#     when:
+#       branch:
+#         - main
+
