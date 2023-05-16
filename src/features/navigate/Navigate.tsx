@@ -1,5 +1,5 @@
 import './Navigate.css';
-import img from '../../assets/logo.png';
+import img from '../../assets/iexec.png';
 import {
   AppBar,
   Box,
@@ -25,7 +25,7 @@ export default function Navigate() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { open } = useWeb3Modal();
-  const { address, isConnected, isDisconnected } = useAccount();
+  const { address, isConnected, isDisconnected, connector } = useAccount();
   const { disconnect } = useDisconnect();
   const [currentTab, setCurrentTab] = useState('myProtectedData');
 
@@ -40,10 +40,14 @@ export default function Navigate() {
   useEffect(() => {
     if (isDisconnected) {
       open();
-    } else if (isConnected && !isAccountConnected) {
+    }
+  }, [isDisconnected, open]);
+
+  useEffect(() => {
+    if (isConnected && connector && !isAccountConnected) {
       dispatch(initDataProtector());
     }
-  }, [isDisconnected, isAccountConnected, isConnected, open, dispatch]);
+  }, [isConnected, connector, isAccountConnected, dispatch]);
 
   useEffect(() => {
     if (currentTab === 'myProtectedData') {
@@ -52,7 +56,7 @@ export default function Navigate() {
     if (currentTab === 'sendMail') {
       navigate('/sendMail');
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentTab]);
 
   return (
