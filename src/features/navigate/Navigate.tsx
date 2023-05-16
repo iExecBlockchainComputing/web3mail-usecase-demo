@@ -43,7 +43,7 @@ export default function Navigate() {
     } else if (isConnected && !isAccountConnected) {
       dispatch(initDataProtector());
     }
-  }, [isDisconnected, isAccountConnected]);
+  }, [isDisconnected, isAccountConnected, isConnected, open, dispatch]);
 
   useEffect(() => {
     if (value === 'myProtectedData') {
@@ -52,6 +52,7 @@ export default function Navigate() {
     if (value === 'sendMail') {
       navigate('/sendMail');
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value]);
 
   return (
