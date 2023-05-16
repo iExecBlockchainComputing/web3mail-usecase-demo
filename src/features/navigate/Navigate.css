@@ -3,14 +3,14 @@
   height: 80px;
 }
 
-#appbar #tootBar {
+#appbar #toolBar {
   margin-right: 1%;
   margin-top: auto;
   margin-bottom: auto;
   padding: 0px;
 }
 
-#appbar #tootBar img {
+#appbar #toolBar img {
   margin-left: 1%;
   height: 50px;
 }

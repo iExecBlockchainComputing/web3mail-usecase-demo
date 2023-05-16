@@ -57,7 +57,7 @@ export default function Navigate() {
   return (
     <div>
       <AppBar position="static" elevation={0} id="appbar">
-        <Toolbar id="tootBar">
+        <Toolbar id="toolBar">
           <img
             onClick={() => navigate('/protectedData')}
             src={img}
