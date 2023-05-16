@@ -27,14 +27,14 @@ export default function Navigate() {
   const { open } = useWeb3Modal();
   const { address, isConnected, isDisconnected } = useAccount();
   const { disconnect } = useDisconnect();
-  const [value, setValue] = useState('myProtectedData');
+  const [currentTab, setCurrentTab] = useState('myProtectedData');
 
   //get the state from the store
   const isAccountConnected = useAppSelector(selectAppIsConnected);
   const loading = useAppSelector(selectThereIsSomeRequestPending);
 
   const handleChangeTab = (_: React.SyntheticEvent, newValue: string) => {
-    setValue(newValue);
+    setCurrentTab(newValue);
   };
 
   useEffect(() => {
@@ -46,14 +46,14 @@ export default function Navigate() {
   }, [isDisconnected, isAccountConnected, isConnected, open, dispatch]);
 
   useEffect(() => {
-    if (value === 'myProtectedData') {
+    if (currentTab === 'myProtectedData') {
       navigate('/protectedData');
     }
-    if (value === 'sendMail') {
+    if (currentTab === 'sendMail') {
       navigate('/sendMail');
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [value]);
+  }, [currentTab]);
 
   return (
     <div>
@@ -67,7 +67,7 @@ export default function Navigate() {
           />
           <Box sx={{ ml: 8 }}>
             <Tabs
-              value={value}
+              value={currentTab}
               onChange={handleChangeTab}
               indicatorColor="secondary"
               textColor="secondary"
