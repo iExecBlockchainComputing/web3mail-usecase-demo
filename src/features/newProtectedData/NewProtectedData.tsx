@@ -14,7 +14,7 @@ import {
   Typography,
 } from '@mui/material';
 import { Verified } from '@mui/icons-material';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { DataSchema } from '@iexec/dataprotector';
 import { useCreateProtectedDataMutation } from '../../app/appSlice';
 
@@ -69,7 +69,7 @@ export default function NewProtectedData() {
     }
   }
 
-  const handleSubmit = async (event: any) => {
+  const handleSubmit = async () => {
     let data: string | DataSchema;
     let bufferFile: ArrayBuffer;
     switch (dataType) {

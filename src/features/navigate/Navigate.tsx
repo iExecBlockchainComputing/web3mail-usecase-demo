@@ -33,7 +33,7 @@ export default function Navigate() {
   const isAccountConnected = useAppSelector(selectAppIsConnected);
   const loading = useAppSelector(selectThereIsSomeRequestPending);
 
-  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+  const handleChangeTab = (_: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
 
@@ -68,7 +68,7 @@ export default function Navigate() {
           <Box sx={{ ml: 8 }}>
             <Tabs
               value={value}
-              onChange={handleChange}
+              onChange={handleChangeTab}
               indicatorColor="secondary"
               textColor="secondary"
               sx={{ '& .MuiTab-root': { textTransform: 'none' } }}
