@@ -61,7 +61,7 @@ export default function Navigate() {
           <img
             onClick={() => navigate('/protectedData')}
             src={img}
-            alt="The immage can't be loaded"
+            alt="The image can't be loaded"
             id="logo"
           />
           <Box sx={{ ml: 8 }}>
