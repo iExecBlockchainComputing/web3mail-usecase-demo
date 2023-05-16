@@ -89,7 +89,7 @@ export const homeApi = api.injectEndpoints({
         }
       },
     }),
-    fetchGrantedAcces: builder.query<GrantedAccess[], string>({
+    fetchGrantedAccess: builder.query<GrantedAccess[], string>({
       queryFn: async (protectedData) => {
         try {
           const data = await iExecDataProtector?.fetchGrantedAccess({
@@ -107,5 +107,5 @@ export const homeApi = api.injectEndpoints({
 export const {
   useFetchProtectedDataQuery,
   useCreateProtectedDataMutation,
-  useFetchGrantedAccesQuery,
+  useFetchGrantedAccessQuery,
 } = homeApi;
