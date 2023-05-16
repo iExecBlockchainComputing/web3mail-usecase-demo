@@ -76,7 +76,7 @@ export const homeApi = api.injectEndpoints({
         }
       },
     }),
-    createPotectedData: builder.mutation<
+    createProtectedData: builder.mutation<
       ProtectedDataWithSecretProps,
       ProtectDataParams
     >({
@@ -106,6 +106,6 @@ export const homeApi = api.injectEndpoints({
 
 export const {
   useFetchProtectedDataQuery,
-  useCreatePotectedDataMutation,
+  useCreateProtectedDataMutation,
   useFetchGrantedAccesQuery,
 } = homeApi;

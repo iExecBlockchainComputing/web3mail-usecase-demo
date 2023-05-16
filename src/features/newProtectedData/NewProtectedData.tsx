@@ -16,11 +16,11 @@ import {
 import { Verified } from '@mui/icons-material';
 import { useState } from 'react';
 import { DataSchema } from '@iexec/dataprotector';
-import { useCreatePotectedDataMutation } from '../../app/appSlice';
+import { useCreateProtectedDataMutation } from '../../app/appSlice';
 
 export default function NewProtectedData() {
   //query RTK API as mutation hook
-  const [createPotectedData, result] = useCreatePotectedDataMutation();
+  const [createProtectedData, result] = useCreateProtectedDataMutation();
 
   //for name et dataType
   const [name, setName] = useState('');
@@ -82,7 +82,7 @@ export default function NewProtectedData() {
         break;
     }
     if (dataType && name && ((isValidEmail && email) || file)) {
-      await createPotectedData({ data, name });
+      await createProtectedData({ data, name });
     }
   };
 
