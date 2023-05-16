@@ -69,7 +69,7 @@ export default function NewProtectedData() {
     }
   }
 
-  const handleSubmit = async (event: any) => {
+  const handleSubmit = async () => {
     let data: string | DataSchema;
     let bufferFile: ArrayBuffer;
     switch (dataType) {

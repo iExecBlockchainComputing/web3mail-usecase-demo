@@ -27,10 +27,7 @@ export default function ProtectedData() {
 
   //for pagination
   const [currentPage, setCurrentPage] = useState(1);
-  const handlePageChange = (
-    event: React.ChangeEvent<unknown>,
-    value: number
-  ) => {
+  const handlePageChange = (_: React.ChangeEvent<unknown>, value: number) => {
     setCurrentPage(value);
   };
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
