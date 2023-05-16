@@ -14,7 +14,7 @@ import {
   Typography,
 } from '@mui/material';
 import { Verified } from '@mui/icons-material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { DataSchema } from '@iexec/dataprotector';
 import { useCreateProtectedDataMutation } from '../../app/appSlice';
 
@@ -188,13 +188,13 @@ export default function NewProtectedData() {
         >
           <Typography variant="h6"> Your data has been protected!</Typography>
           <Link
-            href={`https://explorer.iex.ec/bellecour/dataset/${result.data.dataAddress}`}
+            href={`https://explorer.iex.ec/bellecour/dataset/${result.data}`}
             target="_blank"
             sx={{ color: 'green', textDecorationColor: 'green' }}
           >
             You can reach it here
           </Link>
-          <p>Your protected data address: {result.data.dataAddress}</p>
+          <p>Your protected data address: {result.data}</p>
         </Alert>
       )}
       {result.isLoading && (

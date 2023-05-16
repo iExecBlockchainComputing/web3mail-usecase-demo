@@ -83,7 +83,7 @@ export const homeApi = api.injectEndpoints({
       queryFn: async (args) => {
         try {
           const data = await iExecDataProtector?.protectData(args);
-          return { data: data };
+          return { data: data.address };
         } catch (e: any) {
           return { error: e.message };
         }
