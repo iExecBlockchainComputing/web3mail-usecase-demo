@@ -70,7 +70,7 @@ export default function NewProtectedData() {
   }
 
   const handleSubmit = async () => {
-    let data: string | DataSchema;
+    let data: DataSchema;
     let bufferFile: ArrayBuffer;
     switch (dataType) {
       case 'email':
