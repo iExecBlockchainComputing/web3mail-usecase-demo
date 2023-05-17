@@ -21,9 +21,13 @@ export default function Consent() {
   );
 
   //process queries to get the data we need
-  const autorizedUser = grantedAccess
-    ?.find((item) => item.apprestrict === DAPP_WEB3_MAIL_ADDRESS)
-    .map((item: GrantedAccess) => item.requesterrestrict);
+  const authorizedUser: string[] = (grantedAccess || [])
+    .filter((item: GrantedAccess) => {
+      return item?.requesterrestrict === DAPP_WEB3_MAIL_ADDRESS;
+    })
+    .map((item: GrantedAccess) => {
+      return item.requesterrestrict;
+    });
 
   const protectedDataSelected = protectedData?.find(
     (item) => item.address === ProtectedDataId
@@ -53,15 +57,19 @@ export default function Consent() {
           </li>
           <li>
             <h6>
-              IPFS link: {'Set in furture with the next version of subgraph'}
+              IPFS link: {'Set in future with the next version of subgraph'}
             </h6>
           </li>
         </ul>
       </Box>
-      {autorizedUser.length && (
+      {authorizedUser?.length ? (
         <Box sx={{ textAlign: 'left', my: 5, mb: 20 }}>
           <h2>1 to 1 messaging</h2>
           <ToggleList authorizedUser={authorizedUser} />
+        </Box>
+      ) : (
+        <Box sx={{ textAlign: 'left', my: 5, mb: 20 }}>
+          <h4>No authorized user for web3Mail DAPP</h4>
         </Box>
       )}
     </Box>
