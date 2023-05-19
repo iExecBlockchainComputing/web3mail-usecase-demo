@@ -3,35 +3,44 @@ import ToggleList from '../../components/ToggleList';
 import { useParams } from 'react-router-dom';
 import { Box, Chip } from '@mui/material';
 import {
-  useFetchGrantedAccessQuery,
+  useFetchGrantedAccessMutation,
   useFetchProtectedDataQuery,
 } from '../../app/appSlice';
 import { useAccount } from 'wagmi';
 import { hasKey } from '../../utils/utils';
-import { DAPP_WEB3_MAIL_ADDRESS } from '../../config/config';
-import { GrantedAccess } from '@iexec/dataprotector';
+import { useEffect, useState } from 'react';
 
 export default function Consent() {
   const { ProtectedDataId } = useParams();
   const { address } = useAccount();
+  const [authorizedUsers, setAuthorizedUsers] = useState<string[]>([]);
+
   //query RTK API as query hook
-  const { data: grantedAccess } = useFetchGrantedAccessQuery(ProtectedDataId!);
+  const [fetchGrantedAccess, result] = useFetchGrantedAccessMutation();
   const { data: protectedData = [] } = useFetchProtectedDataQuery(
     address as string
   );
 
   //process queries to get the data we need
-  const authorizedUser: string[] = (grantedAccess || [])
-    .filter((item: GrantedAccess) => {
-      return item?.requesterrestrict === DAPP_WEB3_MAIL_ADDRESS;
-    })
-    .map((item: GrantedAccess) => {
-      return item.requesterrestrict;
-    });
-
   const protectedDataSelected = protectedData?.find(
     (item) => item.address === ProtectedDataId
   );
+
+  useEffect(() => {
+    if (result.isSuccess) {
+      setAuthorizedUsers(result.data);
+    }
+  }, [result.isSuccess]);
+
+  useEffect(() => {
+    if (ProtectedDataId) {
+      refreshAuthorizedUsers();
+    }
+  }, [ProtectedDataId]);
+
+  const refreshAuthorizedUsers = () => {
+    fetchGrantedAccess(ProtectedDataId!);
+  };
 
   return (
     <Box id="consent">
@@ -62,10 +71,13 @@ export default function Consent() {
           </li>
         </ul>
       </Box>
-      {authorizedUser?.length ? (
+      {authorizedUsers?.length ? (
         <Box sx={{ textAlign: 'left', my: 5, mb: 20 }}>
           <h2>1 to 1 messaging</h2>
-          <ToggleList authorizedUser={authorizedUser} />
+          <ToggleList
+            authorizedUser={authorizedUsers}
+            refreshAuthorizedUsers={refreshAuthorizedUsers}
+          />
         </Box>
       ) : (
         <Box sx={{ textAlign: 'left', my: 5, mb: 20 }}>

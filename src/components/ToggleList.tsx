@@ -1,56 +1,75 @@
-import { useState } from 'react';
 import {
   Avatar,
   List,
   ListItem,
   ListItemAvatar,
   ListItemText,
-  Switch,
+  IconButton,
+  Snackbar,
+  Alert,
 } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { useRevokeOneAccessMutation } from '../app/appSlice';
+import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 
 interface ToggleProps {
   authorizedUser: string[];
+  refreshAuthorizedUsers: () => void;
 }
 
 export default function ToggleList(props: ToggleProps) {
-  const [checked, setChecked] = useState(props.authorizedUser);
-  const data = props.authorizedUser;
+  const { authorizedUser, refreshAuthorizedUsers } = props;
+  const { ProtectedDataId } = useParams();
+  //query RTK API as mutation hook
+  const [revokeOneAccess, result] = useRevokeOneAccessMutation();
 
-  const handleToggle = (value: string) => () => {
-    const currentIndex = checked.indexOf(value);
-    const newChecked = [...checked];
+  const handleDelete = (value: string) => () => {
+    revokeOneAccess({ protectedData: ProtectedDataId!, authorizedUser: value });
+  };
 
-    if (currentIndex === -1) {
-      newChecked.push(value);
-    } else {
-      newChecked.splice(currentIndex, 1);
+  //snackbar notification
+  const [open, setOpen] = useState(false);
+  useEffect(() => {
+    if (result.isSuccess) {
+      setOpen(true);
+      refreshAuthorizedUsers();
     }
-
-    setChecked(newChecked);
+  }, [result]);
+  const handleClose = (_: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen(false);
   };
 
   return (
     <List>
-      {data.map((value) => (
-        <ListItem
-          key={value}
-          secondaryAction={
-            <Switch
-              edge="end"
-              onChange={handleToggle(value)}
-              checked={checked.indexOf(value) !== -1}
-              inputProps={{
-                'aria-labelledby': 'switch-list-label-wifi',
-              }}
-            />
-          }
-        >
+      {authorizedUser.map((value) => (
+        <ListItem key={value}>
           <ListItemAvatar>
             <Avatar alt={`Avatar `} src={`/static/images/avatar/.jpg`} />
           </ListItemAvatar>
           <ListItemText primary={value} />
+          <IconButton
+            edge="end"
+            aria-label="delete"
+            onClick={handleDelete(value)}
+          >
+            <DeleteIcon />
+          </IconButton>
         </ListItem>
       ))}
+      <Snackbar
+        open={open}
+        autoHideDuration={6000}
+        onClose={handleClose}
+        anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
+      >
+        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+          The Granted Access has been correctly revoked!
+        </Alert>
+      </Snackbar>
     </List>
   );
 }
