@@ -19,7 +19,7 @@ import {
   selectThereIsSomeRequestPending,
 } from '../../app/appSlice';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { shortAddress } from '../../utils/utils';
+import { getShortAddress } from '../../utils/utils';
 
 export default function Navigate() {
   const dispatch = useAppDispatch();
@@ -89,7 +89,7 @@ export default function Navigate() {
               fontStyle: 'italic',
             }}
           >
-            {isConnected && shortAddress(address as string)}
+            {isConnected && getShortAddress(address as string)}
           </Typography>
           <Button
             variant="contained"
