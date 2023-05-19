@@ -19,7 +19,10 @@ function App() {
             path="/protectedData/consent/:ProtectedDataId"
             element={<Consent />}
           />
-          <Route path="/newProtectedData" element={<NewProtectedData />} />
+          <Route
+            path="/protectedData/newProtectedData"
+            element={<NewProtectedData />}
+          />
           <Route path="/sendMail" element={<EmailDapp />} />
           <Route
             path="/sendMail/sendMessageTo/:receiverId"

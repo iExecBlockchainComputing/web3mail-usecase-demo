@@ -87,7 +87,7 @@ export default function ProtectedData() {
 function NewProtectedDataButton() {
   const navigate = useNavigate();
   return (
-    <Button variant="contained" onClick={() => navigate('/NewProtectedData')}>
+    <Button variant="contained" onClick={() => navigate('./newProtectedData')}>
       Protect a new data
     </Button>
   );
