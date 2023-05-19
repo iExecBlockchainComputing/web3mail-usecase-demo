@@ -17,7 +17,7 @@ import { Verified } from '@mui/icons-material';
 import { useState } from 'react';
 import { DataSchema } from '@iexec/dataprotector';
 import { useCreateProtectedDataMutation } from '../../app/appSlice';
-import { createArrayBuffer } from '../../utils/utils';
+import { createArrayBufferFromFile } from '../../utils/utils';
 
 export default function NewProtectedData() {
   //query RTK API as mutation hook
@@ -60,7 +60,7 @@ export default function NewProtectedData() {
         data = { email: email };
         break;
       case 'file':
-        bufferFile = await createArrayBuffer(file);
+        bufferFile = await createArrayBufferFromFile(file);
         data = { file: bufferFile };
         break;
     }

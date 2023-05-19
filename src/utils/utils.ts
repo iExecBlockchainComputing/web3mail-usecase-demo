@@ -1,6 +1,9 @@
 import { DataSchema } from '@iexec/dataprotector';
 
-export const hasKey = (dataSchema: DataSchema, key: string): boolean => {
+export const isDataschemaHasKey = (
+  dataSchema: DataSchema,
+  key: string
+): boolean => {
   if (!dataSchema) {
     return false;
   }
@@ -13,7 +16,7 @@ export const hasKey = (dataSchema: DataSchema, key: string): boolean => {
     if (
       typeof value === 'object' &&
       value !== null &&
-      hasKey(value as DataSchema, key)
+      isDataschemaHasKey(value as DataSchema, key)
     ) {
       return true;
     }
@@ -22,11 +25,14 @@ export const hasKey = (dataSchema: DataSchema, key: string): boolean => {
   return false;
 };
 
-export const shortAddress = (address: string) => {
-  return address.slice(0, 6) + '...' + address.slice(-4);
+export const getShortAddress = (address: string) => {
+  const getShortAddress = address.slice(0, 6) + '...' + address.slice(-4);
+  return getShortAddress;
 };
 
-export const createArrayBuffer = async (file?: File): Promise<ArrayBuffer> => {
+export const createArrayBufferFromFile = async (
+  file?: File
+): Promise<ArrayBuffer> => {
   const fileReader = new FileReader();
   if (file) {
     return new Promise((resolve, reject) => {
