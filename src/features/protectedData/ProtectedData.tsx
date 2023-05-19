@@ -73,7 +73,7 @@ export default function ProtectedData() {
         </Box>
       ) : (
         <Box>
-          <img src={img} alt="The immage can't be loaded" id="logo" />
+          <img src={img} alt="The image can't be loaded" id="logo" />
           <p>You have no protected data yet. Go create one!</p>
           <Box sx={{ mt: 7 }}>
             <NewProtectedDataButton />
