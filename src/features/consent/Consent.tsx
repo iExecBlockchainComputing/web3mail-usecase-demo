@@ -1,34 +1,50 @@
-import { useParams } from 'react-router-dom'
-import './Consent.css'
-import { Box, Chip } from '@mui/material'
-import ToggleList from '../../components/ToggleList'
+import './Consent.css';
+import ToggleList from '../../components/ToggleList';
+import { useParams } from 'react-router-dom';
+import { Box, Chip } from '@mui/material';
+import { useFetchProtectedDataQuery } from '../../app/appSlice';
+import { useAccount } from 'wagmi';
+import { isDataschemaHasKey } from '../../utils/utils';
 
 export default function Consent() {
-  const { ProtectedDataId } = useParams()
-  console.log(ProtectedDataId)
-  const data = {
-    title: 'Professional Email',
-    date: '28/06/2022',
-    dataType: 'email',
-    id: '0x0d76535ac299360a1e14c6cd21662440945ed717',
-  }
+  const { ProtectedDataId } = useParams();
+  const { address } = useAccount();
+
+  //query RTK API as query hook
+  const { data: protectedData = [] } = useFetchProtectedDataQuery(
+    address as string
+  );
+  const protectedDataSelected = protectedData?.find(
+    (item) => item.address === ProtectedDataId
+  );
+
   return (
     <Box id="consent">
       <Box sx={{ textAlign: 'left' }}>
-        <h2>{data.title}</h2>
-        <Chip id="chipType" label={data.dataType} size="small" />
+        <h2>{protectedDataSelected?.name}</h2>
+        <Chip
+          id="chipType"
+          label={
+            (isDataschemaHasKey(protectedDataSelected?.schema, 'email') &&
+              'Email') ||
+            (isDataschemaHasKey(protectedDataSelected?.schema, 'file') &&
+              'File') ||
+            'Unknown'
+          }
+          size="small"
+        />
       </Box>
       <Box id="summary">
         <ul>
           <li>
-            <h6>Created on {data.date}</h6>
+            <h6>Owned by {protectedDataSelected?.owner}</h6>
           </li>
           <li>
-            <h6>Data Protected Address: {data.id}</h6>
+            <h6>Data Protected Address: {protectedDataSelected?.address}</h6>
           </li>
           <li>
             <h6>
-              IPFS link: /p2p/QmRCfnJVsxyNcCLMLNkBKLat8StxQUgKiQzpRz1MN7MDo3
+              IPFS link: {'Set in furture with the next version of subgraph'}
             </h6>
           </li>
         </ul>
@@ -40,5 +56,5 @@ export default function Consent() {
         </Box>
       }
     </Box>
-  )
+  );
 }
