@@ -1,5 +1,5 @@
 import './Navigate.css';
-import img from '../../assets/logo.png';
+import img from '../../assets/iexec.png';
 import {
   AppBar,
   Box,
@@ -19,55 +19,60 @@ import {
   selectThereIsSomeRequestPending,
 } from '../../app/appSlice';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { shortAddress } from '../../utils/utils';
+import { getShortAddress } from '../../utils/utils';
 
 export default function Navigate() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { open } = useWeb3Modal();
-  const { address, isConnected, isDisconnected } = useAccount();
+  const { address, isConnected, isDisconnected, connector } = useAccount();
   const { disconnect } = useDisconnect();
-  const [value, setValue] = useState('myProtectedData');
+  const [currentTab, setCurrentTab] = useState('myProtectedData');
 
   //get the state from the store
   const isAccountConnected = useAppSelector(selectAppIsConnected);
   const loading = useAppSelector(selectThereIsSomeRequestPending);
 
-  const handleChange = (_: React.SyntheticEvent, newValue: string) => {
-    setValue(newValue);
+  const handleChangeTab = (_: React.SyntheticEvent, newValue: string) => {
+    setCurrentTab(newValue);
   };
 
   useEffect(() => {
     if (isDisconnected) {
       open();
-    } else if (isConnected && !isAccountConnected) {
-      dispatch(initDataProtector());
     }
-  }, [isDisconnected, isAccountConnected]);
+  }, [isDisconnected, open]);
 
   useEffect(() => {
-    if (value === 'myProtectedData') {
+    if (isConnected && connector && !isAccountConnected) {
+      dispatch(initDataProtector());
+    }
+  }, [isConnected, connector, isAccountConnected, dispatch]);
+
+  useEffect(() => {
+    if (currentTab === 'myProtectedData') {
       navigate('/protectedData');
     }
-    if (value === 'sendMail') {
+    if (currentTab === 'sendMail') {
       navigate('/sendMail');
     }
-  }, [value]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentTab]);
 
   return (
     <div>
       <AppBar position="static" elevation={0} id="appbar">
-        <Toolbar id="tootBar">
+        <Toolbar id="toolBar">
           <img
             onClick={() => navigate('/protectedData')}
             src={img}
-            alt="The immage can't be loaded"
+            alt="The image can't be loaded"
             id="logo"
           />
           <Box sx={{ ml: 8 }}>
             <Tabs
-              value={value}
-              onChange={handleChange}
+              value={currentTab}
+              onChange={handleChangeTab}
               indicatorColor="secondary"
               textColor="secondary"
               sx={{ '& .MuiTab-root': { textTransform: 'none' } }}
@@ -84,7 +89,7 @@ export default function Navigate() {
               fontStyle: 'italic',
             }}
           >
-            {isConnected && shortAddress(address as string)}
+            {isConnected && getShortAddress(address as string)}
           </Typography>
           <Button
             variant="contained"

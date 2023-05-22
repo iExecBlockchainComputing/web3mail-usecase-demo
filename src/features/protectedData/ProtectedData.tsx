@@ -5,15 +5,14 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { useAccount } from 'wagmi';
 import { Box, Button, Grid, Pagination, Paper } from '@mui/material';
-import { ProtectedData as ProtectedDataType } from '@iexec/dataprotector';
 import {
   useFetchProtectedDataQuery,
   selectAppIsConnected,
 } from '../../app/appSlice';
 import { useAppSelector } from '../../app/hooks';
+import { ITEMS_PER_PAGE } from '../../config/config';
 
 export default function ProtectedData() {
-  const ITEMS_PER_PAGE = 8;
   const { address } = useAccount();
   const isAccountConnected = useAppSelector(selectAppIsConnected);
 
@@ -53,12 +52,12 @@ export default function ProtectedData() {
           </Box>
           <Box sx={{ mx: 4, paddingBottom: 20 }}>
             <Grid container spacing={2}>
-              {currentData?.map((e: ProtectedDataType) => (
-                <Grid item key={e.address}>
+              {currentData?.map(({ address, name, schema }) => (
+                <Grid item key={address}>
                   <ProtectedDataCard
-                    id={e.address}
-                    title={e.name || 'Undifined'}
-                    schema={e.schema}
+                    id={address}
+                    title={name || 'Undifined'}
+                    schema={schema}
                   />
                 </Grid>
               ))}
@@ -74,7 +73,7 @@ export default function ProtectedData() {
         </Box>
       ) : (
         <Box>
-          <img src={img} alt="The immage can't be loaded" id="logo" />
+          <img src={img} alt="The image can't be loaded" id="logo" />
           <p>You have no protected data yet. Go create one!</p>
           <Box sx={{ mt: 7 }}>
             <NewProtectedDataButton />
@@ -88,7 +87,7 @@ export default function ProtectedData() {
 function NewProtectedDataButton() {
   const navigate = useNavigate();
   return (
-    <Button variant="contained" onClick={() => navigate('/NewProtectedData')}>
+    <Button variant="contained" onClick={() => navigate('./newProtectedData')}>
       Protect a new data
     </Button>
   );

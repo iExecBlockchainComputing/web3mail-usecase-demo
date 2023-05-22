@@ -16,11 +16,12 @@ import {
 import { Verified } from '@mui/icons-material';
 import { useState } from 'react';
 import { DataSchema } from '@iexec/dataprotector';
-import { useCreatePotectedDataMutation } from '../../app/appSlice';
+import { useCreateProtectedDataMutation } from '../../app/appSlice';
+import { createArrayBufferFromFile } from '../../utils/utils';
 
 export default function NewProtectedData() {
   //query RTK API as mutation hook
-  const [createPotectedData, result] = useCreatePotectedDataMutation();
+  const [createProtectedData, result] = useCreateProtectedDataMutation();
 
   //for name et dataType
   const [name, setName] = useState('');
@@ -51,38 +52,20 @@ export default function NewProtectedData() {
     setName(event.target.value);
   };
 
-  async function create_ArrayBuffer(file?: File): Promise<ArrayBuffer> {
-    const fileReader = new FileReader();
-    if (file) {
-      return new Promise((resolve, reject) => {
-        fileReader.onerror = () => {
-          fileReader.abort();
-          reject(new DOMException('Error parsing input file.'));
-        };
-        fileReader.onload = () => {
-          resolve(fileReader.result as ArrayBuffer);
-        };
-        fileReader.readAsArrayBuffer(file);
-      });
-    } else {
-      return Promise.reject(new Error('No file selected'));
-    }
-  }
-
   const handleSubmit = async () => {
-    let data: string | DataSchema;
+    let data: DataSchema;
     let bufferFile: ArrayBuffer;
     switch (dataType) {
       case 'email':
         data = { email: email };
         break;
       case 'file':
-        bufferFile = await create_ArrayBuffer(file);
+        bufferFile = await createArrayBufferFromFile(file);
         data = { file: bufferFile };
         break;
     }
     if (dataType && name && ((isValidEmail && email) || file)) {
-      await createPotectedData({ data, name });
+      await createProtectedData({ data, name });
     }
   };
 
@@ -188,13 +171,13 @@ export default function NewProtectedData() {
         >
           <Typography variant="h6"> Your data has been protected!</Typography>
           <Link
-            href={`https://explorer.iex.ec/bellecour/dataset/${result.data.dataAddress}`}
+            href={`https://explorer.iex.ec/bellecour/dataset/${result.data}`}
             target="_blank"
             sx={{ color: 'green', textDecorationColor: 'green' }}
           >
             You can reach it here
           </Link>
-          <p>Your protected data address: {result.data.dataAddress}</p>
+          <p>Your protected data address: {result.data}</p>
         </Alert>
       )}
       {result.isLoading && (

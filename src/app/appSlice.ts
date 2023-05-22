@@ -7,7 +7,8 @@ import {
   ProtectDataParams,
   GrantedAccess,
 } from '@iexec/dataprotector';
-import { api, getIExecDataProtectorAndRefresh } from './api';
+import { api } from './api';
+import { getAccount } from 'wagmi/actions';
 
 let iExecDataProtector: IExecDataProtector | null = null;
 
@@ -25,7 +26,9 @@ export const initDataProtector = createAsyncThunk(
   'app/initDataProtector',
   async () => {
     try {
-      iExecDataProtector = await getIExecDataProtectorAndRefresh();
+      const result = getAccount();
+      const provider = await result.connector?.getProvider();
+      iExecDataProtector = new IExecDataProtector(provider);
     } catch (e: any) {
       return { error: e.message };
     }
@@ -76,20 +79,20 @@ export const homeApi = api.injectEndpoints({
         }
       },
     }),
-    createPotectedData: builder.mutation<
+    createProtectedData: builder.mutation<
       ProtectedDataWithSecretProps,
       ProtectDataParams
     >({
       queryFn: async (args) => {
         try {
           const data = await iExecDataProtector?.protectData(args);
-          return { data: data };
+          return { data: data.address };
         } catch (e: any) {
           return { error: e.message };
         }
       },
     }),
-    fetchGrantedAcces: builder.query<GrantedAccess[], string>({
+    fetchGrantedAccess: builder.query<GrantedAccess[], string>({
       queryFn: async (protectedData) => {
         try {
           const data = await iExecDataProtector?.fetchGrantedAccess({
@@ -106,6 +109,6 @@ export const homeApi = api.injectEndpoints({
 
 export const {
   useFetchProtectedDataQuery,
-  useCreatePotectedDataMutation,
-  useFetchGrantedAccesQuery,
+  useCreateProtectedDataMutation,
+  useFetchGrantedAccessQuery,
 } = homeApi;
