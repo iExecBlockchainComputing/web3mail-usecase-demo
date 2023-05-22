@@ -33,9 +33,9 @@ steps:
     image: plugins/docker
     pull: always
     settings:
-      repo: your-repo/image
+      repo: repo/image
       tags: dev ${DRONE_COMMIT}
-      dockerfile: path/to/your/Dockerfile
+      dockerfile: Dockerfile
       dry_run: true
     when:
       branch:
@@ -46,7 +46,7 @@ steps:
     image: plugins/docker
     pull: always
     settings:
-      repo: your-repo/image
+      repo: repo/image
       tags: ${DRONE_TAG}
       dockerfile: Dockerfile
       dry_run: true

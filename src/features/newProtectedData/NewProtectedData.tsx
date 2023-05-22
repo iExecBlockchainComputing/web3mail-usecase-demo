@@ -51,6 +51,7 @@ export default function NewProtectedData() {
     setName(event.target.value);
   };
 
+  //ask for confirmation before leaving the page
   const handleSubmit = async () => {
     const data: any = {};
     let bufferFile: ArrayBuffer;
