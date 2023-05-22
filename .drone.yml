@@ -34,7 +34,7 @@ steps:
     pull: always
     settings:
       repo: repo/image
-      tags: dev ${DRONE_COMMIT}
+      tags: dev-${DRONE_COMMIT}
       dockerfile: Dockerfile
       dry_run: true
     when:
