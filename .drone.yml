@@ -33,7 +33,8 @@ steps:
     image: plugins/docker
     pull: always
     settings:
-      tags: repo/dev-${DRONE_COMMIT}
+      repo: repo/image
+      tags: dev-${DRONE_COMMIT}
       dockerfile: Dockerfile
       dry_run: true
     when:
@@ -45,7 +46,8 @@ steps:
     image: plugins/docker
     pull: always
     settings:
-      tags: repo/${DRONE_TAG}
+      repo: repo/image
+      tags: ${DRONE_TAG}
       dockerfile: Dockerfile
       dry_run: true
     when:
@@ -89,13 +91,16 @@ steps:
 
   - name: build pre-production image
     image: plugins/docker
+    pull: always
     settings:
-      tags: repo/dev-${DRONE_COMMIT}
+      repo: repo/image
+      tags: dev-${DRONE_COMMIT}
       output: web3mail-dev-image.tar
       dockerfile: Dockerfile
 
   - name: transfer image
     image: appleboy/drone-scp
+    pull: always
     settings:
       host:
         from_secret: pre-production-domain
@@ -107,9 +112,10 @@ steps:
       source: web3mail-dev-image.tar
       target: ./
       strip_components: 1
-    
+
   - name: deploy image to pre-production
     image: appleboy/drone-ssh
+    pull: always
     settings:
       host:
         from_secret: pre-production-domain
@@ -159,13 +165,16 @@ steps:
 
   - name: build production image
     image: plugins/docker
+    pull: always
     settings:
-      tags: repo/${DRONE_TAG}
+      repo: repo/image
+      tags: ${DRONE_TAG}
       output: web3mail-image.tar
       dockerfile: Dockerfile
 
   - name: transfer image
     image: appleboy/drone-scp
+    pull: always
     settings:
       host:
         from_secret: pre-production-domain
@@ -177,9 +186,10 @@ steps:
       source: web3mail-image.tar
       target: ./
       strip_components: 1
-    
+
   - name: deploy image to production
     image: appleboy/drone-ssh
+    pull: always
     settings:
       host:
         from_secret: production-domain
