@@ -33,7 +33,7 @@ steps:
     image: plugins/docker
     pull: always
     settings:
-      tags: dev-${DRONE_COMMIT}
+      tags: repo/dev-${DRONE_COMMIT}
       dockerfile: Dockerfile
       dry_run: true
     when:
@@ -45,7 +45,7 @@ steps:
     image: plugins/docker
     pull: always
     settings:
-      tags: ${DRONE_TAG}
+      tags: repo/${DRONE_TAG}
       dockerfile: Dockerfile
       dry_run: true
     when:
@@ -90,7 +90,7 @@ steps:
   - name: build pre-production image
     image: plugins/docker
     settings:
-      tags: dev-${DRONE_COMMIT}
+      tags: repo/dev-${DRONE_COMMIT}
       output: web3mail-dev-image.tar
       dockerfile: Dockerfile
 
@@ -160,7 +160,7 @@ steps:
   - name: build production image
     image: plugins/docker
     settings:
-      tags: ${DRONE_TAG}
+      tags: repo/${DRONE_TAG}
       output: web3mail-image.tar
       dockerfile: Dockerfile
 
