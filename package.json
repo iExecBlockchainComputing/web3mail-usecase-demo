@@ -13,7 +13,7 @@
   "dependencies": {
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
-    "@iexec/dataprotector": "^0.0.0-nightly-b252ee417ef70cea2699c4e8efefcba912104416",
+    "@iexec/dataprotector": "^0.0.0-nightly-412de93cf136d51257b396ad7a29f8eaf7235ee9",
     "@mui/icons-material": "^5.11.11",
     "@mui/material": "^5.11.15",
     "@mui/x-data-grid": "^6.0.4",

@@ -1,7 +1,7 @@
 import { DataSchema } from '@iexec/dataprotector';
 
 export const isDataschemaHasKey = (
-  dataSchema: DataSchema,
+  dataSchema: DataSchema | undefined,
   key: string
 ): boolean => {
   if (!dataSchema) {

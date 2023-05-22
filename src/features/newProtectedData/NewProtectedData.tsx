@@ -15,7 +15,6 @@ import {
 } from '@mui/material';
 import { Verified } from '@mui/icons-material';
 import { useState } from 'react';
-import { DataSchema } from '@iexec/dataprotector';
 import { useCreateProtectedDataMutation } from '../../app/appSlice';
 import { createArrayBufferFromFile } from '../../utils/utils';
 
@@ -53,15 +52,15 @@ export default function NewProtectedData() {
   };
 
   const handleSubmit = async () => {
-    let data: DataSchema;
+    const data: any = {};
     let bufferFile: ArrayBuffer;
     switch (dataType) {
       case 'email':
-        data = { email: email };
+        data['email'] = email;
         break;
       case 'file':
         bufferFile = await createArrayBufferFromFile(file);
-        data = { file: bufferFile };
+        data['file'] = bufferFile;
         break;
     }
     if (dataType && name && ((isValidEmail && email) || file)) {

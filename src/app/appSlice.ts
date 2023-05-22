@@ -3,7 +3,6 @@ import { RootState } from './store';
 import {
   ProtectedData,
   IExecDataProtector,
-  ProtectedDataWithSecretProps,
   ProtectDataParams,
   GrantedAccess,
 } from '@iexec/dataprotector';
@@ -73,20 +72,17 @@ export const homeApi = api.injectEndpoints({
       queryFn: async (owner) => {
         try {
           const data = await iExecDataProtector?.fetchProtectedData({ owner });
-          return { data: data };
+          return { data: data || [] };
         } catch (e: any) {
           return { error: e.message };
         }
       },
     }),
-    createProtectedData: builder.mutation<
-      ProtectedDataWithSecretProps,
-      ProtectDataParams
-    >({
+    createProtectedData: builder.mutation<string, ProtectDataParams>({
       queryFn: async (args) => {
         try {
           const data = await iExecDataProtector?.protectData(args);
-          return { data: data.address };
+          return { data: data?.address || 'No Protected Data Created' };
         } catch (e: any) {
           return { error: e.message };
         }
@@ -98,7 +94,7 @@ export const homeApi = api.injectEndpoints({
           const data = await iExecDataProtector?.fetchGrantedAccess({
             protectedData,
           });
-          return { data: data };
+          return { data: data || [] };
         } catch (e: any) {
           return { error: e.message };
         }
