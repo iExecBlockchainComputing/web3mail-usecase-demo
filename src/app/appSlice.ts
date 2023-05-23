@@ -69,7 +69,7 @@ export const selectAppError = (state: RootState) => state.app.error;
 
 export const homeApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    fetchProtectedData: builder.query<ProtectedData[], string>({
+    fetchProtectedData: builder.mutation<ProtectedData[], string>({
       queryFn: async (owner) => {
         try {
           const data = await iExecDataProtector?.fetchProtectedData({ owner });
@@ -108,7 +108,7 @@ export const homeApi = api.injectEndpoints({
 });
 
 export const {
-  useFetchProtectedDataQuery,
+  useFetchProtectedDataMutation,
   useCreateProtectedDataMutation,
   useFetchGrantedAccessQuery,
 } = homeApi;

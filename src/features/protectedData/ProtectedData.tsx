@@ -2,27 +2,35 @@ import './ProtectedData.css';
 import ProtectedDataCard from '../../components/ProtectedDataCard';
 import img from '../../assets/noData.png';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAccount } from 'wagmi';
 import { Box, Button, Grid, Pagination, Paper } from '@mui/material';
 import {
-  useFetchProtectedDataQuery,
+  useFetchProtectedDataMutation,
   selectAppIsConnected,
 } from '../../app/appSlice';
 import { useAppSelector } from '../../app/hooks';
 import { ITEMS_PER_PAGE } from '../../config/config';
+import { ProtectedData as ProtectedDataType } from '@iexec/dataprotector';
 
 export default function ProtectedData() {
   const { address } = useAccount();
   const isAccountConnected = useAppSelector(selectAppIsConnected);
+  const [protectedData, setProtectedData] = useState<ProtectedDataType[]>([]);
+  const [fetchProtectedData, result] = useFetchProtectedDataMutation();
 
-  //query RTK API as query hook
-  const { data: protectedData = [] } = useFetchProtectedDataQuery(
-    address as string,
-    {
-      skip: !isAccountConnected,
+  //query RTK API as mutation hook
+  useEffect(() => {
+    if (isAccountConnected) {
+      fetchProtectedData(address as string);
     }
-  );
+  }, [address, fetchProtectedData, isAccountConnected]);
+
+  useEffect(() => {
+    if (result.isSuccess) {
+      setProtectedData(result.data);
+    }
+  }, [result]);
 
   //for pagination
   const [currentPage, setCurrentPage] = useState(1);

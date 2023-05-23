@@ -2,21 +2,32 @@ import './Consent.css';
 import ToggleList from '../../components/ToggleList';
 import { useParams } from 'react-router-dom';
 import { Box, Chip } from '@mui/material';
-import { useFetchProtectedDataQuery } from '../../app/appSlice';
+import { useFetchProtectedDataMutation } from '../../app/appSlice';
 import { useAccount } from 'wagmi';
 import { isDataschemaHasKey } from '../../utils/utils';
+import { useEffect, useState } from 'react';
+import { ProtectedData } from '@iexec/dataprotector';
 
 export default function Consent() {
   const { ProtectedDataId } = useParams();
   const { address } = useAccount();
+  const [protectedDataSelected, setProtectedDataSelected] =
+    useState<ProtectedData>();
+  const [fetchProtectedData, result] = useFetchProtectedDataMutation();
 
-  //query RTK API as query hook
-  const { data: protectedData = [] } = useFetchProtectedDataQuery(
-    address as string
-  );
-  const protectedDataSelected = protectedData?.find(
-    (item) => item.address === ProtectedDataId
-  );
+  //query RTK API as mutation hook
+  useEffect(() => {
+    fetchProtectedData(address as string);
+  }, [address, fetchProtectedData]);
+
+  useEffect(() => {
+    if (result.isSuccess) {
+      const _protectedDataSelected = result.data?.find(
+        (item) => item.address === ProtectedDataId
+      );
+      setProtectedDataSelected(_protectedDataSelected);
+    }
+  }, [result, ProtectedDataId]);
 
   return (
     <Box id="consent">
