@@ -65,8 +65,8 @@ trigger:
     - promote
   target:
     - pre-production
-  # branch:
-  #   - develop
+  branch:
+    - develop
 
 steps:
   - name: install
@@ -89,16 +89,17 @@ steps:
     commands:
       - npm run build
 
-  - name: build pre-production image
+  - name: build dev docker-image
     image: plugins/docker
     pull: always
     settings:
       repo: repo/image
       tags: dev-${DRONE_COMMIT}
-      output: web3mail-dev-image.tar
+      dry_run: true
       dockerfile: Dockerfile
+      output: web3mail-dev-image.tar
 
-  - name: transfer image
+  - name: transfer docker-image to server
     image: appleboy/drone-scp
     pull: always
     settings:
@@ -110,10 +111,10 @@ steps:
         from_secret: ssh-key-team-product-server
       port: 22
       source: web3mail-dev-image.tar
-      target: ./
+      target: ./app-demo/pre-production/web3mail/
       strip_components: 1
 
-  - name: deploy image to pre-production
+  - name: deploy to pre-production
     image: appleboy/drone-ssh
     pull: always
     settings:
@@ -125,7 +126,7 @@ steps:
         from_secret: ssh-key-team-product-server
       port: 22
       script:
-        - docker load -i ./web3mail-dev-image.tar
+        - docker load -i ./app-demo/pre-production/web3mail/web3mail-dev-image.tar
         - docker run -d -p 80:80 web3mail-dev-image:dev-${DRONE_COMMIT}
 
 # Promote a production release from main branch
@@ -163,16 +164,17 @@ steps:
     commands:
       - npm run build
 
-  - name: build production image
+  - name: build docker-image
     image: plugins/docker
     pull: always
     settings:
       repo: repo/image
       tags: ${DRONE_TAG}
-      output: web3mail-image.tar
       dockerfile: Dockerfile
+      dry_run: true
+      output: web3mail-image.tar
 
-  - name: transfer image
+  - name: transfer docker-image to server
     image: appleboy/drone-scp
     pull: always
     settings:
@@ -184,10 +186,10 @@ steps:
         from_secret: ssh-key-team-product-server
       port: 22
       source: web3mail-image.tar
-      target: ./
+      target: ./app-demo/production/web3mail/
       strip_components: 1
 
-  - name: deploy image to production
+  - name: deploy to production
     image: appleboy/drone-ssh
     pull: always
     settings:
@@ -199,5 +201,5 @@ steps:
         from_secret: ssh-key-team-product-server
       port: 22
       script:
-        - docker load -i ./web3mail-image.tar
+        - docker load -i ./app-demo/production/web3mail/web3mail-image.tar
         - docker run -d -p 80:80 web3mail-image:${DRONE_TAG}
