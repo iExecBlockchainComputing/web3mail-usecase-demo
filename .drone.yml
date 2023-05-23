@@ -65,8 +65,8 @@ trigger:
     - promote
   target:
     - pre-production
-  branch:
-    - develop
+  # branch:
+  #   - develop
 
 steps:
   - name: install
