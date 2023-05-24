@@ -1,10 +1,13 @@
 import './Consent.css';
 import ToggleList from '../../components/ToggleList';
 import { useParams } from 'react-router-dom';
-import { Box, Chip } from '@mui/material';
+import { Box, Chip, Fab } from '@mui/material';
 import { useFetchProtectedDataQuery } from '../../app/appSlice';
 import { useAccount } from 'wagmi';
 import { isDataschemaHasKey } from '../../utils/utils';
+import AddIcon from '@mui/icons-material/Add';
+import GrantAcessModal from './GrantAcessModal';
+import { useEffect, useState } from 'react';
 
 export default function Consent() {
   const { ProtectedDataId } = useParams();
@@ -18,6 +21,12 @@ export default function Consent() {
     (item) => item.address === ProtectedDataId
   );
 
+  //modal state
+  const [modalOpen, setModalOpen] = useState(false);
+  const handleClose = () => {
+    console.log('close it');
+    setModalOpen(false);
+  };
   return (
     <Box id="consent">
       <Box sx={{ textAlign: 'left' }}>
@@ -53,6 +62,14 @@ export default function Consent() {
         <Box sx={{ textAlign: 'left', my: 5, mb: 20 }}>
           <h2>1 to 1 messaging</h2>
           <ToggleList />
+          <Fab
+            color="primary"
+            sx={{ mx: 1.9, width: 42, height: 42, mt: 1 }}
+            onClick={() => setModalOpen(true)}
+          >
+            <AddIcon />
+            <GrantAcessModal open={modalOpen} handleClose={handleClose} />
+          </Fab>
         </Box>
       }
     </Box>
