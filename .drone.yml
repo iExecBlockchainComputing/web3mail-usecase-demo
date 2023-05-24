@@ -93,41 +93,47 @@ steps:
     image: plugins/docker
     pull: always
     settings:
-      repo: repo/image
-      tags: dev-${DRONE_COMMIT}
-      dry_run: true
+      registry: docker-regis.iex.ec
+      repo: docker-regis.iex.ec/product/web3mail-usecase-demo$
+      tags:
+        - dev-${DRONE_COMMIT}
+        - dev
       dockerfile: Dockerfile
-      output: web3mail-dev-image.tar
+      username:
+        from_secret: nexus-user
+      password:
+        from_secret: nexus-password
 
-  - name: transfer docker-image to server
-    image: appleboy/drone-scp
+  - name: transfer dev docker-image to server
+    image: appleboy/drone-ssh
     pull: always
     settings:
       host:
-        from_secret: pre-production-domain
+        from_secret: development-host
       username:
         from_secret: ssh-user-team-product-server
       password:
         from_secret: ssh-key-team-product-server
       port: 22
-      source: web3mail-dev-image.tar
-      target: ./app-demo/pre-production/web3mail/
-      strip_components: 1
+      target: /opt/web3mail-usecase-demo/
+      source:
+        - deployment/.docker-compose.yml
+        - deployment/.pre-production.env
 
-  - name: deploy to pre-production
+  - name: deploy to production
     image: appleboy/drone-ssh
     pull: always
     settings:
       host:
-        from_secret: pre-production-domain
+        from_secret: development-host
       username:
         from_secret: ssh-user-team-product-server
       password:
         from_secret: ssh-key-team-product-server
       port: 22
       script:
-        - docker load -i ./app-demo/pre-production/web3mail/web3mail-dev-image.tar
-        - docker run -d -p 80:80 web3mail-dev-image:dev-${DRONE_COMMIT}
+        - cd /opt/web3mail-usecase-demo/
+        - docker-compose up
 
 # Promote a production release from main branch
 ---
@@ -164,42 +170,55 @@ steps:
     commands:
       - npm run build
 
+  - name: extract-version-from-package
+    image: node:18
+    pull: always
+    # generates the .tags file for the docker plugin
+    # add tag latest for the rolling tag
+    commands:
+      - cd web3mail-usecase-demo
+      - npm pkg get version | sed 's/"//g' > ../.tags
+      - echo "latest" >> ../.tags
+
   - name: build docker-image
     image: plugins/docker
     pull: always
     settings:
-      repo: repo/image
-      tags: ${DRONE_TAG}
+      registry: docker-regis.iex.ec
+      repo: docker-regis.iex.ec/product/web3mail-usecase-demo
       dockerfile: Dockerfile
-      dry_run: true
-      output: web3mail-image.tar
+      username:
+        from_secret: nexus-user
+      password:
+        from_secret: nexus-password
 
   - name: transfer docker-image to server
-    image: appleboy/drone-scp
+    image: appleboy/drone-ssh
     pull: always
     settings:
       host:
-        from_secret: pre-production-domain
+        from_secret: production-host
       username:
         from_secret: ssh-user-team-product-server
       password:
         from_secret: ssh-key-team-product-server
       port: 22
-      source: web3mail-image.tar
-      target: ./app-demo/production/web3mail/
-      strip_components: 1
+      target: /opt/web3mail-usecase-demo/
+      source:
+        - deployment/.docker-compose.yml
+        - deployment/.production.env
 
   - name: deploy to production
     image: appleboy/drone-ssh
     pull: always
     settings:
       host:
-        from_secret: production-domain
+        from_secret: production-host
       username:
         from_secret: ssh-user-team-product-server
       password:
         from_secret: ssh-key-team-product-server
       port: 22
       script:
-        - docker load -i ./app-demo/production/web3mail/web3mail-image.tar
-        - docker run -d -p 80:80 web3mail-image:${DRONE_TAG}
+        - cd /opt/web3mail-usecase-demo/
+        - docker-compose up
