@@ -1,6 +1,6 @@
 import './GrantAccessModal.css';
-import { Button, TextField, Modal, Box } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { Button, TextField, Modal, Box, Typography } from '@mui/material';
+import { useState } from 'react';
 
 type GrantAccessModalParams = {
   open: boolean;
@@ -24,14 +24,17 @@ export default function GrantAcessModal(props: GrantAccessModalParams) {
     setNbOfAccess(event.target.value);
   };
 
-  useEffect(() => {
-    console.log('open Modal ? ', props.open);
-  }, [props.open]);
-  
   return (
     <div>
       <Modal open={props.open} onClose={props.handleClose}>
         <Box id="modalBox">
+          <Typography
+            component="h1"
+            variant="h5"
+            sx={{ alignSelf: 'flex-start' }}
+          >
+            Add a new contact
+          </Typography>
           <TextField
             required
             fullWidth
@@ -58,7 +61,7 @@ export default function GrantAcessModal(props: GrantAccessModalParams) {
             onChange={handleNbOfAccessChange}
             sx={{ mt: 3 }}
           />
-          <Button variant="contained" color="primary">
+          <Button variant="contained" color="primary" sx={{ m: 2 }}>
             Validate
           </Button>
         </Box>

@@ -7,7 +7,7 @@ import { useAccount } from 'wagmi';
 import { isDataschemaHasKey } from '../../utils/utils';
 import AddIcon from '@mui/icons-material/Add';
 import GrantAcessModal from './GrantAcessModal';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 export default function Consent() {
   const { ProtectedDataId } = useParams();
@@ -23,10 +23,7 @@ export default function Consent() {
 
   //modal state
   const [modalOpen, setModalOpen] = useState(false);
-  const handleClose = () => {
-    console.log('close it');
-    setModalOpen(false);
-  };
+
   return (
     <Box id="consent">
       <Box sx={{ textAlign: 'left' }}>
@@ -68,8 +65,11 @@ export default function Consent() {
             onClick={() => setModalOpen(true)}
           >
             <AddIcon />
-            <GrantAcessModal open={modalOpen} handleClose={handleClose} />
           </Fab>
+          <GrantAcessModal
+            open={modalOpen}
+            handleClose={() => setModalOpen(false)}
+          />
         </Box>
       }
     </Box>
