@@ -66,9 +66,9 @@ cd dataprotector-useCaseDemo
 Install the dependencies:
 
 ```bash
-yarn install
+yarn install --frozen-lockfile
 # or
-npm install
+npm ci
 ```
 
 Then, you can run the application in development mode:
