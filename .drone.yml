@@ -92,7 +92,7 @@ steps:
     pull: always
     settings:
       host:
-        from_secret: development-host
+        from_secret: dev-host
       username:
         from_secret: ssh-user-team-product-server
       password:
