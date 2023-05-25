@@ -18,13 +18,11 @@ steps:
 
   - name: format
     image: node:18
-    pull: always
     commands:
       - npm run check-format
 
   - name: build
     image: node:18
-    pull: always
     commands:
       - npm run build
 
@@ -49,8 +47,8 @@ trigger:
     - promote
   target:
     - dev
-  # branch:
-  #   - develop
+  branch:
+    - develop
 
 steps:
   - name: install
@@ -63,13 +61,11 @@ steps:
 
   - name: format
     image: node:18
-    pull: always
     commands:
       - npm run check-format
 
   - name: build
     image: node:18
-    pull: always
     commands:
       - npm run build
 
@@ -107,7 +103,6 @@ steps:
 
   - name: deploy to dev
     image: appleboy/drone-ssh
-    pull: always
     environment:
       USERNAME:
         from_secret: nexus-user
@@ -153,19 +148,16 @@ steps:
 
   - name: format
     image: node:18
-    pull: always
     commands:
       - npm run check-format
 
   - name: build
     image: node:18
-    pull: always
     commands:
       - npm run build
 
   - name: extract-version-from-package
     image: node:18
-    pull: always
     # generates the .tags file for the docker plugin
     # add tag latest for the rolling tag
     commands:
@@ -203,7 +195,6 @@ steps:
 
   - name: deploy to production
     image: appleboy/drone-ssh
-    pull: always
     environment:
       USERNAME:
         from_secret: nexus-user
