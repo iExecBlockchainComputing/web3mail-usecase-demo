@@ -92,7 +92,8 @@ steps:
     pull: always
     settings:
       host:
-        from_secret: dev-host
+        #depending on Damien
+        from_secret: development-host
       username:
         from_secret: ssh-user-team-product-server
       password:
@@ -103,7 +104,7 @@ steps:
         - deployment/docker-compose.yml
         - deployment/dev/.env
 
-  - name: deploy to production
+  - name: deploy to dev
     image: appleboy/drone-ssh
     pull: always
     environment:
@@ -113,6 +114,7 @@ steps:
         from_secret: nexus-password
     settings:
       host:
+        #depending on Damien
         from_secret: development-host
       username:
         from_secret: ssh-user-team-product-server
@@ -195,12 +197,17 @@ steps:
       port: 22
       target: /opt/web3mail-usecase-demo/
       source:
-        - deployment/.docker-compose.yml
+        - deployment/docker-compose.yml
         - deployment/production/.env
 
   - name: deploy to production
     image: appleboy/drone-ssh
     pull: always
+    environment:
+      USERNAME:
+        from_secret: nexus-user
+      PASSWORD:
+        from_secret: nexus-password
     settings:
       host:
         from_secret: production-host
@@ -211,4 +218,6 @@ steps:
       port: 22
       script:
         - cd /opt/web3mail-usecase-demo/
-        - docker-compose up
+        - docker login -u $USERNAME -p $PASSWORD docker-regis.iex.ec
+        - docker-compose pull
+        - docker-compose up -d
