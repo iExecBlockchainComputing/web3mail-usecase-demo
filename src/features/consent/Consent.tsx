@@ -67,6 +67,7 @@ export default function Consent() {
             <AddIcon />
           </Fab>
           <GrantAcessModal
+            protectedData={ProtectedDataId as string}
             open={modalOpen}
             handleClose={() => setModalOpen(false)}
           />

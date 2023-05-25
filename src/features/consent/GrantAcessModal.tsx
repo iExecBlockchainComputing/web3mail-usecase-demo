@@ -1,17 +1,30 @@
 import './GrantAccessModal.css';
-import { Button, TextField, Modal, Box, Typography } from '@mui/material';
-import { useState } from 'react';
+import {
+  Button,
+  TextField,
+  Modal,
+  Box,
+  Typography,
+  Snackbar,
+  Alert,
+} from '@mui/material';
+import { useEffect, useState } from 'react';
+import { useGrantNewAccessMutation } from '../../app/appSlice';
+import { DAPP_WEB3_MAIL_ADDRESS } from '../../config/config';
 
 type GrantAccessModalParams = {
+  protectedData: string;
   open: boolean;
   handleClose: () => void;
 };
 
 export default function GrantAcessModal(props: GrantAccessModalParams) {
+  //rtk mutation
+  const [grantNewAccess, result] = useGrantNewAccessMutation();
+
   //for ethAddress
   const [ethAddress, setEthAddress] = useState('');
   const [isValidEthAddress, setIsValidEthAddress] = useState(true);
-
   const handleEthAddressChange = (event: any) => {
     setEthAddress(event.target.value);
     setIsValidEthAddress(event.target.validity.valid);
@@ -19,13 +32,49 @@ export default function GrantAcessModal(props: GrantAccessModalParams) {
 
   //for NbOfAccess
   const [NbOfAccess, setNbOfAccess] = useState(1);
-
   const handleNbOfAccessChange = (event: any) => {
     setNbOfAccess(event.target.value);
   };
 
+  const handleGrantAccess = () => {
+    const protectedData = props.protectedData;
+    grantNewAccess({
+      protectedData,
+      authorizedApp: DAPP_WEB3_MAIL_ADDRESS,
+      authorizedUser: ethAddress,
+      numberOfAccess: NbOfAccess,
+    });
+  };
+
+  //snackbar notification
+  const [open, setOpen] = useState(false);
+
+  const handleClose = (_: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen(false);
+  };
+
+  useEffect(() => {
+    if (result.isSuccess) {
+      setOpen(true);
+      props.handleClose();
+    }
+  }, [result, props]);
+
   return (
     <div>
+      <Snackbar
+        open={open}
+        autoHideDuration={6000}
+        onClose={handleClose}
+        anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
+      >
+        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+          New access granted!
+        </Alert>
+      </Snackbar>
       <Modal open={props.open} onClose={props.handleClose}>
         <Box id="modalBox">
           <Typography
@@ -61,7 +110,12 @@ export default function GrantAcessModal(props: GrantAccessModalParams) {
             onChange={handleNbOfAccessChange}
             sx={{ mt: 3 }}
           />
-          <Button variant="contained" color="primary" sx={{ m: 2 }}>
+          <Button
+            variant="contained"
+            color="primary"
+            sx={{ m: 2 }}
+            onClick={handleGrantAccess}
+          >
             Validate
           </Button>
         </Box>

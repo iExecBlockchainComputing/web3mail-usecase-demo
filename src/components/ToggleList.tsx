@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState } from 'react';
 import {
   Avatar,
   List,
@@ -6,24 +6,24 @@ import {
   ListItemAvatar,
   ListItemText,
   Switch,
-} from '@mui/material'
+} from '@mui/material';
 
 export default function ToggleList() {
-  const [checked, setChecked] = useState(['Polygone'])
-  const data = ['Polygone', 'PancakeSwap', 'Uniswap']
+  const [checked, setChecked] = useState(['Polygone']);
+  const data = ['Polygone', 'PancakeSwap', 'Uniswap'];
 
   const handleToggle = (value: string) => () => {
-    const currentIndex = checked.indexOf(value)
-    const newChecked = [...checked]
+    const currentIndex = checked.indexOf(value);
+    const newChecked = [...checked];
 
     if (currentIndex === -1) {
-      newChecked.push(value)
+      newChecked.push(value);
     } else {
-      newChecked.splice(currentIndex, 1)
+      newChecked.splice(currentIndex, 1);
     }
 
-    setChecked(newChecked)
-  }
+    setChecked(newChecked);
+  };
 
   return (
     <List>
@@ -42,11 +42,11 @@ export default function ToggleList() {
           }
         >
           <ListItemAvatar>
-            <Avatar alt={`Avatar `} src={`/static/images/avatar/.jpg`} />
+            <Avatar alt={`Avatar`} src={`/static/images/avatar/.jpg`} />
           </ListItemAvatar>
           <ListItemText primary={value} />
         </ListItem>
       ))}
     </List>
-  )
+  );
 }

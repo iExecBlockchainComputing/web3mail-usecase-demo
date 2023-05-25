@@ -6,6 +6,7 @@ import {
   ProtectedDataWithSecretProps,
   ProtectDataParams,
   GrantedAccess,
+  GrantAccessParams,
 } from '@iexec/dataprotector';
 import { api } from './api';
 import { getAccount } from 'wagmi/actions';
@@ -104,6 +105,17 @@ export const homeApi = api.injectEndpoints({
         }
       },
     }),
+    grantNewAccess: builder.mutation<string, GrantAccessParams>({
+      queryFn: async (args) => {
+        try {
+          const data = await iExecDataProtector?.grantAccess(args);
+
+          return { data: data?.sign || '' };
+        } catch (e: any) {
+          return { error: e.message };
+        }
+      },
+    }),
   }),
 });
 
@@ -111,4 +123,5 @@ export const {
   useFetchProtectedDataQuery,
   useCreateProtectedDataMutation,
   useFetchGrantedAccessQuery,
+  useGrantNewAccessMutation,
 } = homeApi;
