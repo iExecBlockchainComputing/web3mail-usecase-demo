@@ -101,8 +101,8 @@ export const homeApi = api.injectEndpoints({
           const grantedAccess = await iExecDataProtector?.fetchGrantedAccess({
             protectedData,
           });
-          const data = grantedAccess
-            .filter((item: GrantedAccess) => {
+          const grantedAccessList = grantedAccess
+            ?.filter((item: GrantedAccess) => {
               const apprestrict = item?.apprestrict?.toLowerCase();
               return (
                 apprestrict === DAPP_WEB3_MAIL_ADDRESS ||
@@ -113,7 +113,7 @@ export const homeApi = api.injectEndpoints({
               return item.requesterrestrict.toLowerCase();
             });
 
-          return { data: data };
+          return { data: grantedAccessList };
         } catch (e: any) {
           return { error: e.message };
         }
