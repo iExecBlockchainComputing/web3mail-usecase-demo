@@ -100,7 +100,7 @@ steps:
       port: 22
       target: /opt/web3mail-usecase-demo/
       source:
-        - deployment/.docker-compose.yml
+        - deployment/docker-compose.yml
         - deployment/.pre-production.env
 
   - name: deploy to production
