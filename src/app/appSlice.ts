@@ -125,16 +125,18 @@ export const homeApi = api.injectEndpoints({
     >({
       queryFn: async (args) => {
         try {
-     const grantedAccessList = await iExecDataProtector?.fetchGrantedAccess({
-    ...args,
-    authorizedApp: DAPP_WEB3_MAIL_ADDRESS,
-  });
-
-  const revokedAccess = await iExecDataProtector?.revokeOneAccess(
-    grantedAccessList[0]
-  );
-
-  return { data: revokedAccess };
+          const grantedAccessList =
+            await iExecDataProtector?.fetchGrantedAccess({
+              ...args,
+              authorizedApp: DAPP_WEB3_MAIL_ADDRESS,
+            });
+          let revokedAccess: RevokedAccess | undefined;
+          if (grantedAccessList && grantedAccessList.length !== 0) {
+            revokedAccess = await iExecDataProtector?.revokeOneAccess(
+              grantedAccessList[0]
+            );
+          }
+          return { data: revokedAccess || [] };
         } catch (e: any) {
           return { error: e.message };
         }
