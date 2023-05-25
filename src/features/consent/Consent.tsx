@@ -15,7 +15,7 @@ export default function Consent() {
   const { ProtectedDataId } = useParams();
   const { address } = useAccount();
 
-  //RTK : Fetch granted data
+  //RTK : Fetch granted Access
   const [authorizedUsers, setAuthorizedUsers] = useState<string[]>([]);
   const [fetchGrantedAccess, resultGrantedAccess] =
     useFetchGrantedAccessMutation();
@@ -84,7 +84,6 @@ export default function Consent() {
           </li>
           <li>
             <h6>
-              IPFS link: {'Set in future with the next version of subgraph'}
               IPFS link: {'Set in future with the next version of subgraph'}
             </h6>
           </li>
