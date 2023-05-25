@@ -67,7 +67,8 @@ export default function ToggleList(props: ToggleProps) {
         anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
       >
         <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-          The Granted Access has been correctly revoked!
+The granted access has been successfully revoked!
+
         </Alert>
       </Snackbar>
     </List>
