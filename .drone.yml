@@ -101,7 +101,7 @@ steps:
       target: /opt/web3mail-usecase-demo/
       source:
         - deployment/docker-compose.yml
-        - deployment/.dev.env
+        - deployment/dev/.env
 
   - name: deploy to production
     image: appleboy/drone-ssh
@@ -196,7 +196,7 @@ steps:
       target: /opt/web3mail-usecase-demo/
       source:
         - deployment/.docker-compose.yml
-        - deployment/.production.env
+        - deployment/production/.env
 
   - name: deploy to production
     image: appleboy/drone-ssh
