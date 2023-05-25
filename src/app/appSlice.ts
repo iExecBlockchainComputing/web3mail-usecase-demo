@@ -6,9 +6,12 @@ import {
   ProtectedDataWithSecretProps,
   ProtectDataParams,
   GrantedAccess,
+  RevokedAccess,
 } from '@iexec/dataprotector';
 import { api } from './api';
 import { getAccount } from 'wagmi/actions';
+import { DAPP_WEB3_MAIL_ADDRESS } from '../config/config';
+import { AddressZero } from '@ethersproject/constants';
 
 let iExecDataProtector: IExecDataProtector | null = null;
 
@@ -92,13 +95,48 @@ export const homeApi = api.injectEndpoints({
         }
       },
     }),
-    fetchGrantedAccess: builder.query<GrantedAccess[], string>({
+    fetchGrantedAccess: builder.mutation<string[], string>({
       queryFn: async (protectedData) => {
         try {
-          const data = await iExecDataProtector?.fetchGrantedAccess({
+          const grantedAccess = await iExecDataProtector?.fetchGrantedAccess({
             protectedData,
           });
-          return { data: data };
+          const grantedAccessList = grantedAccess
+            ?.filter((item: GrantedAccess) => {
+              const apprestrict = item?.apprestrict?.toLowerCase();
+              return (
+                apprestrict === DAPP_WEB3_MAIL_ADDRESS ||
+                apprestrict === AddressZero
+              );
+            })
+            .map((item: GrantedAccess) => {
+              return item.requesterrestrict.toLowerCase();
+            });
+
+          return { data: grantedAccessList };
+        } catch (e: any) {
+          return { error: e.message };
+        }
+      },
+    }),
+    revokeOneAccess: builder.mutation<
+      RevokedAccess,
+      { protectedData: string; authorizedUser: string }
+    >({
+      queryFn: async (args) => {
+        try {
+          const grantedAccessList =
+            await iExecDataProtector?.fetchGrantedAccess({
+              ...args,
+              authorizedApp: DAPP_WEB3_MAIL_ADDRESS,
+            });
+          let revokedAccess: RevokedAccess | undefined;
+          if (grantedAccessList && grantedAccessList.length !== 0) {
+            revokedAccess = await iExecDataProtector?.revokeOneAccess(
+              grantedAccessList[0]
+            );
+          }
+          return { data: revokedAccess || [] };
         } catch (e: any) {
           return { error: e.message };
         }
@@ -110,5 +148,6 @@ export const homeApi = api.injectEndpoints({
 export const {
   useFetchProtectedDataMutation,
   useCreateProtectedDataMutation,
-  useFetchGrantedAccessQuery,
+  useFetchGrantedAccessMutation,
+  useRevokeOneAccessMutation,
 } = homeApi;
