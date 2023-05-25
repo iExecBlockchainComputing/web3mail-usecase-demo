@@ -41,19 +41,6 @@ steps:
       branch:
         - develop
 
-  # Build a production image when there is a push on main branch
-  - name: docker build release
-    image: plugins/docker
-    pull: always
-    settings:
-      repo: repo/image
-      tags: ${DRONE_TAG}
-      dockerfile: Dockerfile
-      dry_run: true
-    when:
-      branch:
-        - main
-
 # Promote a pre-production release from develop branch
 ---
 kind: pipeline
