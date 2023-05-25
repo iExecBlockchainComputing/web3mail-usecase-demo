@@ -116,7 +116,8 @@ steps:
       port: 22
       script:
         - cd /opt/web3mail-usecase-demo/
-        - docker-compose up
+        - docker-compose pull
+        - docker-compose up -d
 
 # Promote a production release from main branch
 ---
