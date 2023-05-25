@@ -77,7 +77,7 @@ steps:
     pull: always
     settings:
       registry: docker-regis.iex.ec
-      repo: docker-regis.iex.ec/product/web3mail-usecase-demo$
+      repo: docker-regis.iex.ec/product/web3mail-usecase-demo
       tags:
         - dev-${DRONE_COMMIT}
         - dev
