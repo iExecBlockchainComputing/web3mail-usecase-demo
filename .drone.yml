@@ -106,11 +106,11 @@ steps:
   - name: deploy to production
     image: appleboy/drone-ssh
     pull: always
-  environment:
-    USERNAME:
-      from_secret: nexus-user
-    PASSWORD:
-      from_secret: nexus-password
+    environment:
+      USERNAME:
+        from_secret: nexus-user
+      PASSWORD:
+        from_secret: nexus-password
     settings:
       host:
         from_secret: development-host
