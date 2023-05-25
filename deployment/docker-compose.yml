@@ -13,7 +13,7 @@ services:
     #not sure about this
     labels:
       - 'autoregister=true'
-      - 'traefik.http.routers.oracle-factory-ui.rule=Host(`${WEB3MAIL_USECASE_DEMO_DOMAINE}`)'
+      - 'traefik.http.routers.web3mail-usecase-demo.rule=Host(`${WEB3MAIL_USECASE_DEMO_DOMAINE}`)'
       - ${TRAEFIK_IP_ACCESS:-''}
 
     networks:
