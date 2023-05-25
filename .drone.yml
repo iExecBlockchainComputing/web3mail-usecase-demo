@@ -37,17 +37,17 @@ steps:
       repo: docker-regis.iex.ec/product/web3mail-usecase-demo
       dockerfile: Dockerfile
 
-# Promote a pre-production release from develop branch
+# Promote a dev release from develop branch
 ---
 kind: pipeline
 type: docker
-name: deploy-pre-production
+name: deploy-dev
 
 trigger:
   event:
     - promote
   target:
-    - pre-production
+    - dev
   branch:
     - develop
 
@@ -101,7 +101,7 @@ steps:
       target: /opt/web3mail-usecase-demo/
       source:
         - deployment/docker-compose.yml
-        - deployment/.pre-production.env
+        - deployment/.dev.env
 
   - name: deploy to production
     image: appleboy/drone-ssh
