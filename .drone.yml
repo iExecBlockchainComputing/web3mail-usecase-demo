@@ -28,18 +28,14 @@ steps:
     commands:
       - npm run build
 
-  # Build a development image when there is a push on develop branch
-  - name: docker build dev
+  # Build the docker image an dry-run publication
+  - name: docker dry-run
     image: plugins/docker
     pull: always
     settings:
-      repo: repo/image
-      tags: dev-${DRONE_COMMIT}
+      registry: docker-regis.iex.ec
+      repo: docker-regis.iex.ec/product/web3mail-usecase-demo
       dockerfile: Dockerfile
-      dry_run: true
-    when:
-      branch:
-        - develop
 
 # Promote a pre-production release from develop branch
 ---
