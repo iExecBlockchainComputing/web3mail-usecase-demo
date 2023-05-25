@@ -85,6 +85,7 @@ export default function Consent() {
           <li>
             <h6>
               IPFS link: {'Set in future with the next version of subgraph'}
+              IPFS link: {'Set in future with the next version of subgraph'}
             </h6>
           </li>
         </ul>
