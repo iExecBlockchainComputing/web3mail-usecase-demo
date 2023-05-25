@@ -24,8 +24,17 @@ export default function ToggleList(props: ToggleProps) {
   //query RTK API as mutation hook
   const [revokeOneAccess, result] = useRevokeOneAccessMutation();
 
-  const handleDelete = (value: string) => () => {
-    revokeOneAccess({ protectedData: ProtectedDataId!, authorizedUser: value });
+  const handleDelete = (value: string) => async () => {
+    if (ProtectedDataId !== undefined) {
+      try {
+        await revokeOneAccess({
+          protectedData: ProtectedDataId,
+          authorizedUser: value,
+        });
+      } catch (error) {
+        console.error('Error revoking access:', error);
+      }
+    }
   };
 
   //snackbar notification
@@ -36,6 +45,7 @@ export default function ToggleList(props: ToggleProps) {
       refreshAuthorizedUsers();
     }
   }, [result]);
+
   const handleClose = (_: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === 'clickaway') {
       return;
