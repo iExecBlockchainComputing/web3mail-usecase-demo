@@ -6,7 +6,7 @@ networks:
 
 services:
   serviceWeb:
-    container_name: serviceWeb
+    container_name: web3mail-usecase-demo
     image: docker-regis.iex.ec/product/web3mail-usecase-demo:${WEB3MAIL_USECASE_DEMO_VERSION}
     expose:
       - '8080:8080'
