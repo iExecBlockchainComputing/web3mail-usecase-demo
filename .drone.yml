@@ -36,6 +36,7 @@ steps:
       registry: docker-regis.iex.ec
       repo: docker-regis.iex.ec/product/web3mail-usecase-demo
       dockerfile: Dockerfile
+      dry_run: true
 
 # Promote a dev release from develop branch
 ---
@@ -48,8 +49,8 @@ trigger:
     - promote
   target:
     - dev
-  branch:
-    - develop
+  # branch:
+  #   - develop
 
 steps:
   - name: install
