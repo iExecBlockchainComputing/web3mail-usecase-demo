@@ -85,7 +85,7 @@ steps:
         from_secret: nexus-password
 
   - name: transfer dev docker-image to server
-    image: c
+    image: appleboy/drone-ssh
     pull: always
     settings:
       host:
