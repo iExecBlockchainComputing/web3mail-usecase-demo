@@ -96,19 +96,19 @@ steps:
         from_secret: ssh-key-team-product-server
       port: 22
       source:
-        - deployment/docker-compose.yml
-        - deployment/dev/.env
+        - deployment/common
+        - deployment/dev
       target: /opt/web3mail-usecase-demo/
       overwrite: true
-      strip_components: 1
+      strip_components: 2
 
   - name: deploy to dev
     image: appleboy/drone-ssh
     pull: always
     environment:
-      USERNAME:
+      DOCKER_USERNAME:
         from_secret: nexus-user
-      PASSWORD:
+      DOCKER_PASSWORD:
         from_secret: nexus-password
     settings:
       host:
@@ -118,11 +118,15 @@ steps:
       key:
         from_secret: ssh-key-team-product-server
       port: 22
-    script:
-      - cd /opt/web3mail-usecase-demo/
-      - echo $PASSWORD | docker login -u $USERNAME --password-stdin docker-regis.iex.ec
-      - docker compose pull
-      - docker compose up -d
+      envs:
+        - DOCKER_USERNAME
+        - DOCKER_PASSWORD
+      script:
+        - cd /opt/web3mail-usecase-demo/
+        - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD docker-regis.iex.ec
+        - docker compose pull
+        - docker compose up -d
+        - docker logout docker-regis.iex.ec
 
 # Promote a production release from main branch
 ---
@@ -190,19 +194,19 @@ steps:
         from_secret: ssh-key-team-product-server
       port: 22
       source:
-        - deployment/docker-compose.yml
-        - deployment/production/.env
+        - deployment/common
+        - deployment/production
       target: /opt/web3mail-usecase-demo/
       overwrite: true
-      strip_components: 1
+      strip_components: 2
 
   - name: deploy to production
     image: appleboy/drone-ssh
     pull: always
     environment:
-      USERNAME:
+      DOCKER_USERNAME:
         from_secret: nexus-user
-      PASSWORD:
+      DOCKER_PASSWORD:
         from_secret: nexus-password
     settings:
       host:
@@ -212,8 +216,12 @@ steps:
       key:
         from_secret: ssh-key-team-product-server
       port: 22
-    script:
-      - cd /opt/web3mail-usecase-demo/
-      - echo $PASSWORD | docker login -u $USERNAME --password-stdin docker-regis.iex.ec
-      - docker compose pull
-      - docker compose up -d
+      envs:
+        - DOCKER_USERNAME
+        - DOCKER_PASSWORD
+      script:
+        - cd /opt/web3mail-usecase-demo/
+        - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD docker-regis.iex.ec
+        - docker compose pull
+        - docker compose up -d
+        - docker logout docker-regis.iex.ec
