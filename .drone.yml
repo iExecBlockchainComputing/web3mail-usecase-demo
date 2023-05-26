@@ -1,0 +1,216 @@
+kind: pipeline
+type: docker
+name: default
+
+trigger:
+  event:
+    exclude:
+      - promote
+
+steps:
+  - name: install
+    image: node:18
+    pull: always
+    commands:
+      - node -v
+      - npm -v
+      - npm ci
+
+  - name: format
+    image: node:18
+    commands:
+      - npm run check-format
+
+  - name: build
+    image: node:18
+    commands:
+      - npm run build
+
+  # Build the docker image an dry-run publication
+  - name: docker dry-run
+    image: plugins/docker
+    pull: always
+    settings:
+      registry: docker-regis.iex.ec
+      repo: docker-regis.iex.ec/product/web3mail-usecase-demo
+      dockerfile: Dockerfile
+      dry_run: true
+
+# Promote a dev release from develop branch
+---
+kind: pipeline
+type: docker
+name: deploy-dev
+
+trigger:
+  event:
+    - promote
+  target:
+    - dev
+  branch:
+    - develop
+
+steps:
+  - name: install
+    image: node:18
+    pull: always
+    commands:
+      - node -v
+      - npm -v
+      - npm ci
+
+  - name: format
+    image: node:18
+    commands:
+      - npm run check-format
+
+  - name: build
+    image: node:18
+    commands:
+      - npm run build
+
+  - name: build dev docker-image
+    image: plugins/docker
+    pull: always
+    settings:
+      registry: docker-regis.iex.ec
+      repo: docker-regis.iex.ec/product/web3mail-usecase-demo
+      tags:
+        - dev-${DRONE_COMMIT}
+        - dev
+      dockerfile: Dockerfile
+      username:
+        from_secret: nexus-user
+      password:
+        from_secret: nexus-password
+
+  - name: transfer dev docker-image to server
+    image: appleboy/drone-ssh
+    pull: always
+    settings:
+      host:
+        #depending on Damien
+        from_secret: development-host
+      username:
+        from_secret: ssh-user-team-product-server
+      key:
+        from_secret: ssh-key-team-product-server
+      port: 22
+      target: ./opt/web3mail-usecase-demo/
+      source:
+        - deployment/docker-compose.yml
+        - deployment/dev/.env
+
+  - name: deploy to dev
+    image: appleboy/drone-ssh
+    environment:
+      USERNAME:
+        from_secret: nexus-user
+      PASSWORD:
+        from_secret: nexus-password
+    settings:
+      host:
+        #depending on Damien
+        from_secret: development-host
+      username:
+        from_secret: ssh-user-team-product-server
+      key:
+        from_secret: ssh-key-team-product-server
+      port: 22
+      script:
+        - ls -la
+        - cd ./opt/web3mail-usecase-demo/
+        - docker login -u $USERNAME -p $PASSWORD docker-regis.iex.ec
+        - docker-compose pull
+        - docker-compose up -d
+
+# Promote a production release from main branch
+---
+kind: pipeline
+type: docker
+name: deploy-production
+
+trigger:
+  event:
+    - promote
+  target:
+    - production
+  branch:
+    - main
+
+steps:
+  - name: install
+    image: node:18
+    pull: always
+    commands:
+      - node -v
+      - npm -v
+      - npm ci
+
+  - name: format
+    image: node:18
+    commands:
+      - npm run check-format
+
+  - name: build
+    image: node:18
+    commands:
+      - npm run build
+
+  - name: extract-version-from-package
+    image: node:18
+    # generates the .tags file for the docker plugin
+    # add tag latest for the rolling tag
+    commands:
+      - cd web3mail-usecase-demo
+      - npm pkg get version | sed 's/"//g' > ../.tags
+      - echo "latest" >> ../.tags
+
+  - name: build docker-image
+    image: plugins/docker
+    pull: always
+    settings:
+      registry: docker-regis.iex.ec
+      repo: docker-regis.iex.ec/product/web3mail-usecase-demo
+      dockerfile: Dockerfile
+      username:
+        from_secret: nexus-user
+      password:
+        from_secret: nexus-password
+
+  - name: transfer docker-image to server
+    image: appleboy/drone-ssh
+    pull: always
+    settings:
+      host:
+        from_secret: production-host
+      username:
+        from_secret: ssh-user-team-product-server
+      key:
+        from_secret: ssh-key-team-product-server
+      port: 22
+      target: /opt/web3mail-usecase-demo/
+      source:
+        - deployment/docker-compose.yml
+        - deployment/production/.env
+
+  - name: deploy to production
+    image: appleboy/drone-ssh
+    environment:
+      USERNAME:
+        from_secret: nexus-user
+      PASSWORD:
+        from_secret: nexus-password
+    settings:
+      host:
+        from_secret: production-host
+      username:
+        from_secret: ssh-user-team-product-server
+      key:
+        from_secret: ssh-key-team-product-server
+      port: 22
+      script:
+        - cd /opt/web3mail-usecase-demo/
+        - docker login -u $USERNAME -p $PASSWORD docker-regis.iex.ec
+        - docker-compose pull
+        - docker-compose up -d
