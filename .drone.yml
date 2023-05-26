@@ -100,9 +100,11 @@ steps:
         - deployment/dev/.env
       target: /opt/web3mail-usecase-demo/
       overwrite: true
+      strip_components: 1
 
   - name: deploy to dev
     image: appleboy/drone-ssh
+    pull: always
     environment:
       USERNAME:
         from_secret: nexus-user
@@ -110,7 +112,6 @@ steps:
         from_secret: nexus-password
     settings:
       host:
-        #depending on Damien
         from_secret: development-host
       username:
         from_secret: ssh-user-team-product-server
@@ -118,11 +119,11 @@ steps:
         from_secret: ssh-key-team-product-server
       port: 22
       script:
-        - ls -la
-        - cd ./opt/web3mail-usecase-demo/
+        - cd /opt/web3mail-usecase-demo/
         - docker login -u $USERNAME -p $PASSWORD docker-regis.iex.ec
-        - docker-compose pull
-        - docker-compose up -d
+        - export $(grep -v '^#' .env | xargs)
+        - docker compose pull
+        - docker compose up -d
 
 # Promote a production release from main branch
 ---
@@ -194,9 +195,11 @@ steps:
         - deployment/production/.env
       target: /opt/web3mail-usecase-demo/
       overwrite: true
+      strip_components: 1
 
   - name: deploy to production
     image: appleboy/drone-ssh
+    pull: always
     environment:
       USERNAME:
         from_secret: nexus-user
@@ -210,8 +213,9 @@ steps:
       key:
         from_secret: ssh-key-team-product-server
       port: 22
-      script:
-        - cd /opt/web3mail-usecase-demo/
-        - docker login -u $USERNAME -p $PASSWORD docker-regis.iex.ec
-        - docker-compose pull
-        - docker-compose up -d
+    script:
+      - cd /opt/web3mail-usecase-demo/
+      - docker login -u $USERNAME -p $PASSWORD docker-regis.iex.ec
+      - export $(grep -v '^#' .env | xargs)
+      - docker compose pull
+      - docker compose up -d
