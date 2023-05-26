@@ -1,0 +1,20 @@
+version: '3.8'
+
+networks:
+  web:
+    external: true
+
+services:
+  serviceWeb:
+    container_name: web3mail-usecase-demo
+    image: docker-regis.iex.ec/product/web3mail-usecase-demo:${WEB3MAIL_USECASE_DEMO_VERSION}
+    expose: 80
+    #not sure about this
+    labels:
+      - 'autoregister=true'
+      - 'traefik.http.routers.web3mail-usecase-demo.rule=Host(`${WEB3MAIL_USECASE_DEMO_DOMAINE}`)'
+      - ${TRAEFIK_IP_ACCESS:-''}
+
+    networks:
+      - web
+    restart: unless-stopped
