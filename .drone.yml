@@ -96,7 +96,7 @@ steps:
       key:
         from_secret: ssh-key-team-product-server
       port: 22
-      target: /opt/web3mail-usecase-demo/
+      target: ./opt/web3mail-usecase-demo/
       source:
         - deployment/docker-compose.yml
         - deployment/dev/.env
@@ -118,7 +118,8 @@ steps:
         from_secret: ssh-key-team-product-server
       port: 22
       script:
-        - cd /opt/web3mail-usecase-demo/
+        - ls -la
+        - cd ./opt/web3mail-usecase-demo/
         - docker login -u $USERNAME -p $PASSWORD docker-regis.iex.ec
         - docker-compose pull
         - docker-compose up -d
