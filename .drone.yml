@@ -118,12 +118,11 @@ steps:
       key:
         from_secret: ssh-key-team-product-server
       port: 22
-      script:
-        - cd /opt/web3mail-usecase-demo/
-        - echo $PASSWORD | docker login -u $USERNAME --password-stdin docker-regis.iex.ec
-        - export $(grep -v '^#' .env | xargs)
-        - docker compose pull
-        - docker compose up -d
+    script:
+      - cd /opt/web3mail-usecase-demo/
+      - echo $PASSWORD | docker login -u $USERNAME --password-stdin docker-regis.iex.ec
+      - docker compose pull
+      - docker compose up -d
 
 # Promote a production release from main branch
 ---
@@ -216,6 +215,5 @@ steps:
     script:
       - cd /opt/web3mail-usecase-demo/
       - echo $PASSWORD | docker login -u $USERNAME --password-stdin docker-regis.iex.ec
-      - export $(grep -v '^#' .env | xargs)
       - docker compose pull
       - docker compose up -d
