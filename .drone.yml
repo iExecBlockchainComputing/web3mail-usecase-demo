@@ -85,7 +85,7 @@ steps:
         from_secret: nexus-password
 
   - name: transfer dev docker-image to server
-    image: appleboy/drone-ssh
+    image: appleboy/drone-scp
     pull: always
     settings:
       host:
@@ -95,18 +95,11 @@ steps:
       key:
         from_secret: ssh-key-team-product-server
       port: 22
-      script:
-        - mkdir -p /opt/web3mail-usecase-demo/
-        - ls
-        - |
-          if [ -f deployment/docker-compose.yml ] && [ -f deployment/dev/.env ]; 
-          then
-            echo "Source files exist"
-            scp deployment/docker-compose.yml deployment/dev/.env ssh-user-team-product-server@development-host:/opt/web3mail-usecase-demo/ 
-          else 
-            echo "Source files do not exist" 
-            exit 1
-          fi
+      source:
+        - deployment/docker-compose.yml
+        - deployment/dev/.env
+      target: /opt/web3mail-usecase-demo/
+      overwrite: true
 
   - name: deploy to dev
     image: appleboy/drone-ssh
@@ -186,7 +179,7 @@ steps:
         from_secret: nexus-password
 
   - name: transfer docker-image to server
-    image: appleboy/drone-ssh
+    image: appleboy/drone-scp
     pull: always
     settings:
       host:
@@ -196,17 +189,11 @@ steps:
       key:
         from_secret: ssh-key-team-product-server
       port: 22
-      script:
-        - mkdir -p /opt/web3mail-usecase-demo/
-        - |
-          if [ -f deployment/docker-compose.yml ] && [ -f deployment/production/.env ]; 
-          then
-            echo "Source files exist"
-            scp deployment/docker-compose.yml deployment/production/.env ssh-user-team-product-server@production-host:/opt/web3mail-usecase-demo/; 
-          else 
-            echo "Source files do not exist"; 
-            exit 1; 
-          fi
+      source:
+        - deployment/docker-compose.yml
+        - deployment/production/.env
+      target: /opt/web3mail-usecase-demo/
+      overwrite: true
 
   - name: deploy to production
     image: appleboy/drone-ssh
