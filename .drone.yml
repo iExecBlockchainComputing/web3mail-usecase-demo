@@ -84,25 +84,25 @@ steps:
       password:
         from_secret: nexus-password
 
-    - name: transfer dev docker-image to server
-      image: appleboy/drone-ssh
-      pull: always
-      settings:
-        host:
-          from_secret: development-host
-        username:
-          from_secret: ssh-user-team-product-server
-        key:
-          from_secret: ssh-key-team-product-server
-        port: 22
-        script:
-          - mkdir -p /opt/web3mail-usecase-demo/ # ensure target directory exists on the server
-          - if [ -f deployment/docker-compose.yml ] && [ -f deployment/dev/.env ]; then # check if the source files exist
-              scp deployment/docker-compose.yml deployment/dev/.env ssh-user-team-product-server@development-host:/opt/web3mail-usecase-demo/; 
-            else 
-              echo "Source files do not exist"; 
-              exit 1; 
-            fi
+  - name: transfer dev docker-image to server
+    image: appleboy/drone-ssh
+    pull: always
+    settings:
+      host:
+        from_secret: development-host
+      username:
+        from_secret: ssh-user-team-product-server
+      key:
+        from_secret: ssh-key-team-product-server
+      port: 22
+      script:
+        - mkdir -p /opt/web3mail-usecase-demo/ # ensure target directory exists on the server
+        - if [ -f deployment/docker-compose.yml ] && [ -f deployment/dev/.env ]; then # check if the source files exist
+            scp deployment/docker-compose.yml deployment/dev/.env ssh-user-team-product-server@development-host:/opt/web3mail-usecase-demo/; 
+          else 
+            echo "Source files do not exist"; 
+            exit 1; 
+          fi
 
   - name: deploy to dev
     image: appleboy/drone-ssh
