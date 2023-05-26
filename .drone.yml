@@ -97,8 +97,11 @@ steps:
       port: 22
       script:
         - mkdir -p /opt/web3mail-usecase-demo/
+        - ls
         - |
-          if [ -f deployment/docker-compose.yml ] && [ -f deployment/dev/.env ]; then
+          if [ -f deployment/docker-compose.yml ] && [ -f deployment/dev/.env ]; 
+          then
+            echo "Source files exist"
             scp deployment/docker-compose.yml deployment/dev/.env ssh-user-team-product-server@development-host:/opt/web3mail-usecase-demo/ 
           else 
             echo "Source files do not exist" 
@@ -194,14 +197,16 @@ steps:
         from_secret: ssh-key-team-product-server
       port: 22
       script:
-        - mkdir -p /opt/web3mail-usecase-demo/ # ensure target directory exists on the server
+        - mkdir -p /opt/web3mail-usecase-demo/
         - |
-          if [ -f deployment/docker-compose.yml ] && [ -f deployment/production/.env ]; then # check if the source files exist
-              scp deployment/docker-compose.yml deployment/production/.env ssh-user-team-product-server@production-host:/opt/web3mail-usecase-demo/; 
-            else 
-              echo "Source files do not exist"; 
-              exit 1; 
-            fi
+          if [ -f deployment/docker-compose.yml ] && [ -f deployment/production/.env ]; 
+          then
+            echo "Source files exist"
+            scp deployment/docker-compose.yml deployment/production/.env ssh-user-team-product-server@production-host:/opt/web3mail-usecase-demo/; 
+          else 
+            echo "Source files do not exist"; 
+            exit 1; 
+          fi
 
   - name: deploy to production
     image: appleboy/drone-ssh
