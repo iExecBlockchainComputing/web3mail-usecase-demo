@@ -120,7 +120,7 @@ steps:
       port: 22
       script:
         - cd /opt/web3mail-usecase-demo/
-        - docker login -u $USERNAME -p $PASSWORD docker-regis.iex.ec
+        - echo $PASSWORD | docker login -u $USERNAME --password-stdin docker-regis.iex.ec
         - export $(grep -v '^#' .env | xargs)
         - docker compose pull
         - docker compose up -d
@@ -215,7 +215,7 @@ steps:
       port: 22
     script:
       - cd /opt/web3mail-usecase-demo/
-      - docker login -u $USERNAME -p $PASSWORD docker-regis.iex.ec
+      - echo $PASSWORD | docker login -u $USERNAME --password-stdin docker-regis.iex.ec
       - export $(grep -v '^#' .env | xargs)
       - docker compose pull
       - docker compose up -d
