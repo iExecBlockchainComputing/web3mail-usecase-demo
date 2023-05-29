@@ -125,6 +125,8 @@ steps:
         - cd /opt/web3mail-usecase-demo/
         - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD docker-regis.iex.ec
         - docker compose pull
+        - docker compose down --remove-orphans
+        - sleep 5
         - docker compose up -d
         - docker logout docker-regis.iex.ec
 
@@ -223,5 +225,7 @@ steps:
         - cd /opt/web3mail-usecase-demo/
         - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD docker-regis.iex.ec
         - docker compose pull
+        - docker compose down --remove-orphans
+        - sleep 5
         - docker compose up -d
         - docker logout docker-regis.iex.ec
