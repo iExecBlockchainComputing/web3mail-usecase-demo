@@ -36,9 +36,9 @@ export default function Consent() {
         <Chip
           id="chipType"
           label={
-            (isKeyInDataSchema(protectedDataSelected?.schema, 'email') &&
+            (isKeyInDataSchema(protectedDataSelected?.schema || {}, 'email') &&
               'Email') ||
-            (isKeyInDataSchema(protectedDataSelected?.schema, 'file') &&
+            (isKeyInDataSchema(protectedDataSelected?.schema || {}, 'file') &&
               'File') ||
             'Unknown'
           }
