@@ -59,6 +59,9 @@ export default function GrantAcessModal(props: GrantAccessModalParams) {
   useEffect(() => {
     if (result.isSuccess) {
       setOpen(true);
+      result.reset();
+      setEthAddress('');
+      setNbOfAccess(1);
       props.handleClose();
     }
   }, [result, props]);

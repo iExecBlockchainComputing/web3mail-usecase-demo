@@ -9,7 +9,7 @@ import {
   Alert,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { useRevokeOneAccessMutation } from '../app/appSlice';
+import { useRevokeOneAccessMutation } from '../../app/appSlice';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
