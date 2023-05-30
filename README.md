@@ -47,35 +47,30 @@ This project is a simple React TypeScript application bootstrapped with [Vite](h
 Before running this application, make sure you have the following installed:
 
 - [Node.js](https://nodejs.org/) (version 14.0 or later)
-- [Yarn](https://yarnpkg.com/) or [npm](https://www.npmjs.com/)
 
 ## Quick start
 
 First, clone the repository with the following command:
 
 ```bash
-git clone https://github.com/iExecBlockchainComputing/dataprotector-useCaseDemo.git
+git clone https://github.com/iExecBlockchainComputing/web3mail-usecase-demo
 ```
 
 Navigate to the project directory:
 
 ```bash
-cd dataprotector-useCaseDemo
+cd web3mail-usecase-demo
 ```
 
 Install the dependencies:
 
 ```bash
-yarn install
-# or
-npm install
+npm ci
 ```
 
 Then, you can run the application in development mode:
 
 ```bash
-yarn dev
-# or
 npm run dev
 ```
 
@@ -86,8 +81,6 @@ Open [http://localhost:3000](http://localhost:5173) to view it in the browser. T
 To build the application for production, use the following command:
 
 ```bash
-yarn build
-# or
 npm run build
 ```
 

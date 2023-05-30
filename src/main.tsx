@@ -30,7 +30,7 @@ const theme = createTheme({
 
 // Wagmi Client
 if (!import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID) {
-  throw new Error('You need to provide REACT_APP_PROJECT_ID env variable');
+  throw new Error('You need to provide VITE_WALLET_CONNECT_PROJECT_ID env variable');
 }
 const projectId = import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID!;
 const chains = [bellecour];
