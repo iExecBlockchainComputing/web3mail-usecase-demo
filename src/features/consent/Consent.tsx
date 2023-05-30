@@ -7,7 +7,7 @@ import {
   useFetchProtectedDataQuery,
 } from '../../app/appSlice';
 import { useAccount } from 'wagmi';
-import { isDataSchemaHasKey } from '../../utils/utils';
+import { isKeyInDataSchema } from '../../utils/utils';
 
 export default function Consent() {
   const { ProtectedDataId } = useParams();
@@ -36,9 +36,9 @@ export default function Consent() {
         <Chip
           id="chipType"
           label={
-            (isDataSchemaHasKey(protectedDataSelected?.schema, 'email') &&
+            (isKeyInDataSchema(protectedDataSelected?.schema, 'email') &&
               'Email') ||
-            (isDataSchemaHasKey(protectedDataSelected?.schema, 'file') &&
+            (isKeyInDataSchema(protectedDataSelected?.schema, 'file') &&
               'File') ||
             'Unknown'
           }
