@@ -80,5 +80,4 @@ export default function ToggleList(props: ToggleProps) {
       </Snackbar>
     </List>
   );
-  );
 }
