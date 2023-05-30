@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import './ProtectedDataCard.css';
 import { Box, Card, CardContent, Chip, Divider } from '@mui/material';
 import { DataSchema } from '@iexec/dataprotector';
-import { isDataschemaHasKey } from '../utils/utils';
+import { isKeyInDataSchema } from '../utils/utils';
 
 export interface ProtectedDataProps {
   id: string;
@@ -24,8 +24,8 @@ export default function ProtectedDataCard(props: ProtectedDataProps) {
           <Chip
             id="chipLabel"
             label={
-              (isDataschemaHasKey(props.schema, 'email') && 'Email') ||
-              (isDataschemaHasKey(props.schema, 'file') && 'File') ||
+              (isKeyInDataSchema(props.schema, 'email') && 'Email') ||
+              (isKeyInDataSchema(props.schema, 'file') && 'File') ||
               'Unknown'
             }
             size="small"
