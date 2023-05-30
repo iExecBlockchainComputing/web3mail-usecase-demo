@@ -119,7 +119,7 @@ export const homeApi = api.injectEndpoints({
             .map((item: GrantedAccess) => {
               return item.requesterrestrict.toLowerCase();
             });
-          return { data: grantedAccessList };
+          return { data: grantedAccessList || [] };
         } catch (e: any) {
           return { error: e.message };
         }
