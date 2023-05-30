@@ -81,6 +81,16 @@ export const homeApi = api.injectEndpoints({
           return { error: e.message };
         }
       },
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.map(({ address }) => ({
+                type: 'PROTECTED_DATA' as const,
+                address,
+              })),
+              'PROTECTED_DATA',
+            ]
+          : ['PROTECTED_DATA'],
     }),
     createProtectedData: builder.mutation<
       ProtectedDataWithSecretProps,
@@ -94,8 +104,9 @@ export const homeApi = api.injectEndpoints({
           return { error: e.message };
         }
       },
+      invalidatesTags: ['PROTECTED_DATA'],
     }),
-    fetchGrantedAccess: builder.mutation<string[], string>({
+    fetchGrantedAccess: builder.query<string[], string>({
       queryFn: async (protectedData) => {
         try {
           const grantedAccess = await iExecDataProtector?.fetchGrantedAccess({
@@ -112,11 +123,23 @@ export const homeApi = api.injectEndpoints({
             .map((item: GrantedAccess) => {
               return item.requesterrestrict.toLowerCase();
             });
-
           return { data: grantedAccessList };
         } catch (e: any) {
           return { error: e.message };
         }
+      },
+      providesTags: (result) => {
+        const tags = result
+          ? [
+              ...result.map((address) => ({
+                type: 'GRANTED_ACCESS' as const,
+                id: address,
+              })),
+              'GRANTED_ACCESS',
+            ]
+          : ['GRANTED_ACCESS'];
+        console.log('fetchGrantedAccess providesTags:', tags);
+        return tags;
       },
     }),
     revokeOneAccess: builder.mutation<
@@ -141,6 +164,12 @@ export const homeApi = api.injectEndpoints({
           return { error: e.message };
         }
       },
+      invalidatesTags: (_result, _error, args) => {
+        const tags = [{ type: 'GRANTED_ACCESS', id: args.authorizedUser }];
+
+        console.log('revokeOneAccess invalidatesTags:', tags);
+        return tags;
+      },
     }),
   }),
 });
@@ -148,6 +177,6 @@ export const homeApi = api.injectEndpoints({
 export const {
   useFetchProtectedDataQuery,
   useCreateProtectedDataMutation,
-  useFetchGrantedAccessMutation,
+  useFetchGrantedAccessQuery,
   useRevokeOneAccessMutation,
 } = homeApi;

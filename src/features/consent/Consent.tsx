@@ -3,20 +3,23 @@ import ToggleList from '../../components/ToggleList';
 import { useParams } from 'react-router-dom';
 import { Box, Chip } from '@mui/material';
 import {
-  useFetchGrantedAccessMutation,
+  useFetchGrantedAccessQuery,
   useFetchProtectedDataQuery,
 } from '../../app/appSlice';
 import { useAccount } from 'wagmi';
-import { useEffect, useState } from 'react';
-import { isDataschemaHasKey } from '../../utils/utils';
+import { isDataSchemaHasKey } from '../../utils/utils';
 
 export default function Consent() {
   const { ProtectedDataId } = useParams();
   const { address } = useAccount();
-  const [authorizedUsers, setAuthorizedUsers] = useState<string[]>([]);
 
   //query RTK API as query hook
-  const [fetchGrantedAccess, result] = useFetchGrantedAccessMutation();
+  const { data: grantedAccessList = [] } = useFetchGrantedAccessQuery(
+    ProtectedDataId!,
+    {
+      skip: !ProtectedDataId,
+    }
+  );
   const { data: protectedData = [] } = useFetchProtectedDataQuery(
     address as string
   );
@@ -26,22 +29,6 @@ export default function Consent() {
     (item) => item.address === ProtectedDataId
   );
 
-  useEffect(() => {
-    if (result.isSuccess) {
-      setAuthorizedUsers(result.data);
-    }
-  }, [result.isSuccess]);
-
-  useEffect(() => {
-    if (ProtectedDataId) {
-      refreshAuthorizedUsers();
-    }
-  }, [ProtectedDataId]);
-
-  const refreshAuthorizedUsers = () => {
-    fetchGrantedAccess(ProtectedDataId!);
-  };
-
   return (
     <Box id="consent">
       <Box sx={{ textAlign: 'left' }}>
@@ -49,9 +36,9 @@ export default function Consent() {
         <Chip
           id="chipType"
           label={
-            (isDataschemaHasKey(protectedDataSelected?.schema, 'email') &&
+            (isDataSchemaHasKey(protectedDataSelected?.schema, 'email') &&
               'Email') ||
-            (isDataschemaHasKey(protectedDataSelected?.schema, 'file') &&
+            (isDataSchemaHasKey(protectedDataSelected?.schema, 'file') &&
               'File') ||
             'Unknown'
           }
@@ -73,13 +60,10 @@ export default function Consent() {
           </li>
         </ul>
       </Box>
-      {authorizedUsers?.length ? (
+      {grantedAccessList?.length ? (
         <Box sx={{ textAlign: 'left', my: 5, mb: 20 }}>
           <h2>1 to 1 messaging</h2>
-          <ToggleList
-            authorizedUser={authorizedUsers}
-            refreshAuthorizedUsers={refreshAuthorizedUsers}
-          />
+          <ToggleList authorizedUser={grantedAccessList} />
         </Box>
       ) : (
         <Box sx={{ textAlign: 'left', my: 5, mb: 20 }}>
