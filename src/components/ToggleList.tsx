@@ -15,11 +15,10 @@ import { useParams } from 'react-router-dom';
 
 interface ToggleProps {
   authorizedUser: string[];
-  refreshAuthorizedUsers: () => void;
 }
 
 export default function ToggleList(props: ToggleProps) {
-  const { authorizedUser, refreshAuthorizedUsers } = props;
+  const { authorizedUser } = props;
   const { ProtectedDataId } = useParams();
   //query RTK API as mutation hook
   const [revokeOneAccess, result] = useRevokeOneAccessMutation();
@@ -42,7 +41,6 @@ export default function ToggleList(props: ToggleProps) {
   useEffect(() => {
     if (result.isSuccess) {
       setOpen(true);
-      refreshAuthorizedUsers();
     }
   }, [result]);
 
@@ -77,8 +75,7 @@ export default function ToggleList(props: ToggleProps) {
         anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
       >
         <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-The granted access has been successfully revoked!
-
+          The granted access has been successfully revoked!
         </Alert>
       </Snackbar>
     </List>
