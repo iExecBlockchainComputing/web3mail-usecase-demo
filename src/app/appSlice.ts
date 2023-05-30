@@ -128,8 +128,8 @@ export const homeApi = api.injectEndpoints({
           return { error: e.message };
         }
       },
-      providesTags: (result) => {
-        const tags = result
+      providesTags: (result) =>
+        result
           ? [
               ...result.map((address) => ({
                 type: 'GRANTED_ACCESS' as const,
@@ -137,10 +137,7 @@ export const homeApi = api.injectEndpoints({
               })),
               'GRANTED_ACCESS',
             ]
-          : ['GRANTED_ACCESS'];
-        console.log('fetchGrantedAccess providesTags:', tags);
-        return tags;
-      },
+          : ['GRANTED_ACCESS'],
     }),
     revokeOneAccess: builder.mutation<
       RevokedAccess,
@@ -164,12 +161,9 @@ export const homeApi = api.injectEndpoints({
           return { error: e.message };
         }
       },
-      invalidatesTags: (_result, _error, args) => {
-        const tags = [{ type: 'GRANTED_ACCESS', id: args.authorizedUser }];
-
-        console.log('revokeOneAccess invalidatesTags:', tags);
-        return tags;
-      },
+      invalidatesTags: (_result, _error, args) => [
+        { type: 'GRANTED_ACCESS', id: args.authorizedUser },
+      ],
     }),
   }),
 });
