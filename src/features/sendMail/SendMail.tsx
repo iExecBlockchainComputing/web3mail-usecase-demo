@@ -1,16 +1,24 @@
 import {
+  Alert,
   Box,
   Button,
+  Snackbar,
   TextField,
   TextareaAutosize,
   Typography,
 } from '@mui/material';
 import './SendMail.css';
 import { useParams } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useSendMailMutation } from '../../app/appSlice';
+import { useAccount } from 'wagmi';
 
 export default function SendMail() {
   const { receiverId } = useParams();
+  const { address } = useAccount();
+
+  //RTK Mutation hook
+  const [sendMessage, result] = useSendMailMutation();
 
   //for textarea
   const [value, setValue] = useState('');
@@ -29,6 +37,30 @@ export default function SendMail() {
     setValue(inputValue);
     setCharactersRemaining(500 - inputValue.length);
   };
+
+  const sendMail = () => {
+    sendMessage({
+      userAddress: address,
+      mailObject: messageObject,
+      mailContent: value,
+      datasetAddress: 'Address',
+    });
+  };
+
+   //snackbar notification
+   const [open, setOpen] = useState(false);
+   useEffect(() => {
+     if (result.isSuccess) {
+       setOpen(true);
+     }
+   }, [result]);
+ 
+   const handleClose = (_: React.SyntheticEvent | Event, reason?: string) => {
+     if (reason === 'clickaway') {
+       return;
+     }
+     setOpen(false);
+   };
 
   return (
     <Box sx={{ m: 10, mx: 20 }}>
@@ -57,10 +89,21 @@ export default function SendMail() {
           variant="contained"
           color="secondary"
           sx={{ width: '50px', m: 'auto', mr: 0 }}
+          onClick={sendMail}
         >
           Send
         </Button>
       </Box>
+      <Snackbar
+        open={open}
+        autoHideDuration={6000}
+        onClose={handleClose}
+        anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
+      >
+        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+          The granted access has been successfully revoked!
+        </Alert>
+      </Snackbar>
     </Box>
   );
 }

@@ -11,8 +11,15 @@ import { api } from './api';
 import { getAccount } from 'wagmi/actions';
 import { DAPP_WEB3_MAIL_ADDRESS } from '../config/config';
 import { AddressZero } from '@ethersproject/constants';
+import {
+  IExecWeb3Mail,
+  sendMail,
+  SendEmailResponse,
+  SendEmailParams,
+} from '@iexec/web3mail';
 
 let iExecDataProtector: IExecDataProtector | null = null;
+let iExecWeb3Mail: IExecWeb3Mail | null = null;
 
 export interface AppState {
   status: 'Not Connected' | 'Connected' | 'Loading' | 'Failed';
@@ -31,6 +38,7 @@ export const initDataProtector = createAsyncThunk(
       const result = getAccount();
       const provider = await result.connector?.getProvider();
       iExecDataProtector = new IExecDataProtector(provider);
+      iExecWeb3Mail = new IExecWeb3Mail(provider);
     } catch (e: any) {
       return { error: e.message };
     }
@@ -164,6 +172,16 @@ export const homeApi = api.injectEndpoints({
         { type: 'GRANTED_ACCESS', id: args.authorizedUser },
       ],
     }),
+    sendMail: builder.mutation<SendEmailResponse, SendEmailParams>({
+      queryFn: async (args) => {
+        try {
+          const data = await sendMail(args);
+          return { data };
+        } catch (e: any) {
+          return { error: e.message };
+        }
+      },
+    }),
   }),
 });
 
@@ -172,4 +190,5 @@ export const {
   useCreateProtectedDataMutation,
   useFetchGrantedAccessQuery,
   useRevokeOneAccessMutation,
+  useSendMailMutation,
 } = homeApi;
