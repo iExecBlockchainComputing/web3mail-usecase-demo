@@ -6,7 +6,7 @@ import {
   ProtectedData,
   Consent,
   EmailDapp,
-  SendMessageTo,
+  SendMail,
 } from './features';
 
 function App() {
@@ -24,10 +24,7 @@ function App() {
             element={<NewProtectedData />}
           />
           <Route path="/sendMail" element={<EmailDapp />} />
-          <Route
-            path="/sendMail/sendMessageTo/:receiverId"
-            element={<SendMessageTo />}
-          />
+          <Route path="/sendMail/:receiverId" element={<SendMail />} />
         </Route>
         <Route path="*" element={<Navigate />} />
       </Routes>

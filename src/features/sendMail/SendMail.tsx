@@ -4,35 +4,35 @@ import {
   TextField,
   TextareaAutosize,
   Typography,
-} from '@mui/material'
-import './SendMessageTo.css'
-import { useParams } from 'react-router-dom'
-import { useState } from 'react'
+} from '@mui/material';
+import './SendMail.css';
+import { useParams } from 'react-router-dom';
+import { useState } from 'react';
 
-export default function SendMessageTo() {
-  const { receiverId } = useParams()
+export default function SendMail() {
+  const { receiverId } = useParams();
 
   //for textarea
-  const [value, setValue] = useState('')
-  const [charactersRemaining, setCharactersRemaining] = useState(500)
+  const [value, setValue] = useState('');
+  const [charactersRemaining, setCharactersRemaining] = useState(500);
 
   //for name et dataType
-  const [messageObject, setMessageObject] = useState('')
+  const [messageObject, setMessageObject] = useState('');
 
   //handle functions
   const handleMessageObjectChange = (event: any) => {
-    setMessageObject(event.target.value)
-  }
+    setMessageObject(event.target.value);
+  };
 
   const handleChange = (event: any) => {
-    const inputValue = event.target.value
-    setValue(inputValue)
-    setCharactersRemaining(500 - inputValue.length)
-  }
+    const inputValue = event.target.value;
+    setValue(inputValue);
+    setCharactersRemaining(500 - inputValue.length);
+  };
 
   return (
     <Box sx={{ m: 10, mx: 20 }}>
-      <h2>Send Message to {receiverId}</h2>
+      <h2>Send Mail to {receiverId}</h2>
       <Box sx={{ my: 2, display: 'flex', flexDirection: 'column' }}>
         <TextField
           fullWidth
@@ -62,5 +62,5 @@ export default function SendMessageTo() {
         </Button>
       </Box>
     </Box>
-  )
+  );
 }

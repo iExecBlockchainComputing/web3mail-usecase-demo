@@ -33,9 +33,9 @@ export default function EmailDapp() {
         <Button
           variant="contained"
           color="secondary"
-          onClick={() => navigate(`./sendMessageTo/${params.row.Eth_Address}`)}
+          onClick={() => navigate(`./${params.row.Eth_Address}`)}
         >
-          Send Message
+          Send Mail
         </Button>
       ),
     },
