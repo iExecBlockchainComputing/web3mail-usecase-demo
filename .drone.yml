@@ -130,8 +130,8 @@ steps:
         - docker compose up -d
         - docker logout docker-regis.iex.ec
 
-# Promote a production release from main branch
 ---
+# Deploy a production release from main branch
 kind: pipeline
 type: docker
 name: deploy-production
