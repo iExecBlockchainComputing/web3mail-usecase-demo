@@ -165,7 +165,6 @@ export const homeApi = api.injectEndpoints({
       },
       invalidatesTags: (_result, _error, args) => [
         { type: 'GRANTED_ACCESS', id: args.authorizedUser },
-        'CONTACTS',
       ],
     }),
     fetchMyContacts: builder.query<Contact[], void>({
@@ -177,7 +176,6 @@ export const homeApi = api.injectEndpoints({
           return { error: e.message };
         }
       },
-      providesTags: ['CONTACTS'],
     }),
   }),
 });
