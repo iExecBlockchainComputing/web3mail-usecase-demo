@@ -93,3 +93,10 @@ You can learn more about Vite in the [Vite documentation](https://vitejs.dev/gui
 To learn React, check out the [React documentation](https://reactjs.org/).
 
 For TypeScript, check out the [TypeScript handbook](https://www.typescriptlang.org/docs/).
+
+## In order to run docker
+
+```
+docker build -t vite-app .
+docker run -p 80:80 vite-app
+```

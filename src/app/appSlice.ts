@@ -3,7 +3,6 @@ import { RootState } from './store';
 import {
   ProtectedData,
   IExecDataProtector,
-  ProtectedDataWithSecretProps,
   ProtectDataParams,
   GrantedAccess,
   RevokedAccess,
@@ -79,7 +78,7 @@ export const homeApi = api.injectEndpoints({
       queryFn: async (owner) => {
         try {
           const data = await iExecDataProtector?.fetchProtectedData({ owner });
-          return { data: data };
+          return { data: data || [] };
         } catch (e: any) {
           return { error: e.message };
         }
@@ -95,14 +94,11 @@ export const homeApi = api.injectEndpoints({
             ]
           : ['PROTECTED_DATA'],
     }),
-    createProtectedData: builder.mutation<
-      ProtectedDataWithSecretProps,
-      ProtectDataParams
-    >({
+    createProtectedData: builder.mutation<string, ProtectDataParams>({
       queryFn: async (args) => {
         try {
           const data = await iExecDataProtector?.protectData(args);
-          return { data: data.address };
+          return { data: data?.address || 'No Protected Data Created' };
         } catch (e: any) {
           return { error: e.message };
         }
@@ -126,7 +122,7 @@ export const homeApi = api.injectEndpoints({
             .map((item: GrantedAccess) => {
               return item.requesterrestrict.toLowerCase();
             });
-          return { data: grantedAccessList };
+          return { data: grantedAccessList || [] };
         } catch (e: any) {
           return { error: e.message };
         }
@@ -143,7 +139,7 @@ export const homeApi = api.injectEndpoints({
           : ['GRANTED_ACCESS'],
     }),
     revokeOneAccess: builder.mutation<
-      RevokedAccess,
+      RevokedAccess | null,
       { protectedData: string; authorizedUser: string }
     >({
       queryFn: async (args) => {
@@ -153,13 +149,16 @@ export const homeApi = api.injectEndpoints({
               ...args,
               authorizedApp: DAPP_WEB3_MAIL_ADDRESS,
             });
-          let revokedAccess: RevokedAccess | undefined;
+          let revokedAccess: RevokedAccess | null = null;
           if (grantedAccessList && grantedAccessList.length !== 0) {
-            revokedAccess = await iExecDataProtector?.revokeOneAccess(
+            const tempRevokedAccess = await iExecDataProtector?.revokeOneAccess(
               grantedAccessList[0]
             );
+            if (tempRevokedAccess) {
+              revokedAccess = tempRevokedAccess;
+            }
           }
-          return { data: revokedAccess || [] };
+          return { data: revokedAccess };
         } catch (e: any) {
           return { error: e.message };
         }
