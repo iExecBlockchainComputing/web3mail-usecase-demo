@@ -1,6 +1,6 @@
 import './EmailDapp.css';
 import SearchIcon from '@mui/icons-material/Search';
-import { Avatar, Box, Button, InputBase } from '@mui/material';
+import { Box, Button, InputBase } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { useNavigate } from 'react-router-dom';
 import { useFetchMyContactsQuery } from '../../app/appSlice';
@@ -10,8 +10,8 @@ import { convertTimestampToDate } from '../../utils/utils';
 
 type Row = {
   id: string;
-  avatar: string;
   owner: Address;
+  protectedDataAddress: Address;
   accessGrantTimestamp: TimeStamp;
 };
 
@@ -28,31 +28,32 @@ export default function EmailDapp() {
 
   const columns: GridColDef[] = [
     {
-      field: 'avatar',
-      headerName: '',
-      width: 150,
-      sortable: false,
-      renderCell: (params) => (
-        <Avatar alt={params.row.name} src={params.row.avatar} />
-      ),
-    },
-    {
       field: 'owner',
       headerName: 'Eth Address',
       type: 'string',
-      width: 350,
+      width: 370,
     },
-    { field: 'accessGrantTimestamp', headerName: 'Subscribe on', width: 400 },
+    {
+      field: 'protectedDataAddress',
+      headerName: 'Protected Data',
+      type: 'string',
+      width: 370,
+    },
+    { field: 'accessGrantTimestamp', headerName: 'Subscribe on', width: 150 },
     {
       field: 'Actions',
       headerName: 'Actions',
-      width: 500,
+      width: 350,
       sortable: false,
       renderCell: (params) => (
         <Button
           variant="contained"
           color="secondary"
-          onClick={() => navigate(`./sendMessageTo/${params.row.owner}`)}
+          onClick={() =>
+            navigate(
+              `./sendMessageTo/${params.row.owner}/${params.row.protectedDataAddress}`
+            )
+          }
         >
           Send Message
         </Button>
@@ -66,8 +67,8 @@ export default function EmailDapp() {
         console.log('Timestamp: ', contact.accessGrantTimestamp);
         return {
           id: index.toString(),
-          avatar: '/static/images/avatar/.jpg',
           owner: contact.owner.toLowerCase(),
+          protectedDataAddress: contact.address.toLowerCase(),
           accessGrantTimestamp: convertTimestampToDate(
             contact.accessGrantTimestamp
           ),
