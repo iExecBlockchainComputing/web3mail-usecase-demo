@@ -36,8 +36,8 @@ steps:
       dockerfile: Dockerfile
       dry_run: true
 
-# Promote a dev release from develop branch
 ---
+# Deploy a dev release from develop branch
 kind: pipeline
 type: docker
 name: deploy-dev
