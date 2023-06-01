@@ -3,9 +3,20 @@ import SearchIcon from '@mui/icons-material/Search';
 import { Avatar, Box, Button, InputBase } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { useNavigate } from 'react-router-dom';
+import { useFetchMyContactsQuery } from '../../app/appSlice';
+import { useEffect, useState } from 'react';
+import { Contact } from '@iexec/web3mail';
 
 export default function EmailDapp() {
   const navigate = useNavigate();
+
+  //query RTK API as query hook
+  const { data: fetchMyContacts = [] } = useFetchMyContactsQuery();
+  const [rows, setRows] = useState<Contact[]>([]);
+
+  //for search bar
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filteredRows, setFilteredRows] = useState<Contact[]>([]);
 
   const columns: GridColDef[] = [
     {
@@ -18,12 +29,12 @@ export default function EmailDapp() {
       ),
     },
     {
-      field: 'Eth_Address',
+      field: 'owner',
       headerName: 'Eth Address',
       type: 'string',
       width: 350,
     },
-    { field: 'Subscribe_on', headerName: 'Subscribe on', width: 400 },
+    { field: 'accessGrantTimestamp', headerName: 'Subscribe on', width: 400 },
     {
       field: 'Actions',
       headerName: 'Actions',
@@ -33,7 +44,7 @@ export default function EmailDapp() {
         <Button
           variant="contained"
           color="secondary"
-          onClick={() => navigate(`./sendMessageTo/${params.row.Eth_Address}`)}
+          onClick={() => navigate(`./sendMessageTo/${params.row.owner}`)}
         >
           Send Message
         </Button>
@@ -41,32 +52,33 @@ export default function EmailDapp() {
     },
   ];
 
-  const rows = [
-    {
-      id: 1,
-      avatar: 'https://material-ui.com/static/images/avatar/1.jpg',
-      Eth_Address: '0x873a....883',
-      Subscribe_on: '6/14/2021',
-    },
-    {
-      id: 2,
-      avatar: 'https://material-ui.com/static/images/avatar/2.jpg',
-      Eth_Address: '0x793a....az3',
-      Subscribe_on: '6/14/2021',
-    },
-    {
-      id: 3,
-      avatar: 'https://material-ui.com/static/images/avatar/2.jpg',
-      Eth_Address: '0x563a....7jh',
-      Subscribe_on: '6/14/2021',
-    },
-    {
-      id: 4,
-      avatar: 'https://material-ui.com/static/images/avatar/2.jpg',
-      Eth_Address: '0x12l7....373',
-      Subscribe_on: '6/14/2021',
-    },
-  ];
+  useEffect(() => {
+    if (fetchMyContacts.length > 0) {
+      const rows = fetchMyContacts.map((contact: Contact, index: number) => {
+        return {
+          id: index.toString(),
+          avatar: '/static/images/avatar/.jpg',
+          owner: contact.owner.toLowerCase(),
+          accessGrantTimestamp: contact.accessGrantTimestamp,
+        };
+      });
+      setRows(rows);
+    }
+  }, [fetchMyContacts]);
+
+  useEffect(() => {
+    if (rows.length > 0) {
+      setFilteredRows(
+        rows.filter((row: { owner: string }) =>
+          row.owner.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+      );
+    }
+  }, [searchTerm, rows]);
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+  };
 
   return (
     <Box sx={{ m: 10, mx: 20 }}>
@@ -80,16 +92,24 @@ export default function EmailDapp() {
           inputProps={{ 'aria-label': 'search' }}
           id="inputSearch"
           sx={{ width: '100%' }}
+          value={searchTerm}
+          onChange={handleSearchChange}
         />
       </Box>
-      <Box sx={{ my: 10, height: 400 }}>
-        <DataGrid
-          disableColumnMenu
-          rows={rows}
-          columns={columns}
-          sx={{ border: 'none' }}
-        />
-      </Box>
+      {filteredRows.length > 0 ? (
+        <Box sx={{ my: 10, height: 400 }}>
+          <DataGrid
+            disableColumnMenu
+            rows={filteredRows}
+            columns={columns}
+            sx={{ border: 'none' }}
+          />
+        </Box>
+      ) : (
+        <Box sx={{ textAlign: 'center', my: 5 }}>
+          <h4>You have no subscribers!</h4>
+        </Box>
+      )}
     </Box>
   );
 }
