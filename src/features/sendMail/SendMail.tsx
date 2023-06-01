@@ -14,7 +14,7 @@ import { useSendMailMutation } from '../../app/appSlice';
 import { useAccount } from 'wagmi';
 
 export default function SendMail() {
-  const { receiverId } = useParams();
+  const { receiverId, protectedDataAddress } = useParams();
   const { address } = useAccount();
 
   //RTK Mutation hook
@@ -43,24 +43,24 @@ export default function SendMail() {
       userAddress: address,
       mailObject: messageObject,
       mailContent: value,
-      datasetAddress: 'Address',
+      datasetAddress: protectedDataAddress,
     });
   };
 
-   //snackbar notification
-   const [open, setOpen] = useState(false);
-   useEffect(() => {
-     if (result.isSuccess) {
-       setOpen(true);
-     }
-   }, [result]);
- 
-   const handleClose = (_: React.SyntheticEvent | Event, reason?: string) => {
-     if (reason === 'clickaway') {
-       return;
-     }
-     setOpen(false);
-   };
+  //snackbar notification
+  const [open, setOpen] = useState(false);
+  useEffect(() => {
+    if (result.isSuccess) {
+      setOpen(true);
+    }
+  }, [result]);
+
+  const handleClose = (_: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen(false);
+  };
 
   return (
     <Box sx={{ m: 10, mx: 20 }}>
@@ -101,7 +101,7 @@ export default function SendMail() {
         anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
       >
         <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-          The granted access has been successfully revoked!
+          The mail has been sent!
         </Alert>
       </Snackbar>
     </Box>
