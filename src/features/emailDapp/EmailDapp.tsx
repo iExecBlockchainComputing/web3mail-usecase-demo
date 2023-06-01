@@ -5,18 +5,25 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { useNavigate } from 'react-router-dom';
 import { useFetchMyContactsQuery } from '../../app/appSlice';
 import { useEffect, useState } from 'react';
-import { Contact } from '@iexec/web3mail';
+import { Contact, Address, TimeStamp } from '@iexec/web3mail';
+
+type Row = {
+  id: string;
+  avatar: string;
+  owner: Address;
+  accessGrantTimestamp: TimeStamp;
+};
 
 export default function EmailDapp() {
   const navigate = useNavigate();
 
   //query RTK API as query hook
   const { data: fetchMyContacts = [] } = useFetchMyContactsQuery();
-  const [rows, setRows] = useState<Contact[]>([]);
+  const [rows, setRows] = useState<Row[]>([]);
 
   //for search bar
   const [searchTerm, setSearchTerm] = useState('');
-  const [filteredRows, setFilteredRows] = useState<Contact[]>([]);
+  const [filteredRows, setFilteredRows] = useState<Row[]>([]);
 
   const columns: GridColDef[] = [
     {
