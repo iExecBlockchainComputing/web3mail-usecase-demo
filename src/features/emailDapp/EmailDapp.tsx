@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { useFetchMyContactsQuery } from '../../app/appSlice';
 import { useEffect, useState } from 'react';
 import { Contact, Address, TimeStamp } from '@iexec/web3mail';
+import { convertTimestampToDate } from '../../utils/utils';
 
 type Row = {
   id: string;
@@ -62,11 +63,14 @@ export default function EmailDapp() {
   useEffect(() => {
     if (fetchMyContacts.length > 0) {
       const rows = fetchMyContacts.map((contact: Contact, index: number) => {
+        console.log('Timestamp: ', contact.accessGrantTimestamp);
         return {
           id: index.toString(),
           avatar: '/static/images/avatar/.jpg',
           owner: contact.owner.toLowerCase(),
-          accessGrantTimestamp: contact.accessGrantTimestamp,
+          accessGrantTimestamp: convertTimestampToDate(
+            contact.accessGrantTimestamp
+          ),
         };
       });
       setRows(rows);
