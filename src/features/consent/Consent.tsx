@@ -74,7 +74,7 @@ export default function Consent() {
           </Box>
         ) : (
           <Box sx={{ textAlign: 'center' }}>
-            <h4>No authorized user for web3Mail DAPP</h4>
+            <h4>No authorized user for web3Mail dApp</h4>
           </Box>
         )}
         <Fab
