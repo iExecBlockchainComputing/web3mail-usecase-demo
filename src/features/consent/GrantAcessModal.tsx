@@ -57,13 +57,14 @@ export default function GrantAcessModal(props: GrantAccessModalParams) {
   };
 
   useEffect(() => {
-    if (result.isSuccess) {
+    if (result.isSuccess || result.isError) {
       setOpen(true);
       result.reset();
       setEthAddress('');
       setNbOfAccess(1);
       props.handleClose();
     }
+    console.log(result);
   }, [result, props]);
 
   return (
@@ -74,8 +75,12 @@ export default function GrantAcessModal(props: GrantAccessModalParams) {
         onClose={handleClose}
         anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
       >
-        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-          New access granted!
+        <Alert
+          onClose={handleClose}
+          severity={result.isSuccess ? 'success' : 'error'}
+          sx={{ width: '100%' }}
+        >
+          {result.isSuccess ? 'New access granted!' : 'Failed to grant access!'}
         </Alert>
       </Snackbar>
       <Modal open={props.open} onClose={props.handleClose}>
