@@ -48,6 +48,7 @@ export default function GrantAcessModal(props: GrantAccessModalParams) {
 
   //snackbar notification
   const [open, setOpen] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   const handleClose = (_: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === 'clickaway') {
@@ -58,13 +59,13 @@ export default function GrantAcessModal(props: GrantAccessModalParams) {
 
   useEffect(() => {
     if (result.isSuccess || result.isError) {
+      setSuccess(result.isSuccess);
       setOpen(true);
       result.reset();
       setEthAddress('');
       setNbOfAccess(1);
       props.handleClose();
     }
-    console.log(result);
   }, [result, props]);
 
   return (
@@ -77,12 +78,13 @@ export default function GrantAcessModal(props: GrantAccessModalParams) {
       >
         <Alert
           onClose={handleClose}
-          severity={result.isSuccess ? 'success' : 'error'}
+          severity={success ? 'success' : 'error'}
           sx={{ width: '100%' }}
         >
-          {result.isSuccess ? 'New access granted!' : 'Failed to grant access!'}
+          {success ? 'New access granted!' : 'Failed to grant access!'}
         </Alert>
       </Snackbar>
+
       <Modal open={props.open} onClose={props.handleClose}>
         <Box id="modalBox">
           <Typography
