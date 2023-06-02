@@ -6,6 +6,7 @@ import {
   ProtectDataParams,
   GrantedAccess,
   RevokedAccess,
+  GrantAccessParams,
 } from '@iexec/dataprotector';
 import { api } from './api';
 import { getAccount } from 'wagmi/actions';
@@ -85,7 +86,7 @@ export const homeApi = api.injectEndpoints({
           ? [
               ...result.map(({ address }) => ({
                 type: 'PROTECTED_DATA' as const,
-                address,
+                id: address,
               })),
               'PROTECTED_DATA',
             ]
@@ -164,6 +165,18 @@ export const homeApi = api.injectEndpoints({
         { type: 'GRANTED_ACCESS', id: args.authorizedUser },
       ],
     }),
+    grantNewAccess: builder.mutation<string, GrantAccessParams>({
+      queryFn: async (args) => {
+        try {
+          const data = await iExecDataProtector?.grantAccess(args);
+
+          return { data: data?.sign || '' };
+        } catch (e: any) {
+          return { error: e.message };
+        }
+      },
+      invalidatesTags: ['GRANTED_ACCESS'],
+    }),
   }),
 });
 
@@ -172,4 +185,5 @@ export const {
   useCreateProtectedDataMutation,
   useFetchGrantedAccessQuery,
   useRevokeOneAccessMutation,
+  useGrantNewAccessMutation,
 } = homeApi;
