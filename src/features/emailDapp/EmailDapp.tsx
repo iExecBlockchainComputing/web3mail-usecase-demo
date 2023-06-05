@@ -19,7 +19,7 @@ export default function EmailDapp() {
   const navigate = useNavigate();
 
   //query RTK API as query hook
-  const { data: fetchMyContacts = [] } = useFetchMyContactsQuery();
+  const { data: myContacts = [] } = useFetchMyContactsQuery();
   const [rows, setRows] = useState<Row[]>([]);
 
   //for search bar
@@ -62,9 +62,8 @@ export default function EmailDapp() {
   ];
 
   useEffect(() => {
-    if (fetchMyContacts.length > 0) {
-      const rows = fetchMyContacts.map((contact: Contact, index: number) => {
-        console.log('Timestamp: ', contact.accessGrantTimestamp);
+    if (myContacts.length > 0) {
+      const rows = myContacts.map((contact: Contact, index: number) => {
         return {
           id: index.toString(),
           owner: contact.owner.toLowerCase(),
@@ -76,7 +75,7 @@ export default function EmailDapp() {
       });
       setRows(rows);
     }
-  }, [fetchMyContacts]);
+  }, [myContacts]);
 
   useEffect(() => {
     if (rows.length > 0) {
