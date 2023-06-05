@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { useFetchMyContactsQuery } from '../../app/appSlice';
 import { useEffect, useState } from 'react';
 import { Contact, Address, TimeStamp } from '@iexec/web3mail';
-import { convertTimestampToDate } from '../../utils/utils';
+import { getLocalDateString } from '../../utils/utils';
 
 type Row = {
   id: string;
@@ -69,7 +69,7 @@ export default function EmailDapp() {
           id: index.toString(),
           owner: contact.owner.toLowerCase(),
           protectedDataAddress: contact.address.toLowerCase(),
-          accessGrantTimestamp: convertTimestampToDate(
+          accessGrantTimestamp: getLocalDateString(
             contact.accessGrantTimestamp
           ),
         };

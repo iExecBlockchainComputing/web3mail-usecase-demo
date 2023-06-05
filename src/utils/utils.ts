@@ -51,7 +51,7 @@ export const createArrayBufferFromFile = async (
   }
 };
 
-export const convertTimestampToDate = (timestamp: TimeStamp): string => {
+export const getLocalDateString = (timestamp: TimeStamp): string => {
   const date = new Date(timestamp);
   return date.toLocaleDateString();
 };
