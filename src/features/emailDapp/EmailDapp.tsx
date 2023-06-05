@@ -3,10 +3,15 @@ import SearchIcon from '@mui/icons-material/Search';
 import { Box, Button, InputBase } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { useNavigate } from 'react-router-dom';
-import { useFetchMyContactsQuery } from '../../app/appSlice';
-import { useEffect, useState } from 'react';
+import {
+  selectAppIsConnected,
+  useFetchMyContactsQuery,
+} from '../../app/appSlice';
+import { useState } from 'react';
 import { Contact, Address, TimeStamp } from '@iexec/web3mail';
 import { getLocalDateString } from '../../utils/utils';
+import { useAccount } from 'wagmi';
+import { useAppSelector } from '../../app/hooks';
 
 type Row = {
   id: string;
@@ -17,9 +22,16 @@ type Row = {
 
 export default function EmailDapp() {
   const navigate = useNavigate();
+  const { address } = useAccount();
+  const isAccountConnected = useAppSelector(selectAppIsConnected);
 
   //query RTK API as query hook
-  const { data: myContacts = [], isLoading } = useFetchMyContactsQuery();
+  const { data: myContacts = [], isLoading } = useFetchMyContactsQuery(
+    address as string,
+    {
+      skip: !isAccountConnected,
+    }
+  );
 
   //for search bar
   const [searchTerm, setSearchTerm] = useState('');
@@ -59,14 +71,20 @@ export default function EmailDapp() {
     },
   ];
 
-  const rows: Row[] = myContacts.map((contact: Contact, index: number) => {
-    return {
-      id: index.toString(),
-      owner: contact.owner.toLowerCase(),
-      protectedDataAddress: contact.address.toLowerCase(),
-      accessGrantTimestamp: getLocalDateString(contact.accessGrantTimestamp),
-    };
-  });
+  //modified the return of fetchMyContact in the web3Mail SDK to order them by timestamp
+  const rows: Row[] = [...myContacts]
+    .sort(
+      (a: Contact, b: Contact) =>
+        Date.parse(b.accessGrantTimestamp) - Date.parse(a.accessGrantTimestamp)
+    )
+    .map((contact: Contact, index: number) => {
+      return {
+        id: index.toString(),
+        owner: contact.owner.toLowerCase(),
+        protectedDataAddress: contact.address.toLowerCase(),
+        accessGrantTimestamp: getLocalDateString(contact.accessGrantTimestamp),
+      };
+    });
 
   const filteredRows: Row[] = rows.filter((row: { owner: string }) =>
     row.owner.toLowerCase().includes(searchTerm.toLowerCase())

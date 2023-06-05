@@ -180,7 +180,7 @@ export const homeApi = api.injectEndpoints({
       },
       invalidatesTags: ['GRANTED_ACCESS'],
     }),
-    fetchMyContacts: builder.query<Contact[], void>({
+    fetchMyContacts: builder.query<Contact[], string >({
       queryFn: async () => {
         try {
           const contacts = await iExecWeb3Mail?.fetchMyContacts();
