@@ -53,8 +53,5 @@ export const createArrayBufferFromFile = async (
 
 export const convertTimestampToDate = (timestamp: TimeStamp): string => {
   const date = new Date(timestamp);
-  const day = ('0' + date.getDate()).slice(-2);
-  const month = ('0' + (date.getMonth() + 1)).slice(-2);
-  const year = date.getFullYear().toString();
-  return `${day}/${month}/${year}`;
+  return date.toLocaleDateString();
 };
