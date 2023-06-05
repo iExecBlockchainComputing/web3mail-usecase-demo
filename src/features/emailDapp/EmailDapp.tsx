@@ -19,9 +19,9 @@ export default function EmailDapp() {
   const navigate = useNavigate();
 
   //query RTK API as query hook
-  const { data: myContacts = [] } = useFetchMyContactsQuery();
+  const { data: myContacts = [], isLoading } = useFetchMyContactsQuery();
   const [rows, setRows] = useState<Row[]>([]);
-
+  console.log('myContacts', myContacts, isLoading);
   //for search bar
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredRows, setFilteredRows] = useState<Row[]>([]);
@@ -107,7 +107,7 @@ export default function EmailDapp() {
           onChange={handleSearchChange}
         />
       </Box>
-      {filteredRows.length > 0 ? (
+      {filteredRows.length > 0 && !isLoading && (
         <Box sx={{ my: 10, height: 400 }}>
           <DataGrid
             disableColumnMenu
@@ -117,9 +117,15 @@ export default function EmailDapp() {
             sx={{ border: 'none' }}
           />
         </Box>
-      ) : (
+      )}
+      {filteredRows.length === 0 && !isLoading && (
         <Box sx={{ textAlign: 'center', my: 5 }}>
           <h4>You have no subscribers!</h4>
+        </Box>
+      )}
+      {isLoading && (
+        <Box sx={{ textAlign: 'center', my: 5 }}>
+          <h4>Fetching your contacts...</h4>
         </Box>
       )}
     </Box>
