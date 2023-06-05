@@ -114,6 +114,7 @@ export default function EmailDapp() {
             disableColumnMenu
             rows={filteredRows}
             columns={columns}
+            autoPageSize={true}
             sx={{ border: 'none' }}
           />
         </Box>
