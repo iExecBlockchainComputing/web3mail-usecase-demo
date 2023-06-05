@@ -21,7 +21,7 @@ export default function EmailDapp() {
   //query RTK API as query hook
   const { data: myContacts = [], isLoading } = useFetchMyContactsQuery();
   const [rows, setRows] = useState<Row[]>([]);
-  console.log('myContacts', myContacts, isLoading);
+
   //for search bar
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredRows, setFilteredRows] = useState<Row[]>([]);
