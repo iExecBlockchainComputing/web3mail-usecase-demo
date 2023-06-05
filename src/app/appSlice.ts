@@ -6,6 +6,7 @@ import {
   ProtectDataParams,
   GrantedAccess,
   RevokedAccess,
+  GrantAccessParams,
 } from '@iexec/dataprotector';
 import { Contact, IExecWeb3Mail } from '@iexec/web3mail';
 import { api } from './api';
@@ -88,7 +89,7 @@ export const homeApi = api.injectEndpoints({
           ? [
               ...result.map(({ address }) => ({
                 type: 'PROTECTED_DATA' as const,
-                address,
+                id: address,
               })),
               'PROTECTED_DATA',
             ]
@@ -167,6 +168,18 @@ export const homeApi = api.injectEndpoints({
         { type: 'GRANTED_ACCESS', id: args.authorizedUser },
       ],
     }),
+    grantNewAccess: builder.mutation<string, GrantAccessParams>({
+      queryFn: async (args) => {
+        try {
+          const data = await iExecDataProtector?.grantAccess(args);
+
+          return { data: data?.sign || '' };
+        } catch (e: any) {
+          return { error: e.message };
+        }
+      },
+      invalidatesTags: ['GRANTED_ACCESS'],
+    }),
     fetchMyContacts: builder.query<Contact[], void>({
       queryFn: async () => {
         try {
@@ -186,4 +199,5 @@ export const {
   useFetchGrantedAccessQuery,
   useRevokeOneAccessMutation,
   useFetchMyContactsQuery,
+  useGrantNewAccessMutation,
 } = homeApi;
