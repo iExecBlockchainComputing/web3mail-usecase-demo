@@ -13,8 +13,8 @@ import { DAPP_WEB3_MAIL_ADDRESS } from '../config/config';
 import { AddressZero } from '@ethersproject/constants';
 import {
   IExecWeb3Mail,
-  SendEmailResponse,
   SendEmailParams,
+  SendEmailResponse,
 } from '@iexec/web3mail';
 
 let iExecDataProtector: IExecDataProtector | null = null;
@@ -29,7 +29,6 @@ const initialState: AppState = {
   status: 'Not Connected',
   error: null,
 };
-
 
 export const initDataProtector = createAsyncThunk(
   'app/initDataProtector',
