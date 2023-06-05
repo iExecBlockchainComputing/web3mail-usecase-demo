@@ -7,18 +7,18 @@ import {
   TextareaAutosize,
   Typography,
 } from '@mui/material';
-import './SendMail.css';
+import './SendEmail.css';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { useSendMailMutation } from '../../app/appSlice';
+import { useSendEmailMutation } from '../../app/appSlice';
 import { useAccount } from 'wagmi';
 
-export default function SendMail() {
-  const { receiverId, protectedDataAddress } = useParams();
+export default function SendEmail() {
+  const { receiverId } = useParams();
   const { address } = useAccount();
 
   //RTK Mutation hook
-  const [sendMessage, result] = useSendMailMutation();
+  const [sendMessage, result] = useSendEmailMutation();
 
   //for textarea
   const [value, setValue] = useState('');
@@ -38,12 +38,12 @@ export default function SendMail() {
     setCharactersRemaining(500 - inputValue.length);
   };
 
-  const sendMail = () => {
+  const sendEmail = () => {
+    if (!address) return;
     sendMessage({
-      userAddress: address,
       mailObject: messageObject,
       mailContent: value,
-      datasetAddress: protectedDataAddress,
+      protectedData: address,
     });
   };
 
@@ -89,7 +89,7 @@ export default function SendMail() {
           variant="contained"
           color="secondary"
           sx={{ width: '50px', m: 'auto', mr: 0 }}
-          onClick={sendMail}
+          onClick={sendEmail}
         >
           Send
         </Button>

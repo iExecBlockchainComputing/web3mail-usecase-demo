@@ -13,7 +13,6 @@ import { DAPP_WEB3_MAIL_ADDRESS } from '../config/config';
 import { AddressZero } from '@ethersproject/constants';
 import {
   IExecWeb3Mail,
-  sendMail,
   SendEmailResponse,
   SendEmailParams,
 } from '@iexec/web3mail';
@@ -30,6 +29,7 @@ const initialState: AppState = {
   status: 'Not Connected',
   error: null,
 };
+
 
 export const initDataProtector = createAsyncThunk(
   'app/initDataProtector',
@@ -172,11 +172,11 @@ export const homeApi = api.injectEndpoints({
         { type: 'GRANTED_ACCESS', id: args.authorizedUser },
       ],
     }),
-    sendMail: builder.mutation<SendEmailResponse, SendEmailParams>({
+    sendEmail: builder.mutation<SendEmailResponse | null, SendEmailParams>({
       queryFn: async (args) => {
         try {
-          const data = await sendMail(args);
-          return { data };
+          const SendEmailResponse = await iExecWeb3Mail?.sendEmail(args);
+          return { data: SendEmailResponse || null };
         } catch (e: any) {
           return { error: e.message };
         }
@@ -190,5 +190,5 @@ export const {
   useCreateProtectedDataMutation,
   useFetchGrantedAccessQuery,
   useRevokeOneAccessMutation,
-  useSendMailMutation,
+  useSendEmailMutation,
 } = homeApi;

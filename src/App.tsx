@@ -23,8 +23,8 @@ function App() {
             path="/protectedData/newProtectedData"
             element={<NewProtectedData />}
           />
-          <Route path="/sendMail" element={<EmailDapp />} />
-          <Route path="/sendMail/:receiverId" element={<SendMail />} />
+          <Route path="/sendEmail" element={<EmailDapp />} />
+          <Route path="/sendEmail/:receiverId" element={<SendMail />} />
         </Route>
         <Route path="*" element={<Navigate />} />
       </Routes>
