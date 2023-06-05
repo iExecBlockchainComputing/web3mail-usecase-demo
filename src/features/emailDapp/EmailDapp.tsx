@@ -20,11 +20,9 @@ export default function EmailDapp() {
 
   //query RTK API as query hook
   const { data: myContacts = [], isLoading } = useFetchMyContactsQuery();
-  const [rows, setRows] = useState<Row[]>([]);
 
   //for search bar
   const [searchTerm, setSearchTerm] = useState('');
-  const [filteredRows, setFilteredRows] = useState<Row[]>([]);
 
   const columns: GridColDef[] = [
     {
@@ -61,31 +59,18 @@ export default function EmailDapp() {
     },
   ];
 
-  useEffect(() => {
-    if (myContacts.length > 0) {
-      const rows = myContacts.map((contact: Contact, index: number) => {
-        return {
-          id: index.toString(),
-          owner: contact.owner.toLowerCase(),
-          protectedDataAddress: contact.address.toLowerCase(),
-          accessGrantTimestamp: getLocalDateString(
-            contact.accessGrantTimestamp
-          ),
-        };
-      });
-      setRows(rows);
-    }
-  }, [myContacts]);
+  const rows: Row[] = myContacts.map((contact: Contact, index: number) => {
+    return {
+      id: index.toString(),
+      owner: contact.owner.toLowerCase(),
+      protectedDataAddress: contact.address.toLowerCase(),
+      accessGrantTimestamp: getLocalDateString(contact.accessGrantTimestamp),
+    };
+  });
 
-  useEffect(() => {
-    if (rows.length > 0) {
-      setFilteredRows(
-        rows.filter((row: { owner: string }) =>
-          row.owner.toLowerCase().includes(searchTerm.toLowerCase())
-        )
-      );
-    }
-  }, [searchTerm, rows]);
+  const filteredRows: Row[] = rows.filter((row: { owner: string }) =>
+    row.owner.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
