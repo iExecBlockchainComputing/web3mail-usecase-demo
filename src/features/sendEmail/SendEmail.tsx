@@ -34,7 +34,6 @@ export default function SendEmail() {
   const handleMessageSubjectChange = (event: any) => {
     const inputValue = event.target.value;
     setMessageSubject(inputValue);
-    setCharactersRemainingSubject(78 - inputValue.length);
   };
 
   const handleChange = (event: any) => {
