@@ -30,6 +30,7 @@ const initialState: AppState = {
 export const initDataProtector = createAsyncThunk(
   'app/initDataProtector',
   async () => {
+    console.log('init');
     try {
       const result = getAccount();
       const provider = await result.connector?.getProvider();
