@@ -1,5 +1,4 @@
 import { NavBar } from '@iexec/react-ui-kit';
-import './Navigate.css';
 import { useEffect, useState } from 'react';
 import { useNavigate, Outlet } from 'react-router-dom';
 import { useAccount, useDisconnect } from 'wagmi';
@@ -62,7 +61,7 @@ export default function Navigate() {
           onLogoutClick: () => disconnect(),
         }}
       ></NavBar>
-      {isAccountConnected && <Outlet></Outlet>}
+      {address && isAccountConnected && <Outlet></Outlet>}
     </>
   );
 }
