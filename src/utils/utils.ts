@@ -1,4 +1,5 @@
 import { DataSchema } from '@iexec/dataprotector';
+import { TimeStamp } from '@iexec/web3mail';
 
 export const isKeyInDataSchema = (
   dataSchema: DataSchema,
@@ -48,4 +49,9 @@ export const createArrayBufferFromFile = async (
   } else {
     return Promise.reject(new Error('No file selected'));
   }
+};
+
+export const getLocalDateString = (timestamp: TimeStamp): string => {
+  const date = new Date(timestamp);
+  return date.toLocaleDateString();
 };

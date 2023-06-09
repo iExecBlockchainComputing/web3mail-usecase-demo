@@ -25,7 +25,7 @@ function App() {
           />
           <Route path="/sendMail" element={<EmailDapp />} />
           <Route
-            path="/sendMail/sendMessageTo/:receiverId"
+            path="/sendMail/sendMessageTo/:receiverAddress/:protectedDataAddress"
             element={<SendMessageTo />}
           />
         </Route>

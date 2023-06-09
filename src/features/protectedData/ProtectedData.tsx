@@ -56,7 +56,7 @@ export default function ProtectedData() {
                 <Grid item key={address}>
                   <ProtectedDataCard
                     id={address}
-                    title={name || 'Undifined'}
+                    title={name || 'Undefined'}
                     schema={schema}
                   />
                 </Grid>

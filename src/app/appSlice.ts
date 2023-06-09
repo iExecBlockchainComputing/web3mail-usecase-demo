@@ -8,12 +8,14 @@ import {
   RevokedAccess,
   GrantAccessParams,
 } from '@iexec/dataprotector';
+import { Contact, IExecWeb3Mail } from '@iexec/web3mail';
 import { api } from './api';
 import { getAccount } from 'wagmi/actions';
 import { DAPP_WEB3_MAIL_ADDRESS } from '../config/config';
 import { AddressZero } from '@ethersproject/constants';
 
 let iExecDataProtector: IExecDataProtector | null = null;
+let iExecWeb3Mail: IExecWeb3Mail | null = null;
 
 export interface AppState {
   status: 'Not Connected' | 'Connected' | 'Loading' | 'Failed';
@@ -32,6 +34,7 @@ export const initDataProtector = createAsyncThunk(
       const result = getAccount();
       const provider = await result.connector?.getProvider();
       iExecDataProtector = new IExecDataProtector(provider);
+      iExecWeb3Mail = new IExecWeb3Mail(provider);
     } catch (e: any) {
       return { error: e.message };
     }
@@ -177,6 +180,16 @@ export const homeApi = api.injectEndpoints({
       },
       invalidatesTags: ['GRANTED_ACCESS'],
     }),
+    fetchMyContacts: builder.query<Contact[], string>({
+      queryFn: async () => {
+        try {
+          const contacts = await iExecWeb3Mail?.fetchMyContacts();
+          return { data: contacts || [] };
+        } catch (e: any) {
+          return { error: e.message };
+        }
+      },
+    }),
   }),
 });
 
@@ -185,5 +198,6 @@ export const {
   useCreateProtectedDataMutation,
   useFetchGrantedAccessQuery,
   useRevokeOneAccessMutation,
+  useFetchMyContactsQuery,
   useGrantNewAccessMutation,
 } = homeApi;
