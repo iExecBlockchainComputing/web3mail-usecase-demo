@@ -20,20 +20,27 @@ export default function SendEmail() {
 
   //for textarea
   const [value, setValue] = useState('');
-  const [charactersRemaining, setCharactersRemaining] = useState(500);
+  //limited to 4096 by the SMS
+  const [charactersRemainingMessage, setCharactersRemainingMessage] =
+    useState(4096);
 
   //for name et dataType
   const [messageObject, setMessageObject] = useState('');
+  //limited to 78 by the SMS
+  const [charactersRemainingSubject, setCharactersRemainingSubject] =
+    useState(78);
 
   //handle functions
   const handleMessageObjectChange = (event: any) => {
-    setMessageObject(event.target.value);
+    const inputValue = event.target.value;
+    setMessageObject(inputValue);
+    setCharactersRemainingSubject(78 - inputValue.length);
   };
 
   const handleChange = (event: any) => {
     const inputValue = event.target.value;
     setValue(inputValue);
-    setCharactersRemaining(500 - inputValue.length);
+    setCharactersRemainingMessage(4096 - inputValue.length);
   };
 
   const sendEmailHandle = () => {
@@ -76,6 +83,9 @@ export default function SendEmail() {
           onChange={handleMessageObjectChange}
           sx={{ mt: 3 }}
         />
+        <Typography sx={{ my: 2, fontStyle: 'italic', fontSize: 'smaller' }}>
+          {charactersRemainingSubject} characters remaining
+        </Typography>
         <TextareaAutosize
           placeholder="Enter text here"
           value={value}
@@ -84,7 +94,7 @@ export default function SendEmail() {
           id="textArea"
         />
         <Typography sx={{ my: 2, fontStyle: 'italic', fontSize: 'smaller' }}>
-          {charactersRemaining} characters remaining
+          {charactersRemainingMessage} characters remaining
         </Typography>
         <Button
           variant="contained"
