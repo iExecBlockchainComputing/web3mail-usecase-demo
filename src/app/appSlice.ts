@@ -117,18 +117,13 @@ export const homeApi = api.injectEndpoints({
         try {
           const grantedAccess = await iExecDataProtector?.fetchGrantedAccess({
             protectedData,
+            authorizedApp: DAPP_WEB3_MAIL_ADDRESS,
           });
-          const grantedAccessList = grantedAccess
-            ?.filter((item: GrantedAccess) => {
-              const apprestrict = item?.apprestrict?.toLowerCase();
-              return (
-                apprestrict === DAPP_WEB3_MAIL_ADDRESS ||
-                apprestrict === AddressZero
-              );
-            })
-            .map((item: GrantedAccess) => {
+          const grantedAccessList = grantedAccess?.map(
+            (item: GrantedAccess) => {
               return item.requesterrestrict.toLowerCase();
-            });
+            }
+          );
           return { data: grantedAccessList || [] };
         } catch (e: any) {
           return { error: e.message };
