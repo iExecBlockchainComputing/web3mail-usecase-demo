@@ -61,7 +61,7 @@ export default function EmailDapp() {
           color="secondary"
           onClick={() =>
             navigate(
-              `./${params.row.owner}`
+              `./${params.row.owner}/${params.row.protectedDataAddress}`
             )
           }
         >

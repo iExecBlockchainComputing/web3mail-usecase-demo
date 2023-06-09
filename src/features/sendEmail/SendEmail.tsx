@@ -14,7 +14,7 @@ import { useSendEmailMutation } from '../../app/appSlice';
 import { useAccount } from 'wagmi';
 
 export default function SendEmail() {
-  const { receiverAddress } = useParams();
+  const { receiverAddress, protectedDataAddress } = useParams();
   const { address } = useAccount();
 
   //RTK Mutation hook
@@ -39,11 +39,11 @@ export default function SendEmail() {
   };
 
   const sendEmailHandle = () => {
-    if (!address) return;
+    if (!protectedDataAddress) return;
     sendEmail({
       emailSubject: messageObject,
       emailContent: value,
-      protectedData: address,
+      protectedData: protectedDataAddress,
     });
   };
 

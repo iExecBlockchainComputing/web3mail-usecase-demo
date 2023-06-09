@@ -25,7 +25,7 @@ function App() {
           />
           <Route path="/sendEmail" element={<EmailDapp />} />
           <Route
-            path="/sendEmail/:receiverAddress"
+            path="/sendEmail/:receiverAddress/:protectedDataAddress"
             element={<SendEmail />}
           />
         </Route>
