@@ -41,8 +41,8 @@ export default function SendEmail() {
   const sendEmailHandle = () => {
     if (!address) return;
     sendEmail({
-      mailObject: messageObject,
-      mailContent: value,
+      emailSubject: messageObject,
+      emailContent: value,
       protectedData: address,
     });
   };
