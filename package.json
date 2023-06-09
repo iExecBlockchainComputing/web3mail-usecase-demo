@@ -14,7 +14,7 @@
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
     "@iexec/dataprotector": "^0.1.0",
-    "@iexec/web3mail": "0.0.0-nightly-2bbe3b1f8cc4a39691fafed60faf2dacb757cfbf",
+    "@iexec/web3mail": "^0.0.0-nightly-e93b6b6eaa87abca06f8a829bb5b430423b10df8",
     "@mui/icons-material": "^5.11.11",
     "@mui/material": "^5.11.15",
     "@mui/x-data-grid": "^6.0.4",

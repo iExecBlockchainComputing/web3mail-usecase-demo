@@ -11,11 +11,9 @@ import './SendEmail.css';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useSendEmailMutation } from '../../app/appSlice';
-import { useAccount } from 'wagmi';
 
 export default function SendEmail() {
   const { receiverAddress, protectedDataAddress } = useParams();
-  const { address } = useAccount();
 
   //RTK Mutation hook
   const [sendEmail, result] = useSendEmailMutation();
