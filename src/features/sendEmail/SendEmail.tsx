@@ -25,15 +25,15 @@ export default function SendEmail() {
     useState(4096);
 
   //for name et dataType
-  const [messageObject, setMessageObject] = useState('');
+  const [messageSubject, setMessageSubject] = useState('');
   //limited to 78 by the SMS
   const [charactersRemainingSubject, setCharactersRemainingSubject] =
     useState(78);
 
   //handle functions
-  const handleMessageObjectChange = (event: any) => {
+  const handleMessageSubjectChange = (event: any) => {
     const inputValue = event.target.value;
-    setMessageObject(inputValue);
+    setMessageSubject(inputValue);
     setCharactersRemainingSubject(78 - inputValue.length);
   };
 
@@ -46,7 +46,7 @@ export default function SendEmail() {
   const sendEmailHandle = () => {
     if (!protectedDataAddress) return;
     sendEmail({
-      emailSubject: messageObject,
+      emailSubject: messageSubject,
       emailContent: value,
       protectedData: protectedDataAddress,
     });
@@ -76,11 +76,11 @@ export default function SendEmail() {
       <Box sx={{ my: 2, display: 'flex', flexDirection: 'column' }}>
         <TextField
           fullWidth
-          id="Message object"
-          label="Message object"
+          id="Message subject"
+          label="Message subject"
           variant="outlined"
-          value={messageObject}
-          onChange={handleMessageObjectChange}
+          value={messageSubject}
+          onChange={handleMessageSubjectChange}
           sx={{ mt: 3 }}
         />
         <Typography sx={{ my: 2, fontStyle: 'italic', fontSize: 'smaller' }}>
