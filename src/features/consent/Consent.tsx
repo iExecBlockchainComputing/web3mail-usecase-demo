@@ -1,13 +1,16 @@
 import './Consent.css';
-import ToggleList from '../../components/ToggleList';
+import ToggleList from './ToggleList';
 import { useParams } from 'react-router-dom';
-import { Box, Chip } from '@mui/material';
+import { Box, Chip, Fab } from '@mui/material';
 import {
   useFetchGrantedAccessQuery,
   useFetchProtectedDataQuery,
 } from '../../app/appSlice';
 import { useAccount } from 'wagmi';
 import { isKeyInDataSchema } from '../../utils/utils';
+import { useState } from 'react';
+import GrantAcessModal from './GrantAcessModal';
+import AddIcon from '@mui/icons-material/Add';
 
 export default function Consent() {
   const { ProtectedDataId } = useParams();
@@ -28,6 +31,9 @@ export default function Consent() {
   const protectedDataSelected = protectedData?.find(
     (item) => item.address === ProtectedDataId
   );
+
+  //modal state
+  const [modalOpen, setModalOpen] = useState(false);
 
   return (
     <Box id="consent">
@@ -60,16 +66,30 @@ export default function Consent() {
           </li>
         </ul>
       </Box>
-      {grantedAccessList?.length ? (
-        <Box sx={{ textAlign: 'left', my: 5, mb: 20 }}>
-          <h2>1 to 1 messaging</h2>
-          <ToggleList authorizedUser={grantedAccessList} />
-        </Box>
-      ) : (
-        <Box sx={{ textAlign: 'left', my: 5, mb: 20 }}>
-          <h4>No authorized user for web3Mail DAPP</h4>
-        </Box>
-      )}
+      <Box sx={{ textAlign: 'left', my: 5, mb: 20 }}>
+        {grantedAccessList?.length ? (
+          <Box>
+            <h2>1 to 1 messaging</h2>
+            <ToggleList authorizedUser={grantedAccessList} />
+          </Box>
+        ) : (
+          <Box sx={{ textAlign: 'center' }}>
+            <h4>No authorized user for web3Mail dApp</h4>
+          </Box>
+        )}
+        <Fab
+          color="primary"
+          sx={{ mx: 1.9, width: 42, height: 42, mt: 1 }}
+          onClick={() => setModalOpen(true)}
+        >
+          <AddIcon />
+        </Fab>
+        <GrantAcessModal
+          protectedData={ProtectedDataId as string}
+          open={modalOpen}
+          handleClose={() => setModalOpen(false)}
+        />
+      </Box>
     </Box>
   );
 }

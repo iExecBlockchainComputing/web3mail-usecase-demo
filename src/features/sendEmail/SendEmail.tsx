@@ -14,11 +14,11 @@ import { useSendEmailMutation } from '../../app/appSlice';
 import { useAccount } from 'wagmi';
 
 export default function SendEmail() {
-  const { receiverId } = useParams();
+  const { receiverAddress } = useParams();
   const { address } = useAccount();
 
   //RTK Mutation hook
-  const [sendMessage, result] = useSendEmailMutation();
+  const [sendEmail, result] = useSendEmailMutation();
 
   //for textarea
   const [value, setValue] = useState('');
@@ -38,9 +38,9 @@ export default function SendEmail() {
     setCharactersRemaining(500 - inputValue.length);
   };
 
-  const sendEmail = () => {
+  const sendEmailHandle = () => {
     if (!address) return;
-    sendMessage({
+    sendEmail({
       mailObject: messageObject,
       mailContent: value,
       protectedData: address,
@@ -49,8 +49,11 @@ export default function SendEmail() {
 
   //snackbar notification
   const [open, setOpen] = useState(false);
+  const [success, setSuccess] = useState(false);
+
   useEffect(() => {
-    if (result.isSuccess) {
+    if (result.isSuccess || result.isError) {
+      setSuccess(result.isSuccess);
       setOpen(true);
     }
   }, [result]);
@@ -64,7 +67,7 @@ export default function SendEmail() {
 
   return (
     <Box sx={{ m: 10, mx: 20 }}>
-      <h2>Send Mail to {receiverId}</h2>
+      <h2>Send Mail to {receiverAddress}</h2>
       <Box sx={{ my: 2, display: 'flex', flexDirection: 'column' }}>
         <TextField
           fullWidth
@@ -89,7 +92,7 @@ export default function SendEmail() {
           variant="contained"
           color="secondary"
           sx={{ width: '50px', m: 'auto', mr: 0 }}
-          onClick={sendEmail}
+          onClick={sendEmailHandle}
         >
           Send
         </Button>
@@ -100,8 +103,12 @@ export default function SendEmail() {
         onClose={handleClose}
         anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
       >
-        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-          The mail has been sent!
+        <Alert
+          onClose={handleClose}
+          severity={success ? 'success' : 'error'}
+          sx={{ width: '100%' }}
+        >
+          {success ? 'The email has been sent!' : 'Failed to send the Email!'}
         </Alert>
       </Snackbar>
     </Box>

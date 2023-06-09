@@ -6,6 +6,7 @@ import {
   ProtectDataParams,
   GrantedAccess,
   RevokedAccess,
+  GrantAccessParams,
 } from '@iexec/dataprotector';
 import { api } from './api';
 import { getAccount } from 'wagmi/actions';
@@ -15,6 +16,7 @@ import {
   IExecWeb3Mail,
   SendEmailParams,
   SendEmailResponse,
+  Contact,
 } from '@iexec/web3mail';
 
 let iExecDataProtector: IExecDataProtector | null = null;
@@ -37,6 +39,7 @@ export const initDataProtector = createAsyncThunk(
       const result = getAccount();
       const provider = await result.connector?.getProvider();
       iExecDataProtector = new IExecDataProtector(provider);
+      iExecWeb3Mail = new IExecWeb3Mail(provider);
       iExecWeb3Mail = new IExecWeb3Mail(provider);
     } catch (e: any) {
       return { error: e.message };
@@ -92,7 +95,7 @@ export const homeApi = api.injectEndpoints({
           ? [
               ...result.map(({ address }) => ({
                 type: 'PROTECTED_DATA' as const,
-                address,
+                id: address,
               })),
               'PROTECTED_DATA',
             ]
@@ -171,11 +174,33 @@ export const homeApi = api.injectEndpoints({
         { type: 'GRANTED_ACCESS', id: args.authorizedUser },
       ],
     }),
+    grantNewAccess: builder.mutation<string, GrantAccessParams>({
+      queryFn: async (args) => {
+        try {
+          const data = await iExecDataProtector?.grantAccess(args);
+
+          return { data: data?.sign || '' };
+        } catch (e: any) {
+          return { error: e.message };
+        }
+      },
+      invalidatesTags: ['GRANTED_ACCESS'],
+    }),
+    fetchMyContacts: builder.query<Contact[], string>({
+      queryFn: async () => {
+        try {
+          const contacts = await iExecWeb3Mail?.fetchMyContacts();
+          return { data: contacts || [] };
+        } catch (e: any) {
+          return { error: e.message };
+        }
+      },
+    }),
     sendEmail: builder.mutation<SendEmailResponse | null, SendEmailParams>({
       queryFn: async (args) => {
         try {
-          const SendEmailResponse = await iExecWeb3Mail?.sendEmail(args);
-          return { data: SendEmailResponse || null };
+          const sendEmailResponse = await iExecWeb3Mail?.sendEmail(args);
+          return { data: sendEmailResponse || null };
         } catch (e: any) {
           return { error: e.message };
         }
@@ -189,5 +214,7 @@ export const {
   useCreateProtectedDataMutation,
   useFetchGrantedAccessQuery,
   useRevokeOneAccessMutation,
+  useFetchMyContactsQuery,
+  useGrantNewAccessMutation,
   useSendEmailMutation,
 } = homeApi;

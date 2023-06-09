@@ -1,39 +1,69 @@
 import './EmailDapp.css';
 import SearchIcon from '@mui/icons-material/Search';
-import { Avatar, Box, Button, InputBase } from '@mui/material';
+import { Box, Button, InputBase } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { useNavigate } from 'react-router-dom';
+import {
+  selectAppIsConnected,
+  useFetchMyContactsQuery,
+} from '../../app/appSlice';
+import { useState } from 'react';
+import { Contact, Address, TimeStamp } from '@iexec/web3mail';
+import { getLocalDateString } from '../../utils/utils';
+import { useAccount } from 'wagmi';
+import { useAppSelector } from '../../app/hooks';
+
+type Row = {
+  id: string;
+  owner: Address;
+  protectedDataAddress: Address;
+  accessGrantTimestamp: TimeStamp;
+};
 
 export default function EmailDapp() {
   const navigate = useNavigate();
+  const { address } = useAccount();
+  const isAccountConnected = useAppSelector(selectAppIsConnected);
+
+  //query RTK API as query hook
+  const { data: myContacts = [], isLoading } = useFetchMyContactsQuery(
+    address as string,
+    {
+      skip: !isAccountConnected,
+    }
+  );
+
+  //for search bar
+  const [searchTerm, setSearchTerm] = useState('');
 
   const columns: GridColDef[] = [
     {
-      field: 'avatar',
-      headerName: '',
-      width: 150,
-      sortable: false,
-      renderCell: (params) => (
-        <Avatar alt={params.row.name} src={params.row.avatar} />
-      ),
-    },
-    {
-      field: 'Eth_Address',
+      field: 'owner',
       headerName: 'Eth Address',
       type: 'string',
-      width: 350,
+      width: 370,
     },
-    { field: 'Subscribe_on', headerName: 'Subscribe on', width: 400 },
+    {
+      field: 'protectedDataAddress',
+      headerName: 'Protected Data',
+      type: 'string',
+      width: 370,
+    },
+    { field: 'accessGrantTimestamp', headerName: 'Subscribe on', width: 150 },
     {
       field: 'Actions',
       headerName: 'Actions',
-      width: 500,
+      width: 350,
       sortable: false,
       renderCell: (params) => (
         <Button
           variant="contained"
           color="secondary"
-          onClick={() => navigate(`./${params.row.Eth_Address}`)}
+          onClick={() =>
+            navigate(
+              `./${params.row.owner}`
+            )
+          }
         >
           Send Mail
         </Button>
@@ -41,32 +71,28 @@ export default function EmailDapp() {
     },
   ];
 
-  const rows = [
-    {
-      id: 1,
-      avatar: 'https://material-ui.com/static/images/avatar/1.jpg',
-      Eth_Address: '0x873a....883',
-      Subscribe_on: '6/14/2021',
-    },
-    {
-      id: 2,
-      avatar: 'https://material-ui.com/static/images/avatar/2.jpg',
-      Eth_Address: '0x793a....az3',
-      Subscribe_on: '6/14/2021',
-    },
-    {
-      id: 3,
-      avatar: 'https://material-ui.com/static/images/avatar/2.jpg',
-      Eth_Address: '0x563a....7jh',
-      Subscribe_on: '6/14/2021',
-    },
-    {
-      id: 4,
-      avatar: 'https://material-ui.com/static/images/avatar/2.jpg',
-      Eth_Address: '0x12l7....373',
-      Subscribe_on: '6/14/2021',
-    },
-  ];
+  //modified the return of fetchMyContact in the web3Mail SDK to order them by timestamp
+  const rows: Row[] = [...myContacts]
+    .sort(
+      (a: Contact, b: Contact) =>
+        Date.parse(b.accessGrantTimestamp) - Date.parse(a.accessGrantTimestamp)
+    )
+    .map((contact: Contact, index: number) => {
+      return {
+        id: index.toString(),
+        owner: contact.owner.toLowerCase(),
+        protectedDataAddress: contact.address.toLowerCase(),
+        accessGrantTimestamp: getLocalDateString(contact.accessGrantTimestamp),
+      };
+    });
+
+  const filteredRows: Row[] = rows.filter((row: { owner: string }) =>
+    row.owner.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+  };
 
   return (
     <Box sx={{ m: 10, mx: 20 }}>
@@ -80,16 +106,31 @@ export default function EmailDapp() {
           inputProps={{ 'aria-label': 'search' }}
           id="inputSearch"
           sx={{ width: '100%' }}
+          value={searchTerm}
+          onChange={handleSearchChange}
         />
       </Box>
-      <Box sx={{ my: 10, height: 400 }}>
-        <DataGrid
-          disableColumnMenu
-          rows={rows}
-          columns={columns}
-          sx={{ border: 'none' }}
-        />
-      </Box>
+      {filteredRows.length > 0 && !isLoading && (
+        <Box sx={{ my: 10, height: 400 }}>
+          <DataGrid
+            disableColumnMenu
+            rows={filteredRows}
+            columns={columns}
+            autoPageSize={true}
+            sx={{ border: 'none' }}
+          />
+        </Box>
+      )}
+      {filteredRows.length === 0 && !isLoading && (
+        <Box sx={{ textAlign: 'center', my: 5 }}>
+          <h4>You have no subscribers!</h4>
+        </Box>
+      )}
+      {isLoading && (
+        <Box sx={{ textAlign: 'center', my: 5 }}>
+          <h4>Fetching your contacts...</h4>
+        </Box>
+      )}
     </Box>
   );
 }
