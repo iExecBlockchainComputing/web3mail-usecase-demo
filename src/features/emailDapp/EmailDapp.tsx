@@ -65,7 +65,7 @@ export default function EmailDapp() {
             )
           }
         >
-          Send Mail
+          Send Email
         </Button>
       ),
     },

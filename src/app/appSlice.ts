@@ -11,7 +11,6 @@ import {
 import { api } from './api';
 import { getAccount } from 'wagmi/actions';
 import { DAPP_WEB3_MAIL_ENS } from '../config/config';
-import { AddressZero } from '@ethersproject/constants';
 import {
   IExecWeb3Mail,
   SendEmailParams,
