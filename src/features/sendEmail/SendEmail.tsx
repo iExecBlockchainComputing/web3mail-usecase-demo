@@ -40,7 +40,6 @@ export default function SendEmail() {
   const handleChange = (event: any) => {
     const inputValue = event.target.value;
     setMessage(inputValue);
-    setCharactersRemainingMessage(4096 - inputValue.length);
   };
 
   const sendEmailHandle = () => {
