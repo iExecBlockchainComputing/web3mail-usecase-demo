@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useGrantNewAccessMutation } from '../../app/appSlice';
-import { DAPP_WEB3_MAIL_ADDRESS } from '../../config/config';
+import { DAPP_WEB3_MAIL_ENS } from '../../config/config';
 
 type GrantAccessModalParams = {
   protectedData: string;
@@ -40,7 +40,7 @@ export default function GrantAcessModal(props: GrantAccessModalParams) {
     const protectedData = props.protectedData;
     grantNewAccess({
       protectedData,
-      authorizedApp: DAPP_WEB3_MAIL_ADDRESS,
+      authorizedApp: DAPP_WEB3_MAIL_ENS,
       authorizedUser: ethAddress,
       numberOfAccess: NbOfAccess,
     });

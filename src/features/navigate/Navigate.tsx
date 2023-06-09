@@ -53,8 +53,8 @@ export default function Navigate() {
     if (currentTab === 'myProtectedData') {
       navigate('/protectedData');
     }
-    if (currentTab === 'sendMail') {
-      navigate('/sendMail');
+    if (currentTab === 'sendEmail') {
+      navigate('/sendEmail');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentTab]);
@@ -78,7 +78,7 @@ export default function Navigate() {
               sx={{ '& .MuiTab-root': { textTransform: 'none' } }}
             >
               <Tab value="myProtectedData" label="My Protected Data" />
-              <Tab value="sendMail" label="Send Mail" />
+              <Tab value="sendEmail" label="Send Mail" />
             </Tabs>
           </Box>
           <Typography

@@ -61,11 +61,11 @@ export default function EmailDapp() {
           color="secondary"
           onClick={() =>
             navigate(
-              `./sendMessageTo/${params.row.owner}/${params.row.protectedDataAddress}`
+              `./${params.row.owner}/${params.row.protectedDataAddress}`
             )
           }
         >
-          Send Message
+          Send Email
         </Button>
       ),
     },
