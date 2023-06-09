@@ -21,14 +21,12 @@ export default function SendEmail() {
   //for textarea
   const [message, setMessage] = useState('');
   //limited to 4096 by the SMS
-  const [charactersRemainingMessage, setCharactersRemainingMessage] =
-    useState(4096);
+  const charactersRemainingMessage = 4096 - message.length;
 
   //for name et dataType
   const [messageSubject, setMessageSubject] = useState('');
   //limited to 78 by the SMS
-  const [charactersRemainingSubject, setCharactersRemainingSubject] =
-    useState(78);
+  const charactersRemainingSubject = 78 - messageSubject.length;
 
   //handle functions
   const handleMessageSubjectChange = (event: any) => {
