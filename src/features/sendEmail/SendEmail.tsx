@@ -19,7 +19,7 @@ export default function SendEmail() {
   const [sendEmail, result] = useSendEmailMutation();
 
   //for textarea
-  const [value, setValue] = useState('');
+  const [message, setMessage] = useState('');
   //limited to 4096 by the SMS
   const [charactersRemainingMessage, setCharactersRemainingMessage] =
     useState(4096);
@@ -39,7 +39,7 @@ export default function SendEmail() {
 
   const handleChange = (event: any) => {
     const inputValue = event.target.value;
-    setValue(inputValue);
+    setMessage(inputValue);
     setCharactersRemainingMessage(4096 - inputValue.length);
   };
 
@@ -47,7 +47,7 @@ export default function SendEmail() {
     if (!protectedDataAddress) return;
     sendEmail({
       emailSubject: messageSubject,
-      emailContent: value,
+      emailContent: message,
       protectedData: protectedDataAddress,
     });
   };
@@ -88,7 +88,7 @@ export default function SendEmail() {
         </Typography>
         <TextareaAutosize
           placeholder="Enter text here"
-          value={value}
+          value={message}
           onChange={handleChange}
           style={{ width: '100%', marginTop: 30, height: 380 }}
           id="textArea"
