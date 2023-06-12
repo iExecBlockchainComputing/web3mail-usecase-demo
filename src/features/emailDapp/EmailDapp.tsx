@@ -49,7 +49,7 @@ export default function EmailDapp() {
       type: 'string',
       width: 370,
     },
-    { field: 'accessGrantTimestamp', headerName: 'Subscribe on', width: 150 },
+    { field: 'accessGrantTimestamp', headerName: 'Subscribed on', width: 150 },
     {
       field: 'Actions',
       headerName: 'Actions',
@@ -65,7 +65,7 @@ export default function EmailDapp() {
             )
           }
         >
-          Send Email
+          Send web3 email
         </Button>
       ),
     },
@@ -96,7 +96,7 @@ export default function EmailDapp() {
 
   return (
     <Box sx={{ m: 10, mx: 20 }}>
-      <h2>List of integrations to interact with your subscribers</h2>
+      <h2>Contact list</h2>
       <p>A list of contacts who have subscribed using their Ethereum address. You can send them an email, without having access to their email address (protected data).</p>
       <Box id="search" sx={{ mt: 5 }}>
         <div id="iconWrapper">
