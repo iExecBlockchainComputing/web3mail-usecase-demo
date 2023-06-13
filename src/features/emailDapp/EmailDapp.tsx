@@ -1,17 +1,17 @@
-import './EmailDapp.css';
+import { Address, Contact, TimeStamp } from '@iexec/web3mail';
 import SearchIcon from '@mui/icons-material/Search';
 import { Box, Button, InputBase } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAccount } from 'wagmi';
 import {
   selectAppIsConnected,
   useFetchMyContactsQuery,
 } from '../../app/appSlice';
-import { useState } from 'react';
-import { Contact, Address, TimeStamp } from '@iexec/web3mail';
-import { getLocalDateString } from '../../utils/utils';
-import { useAccount } from 'wagmi';
 import { useAppSelector } from '../../app/hooks';
+import { getLocalDateString } from '../../utils/utils';
+import './EmailDapp.css';
 
 type Row = {
   id: string;
@@ -49,7 +49,7 @@ export default function EmailDapp() {
       type: 'string',
       width: 370,
     },
-    { field: 'accessGrantTimestamp', headerName: 'Subscribe on', width: 150 },
+    { field: 'accessGrantTimestamp', headerName: 'Subscribed on', width: 150 },
     {
       field: 'Actions',
       headerName: 'Actions',
@@ -65,7 +65,7 @@ export default function EmailDapp() {
             )
           }
         >
-          Send Email
+          Send web3 email
         </Button>
       ),
     },
@@ -96,7 +96,8 @@ export default function EmailDapp() {
 
   return (
     <Box sx={{ m: 10, mx: 20 }}>
-      <h2>List of integrations to interact with your subscribers</h2>
+      <h2>Contact list</h2>
+      <p>A list of contacts who have subscribed using their Ethereum address. You can send them an email, without having access to their email address (protected data).</p>
       <Box id="search" sx={{ mt: 5 }}>
         <div id="iconWrapper">
           <SearchIcon sx={{ color: '#788896' }} />
