@@ -8,11 +8,15 @@ import {
   RevokedAccess,
   GrantAccessParams,
 } from '@iexec/dataprotector';
-import { Contact, IExecWeb3Mail } from '@iexec/web3mail';
 import { api } from './api';
 import { getAccount } from 'wagmi/actions';
-import { DAPP_WEB3_MAIL_ADDRESS } from '../config/config';
-import { AddressZero } from '@ethersproject/constants';
+import { DAPP_WEB3_MAIL_ENS } from '../config/config';
+import {
+  IExecWeb3Mail,
+  SendEmailParams,
+  SendEmailResponse,
+  Contact,
+} from '@iexec/web3mail';
 
 let iExecDataProtector: IExecDataProtector | null = null;
 let iExecWeb3Mail: IExecWeb3Mail | null = null;
@@ -35,6 +39,7 @@ export const initDataProtector = createAsyncThunk(
       const result = getAccount();
       const provider = await result.connector?.getProvider();
       iExecDataProtector = new IExecDataProtector(provider);
+      iExecWeb3Mail = new IExecWeb3Mail(provider);
       iExecWeb3Mail = new IExecWeb3Mail(provider);
     } catch (e: any) {
       return { error: e.message };
@@ -112,18 +117,13 @@ export const homeApi = api.injectEndpoints({
         try {
           const grantedAccess = await iExecDataProtector?.fetchGrantedAccess({
             protectedData,
+            authorizedApp: DAPP_WEB3_MAIL_ENS,
           });
-          const grantedAccessList = grantedAccess
-            ?.filter((item: GrantedAccess) => {
-              const apprestrict = item?.apprestrict?.toLowerCase();
-              return (
-                apprestrict === DAPP_WEB3_MAIL_ADDRESS ||
-                apprestrict === AddressZero
-              );
-            })
-            .map((item: GrantedAccess) => {
+          const grantedAccessList = grantedAccess?.map(
+            (item: GrantedAccess) => {
               return item.requesterrestrict.toLowerCase();
-            });
+            }
+          );
           return { data: grantedAccessList || [] };
         } catch (e: any) {
           return { error: e.message };
@@ -149,7 +149,7 @@ export const homeApi = api.injectEndpoints({
           const grantedAccessList =
             await iExecDataProtector?.fetchGrantedAccess({
               ...args,
-              authorizedApp: DAPP_WEB3_MAIL_ADDRESS,
+              authorizedApp: DAPP_WEB3_MAIL_ENS,
             });
           let revokedAccess: RevokedAccess | null = null;
           if (grantedAccessList && grantedAccessList.length !== 0) {
@@ -191,6 +191,16 @@ export const homeApi = api.injectEndpoints({
         }
       },
     }),
+    sendEmail: builder.mutation<SendEmailResponse | null, SendEmailParams>({
+      queryFn: async (args) => {
+        try {
+          const sendEmailResponse = await iExecWeb3Mail?.sendEmail(args);
+          return { data: sendEmailResponse || null };
+        } catch (e: any) {
+          return { error: e.message };
+        }
+      },
+    }),
   }),
 });
 
@@ -201,4 +211,5 @@ export const {
   useRevokeOneAccessMutation,
   useFetchMyContactsQuery,
   useGrantNewAccessMutation,
+  useSendEmailMutation,
 } = homeApi;

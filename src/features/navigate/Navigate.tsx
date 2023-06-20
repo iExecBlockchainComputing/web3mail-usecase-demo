@@ -38,8 +38,8 @@ export default function Navigate() {
     if (currentTab === TABS[0].value) {
       navigate('/protectedData');
     }
-    if (currentTab === TABS[1].value) {
-      navigate('/sendMail');
+    if (currentTab === 'sendEmail') {
+      navigate('/sendEmail');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentTab]);
@@ -61,7 +61,7 @@ export default function Navigate() {
           onLogoutClick: () => disconnect(),
         }}
       ></NavBar>
-      {address && isAccountConnected && <Outlet></Outlet>}
+      {address && isAccountConnected ? <Outlet /> : 'Connect to Your Wallet'}
     </>
   );
 }

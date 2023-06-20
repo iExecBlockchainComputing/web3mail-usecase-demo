@@ -1,4 +1,4 @@
-import './NewProtectedData.css';
+import { Verified } from '@mui/icons-material';
 import {
   Alert,
   Box,
@@ -13,10 +13,10 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { Verified } from '@mui/icons-material';
 import { useState } from 'react';
 import { useCreateProtectedDataMutation } from '../../app/appSlice';
 import { createArrayBufferFromFile } from '../../utils/utils';
+import './NewProtectedData.css';
 
 export default function NewProtectedData() {
   //query RTK API as mutation hook
@@ -76,7 +76,7 @@ export default function NewProtectedData() {
   return (
     <Box id="newProtectedData">
       <Box sx={{ textAlign: 'left' }}>
-        <h2>Protect a Data</h2>
+        <h2>Protect Data</h2>
       </Box>
       <FormControl fullWidth sx={{ mt: '24px' }}>
         <InputLabel>Select your data type</InputLabel>

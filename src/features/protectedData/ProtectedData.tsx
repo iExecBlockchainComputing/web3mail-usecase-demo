@@ -1,16 +1,16 @@
-import './ProtectedData.css';
-import ProtectedDataCard from '../../components/ProtectedDataCard';
-import img from '../../assets/noData.png';
-import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
-import { useAccount } from 'wagmi';
 import { Box, Button, Grid, Pagination, Paper } from '@mui/material';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAccount } from 'wagmi';
 import {
-  useFetchProtectedDataQuery,
   selectAppIsConnected,
+  useFetchProtectedDataQuery,
 } from '../../app/appSlice';
 import { useAppSelector } from '../../app/hooks';
+import img from '../../assets/noData.png';
+import ProtectedDataCard from '../../components/ProtectedDataCard';
 import { ITEMS_PER_PAGE } from '../../config/config';
+import './ProtectedData.css';
 
 export default function ProtectedData() {
   const { address } = useAccount();
@@ -88,7 +88,7 @@ function NewProtectedDataButton() {
   const navigate = useNavigate();
   return (
     <Button variant="contained" onClick={() => navigate('./newProtectedData')}>
-      Protect a new data
+      Protect new data
     </Button>
   );
 }

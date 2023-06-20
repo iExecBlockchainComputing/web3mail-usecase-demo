@@ -14,9 +14,9 @@
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@fontsource/space-mono": "^4.5.12",
-    "@iexec/dataprotector": "^0.0.0-nightly-8395225223034e4980135f6bf58f0a370721b496",
+    "@iexec/dataprotector": "^0.1.0",
     "@iexec/react-ui-kit": "github:iExecBlockchainComputing/react-ui-kit#semver:^2.0.0",
-    "@iexec/web3mail": "^0.0.0-nightly-cb75c44ed80f3698dd7923d62ccaf609a455305d",
+    "@iexec/web3mail": "0.0.0-nightly-cb482ac0a5b6a6a077fdb1dcc05a903617dbe5f1",
     "@mui/icons-material": "^5.11.11",
     "@mui/material": "^5.13.4",
     "@mui/x-data-grid": "^6.0.4",
@@ -30,7 +30,7 @@
     "react-dom": "^18.2.0",
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.9.0",
-    "wagmi": "^0.12.8"
+    "wagmi": "^0.12.16"
   },
   "devDependencies": {
     "@types/react": "^18.0.28",
