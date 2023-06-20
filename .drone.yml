@@ -11,7 +11,14 @@ steps:
   - name: install
     image: node:18
     pull: always
+    environment:
+      SSH_KEY:
+        from_secret: ssh-key-team-product-github
     commands:
+      # ssh setup to npm install private package via ssh+git
+      - mkdir /root/.ssh && echo "$SSH_KEY" > /root/.ssh/id_rsa && chmod 0600 /root/.ssh/id_rsa
+      - ssh-keyscan -H github.com >> /root/.ssh/known_hosts
+      # install
       - node -v
       - npm -v
       - npm ci
@@ -35,6 +42,8 @@ steps:
       repo: docker-regis.iex.ec/product/web3mail-usecase-demo
       dockerfile: Dockerfile
       dry_run: true
+      ssh_agent_key:
+        from_secret: ssh-key-team-product-github
 
 ---
 # Deploy a dev release from develop branch
@@ -54,7 +63,14 @@ steps:
   - name: install
     image: node:18
     pull: always
+    environment:
+      SSH_KEY:
+        from_secret: ssh-key-team-product-github
     commands:
+      # ssh setup to npm install private package via ssh+git
+      - mkdir /root/.ssh && echo "$SSH_KEY" > /root/.ssh/id_rsa && chmod 0600 /root/.ssh/id_rsa
+      - ssh-keyscan -H github.com >> /root/.ssh/known_hosts
+      # install
       - node -v
       - npm -v
       - npm ci
@@ -83,6 +99,8 @@ steps:
         from_secret: nexus-user
       password:
         from_secret: nexus-password
+      ssh_agent_key:
+        from_secret: ssh-key-team-product-github
 
   - name: transfer deployment files to server
     image: appleboy/drone-scp
@@ -148,7 +166,14 @@ steps:
   - name: install
     image: node:18
     pull: always
+    environment:
+      SSH_KEY:
+        from_secret: ssh-key-team-product-github
     commands:
+      # ssh setup to npm install private package via ssh+git
+      - mkdir /root/.ssh && echo "$SSH_KEY" > /root/.ssh/id_rsa && chmod 0600 /root/.ssh/id_rsa
+      - ssh-keyscan -H github.com >> /root/.ssh/known_hosts
+      # install
       - node -v
       - npm -v
       - npm ci
@@ -183,6 +208,8 @@ steps:
         from_secret: nexus-user
       password:
         from_secret: nexus-password
+      ssh_agent_key:
+        from_secret: ssh-key-team-product-github
 
   - name: transfer deployment files to server
     image: appleboy/drone-scp
