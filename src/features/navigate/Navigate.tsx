@@ -1,4 +1,4 @@
-import { NavBar } from '@iexec/react-ui-kit';
+import { Typography, NavBar } from '@iexec/react-ui-kit';
 import { useEffect } from 'react';
 import { useNavigate, Outlet, useMatch } from 'react-router-dom';
 import { useAccount, useDisconnect } from 'wagmi';
@@ -6,6 +6,7 @@ import { useWeb3Modal } from '@web3modal/react';
 import { initDataProtector, selectAppIsConnected } from '../../app/appSlice';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { PROTECTED_DATA, SEND_MAIL } from '../../config/path';
+import { Box } from '@mui/material';
 
 const TABS = [
   {
@@ -60,7 +61,17 @@ export default function Navigate() {
           onLogoutClick: () => disconnect(),
         }}
       />
-      {address && isAccountConnected ? <Outlet /> : 'Connect to Your Wallet'}
+      {address && isAccountConnected ? (
+        <Outlet />
+      ) : (
+        <Box
+          sx={{
+            margin: '3rem auto',
+          }}
+        >
+          <Typography variant="body1">Please login with your wallet</Typography>
+        </Box>
+      )}
     </>
   );
 }
