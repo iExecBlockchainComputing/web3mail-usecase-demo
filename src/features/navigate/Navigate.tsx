@@ -57,7 +57,9 @@ export default function Navigate() {
         login={{
           isLoggedIn: !!address && isAccountConnected,
           address,
-          onLoginClick: () => open(),
+          onLoginClick: () => {
+            open();
+          },
           onLogoutClick: () => disconnect(),
         }}
       ></NavBar>
