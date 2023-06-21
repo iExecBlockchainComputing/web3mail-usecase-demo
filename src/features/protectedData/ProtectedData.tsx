@@ -11,6 +11,7 @@ import img from '../../assets/noData.png';
 import ProtectedDataCard from '../../components/ProtectedDataCard';
 import { ITEMS_PER_PAGE } from '../../config/config';
 import './ProtectedData.css';
+import { CREATE } from '../../config/path';
 
 export default function ProtectedData() {
   const { address } = useAccount();
@@ -87,7 +88,7 @@ export default function ProtectedData() {
 function NewProtectedDataButton() {
   const navigate = useNavigate();
   return (
-    <Button variant="contained" onClick={() => navigate('./newProtectedData')}>
+    <Button variant="contained" onClick={() => navigate(`./${CREATE}`)}>
       Protect new data
     </Button>
   );

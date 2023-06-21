@@ -1,19 +1,20 @@
 import { NavBar } from '@iexec/react-ui-kit';
-import { useEffect, useState } from 'react';
-import { useNavigate, Outlet } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useNavigate, Outlet, useMatch } from 'react-router-dom';
 import { useAccount, useDisconnect } from 'wagmi';
 import { useWeb3Modal } from '@web3modal/react';
 import { initDataProtector, selectAppIsConnected } from '../../app/appSlice';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { PROTECTED_DATA, SEND_MAIL } from '../../config/path';
 
 const TABS = [
   {
     label: 'My Protected Data',
-    value: 'myProtectedData',
+    value: PROTECTED_DATA, // tab path
   },
   {
     label: 'Send Mail',
-    value: 'sendMail',
+    value: SEND_MAIL, // tab path
   },
 ];
 
@@ -23,7 +24,9 @@ export default function Navigate() {
   const { open } = useWeb3Modal();
   const { address, isConnected, connector } = useAccount();
   const { disconnect } = useDisconnect();
-  const [currentTab, setCurrentTab] = useState('myProtectedData');
+
+  const match = useMatch(`/:currentTab/*`);
+  const currentTab = match?.params.currentTab;
 
   //get the state from the store
   const isAccountConnected = useAppSelector(selectAppIsConnected);
@@ -34,15 +37,9 @@ export default function Navigate() {
     }
   }, [isConnected, connector, isAccountConnected, dispatch]);
 
-  useEffect(() => {
-    if (currentTab === TABS[0].value) {
-      navigate('/protectedData');
-    }
-    if (currentTab === 'sendEmail') {
-      navigate('/sendEmail');
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentTab]);
+  const handleNavigate = (target: string) => {
+    navigate(`/${target}`);
+  };
 
   return (
     <>
@@ -52,7 +49,7 @@ export default function Navigate() {
         tabs={{
           value: currentTab,
           values: TABS,
-          onSelect: (value) => setCurrentTab(value),
+          onSelect: (value) => handleNavigate(value),
         }}
         login={{
           isLoggedIn: !!address && isAccountConnected,

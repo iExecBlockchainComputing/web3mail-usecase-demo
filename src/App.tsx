@@ -9,6 +9,7 @@ import {
   EmailDapp,
   SendEmail,
 } from './features';
+import { PROTECTED_DATA, CONSENT, SEND_MAIL, CREATE } from './config/path';
 
 function App() {
   return (
@@ -16,18 +17,18 @@ function App() {
       <ThemeProvider>
         <Routes>
           <Route path="/" element={<Navigate />}>
-            <Route path="/protectedData" element={<ProtectedData />} />
+            <Route path={`/${PROTECTED_DATA}`} element={<ProtectedData />} />
             <Route
-              path="/protectedData/consent/:ProtectedDataId"
+              path={`/${PROTECTED_DATA}/${CONSENT}/:ProtectedDataId`}
               element={<Consent />}
             />
             <Route
-              path="/protectedData/newProtectedData"
+              path={`/${PROTECTED_DATA}/${CREATE}`}
               element={<NewProtectedData />}
             />
-            <Route path="/sendEmail" element={<EmailDapp />} />
+            <Route path={`/${SEND_MAIL}`} element={<EmailDapp />} />
             <Route
-              path="/sendEmail/:receiverAddress/:protectedDataAddress"
+              path={`/${SEND_MAIL}/:receiverAddress/:protectedDataAddress`}
               element={<SendEmail />}
             />
           </Route>

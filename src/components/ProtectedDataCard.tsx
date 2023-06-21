@@ -3,6 +3,7 @@ import './ProtectedDataCard.css';
 import { Box, Card, CardContent, Chip, Divider } from '@mui/material';
 import { DataSchema } from '@iexec/dataprotector';
 import { isKeyInDataSchema } from '../utils/utils';
+import { CONSENT, PROTECTED_DATA } from '../config/path';
 
 export interface ProtectedDataProps {
   id: string;
@@ -15,7 +16,7 @@ export default function ProtectedDataCard(props: ProtectedDataProps) {
   return (
     <Card
       sx={{ minWidth: 260, cursor: 'pointer' }}
-      onClick={() => navigate(`/protectedData/consent/${props.id}`)}
+      onClick={() => navigate(`/${PROTECTED_DATA}/${CONSENT}/${props.id}`)}
     >
       <CardContent id="cardContent">
         <Box
