@@ -59,7 +59,7 @@ export default function Navigate() {
           },
           onLogoutClick: () => disconnect(),
         }}
-      ></NavBar>
+      />
       {address && isAccountConnected ? <Outlet /> : 'Connect to Your Wallet'}
     </>
   );
