@@ -6,6 +6,8 @@ trigger:
   event:
     exclude:
       - promote
+      # the pipeline requires a secret that is not exposed on PR
+      - pull_request
 
 steps:
   - name: install
