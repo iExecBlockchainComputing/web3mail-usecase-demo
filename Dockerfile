@@ -2,7 +2,10 @@
 FROM node:18 AS build
 WORKDIR /app
 COPY . .
-RUN npm ci
+# Download public key for github.com
+RUN mkdir -p -m 0600 ~/.ssh && ssh-keyscan github.com >> ~/.ssh/known_hosts
+# we need to access ui-kit github private repo through ssh
+RUN --mount=type=ssh npm ci
 RUN npm run build
 
 # Production step
