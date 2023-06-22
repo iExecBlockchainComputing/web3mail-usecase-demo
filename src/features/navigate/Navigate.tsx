@@ -12,8 +12,8 @@ const TABS = [
     value: 'myProtectedData',
   },
   {
-    label: 'Send Mail',
-    value: 'sendMail',
+    label: 'Send Email',
+    value: 'sendEmail',
   },
 ];
 
@@ -24,7 +24,6 @@ export default function Navigate() {
   const { address, isConnected, connector } = useAccount();
   const { disconnect } = useDisconnect();
   const [currentTab, setCurrentTab] = useState('myProtectedData');
-
   //get the state from the store
   const isAccountConnected = useAppSelector(selectAppIsConnected);
 
