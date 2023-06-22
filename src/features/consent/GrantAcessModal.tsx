@@ -1,6 +1,5 @@
 import './GrantAccessModal.css';
 import {
-  Button,
   TextField,
   Modal,
   Box,
@@ -11,6 +10,7 @@ import {
 import { useEffect, useState } from 'react';
 import { useGrantNewAccessMutation } from '../../app/appSlice';
 import { DAPP_WEB3_MAIL_ENS } from '../../config/config';
+import { Button } from '@iexec/react-ui-kit';
 
 type GrantAccessModalParams = {
   protectedData: string;
@@ -121,9 +121,6 @@ export default function GrantAcessModal(props: GrantAccessModalParams) {
             sx={{ mt: 3 }}
           />
           <Button
-            variant="contained"
-            color="primary"
-            sx={{ m: 2 }}
             onClick={handleGrantAccess}
           >
             Validate

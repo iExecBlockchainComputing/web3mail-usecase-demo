@@ -1,4 +1,4 @@
-import { Box, Button, Grid, Pagination, Paper } from '@mui/material';
+import { Box, Grid, Pagination, Paper } from '@mui/material';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAccount } from 'wagmi';
@@ -11,6 +11,7 @@ import img from '../../assets/noData.png';
 import ProtectedDataCard from '../../components/ProtectedDataCard';
 import { ITEMS_PER_PAGE } from '../../config/config';
 import './ProtectedData.css';
+import { Button } from '@iexec/react-ui-kit';
 
 export default function ProtectedData() {
   const { address } = useAccount();
@@ -87,7 +88,7 @@ export default function ProtectedData() {
 function NewProtectedDataButton() {
   const navigate = useNavigate();
   return (
-    <Button variant="contained" onClick={() => navigate('./newProtectedData')}>
+    <Button onClick={() => navigate('./newProtectedData')}>
       Protect new data
     </Button>
   );
