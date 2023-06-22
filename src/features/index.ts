@@ -1,4 +1,5 @@
-export { default as Navigate } from './navigate/Navigate';
+export { default as LoginGuard } from './loginGuard/LoginGuard';
+export { default as Navigation } from './navigation/Navigation';
 export { default as ProtectedData } from './protectedData/ProtectedData';
 export { default as NewProtectedData } from './newProtectedData/NewProtectedData';
 export { default as Consent } from './consent/Consent';
