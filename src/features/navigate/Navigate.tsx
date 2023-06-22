@@ -46,6 +46,9 @@ export default function Navigate() {
     <>
       <NavBar
         title="iExec"
+        onTitleClick={() => {
+          navigate('/');
+        }}
         mobile={false}
         tabs={{
           value: currentTab,

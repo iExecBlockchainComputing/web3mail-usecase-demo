@@ -15,7 +15,7 @@
     "@emotion/styled": "^11.11.0",
     "@fontsource/space-mono": "^4.5.12",
     "@iexec/dataprotector": "^0.1.0",
-    "@iexec/react-ui-kit": "github:iExecBlockchainComputing/react-ui-kit#semver:^2.0.0",
+    "@iexec/react-ui-kit": "github:iExecBlockchainComputing/react-ui-kit#semver:^2.0.2",
     "@iexec/web3mail": "0.0.0-nightly-cb482ac0a5b6a6a077fdb1dcc05a903617dbe5f1",
     "@mui/icons-material": "^5.11.11",
     "@mui/material": "^5.13.4",
