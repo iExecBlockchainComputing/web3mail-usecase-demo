@@ -113,6 +113,7 @@ export default function NewProtectedData() {
       {dataType === 'file' && (
         <Button
           className="uploadFileButton"
+          variant="secondary"
           onClick={() => fileInput.current?.click()}
         >
           {!filePath ? 'Upload' : 'Updated File'}
