@@ -10,7 +10,13 @@ import {
   SendEmail,
   LoginGuard,
 } from './features';
-import { PROTECTED_DATA, CONSENT, SEND_MAIL, CREATE } from './config/path';
+import {
+  PROTECTED_DATA,
+  CONSENT,
+  SEND_MAIL,
+  CREATE,
+  HOME,
+} from './config/path';
 
 function App() {
   return (
@@ -59,7 +65,7 @@ function App() {
             }
           />
           {/* default redirect */}
-          <Route path="*" element={<Navigate to={`/${PROTECTED_DATA}`} />} />
+          <Route path="*" element={<Navigate to={`/${HOME}`} />} />
         </Routes>
       </ThemeProvider>
     </div>

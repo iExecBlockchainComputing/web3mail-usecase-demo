@@ -4,7 +4,7 @@ import { useAccount, useDisconnect } from 'wagmi';
 import { useWeb3Modal } from '@web3modal/react';
 import { selectAppIsConnected } from '../../app/appSlice';
 import { useAppSelector } from '../../app/hooks';
-import { PROTECTED_DATA, SEND_MAIL } from '../../config/path';
+import { HOME, PROTECTED_DATA, SEND_MAIL } from '../../config/path';
 
 const TABS = [
   {
@@ -37,7 +37,7 @@ export default function Navigation() {
     <NavBar
       title="iExec"
       onTitleClick={() => {
-        navigate('/');
+        navigate(`/${HOME}`);
       }}
       mobile={false}
       tabs={{

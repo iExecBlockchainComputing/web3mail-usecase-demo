@@ -3,3 +3,5 @@ export const CREATE = 'create';
 export const CONSENT = 'consent';
 
 export const SEND_MAIL = 'sendMail';
+
+export const HOME = PROTECTED_DATA;
