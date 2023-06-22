@@ -13,7 +13,7 @@ import {
 import {
   PROTECTED_DATA,
   CONSENT,
-  SEND_MAIL,
+  SEND_EMAIL,
   CREATE,
   HOME,
 } from './config/path';
@@ -49,7 +49,7 @@ function App() {
             }
           />
           <Route
-            path={`/${SEND_MAIL}`}
+            path={`/${SEND_EMAIL}`}
             element={
               <LoginGuard>
                 <EmailDapp />
@@ -57,7 +57,7 @@ function App() {
             }
           />
           <Route
-            path={`/${SEND_MAIL}/:receiverAddress/:protectedDataAddress`}
+            path={`/${SEND_EMAIL}/:receiverAddress/:protectedDataAddress`}
             element={
               <LoginGuard>
                 <SendEmail />

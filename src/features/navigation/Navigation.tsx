@@ -4,7 +4,7 @@ import { useAccount, useDisconnect } from 'wagmi';
 import { useWeb3Modal } from '@web3modal/react';
 import { selectAppIsConnected } from '../../app/appSlice';
 import { useAppSelector } from '../../app/hooks';
-import { HOME, PROTECTED_DATA, SEND_MAIL } from '../../config/path';
+import { HOME, PROTECTED_DATA, SEND_EMAIL } from '../../config/path';
 
 const TABS = [
   {
@@ -12,8 +12,8 @@ const TABS = [
     value: PROTECTED_DATA, // tab path
   },
   {
-    label: 'Send Mail',
-    value: SEND_MAIL, // tab path
+    label: 'Send EMail',
+    value: SEND_EMAIL, // tab path
   },
 ];
 

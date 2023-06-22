@@ -2,7 +2,6 @@ import { Verified } from '@mui/icons-material';
 import {
   Alert,
   Box,
-  Button,
   CircularProgress,
   FormControl,
   Grid,
@@ -13,12 +12,14 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useCreateProtectedDataMutation } from '../../app/appSlice';
 import { createArrayBufferFromFile } from '../../utils/utils';
 import './NewProtectedData.css';
+import { Button } from '@iexec/react-ui-kit';
 
 export default function NewProtectedData() {
+  const fileInput = useRef<HTMLInputElement>(null);
   //query RTK API as mutation hook
   const [createProtectedData, result] = useCreateProtectedDataMutation();
 
@@ -111,15 +112,18 @@ export default function NewProtectedData() {
       )}
       {dataType === 'file' && (
         <Button
-          variant="contained"
-          component="label"
-          id="file"
-          fullWidth
-          onChange={handleFileChange}
-          sx={{ mt: 3 }}
+          className="uploadFileButton"
+          variant="secondary"
+          onClick={() => fileInput.current?.click()}
         >
           {!filePath ? 'Upload' : 'Updated File'}
-          <input hidden multiple type="file" />
+          <input
+            ref={fileInput}
+            hidden
+            multiple
+            type="file"
+            onChange={(e) => handleFileChange(e)}
+          />
         </Button>
       )}
       {filePath && dataType === 'file' && (
@@ -185,7 +189,7 @@ export default function NewProtectedData() {
       )}
       {dataType && !result.isLoading && (
         <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <Button sx={{ mt: 9 }} onClick={handleSubmit} variant="contained">
+          <Button className="protectNewDataButton" onClick={handleSubmit}>
             Protect the data
           </Button>
         </Box>

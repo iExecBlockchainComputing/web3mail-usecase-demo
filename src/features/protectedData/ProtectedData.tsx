@@ -1,7 +1,8 @@
-import { Box, Button, Grid, Pagination, Paper } from '@mui/material';
+import { Box, Grid, Pagination, Paper } from '@mui/material';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAccount } from 'wagmi';
+import { Button } from '@iexec/react-ui-kit';
 import {
   selectAppIsConnected,
   useFetchProtectedDataQuery,
@@ -88,8 +89,6 @@ export default function ProtectedData() {
 function NewProtectedDataButton() {
   const navigate = useNavigate();
   return (
-    <Button variant="contained" onClick={() => navigate(`./${CREATE}`)}>
-      Protect new data
-    </Button>
+    <Button onClick={() => navigate(`./${CREATE}`)}>Protect new data</Button>
   );
 }

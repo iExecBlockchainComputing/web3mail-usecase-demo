@@ -3,3 +3,12 @@
   margin-top: 90px;
   width: 70%;
 }
+
+.uploadFileButton {
+  margin-top: 20px;
+  width: 100%;
+}
+
+.protectNewDataButton {
+  margin-top: 20px;
+}

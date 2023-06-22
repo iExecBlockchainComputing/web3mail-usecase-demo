@@ -1,12 +1,11 @@
 import {
   Alert,
   Box,
-  Button,
   Snackbar,
   TextField,
   TextareaAutosize,
-  Typography,
 } from '@mui/material';
+import { Typography, Button } from '@iexec/react-ui-kit';
 import './SendEmail.css';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
@@ -67,7 +66,7 @@ export default function SendEmail() {
   };
 
   return (
-    <Box sx={{ m: 10, mx: 20 }}>
+    <Box sx={{ m: 6, mx: 20 }}>
       <h2>Send Mail to {receiverAddress}</h2>
       <Box sx={{ my: 2, display: 'flex', flexDirection: 'column' }}>
         <TextField
@@ -86,18 +85,13 @@ export default function SendEmail() {
           placeholder="Enter text here"
           value={message}
           onChange={handleChange}
-          style={{ width: '100%', marginTop: 30, height: 380 }}
+          style={{ width: '100%', marginTop: 10, height: 380 }}
           id="textArea"
         />
-        <Typography sx={{ my: 2, fontStyle: 'italic', fontSize: 'smaller' }}>
+        <Typography sx={{ mt: 2, fontStyle: 'italic', fontSize: 'smaller' }}>
           {charactersRemainingMessage} characters remaining
         </Typography>
-        <Button
-          variant="contained"
-          color="secondary"
-          sx={{ width: '50px', m: 'auto', mr: 0 }}
-          onClick={sendEmailHandle}
-        >
+        <Button className="sendEmailButton" onClick={sendEmailHandle}>
           Send
         </Button>
       </Box>
