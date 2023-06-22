@@ -2,6 +2,7 @@ import { Box, Grid, Pagination, Paper } from '@mui/material';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAccount } from 'wagmi';
+import { Button } from '@iexec/react-ui-kit';
 import {
   selectAppIsConnected,
   useFetchProtectedDataQuery,
@@ -11,7 +12,7 @@ import img from '../../assets/noData.png';
 import ProtectedDataCard from '../../components/ProtectedDataCard';
 import { ITEMS_PER_PAGE } from '../../config/config';
 import './ProtectedData.css';
-import { Button } from '@iexec/react-ui-kit';
+import { CREATE } from '../../config/path';
 
 export default function ProtectedData() {
   const { address } = useAccount();
@@ -88,8 +89,6 @@ export default function ProtectedData() {
 function NewProtectedDataButton() {
   const navigate = useNavigate();
   return (
-    <Button onClick={() => navigate('./newProtectedData')}>
-      Protect new data
-    </Button>
+    <Button onClick={() => navigate(`./${CREATE}`)}>Protect new data</Button>
   );
 }

@@ -4,13 +4,12 @@ import {
   Snackbar,
   TextField,
   TextareaAutosize,
-  Typography,
 } from '@mui/material';
+import { Typography, Button } from '@iexec/react-ui-kit';
 import './SendEmail.css';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useSendEmailMutation } from '../../app/appSlice';
-import { Button } from '@iexec/react-ui-kit';
 
 export default function SendEmail() {
   const { receiverAddress, protectedDataAddress } = useParams();
