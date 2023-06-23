@@ -5,7 +5,6 @@ import { useWeb3Modal } from '@web3modal/react';
 import { resetAppState, selectAppIsConnected } from '../../app/appSlice';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { HOME, PROTECTED_DATA, SEND_EMAIL } from '../../config/path';
-import { $CombinedState } from '@reduxjs/toolkit';
 
 const TABS = [
   {
@@ -22,7 +21,7 @@ export default function Navigation() {
   const navigate = useNavigate();
   const { open } = useWeb3Modal();
   const { isConnected, address } = useAccount();
-  const { disconnect, disconnectAsync } = useDisconnect();
+  const { disconnectAsync } = useDisconnect();
   const dispatch = useAppDispatch();
 
   const match = useMatch(`/:currentTab/*`);

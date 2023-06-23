@@ -1,9 +1,4 @@
-import {
-  AnyAction,
-  ThunkDispatch,
-  createAsyncThunk,
-  createSlice,
-} from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { RootState } from './store';
 import {
   ProtectedData,
