@@ -24,14 +24,11 @@ export default function ProtectedDataCard(props: ProtectedDataProps) {
           sx={{ height: '60px', display: 'flex', justifyContent: 'flex-end' }}
         >
           <Chip
-            className="chipLabel"
-            label={
-              (isKeyInDataSchema(props.schema, 'email') && 'Email') ||
+            className='chipLabel'
+            label={(isKeyInDataSchema(props.schema, 'email') && 'Email') ||
               (isKeyInDataSchema(props.schema, 'file') && 'File') ||
-              'Unknown'
-            }
-            size="small"
-          />
+              'Unknown'}
+            size="small" children={''}          />
         </Box>
         <Divider />
         <Box
@@ -43,7 +40,7 @@ export default function ProtectedDataCard(props: ProtectedDataProps) {
           }}
         >
           <h5>{props.title}</h5>
-          <Chip className='chipDate' label={'Date'} size="small" />
+          <Chip className='chipDate' label={'Date'} size="small" children={''} />
         </Box>
       </CardContent>
     </Card>
