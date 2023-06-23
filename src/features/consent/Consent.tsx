@@ -1,4 +1,4 @@
-import Chip from "@iexec/react-ui-kit/components/Chip";
+import Chip from '@iexec/react-ui-kit/components/Chip';
 import AddIcon from '@mui/icons-material/Add';
 import { Box, Fab } from '@mui/material';
 import { useState } from 'react';
@@ -42,12 +42,16 @@ export default function Consent() {
         <h2>{protectedDataSelected?.name}</h2>
         <Chip
           className="chipType"
-          label={(isKeyInDataSchema(protectedDataSelected?.schema || {}, 'email') &&
-            'Email') ||
+          label={
+            (isKeyInDataSchema(protectedDataSelected?.schema || {}, 'email') &&
+              'Email') ||
             (isKeyInDataSchema(protectedDataSelected?.schema || {}, 'file') &&
               'File') ||
-            'Unknown'}
-          size="small" children={""}        />
+            'Unknown'
+          }
+          size="small"
+          children={''}
+        />
       </Box>
       <Box id="summary">
         <ul>
