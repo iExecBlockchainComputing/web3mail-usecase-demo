@@ -16,15 +16,26 @@ const LoginGuard: FC<{ children: ReactNode }> = ({ children }) => {
   //get the state from the store
   const isAccountConnected = useAppSelector(selectAppIsConnected);
 
-  console.log('1', !isConnected);
-  console.log('2', !isAccountConnected);
-  console.log('3', chain?.id !== 134 || chain);
+  console.log('1', isConnected);
+  console.log('2', isAccountConnected);
 
   useEffect(() => {
+    console.log('TEST', isConnected && connector && !isAccountConnected);
+    console.log('isAccountConnected', isAccountConnected);
     if (isConnected && connector && !isAccountConnected) {
+      switchNetwork?.(chains[0]?.id);
+      console.log('initDataProtector');
       dispatch(initDataProtector());
     }
-  }, [isConnected, connector, isAccountConnected, dispatch]);
+  }, [
+    isConnected,
+    connector,
+    isAccountConnected,
+    dispatch,
+    chain?.id,
+    switchNetwork,
+    chains,
+  ]);
 
   return (
     <>

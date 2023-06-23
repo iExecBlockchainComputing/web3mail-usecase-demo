@@ -2,9 +2,10 @@ import { NavBar } from '@iexec/react-ui-kit';
 import { useNavigate, useMatch } from 'react-router-dom';
 import { useAccount, useDisconnect } from 'wagmi';
 import { useWeb3Modal } from '@web3modal/react';
-import { resetAccountSlice, selectAppIsConnected } from '../../app/appSlice';
+import { resetAppState, selectAppIsConnected } from '../../app/appSlice';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { HOME, PROTECTED_DATA, SEND_EMAIL } from '../../config/path';
+import { $CombinedState } from '@reduxjs/toolkit';
 
 const TABS = [
   {
@@ -20,8 +21,8 @@ const TABS = [
 export default function Navigation() {
   const navigate = useNavigate();
   const { open } = useWeb3Modal();
-  const { address } = useAccount();
-  const { disconnect } = useDisconnect();
+  const { isConnected, address } = useAccount();
+  const { disconnect, disconnectAsync } = useDisconnect();
   const dispatch = useAppDispatch();
 
   const match = useMatch(`/:currentTab/*`);
@@ -32,6 +33,11 @@ export default function Navigation() {
 
   const handleNavigate = (target: string) => {
     navigate(`/${target}`);
+  };
+
+  const logout = async () => {
+    await disconnectAsync();
+    dispatch(resetAppState());
   };
 
   return (
@@ -47,15 +53,10 @@ export default function Navigation() {
         onSelect: (value) => handleNavigate(value),
       }}
       login={{
-        isLoggedIn: !!address && isAccountConnected,
+        isLoggedIn: !!isConnected && isAccountConnected,
         address,
-        onLoginClick: () => {
-          open();
-        },
-        onLogoutClick: () => {
-          disconnect();
-          resetAccountSlice(dispatch);
-        },
+        onLoginClick: () => open(),
+        onLogoutClick: () => logout(),
       }}
     />
   );

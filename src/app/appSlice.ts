@@ -44,7 +44,6 @@ export const initDataProtector = createAsyncThunk(
       const provider = await result.connector?.getProvider();
       iExecDataProtector = new IExecDataProtector(provider);
       iExecWeb3Mail = new IExecWeb3Mail(provider);
-      iExecWeb3Mail = new IExecWeb3Mail(provider);
     } catch (e: any) {
       return { error: e.message };
     }
@@ -54,7 +53,9 @@ export const initDataProtector = createAsyncThunk(
 export const appSlice = createSlice({
   name: 'app',
   initialState: initialState,
-  reducers: {},
+  reducers: {
+    resetAppState: () => initialState,
+  },
   extraReducers: (builder) => {
     builder
       .addCase(initDataProtector.pending, (state) => {
@@ -70,12 +71,6 @@ export const appSlice = createSlice({
   },
 });
 
-export const resetAccountSlice = (
-  dispatch: ThunkDispatch<unknown, unknown, AnyAction>
-) => {
-  dispatch(api.util.resetApiState());
-};
-
 export default appSlice.reducer;
 export const selectThereIsSomeRequestPending = (state: RootState) =>
   Object.values(state.api.queries).some(
@@ -88,6 +83,7 @@ export const selectAppIsConnected = (state: RootState) =>
   state.app.status === 'Connected';
 export const selectAppStatus = (state: RootState) => state.app.status;
 export const selectAppError = (state: RootState) => state.app.error;
+export const { resetAppState } = appSlice.actions;
 
 export const homeApi = api.injectEndpoints({
   endpoints: (builder) => ({
