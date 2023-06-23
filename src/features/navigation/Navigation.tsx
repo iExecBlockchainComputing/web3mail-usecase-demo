@@ -2,8 +2,8 @@ import { NavBar } from '@iexec/react-ui-kit';
 import { useNavigate, useMatch } from 'react-router-dom';
 import { useAccount, useDisconnect } from 'wagmi';
 import { useWeb3Modal } from '@web3modal/react';
-import { selectAppIsConnected } from '../../app/appSlice';
-import { useAppSelector } from '../../app/hooks';
+import { resetAccountSlice, selectAppIsConnected } from '../../app/appSlice';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { HOME, PROTECTED_DATA, SEND_EMAIL } from '../../config/path';
 
 const TABS = [
@@ -22,6 +22,7 @@ export default function Navigation() {
   const { open } = useWeb3Modal();
   const { address } = useAccount();
   const { disconnect } = useDisconnect();
+  const dispatch = useAppDispatch();
 
   const match = useMatch(`/:currentTab/*`);
   const currentTab = match?.params.currentTab;
@@ -51,7 +52,10 @@ export default function Navigation() {
         onLoginClick: () => {
           open();
         },
-        onLogoutClick: () => disconnect(),
+        onLogoutClick: () => {
+          disconnect();
+          resetAccountSlice(dispatch);
+        },
       }}
     />
   );

@@ -1,4 +1,9 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import {
+  AnyAction,
+  ThunkDispatch,
+  createAsyncThunk,
+  createSlice,
+} from '@reduxjs/toolkit';
 import { RootState } from './store';
 import {
   ProtectedData,
@@ -64,6 +69,12 @@ export const appSlice = createSlice({
       });
   },
 });
+
+export const resetAccountSlice = (
+  dispatch: ThunkDispatch<unknown, unknown, AnyAction>
+) => {
+  dispatch(api.util.resetApiState());
+};
 
 export default appSlice.reducer;
 export const selectThereIsSomeRequestPending = (state: RootState) =>
