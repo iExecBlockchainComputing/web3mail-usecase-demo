@@ -56,7 +56,6 @@ export const getLocalDateFromTimeStamp = (
 
 // from number => 1687528305
 export const getLocalDateFromNumber = (timestamp: number): string => {
-  //TODO : fix when dataproctector will return a number
-  const date = new Date(Number(timestamp));
+  const date = new Date(timestamp * 1000);
   return date.toLocaleDateString();
 };
