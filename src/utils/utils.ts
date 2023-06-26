@@ -51,7 +51,6 @@ export const getLocalDateFromTimeStamp = (
   timestamp: TimeStamp | number
 ): string => {
   const date = new Date(timestamp);
-  console.log(date);
   return date.toLocaleDateString();
 };
 
