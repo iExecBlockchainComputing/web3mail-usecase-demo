@@ -5,6 +5,7 @@ import { useWeb3Modal } from '@web3modal/react';
 import { resetAppState, selectAppIsConnected } from '../../app/appSlice';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { HOME, PROTECTED_DATA, SEND_EMAIL } from '../../config/path';
+import { bellecour } from '../../utils/walletConnection';
 
 const TABS = [
   {
@@ -19,7 +20,7 @@ const TABS = [
 
 export default function Navigation() {
   const navigate = useNavigate();
-  const { open } = useWeb3Modal();
+  const { open, setDefaultChain } = useWeb3Modal();
   const { isConnected, address } = useAccount();
   const { disconnectAsync } = useDisconnect();
   const dispatch = useAppDispatch();
@@ -39,6 +40,11 @@ export default function Navigation() {
     dispatch(resetAppState());
   };
 
+  const login = () => {
+    setDefaultChain(bellecour);
+    open();
+  };
+
   return (
     <NavBar
       title="iExec"
@@ -54,7 +60,7 @@ export default function Navigation() {
       login={{
         isLoggedIn: !!isConnected && isAccountConnected,
         address,
-        onLoginClick: () => open(),
+        onLoginClick: () => login(),
         onLogoutClick: () => logout(),
       }}
     />

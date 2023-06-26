@@ -20,11 +20,10 @@ export const projectId = import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID!;
 const chains = [bellecour];
 const { provider } = configureChains(chains, [w3mProvider({ projectId })]);
 
-// as there is only one chain, logging will automatically switch to it
 export const wagmiClient = createClient({
   autoConnect: true,
   connectors: w3mConnectors({
-    version: 1,
+    version: 2,
     chains,
     projectId,
   }),
