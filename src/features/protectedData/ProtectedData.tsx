@@ -13,6 +13,7 @@ import ProtectedDataCard from '../../components/ProtectedDataCard';
 import { ITEMS_PER_PAGE } from '../../config/config';
 import './ProtectedData.css';
 import { CREATE } from '../../config/path';
+import { getLocalDateFromNumber } from '../../utils/utils';
 
 export default function ProtectedData() {
   const { address } = useAccount();
@@ -54,15 +55,18 @@ export default function ProtectedData() {
           </Box>
           <Box sx={{ mx: 4, paddingBottom: 20 }}>
             <Grid container spacing={2}>
-              {currentData?.map(({ address, name, schema }) => (
-                <Grid item key={address}>
-                  <ProtectedDataCard
-                    id={address}
-                    title={name || 'Undefined'}
-                    schema={schema}
-                  />
-                </Grid>
-              ))}
+              {currentData?.map(
+                ({ address, name, schema, creationTimestamp }) => (
+                  <Grid item key={address}>
+                    <ProtectedDataCard
+                      id={address}
+                      title={name || 'Undefined'}
+                      schema={schema}
+                      date={getLocalDateFromNumber(creationTimestamp)}
+                    />
+                  </Grid>
+                )
+              )}
             </Grid>
             <Paper id="pagination">
               <Pagination
