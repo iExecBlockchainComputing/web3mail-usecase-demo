@@ -1,11 +1,10 @@
 import './LoginGuard.css';
-import { Typography } from '@iexec/react-ui-kit';
 import { FC, ReactNode } from 'react';
 import { useAccount, useNetwork, useSwitchNetwork } from 'wagmi';
 import { selectAppIsConnected } from '../../app/appSlice';
 import { useAppSelector } from '../../app/hooks';
 import { Box } from '@mui/material';
-import { Button } from '@iexec/react-ui-kit';
+import { Button, Typography } from '@iexec/react-ui-kit';
 
 const LoginGuard: FC<{ children: ReactNode }> = ({ children }) => {
   const { isConnected } = useAccount();
