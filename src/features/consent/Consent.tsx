@@ -1,16 +1,17 @@
-import './Consent.css';
-import ToggleList from './ToggleList';
+import Chip from '@iexec/react-ui-kit/components/Chip';
+import AddIcon from '@mui/icons-material/Add';
+import { Box, Fab } from '@mui/material';
+import { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Box, Chip, Fab } from '@mui/material';
+import { useAccount } from 'wagmi';
 import {
   useFetchGrantedAccessQuery,
   useFetchProtectedDataQuery,
 } from '../../app/appSlice';
-import { useAccount } from 'wagmi';
 import { isKeyInDataSchema } from '../../utils/utils';
-import { useState } from 'react';
+import './Consent.css';
 import GrantAcessModal from './GrantAcessModal';
-import AddIcon from '@mui/icons-material/Add';
+import ToggleList from './ToggleList';
 
 export default function Consent() {
   const { ProtectedDataId } = useParams();
@@ -40,7 +41,7 @@ export default function Consent() {
       <Box sx={{ textAlign: 'left' }}>
         <h2>{protectedDataSelected?.name}</h2>
         <Chip
-          id="chipType"
+          className="chipType"
           label={
             (isKeyInDataSchema(protectedDataSelected?.schema || {}, 'email') &&
               'Email') ||
@@ -49,6 +50,7 @@ export default function Consent() {
             'Unknown'
           }
           size="small"
+          children={''}
         />
       </Box>
       <Box id="summary">
