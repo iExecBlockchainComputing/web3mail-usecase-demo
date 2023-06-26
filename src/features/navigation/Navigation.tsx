@@ -58,7 +58,7 @@ export default function Navigation() {
         onSelect: (value) => handleNavigate(value),
       }}
       login={{
-        isLoggedIn: !!isConnected && isAccountConnected,
+        isLoggedIn: isConnected && isAccountConnected,
         address,
         onLoginClick: () => login(),
         onLogoutClick: () => logout(),
