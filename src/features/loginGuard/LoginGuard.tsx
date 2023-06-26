@@ -1,35 +1,19 @@
 import './LoginGuard.css';
 import { Typography } from '@iexec/react-ui-kit';
-import { FC, ReactNode, useEffect } from 'react';
+import { FC, ReactNode } from 'react';
 import { useAccount, useNetwork, useSwitchNetwork } from 'wagmi';
-import { initDataProtector, selectAppIsConnected } from '../../app/appSlice';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { selectAppIsConnected } from '../../app/appSlice';
+import { useAppSelector } from '../../app/hooks';
 import { Box } from '@mui/material';
 import { Button } from '@iexec/react-ui-kit';
 
 const LoginGuard: FC<{ children: ReactNode }> = ({ children }) => {
-  const dispatch = useAppDispatch();
-  const { isConnected, connector } = useAccount();
+  const { isConnected } = useAccount();
   const { chain } = useNetwork();
   const { chains, error, isLoading, pendingChainId, switchNetwork } =
     useSwitchNetwork();
   //get the state from the store
   const isAccountConnected = useAppSelector(selectAppIsConnected);
-
-  useEffect(() => {
-    if (isConnected && connector && !isAccountConnected) {
-      switchNetwork?.(chains[0]?.id);
-      dispatch(initDataProtector());
-    }
-  }, [
-    isConnected,
-    connector,
-    isAccountConnected,
-    dispatch,
-    chain?.id,
-    switchNetwork,
-    chains,
-  ]);
 
   return (
     <>

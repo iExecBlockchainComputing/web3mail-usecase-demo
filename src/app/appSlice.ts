@@ -18,6 +18,7 @@ import {
   Contact,
 } from '@iexec/web3mail';
 
+// Configure iExec Data Protector & Web3Mail
 let iExecDataProtector: IExecDataProtector | null = null;
 let iExecWeb3Mail: IExecWeb3Mail | null = null;
 
@@ -31,19 +32,16 @@ const initialState: AppState = {
   error: null,
 };
 
-export const initDataProtector = createAsyncThunk(
-  'app/initDataProtector',
-  async () => {
-    try {
-      const result = getAccount();
-      const provider = await result.connector?.getProvider();
-      iExecDataProtector = new IExecDataProtector(provider);
-      iExecWeb3Mail = new IExecWeb3Mail(provider);
-    } catch (e: any) {
-      return { error: e.message };
-    }
+export const initSDK = createAsyncThunk('app/initSDK', async () => {
+  try {
+    const result = getAccount();
+    const provider = await result.connector?.getProvider();
+    iExecDataProtector = new IExecDataProtector(provider);
+    iExecWeb3Mail = new IExecWeb3Mail(provider);
+  } catch (e: any) {
+    return { error: e.message };
   }
-);
+});
 
 export const appSlice = createSlice({
   name: 'app',
@@ -53,13 +51,13 @@ export const appSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(initDataProtector.pending, (state) => {
+      .addCase(initSDK.pending, (state) => {
         state.status = 'Loading';
       })
-      .addCase(initDataProtector.fulfilled, (state) => {
+      .addCase(initSDK.fulfilled, (state) => {
         state.status = 'Connected';
       })
-      .addCase(initDataProtector.rejected, (state, action) => {
+      .addCase(initSDK.rejected, (state, action) => {
         state.status = 'Failed';
         state.error = '' + action.error.message;
       });
