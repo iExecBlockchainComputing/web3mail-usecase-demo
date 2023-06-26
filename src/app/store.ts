@@ -50,14 +50,12 @@ export const store = configureStore({
 
 //update app state on account change & network change
 watchAccount((account) => {
-  console.log('account changed', account);
   if (account.address) {
     store.dispatch(initSDK());
   }
 });
 
 watchNetwork((network) => {
-  console.log('network changed', network);
   if (network.chain) {
     store.dispatch(initSDK());
   }
