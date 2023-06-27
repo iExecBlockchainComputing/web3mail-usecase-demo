@@ -195,7 +195,6 @@ steps:
     # generates the .tags file for the docker plugin
     # add tag latest for the rolling tag
     commands:
-      - cd web3mail-usecase-demo
       - npm pkg get version | sed 's/"//g' > ../.tags
       - echo "latest" >> ../.tags
 
