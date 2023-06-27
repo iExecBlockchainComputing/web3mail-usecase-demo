@@ -1,18 +1,17 @@
-#cardContent {
+.cardContent {
   padding: 0px;
   padding-bottom: 10px;
 }
 
-#chipLabel {
+.chipLabel {
   margin: auto;
   margin-top: 10px;
   margin-right: 10px;
-  background-color: #fcd15a;
+  background-color: #fcd15a !important;
+  color: #1d1d24;
 }
 
-#chipDate {
-  width: 85px;
-  background-color: #788896;
+.chipDate {
   margin: auto;
   margin-right: -5px;
 }

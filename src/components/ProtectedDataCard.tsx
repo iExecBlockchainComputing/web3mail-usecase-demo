@@ -1,26 +1,39 @@
-import { useNavigate } from 'react-router-dom'
-import './ProtectedDataCard.css'
-import { Box, Card, CardContent, Chip, Divider } from '@mui/material'
+import { DataSchema } from '@iexec/dataprotector';
+import Chip from '@iexec/react-ui-kit/components/Chip';
+import { Box, Card, CardContent, Divider } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { CONSENT, PROTECTED_DATA } from '../config/path';
+import { isKeyInDataSchema } from '../utils/utils';
+import './ProtectedDataCard.css';
 
 export interface ProtectedDataProps {
-  title: string
-  date: string
-  dataType: string
-  id: string
+  id: string;
+  title: string;
+  schema: DataSchema;
+  date: string;
 }
 
 export default function ProtectedDataCard(props: ProtectedDataProps) {
-  const naviguate = useNavigate()
+  const navigate = useNavigate();
   return (
     <Card
       sx={{ minWidth: 260, cursor: 'pointer' }}
-      onClick={() => naviguate(`/protectedData/consent/${props.id}`)}
+      onClick={() => navigate(`/${PROTECTED_DATA}/${CONSENT}/${props.id}`)}
     >
-      <CardContent id="cardContent">
+      <CardContent className="cardContent">
         <Box
           sx={{ height: '60px', display: 'flex', justifyContent: 'flex-end' }}
         >
-          <Chip id="chipLabel" label={props.dataType} size="small" />
+          <Chip
+            className="chipLabel"
+            label={
+              (isKeyInDataSchema(props.schema, 'email') && 'Email') ||
+              (isKeyInDataSchema(props.schema, 'file') && 'File') ||
+              'Unknown'
+            }
+            size="small"
+            children={''}
+          />
         </Box>
         <Divider />
         <Box
@@ -32,9 +45,14 @@ export default function ProtectedDataCard(props: ProtectedDataProps) {
           }}
         >
           <h5>{props.title}</h5>
-          <Chip id="chipDate" label={props.date} size="small" />
+          <Chip
+            className="chipDate"
+            label={props.date}
+            size="small"
+            children={''}
+          />
         </Box>
       </CardContent>
     </Card>
-  )
+  );
 }

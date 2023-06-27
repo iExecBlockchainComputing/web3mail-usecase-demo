@@ -16,3 +16,9 @@
 #textArea:focus {
   border-color: blueviolet;
 }
+
+.sendEmailButton {
+  width: 80px;
+  margin: auto;
+  margin-right: 0;
+}
