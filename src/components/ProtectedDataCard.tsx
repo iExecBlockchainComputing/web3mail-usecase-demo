@@ -10,6 +10,7 @@ export interface ProtectedDataProps {
   id: string;
   title: string;
   schema: DataSchema;
+  date: string;
 }
 
 export default function ProtectedDataCard(props: ProtectedDataProps) {
@@ -46,7 +47,7 @@ export default function ProtectedDataCard(props: ProtectedDataProps) {
           <h5>{props.title}</h5>
           <Chip
             className="chipDate"
-            label={'Date'}
+            label={props.date}
             size="small"
             children={''}
           />

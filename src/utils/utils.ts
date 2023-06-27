@@ -26,11 +26,6 @@ export const isKeyInDataSchema = (
   return false;
 };
 
-export const getShortAddress = (address: string) => {
-  const getShortAddress = address.slice(0, 6) + '...' + address.slice(-4);
-  return getShortAddress;
-};
-
 export const createArrayBufferFromFile = async (
   file?: File
 ): Promise<ArrayBuffer> => {
@@ -51,7 +46,17 @@ export const createArrayBufferFromFile = async (
   }
 };
 
-export const getLocalDateString = (timestamp: TimeStamp): string => {
+// from TimeStamp => 2023-06-23T17:46:37.212Z
+export const getLocalDateFromTimeStamp = (
+  timestamp: TimeStamp | number
+): string => {
   const date = new Date(timestamp);
+  return date.toLocaleDateString();
+};
+
+export const getLocalDateFromBlockchainTimestamp = (
+  timestamp: number
+): string => {
+  const date = new Date(timestamp * 1000);
   return date.toLocaleDateString();
 };

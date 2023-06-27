@@ -10,7 +10,7 @@ import {
   useFetchMyContactsQuery,
 } from '../../app/appSlice';
 import { useAppSelector } from '../../app/hooks';
-import { getLocalDateString } from '../../utils/utils';
+import { getLocalDateFromTimeStamp } from '../../utils/utils';
 import './EmailDapp.css';
 import { Button } from '@iexec/react-ui-kit';
 
@@ -59,9 +59,7 @@ export default function EmailDapp() {
       renderCell: (params) => (
         <Button
           onClick={() =>
-            navigate(
-              `./${params.row.owner}/${params.row.protectedDataAddress}`
-            )
+            navigate(`./${params.row.owner}/${params.row.protectedDataAddress}`)
           }
         >
           Send web3 email
@@ -81,7 +79,9 @@ export default function EmailDapp() {
         id: index.toString(),
         owner: contact.owner.toLowerCase(),
         protectedDataAddress: contact.address.toLowerCase(),
-        accessGrantTimestamp: getLocalDateString(contact.accessGrantTimestamp),
+        accessGrantTimestamp: getLocalDateFromTimeStamp(
+          contact.accessGrantTimestamp
+        ),
       };
     });
 
@@ -96,7 +96,11 @@ export default function EmailDapp() {
   return (
     <Box sx={{ m: 10, mx: 20 }}>
       <h2>Contact list</h2>
-      <p>A list of contacts who have subscribed using their Ethereum address. You can send them an email, without having access to their email address (protected data).</p>
+      <p>
+        A list of contacts who have subscribed using their Ethereum address. You
+        can send them an email, without having access to their email address
+        (protected data).
+      </p>
       <Box id="search" sx={{ mt: 5 }}>
         <div id="iconWrapper">
           <SearchIcon sx={{ color: '#788896' }} />
