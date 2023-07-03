@@ -82,7 +82,10 @@ export default function ProtectedData() {
       ) : (
         <Box>
           <img src={img} alt="The image can't be loaded" id="logo" />
-          <p>You have no protected data yet. Go create one!</p>
+          <p>
+            You haven't protected any data yet. Starting is as easy as pressing
+            the button below.
+          </p>
           <Box sx={{ mt: 7 }}>
             <NewProtectedDataButton />
           </Box>
@@ -95,6 +98,6 @@ export default function ProtectedData() {
 function NewProtectedDataButton() {
   const navigate = useNavigate();
   return (
-    <Button onClick={() => navigate(`./${CREATE}`)}>Protect new data</Button>
+    <Button onClick={() => navigate(`./${CREATE}`)}>Protect your data</Button>
   );
 }

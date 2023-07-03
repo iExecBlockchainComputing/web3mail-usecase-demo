@@ -95,11 +95,10 @@ export default function EmailDapp() {
 
   return (
     <Box sx={{ m: 10, mx: 20 }}>
-      <h2>Contact list</h2>
+      <h2>Contact List</h2>
       <p>
         A list of contacts who have subscribed using their Ethereum address. You
-        can send them an email, without having access to their email address
-        (protected data).
+        can send them an email without accessing their email address.
       </p>
       <Box id="search" sx={{ mt: 5 }}>
         <div id="iconWrapper">
