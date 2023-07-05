@@ -12,7 +12,7 @@ import { api } from './api';
 import { getAccount } from 'wagmi/actions';
 import { DAPP_WEB3_MAIL_ENS } from '../config/config';
 import {
-  IExecWeb3Mail,
+  IExecWeb3mail,
   SendEmailParams,
   SendEmailResponse,
   Contact,
@@ -20,7 +20,7 @@ import {
 
 // Configure iExec Data Protector & Web3Mail
 let iExecDataProtector: IExecDataProtector | null = null;
-let iExecWeb3Mail: IExecWeb3Mail | null = null;
+let iExecWeb3Mail: IExecWeb3mail | null = null;
 
 export interface AppState {
   status: 'Not Connected' | 'Connected' | 'Loading' | 'Failed';
@@ -37,7 +37,7 @@ export const initSDK = createAsyncThunk('app/initSDK', async () => {
     const result = getAccount();
     const provider = await result.connector?.getProvider();
     iExecDataProtector = new IExecDataProtector(provider);
-    iExecWeb3Mail = new IExecWeb3Mail(provider);
+    iExecWeb3Mail = new IExecWeb3mail(provider);
   } catch (e: any) {
     return { error: e.message };
   }
