@@ -71,7 +71,7 @@ export default function NewProtectedData() {
   };
 
   const dataTypes = [
-    { value: 'email', label: 'Email' },
+    { value: 'email', label: 'Email Address' },
     { value: 'file', label: 'File' },
   ];
   return (
@@ -179,7 +179,7 @@ export default function NewProtectedData() {
             target="_blank"
             sx={{ color: 'green', textDecorationColor: 'green' }}
           >
-            You can reach it here
+            View on iExec Explorer
           </Link>
           <p>Your protected data address: {result.data}</p>
         </Alert>
