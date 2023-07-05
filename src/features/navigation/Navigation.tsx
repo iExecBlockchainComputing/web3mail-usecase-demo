@@ -13,7 +13,7 @@ const TABS = [
     value: PROTECTED_DATA, // tab path
   },
   {
-    label: 'Send EMail',
+    label: 'Send Email',
     value: SEND_EMAIL, // tab path
   },
 ];
