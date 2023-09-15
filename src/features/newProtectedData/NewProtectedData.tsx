@@ -179,7 +179,7 @@ export default function NewProtectedData() {
             target="_blank"
             sx={{ color: 'green', textDecorationColor: 'green' }}
           >
-            View on iExec Explorer
+            You can see it here
           </Link>
           <p>Your protected data address: {result.data}</p>
         </Alert>
@@ -190,7 +190,7 @@ export default function NewProtectedData() {
       {dataType && !result.isLoading && (
         <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
           <Button className="protectNewDataButton" onClick={handleSubmit}>
-            Protect the data
+            Protect
           </Button>
         </Box>
       )}
