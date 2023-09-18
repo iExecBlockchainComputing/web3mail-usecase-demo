@@ -179,7 +179,7 @@ export default function NewProtectedData() {
             target="_blank"
             sx={{ color: 'green', textDecorationColor: 'green' }}
           >
-            View on iExec Explorer
+            See Details
           </Link>
           <p>Your protected data address: {result.data}</p>
         </Alert>
