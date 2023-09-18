@@ -92,7 +92,7 @@ export default function GrantAcessModal(props: GrantAccessModalParams) {
             variant="h5"
             sx={{ alignSelf: 'flex-start' }}
           >
-            Add a new contact
+            Grant access to
           </Typography>
           <TextField
             required
@@ -120,11 +120,7 @@ export default function GrantAcessModal(props: GrantAccessModalParams) {
             onChange={handleNbOfAccessChange}
             sx={{ mt: 3 }}
           />
-          <Button
-            onClick={handleGrantAccess}
-          >
-            Validate
-          </Button>
+          <Button onClick={handleGrantAccess}>Validate</Button>
         </Box>
       </Modal>
     </div>
