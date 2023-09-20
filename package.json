@@ -8,7 +8,9 @@
     "build": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "format": "prettier --write \"src/**/*.ts\"",
-    "check-format": "prettier --check \"src/**/*.ts\""
+    "check-format": "prettier --check \"src/**/*.ts\"",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
