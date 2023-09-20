@@ -50,6 +50,8 @@ export default function SendEmail() {
   const sendEmailHandle = () => {
     if (!protectedDataAddress) return;
     sendEmail({
+      senderName,
+      contentType,
       emailSubject: messageSubject,
       emailContent: message,
       protectedData: protectedDataAddress,
