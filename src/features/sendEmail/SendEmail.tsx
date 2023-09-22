@@ -24,17 +24,16 @@ export default function SendEmail() {
 
   //for textarea
   const [message, setMessage] = useState('');
-  //limited to 4096 by the SMS
-  const charactersRemainingMessage = 4096 - message.length;
+  const charactersRemainingMessage = 512000 - message.length;
 
   //for name et dataType
   const [messageSubject, setMessageSubject] = useState('');
+  const charactersRemainingSubject = 78 - messageSubject.length;
 
   const [contentType, setContentType] = useState('text/plain');
-  const [senderName, setSenderName] = useState('');
 
-  //limited to 78 by the SMS
-  const charactersRemainingSubject = 78 - messageSubject.length;
+  const [senderName, setSenderName] = useState('');
+  const charactersRemainingSenderName = 20 - senderName.length;
 
   //handle functions
   const handleMessageSubjectChange = (event: any) => {
@@ -97,19 +96,9 @@ export default function SendEmail() {
           onChange={handleSenderNameChange}
           sx={{ mt: 3 }}
         />
-        <FormControl sx={{ textAlign: 'left', mt: 3 }} fullWidth>
-          <InputLabel id="content-type-label">Content Type</InputLabel>
-          <Select
-            labelId="content-type-label"
-            id="content-type-select"
-            value={contentType}
-            label="Content type"
-            onChange={handleSelectContentType}
-          >
-            <MenuItem value="text/plain">text/plain</MenuItem>
-            <MenuItem value="text/html">text/html</MenuItem>
-          </Select>
-        </FormControl>
+        <Typography sx={{ my: 2, fontStyle: 'italic', fontSize: 'smaller' }}>
+          {charactersRemainingSenderName} characters remaining
+        </Typography>
         <TextField
           fullWidth
           id="Message subject"
@@ -123,6 +112,19 @@ export default function SendEmail() {
         <Typography sx={{ my: 2, fontStyle: 'italic', fontSize: 'smaller' }}>
           {charactersRemainingSubject} characters remaining
         </Typography>
+        <FormControl sx={{ textAlign: 'left', mt: 3 }} fullWidth>
+          <InputLabel id="content-type-label">Content Type</InputLabel>
+          <Select
+            labelId="content-type-label"
+            id="content-type-select"
+            value={contentType}
+            label="Content type"
+            onChange={handleSelectContentType}
+          >
+            <MenuItem value="text/plain">text/plain</MenuItem>
+            <MenuItem value="text/html">text/html</MenuItem>
+          </Select>
+        </FormControl>
         <TextareaAutosize
           required
           placeholder="Enter email content"
