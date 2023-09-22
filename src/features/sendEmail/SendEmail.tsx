@@ -24,17 +24,16 @@ export default function SendEmail() {
 
   //for textarea
   const [message, setMessage] = useState('');
-  //limited to 4096 by the SMS
-  const charactersRemainingMessage = 4096 - message.length;
+  const charactersRemainingMessage = 512000 - message.length;
 
   //for name et dataType
   const [messageSubject, setMessageSubject] = useState('');
+  const charactersRemainingSubject = 78 - messageSubject.length;
 
   const [contentType, setContentType] = useState('text/plain');
-  const [senderName, setSenderName] = useState('');
 
-  //limited to 78 by the SMS
-  const charactersRemainingSubject = 78 - messageSubject.length;
+  const [senderName, setSenderName] = useState('');
+  const charactersRemainingSenderName = 20 - senderName.length;
 
   //handle functions
   const handleMessageSubjectChange = (event: any) => {
@@ -97,6 +96,9 @@ export default function SendEmail() {
           onChange={handleSenderNameChange}
           sx={{ mt: 3 }}
         />
+        <Typography sx={{ my: 2, fontStyle: 'italic', fontSize: 'smaller' }}>
+          {charactersRemainingSenderName} characters remaining
+        </Typography>
         <FormControl sx={{ textAlign: 'left', mt: 3 }} fullWidth>
           <InputLabel id="content-type-label">Content Type</InputLabel>
           <Select
