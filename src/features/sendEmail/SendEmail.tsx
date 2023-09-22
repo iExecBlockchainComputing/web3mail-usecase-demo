@@ -99,19 +99,6 @@ export default function SendEmail() {
         <Typography sx={{ my: 2, fontStyle: 'italic', fontSize: 'smaller' }}>
           {charactersRemainingSenderName} characters remaining
         </Typography>
-        <FormControl sx={{ textAlign: 'left', mt: 3 }} fullWidth>
-          <InputLabel id="content-type-label">Content Type</InputLabel>
-          <Select
-            labelId="content-type-label"
-            id="content-type-select"
-            value={contentType}
-            label="Content type"
-            onChange={handleSelectContentType}
-          >
-            <MenuItem value="text/plain">text/plain</MenuItem>
-            <MenuItem value="text/html">text/html</MenuItem>
-          </Select>
-        </FormControl>
         <TextField
           fullWidth
           id="Message subject"
@@ -125,6 +112,19 @@ export default function SendEmail() {
         <Typography sx={{ my: 2, fontStyle: 'italic', fontSize: 'smaller' }}>
           {charactersRemainingSubject} characters remaining
         </Typography>
+        <FormControl sx={{ textAlign: 'left', mt: 3 }} fullWidth>
+          <InputLabel id="content-type-label">Content Type</InputLabel>
+          <Select
+            labelId="content-type-label"
+            id="content-type-select"
+            value={contentType}
+            label="Content type"
+            onChange={handleSelectContentType}
+          >
+            <MenuItem value="text/plain">text/plain</MenuItem>
+            <MenuItem value="text/html">text/html</MenuItem>
+          </Select>
+        </FormControl>
         <TextareaAutosize
           required
           placeholder="Enter email content"
