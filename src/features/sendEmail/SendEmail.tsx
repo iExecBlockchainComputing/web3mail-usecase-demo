@@ -5,6 +5,11 @@ import {
   TextField,
   TextareaAutosize,
 } from '@mui/material';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import InputLabel from '@mui/material/InputLabel';
+
 import { Typography, Button } from '@iexec/react-ui-kit';
 import './SendEmail.css';
 import { useParams } from 'react-router-dom';
@@ -19,13 +24,16 @@ export default function SendEmail() {
 
   //for textarea
   const [message, setMessage] = useState('');
-  //limited to 4096 by the SMS
-  const charactersRemainingMessage = 4096 - message.length;
+  const charactersRemainingMessage = 512000 - message.length;
 
   //for name et dataType
   const [messageSubject, setMessageSubject] = useState('');
-  //limited to 78 by the SMS
   const charactersRemainingSubject = 78 - messageSubject.length;
+
+  const [contentType, setContentType] = useState('text/plain');
+
+  const [senderName, setSenderName] = useState('');
+  const charactersRemainingSenderName = 20 - senderName.length;
 
   //handle functions
   const handleMessageSubjectChange = (event: any) => {
@@ -41,6 +49,8 @@ export default function SendEmail() {
   const sendEmailHandle = () => {
     if (!protectedDataAddress) return;
     sendEmail({
+      senderName,
+      contentType,
       emailSubject: messageSubject,
       emailContent: message,
       protectedData: protectedDataAddress,
@@ -65,15 +75,36 @@ export default function SendEmail() {
     setOpen(false);
   };
 
+  const handleSelectContentType = (event: SelectChangeEvent) => {
+    setContentType(event.target.value as string);
+  };
+
+  const handleSenderNameChange = (event: any) => {
+    const inputValue = event.target.value;
+    setSenderName(inputValue);
+  };
   return (
     <Box sx={{ m: 6, mx: 20 }}>
       <h2>Send Mail to {receiverAddress}</h2>
       <Box sx={{ my: 2, display: 'flex', flexDirection: 'column' }}>
         <TextField
           fullWidth
+          id="sender-name"
+          label="Sender name"
+          variant="outlined"
+          value={senderName}
+          onChange={handleSenderNameChange}
+          sx={{ mt: 3 }}
+        />
+        <Typography sx={{ my: 2, fontStyle: 'italic', fontSize: 'smaller' }}>
+          {charactersRemainingSenderName} characters remaining
+        </Typography>
+        <TextField
+          fullWidth
           id="Message subject"
           label="Message subject"
           variant="outlined"
+          required
           value={messageSubject}
           onChange={handleMessageSubjectChange}
           sx={{ mt: 3 }}
@@ -81,8 +112,22 @@ export default function SendEmail() {
         <Typography sx={{ my: 2, fontStyle: 'italic', fontSize: 'smaller' }}>
           {charactersRemainingSubject} characters remaining
         </Typography>
+        <FormControl sx={{ textAlign: 'left', mt: 3 }} fullWidth>
+          <InputLabel id="content-type-label">Content Type</InputLabel>
+          <Select
+            labelId="content-type-label"
+            id="content-type-select"
+            value={contentType}
+            label="Content type"
+            onChange={handleSelectContentType}
+          >
+            <MenuItem value="text/plain">text/plain</MenuItem>
+            <MenuItem value="text/html">text/html</MenuItem>
+          </Select>
+        </FormControl>
         <TextareaAutosize
-          placeholder="Enter text here"
+          required
+          placeholder="Enter email content"
           value={message}
           onChange={handleChange}
           style={{ width: '100%', marginTop: 10, height: 380 }}
