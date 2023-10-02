@@ -5,7 +5,7 @@
 import { Eip1193Bridge } from '@ethersproject/experimental';
 import { JsonRpcProvider } from '@ethersproject/providers';
 import { Wallet } from '@ethersproject/wallet';
-import { BigNumber } from 'ethers';
+import { BigNumber, utils } from 'ethers';
 
 const TEST_PRIVATE_KEY =
   '0x564a9db84969c8159f7aa3d5393c5ecd014fce6a375842a45b12af6677b12407';
@@ -58,6 +58,9 @@ export class MetaMaskMock extends Eip1193Bridge {
         break;
       case 'eth_chainId':
         rpcPromise = Promise.resolve(this.eth_chainId);
+        break;
+      case 'personal_sign':
+        rpcPromise = this.signer.signMessage(utils.arrayify(params[0]));
         break;
       case 'eth_signTypedData_v3':
       case 'eth_signTypedData_v4':
