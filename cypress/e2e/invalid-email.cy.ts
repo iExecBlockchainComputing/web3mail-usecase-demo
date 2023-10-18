@@ -1,4 +1,4 @@
-describe('creation of a protected data as an email', () => {
+describe('creation of a protected data with an invalid email', () => {
   it('as user i want to create a protected data', () => {
     cy.visit('/', { selectedWallet: 'metamask' });
     cy.get('body').as('body');
@@ -16,14 +16,8 @@ describe('creation of a protected data as an email', () => {
     //as user i want to choose "Email address" type
     cy.contains('Email Address').click();
     //as user i want to enter my mail address in a placeholder
-    cy.get('input[id="email"]').type('david.mialon@iex.ec');
-    //as user, i want to Name my protected data in a placeholder
-    cy.get('input[id="Name of your Protected Data"]').type('azerty');
-    //as user i want to create my protected data with a button
-    cy.contains('Protect the data').click();
-    //as user i want a hyperlink for my protected data (directing to iExec)
-    cy.contains('See Detail').should('be.visible');
-    //as user i want to verify the creation of the protected data on iExec Explorer
-    cy.contains('See Details').click();
+    cy.get('input[id="email"]').type('notanemail.blublu');
+    //as user, if i enter a invalid email, i want to be warn
+    cy.contains('Please enter a valid email address').should('be.visible');
   });
 });
