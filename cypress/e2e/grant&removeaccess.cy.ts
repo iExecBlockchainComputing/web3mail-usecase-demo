@@ -1,4 +1,4 @@
-describe('creation of a protected data as an email', () => {
+describe('grant and remove acces to a protected data plus verify the property of a card', () => {
   it('as user i want verify the proprerty of a protected data card, grant and revoke access to an ETH address', () => {
     cy.contains('Login').click();
     cy.viewport(1000, 660);
