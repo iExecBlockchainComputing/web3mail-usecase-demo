@@ -1,4 +1,4 @@
-describe('send an email , using web3mail', () => {
+describe('send an email using web3mail', () => {
   it('as user i want to send a mail with web3mail', () => {
     cy.contains('Login').click();
     cy.viewport(1000, 660);

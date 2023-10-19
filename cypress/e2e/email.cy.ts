@@ -1,4 +1,4 @@
-describe('creation of a protected data as an email', () => {
+describe('creation of a protected data with a valid email', () => {
   it('as user i want to create a protected data', () => {
     cy.contains('Login').click();
     cy.viewport(1000, 660);
