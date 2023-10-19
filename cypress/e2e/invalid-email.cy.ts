@@ -1,11 +1,5 @@
 describe('creation of a protected data with an invalid email', () => {
   it('as user i want to create a protected data', () => {
-    cy.visit('/', { selectedWallet: 'metamask' });
-    cy.get('body').as('body');
-    cy.on('uncaught:exception', (e, runnable) => {
-      console.log('uncaught:exception', e);
-      return false;
-    });
     cy.contains('Login').click();
     cy.viewport(1000, 660);
     cy.get('@body').click(350, 600);

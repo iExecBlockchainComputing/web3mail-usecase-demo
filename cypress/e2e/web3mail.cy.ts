@@ -1,11 +1,5 @@
 describe('send an email , using web3mail', () => {
   it('as user i want to send a mail with web3mail', () => {
-    cy.visit('/', { selectedWallet: 'metamask' });
-    cy.get('body').as('body');
-    cy.on('uncaught:exception', (e, runnable) => {
-      console.log('uncaught:exception', e);
-      return false;
-    });
     cy.contains('Login').click();
     cy.viewport(1000, 660);
     cy.get('@body').click(350, 600);
@@ -33,5 +27,7 @@ describe('send an email , using web3mail', () => {
     cy.contains('511969').should('be.visible');
     //as user i want to click on a button in order to send my email
     cy.get('.sendEmailButton').click();
+    //as user i want a pop up that inform me the mail is send
+    cy.contains('The email has been sent!').should('be.visible');
   });
 });
