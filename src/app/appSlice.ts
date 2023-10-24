@@ -10,7 +10,7 @@ import {
 } from '@iexec/dataprotector';
 import { api } from './api';
 import { getAccount } from 'wagmi/actions';
-import { DAPP_WEB3_MAIL_ENS } from '../config/config';
+import { SMART_CONTRACT_WEB3MAIL_WHITELIST } from '../config/config';
 import {
   IExecWeb3mail,
   SendEmailParams,
@@ -116,7 +116,7 @@ export const homeApi = api.injectEndpoints({
         try {
           const grantedAccess = await iExecDataProtector?.fetchGrantedAccess({
             protectedData,
-            authorizedApp: DAPP_WEB3_MAIL_ENS,
+            authorizedApp: SMART_CONTRACT_WEB3MAIL_WHITELIST,
           });
           const grantedAccessList = grantedAccess?.map(
             (item: GrantedAccess) => {
@@ -148,7 +148,7 @@ export const homeApi = api.injectEndpoints({
           const grantedAccessList =
             await iExecDataProtector?.fetchGrantedAccess({
               ...args,
-              authorizedApp: DAPP_WEB3_MAIL_ENS,
+              authorizedApp: SMART_CONTRACT_WEB3MAIL_WHITELIST,
             });
           let revokedAccess: RevokedAccess | null = null;
           if (grantedAccessList && grantedAccessList.length !== 0) {

@@ -9,7 +9,7 @@ import {
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useGrantNewAccessMutation } from '../../app/appSlice';
-import { DAPP_WEB3_MAIL_ENS } from '../../config/config';
+import { SMART_CONTRACT_WEB3MAIL_WHITELIST } from '../../config/config';
 import { Button } from '@iexec/react-ui-kit';
 
 type GrantAccessModalParams = {
@@ -40,7 +40,7 @@ export default function GrantAcessModal(props: GrantAccessModalParams) {
     const protectedData = props.protectedData;
     grantNewAccess({
       protectedData,
-      authorizedApp: DAPP_WEB3_MAIL_ENS,
+      authorizedApp: SMART_CONTRACT_WEB3MAIL_WHITELIST,
       authorizedUser: ethAddress,
       numberOfAccess: NbOfAccess,
     });
@@ -120,11 +120,7 @@ export default function GrantAcessModal(props: GrantAccessModalParams) {
             onChange={handleNbOfAccessChange}
             sx={{ mt: 3 }}
           />
-          <Button
-            onClick={handleGrantAccess}
-          >
-            Validate
-          </Button>
+          <Button onClick={handleGrantAccess}>Validate</Button>
         </Box>
       </Modal>
     </div>
