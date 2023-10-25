@@ -17,10 +17,12 @@ import {
   SendEmailResponse,
   Contact,
 } from '@iexec/web3mail';
-
+import { grantAccess } from './grantAccess';
+import { IExec } from 'iexec';
 // Configure iExec Data Protector & Web3Mail
 let iExecDataProtector: IExecDataProtector | null = null;
 let iExecWeb3Mail: IExecWeb3mail | null = null;
+let iexec: IExec;
 
 export interface AppState {
   status: 'Not Connected' | 'Connected' | 'Loading' | 'Failed';
@@ -38,6 +40,7 @@ export const initSDK = createAsyncThunk('app/initSDK', async () => {
     const provider = await result.connector?.getProvider();
     iExecDataProtector = new IExecDataProtector(provider);
     iExecWeb3Mail = new IExecWeb3mail(provider);
+    iexec = new IExec({ ethProvider: provider });
   } catch (e: any) {
     return { error: e.message };
   }
@@ -171,8 +174,8 @@ export const homeApi = api.injectEndpoints({
     grantNewAccess: builder.mutation<string, GrantAccessParams>({
       queryFn: async (args) => {
         try {
-          const data = await iExecDataProtector?.grantAccess(args);
-
+          // const data = await iExecDataProtector?.grantAccess(args);
+          const data = await grantAccess({ iexec, ...args });
           return { data: data?.sign || '' };
         } catch (e: any) {
           return { error: e.message };
