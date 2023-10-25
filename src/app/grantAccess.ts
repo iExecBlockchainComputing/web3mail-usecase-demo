@@ -6,17 +6,41 @@ export const grantAccess = async ({
   pricePerAccess,
   numberOfAccess,
 }: any): Promise<any> => {
-  const datasetorder = await iexec.order.createDatasetorder({
-    dataset: protectedData,
-    apprestrict: authorizedApp,
-    requesterrestrict: authorizedUser,
-    datasetprice: pricePerAccess,
-    volume: numberOfAccess,
-    tag: ['scone', 'tee'],
-  });
-  await iexec.order.signDatasetorder(datasetorder);
-  await iexec.order.publishDatasetorder(datasetorder);
-  return formatGrantedAccess(datasetorder);
+  try {
+    const { orders } = await iexec.orderbook.fetchDatasetOrderbook(
+      protectedData,
+      {
+        app: authorizedApp,
+        requester: authorizedUser,
+      }
+    );
+
+    if (orders.length > 0) {
+      throw new Error(
+        'An access has already been granted to this user with this app'
+      );
+    }
+
+    const datasetorderTemplate = await iexec.order.createDatasetorder({
+      dataset: protectedData,
+      apprestrict: authorizedApp,
+      requesterrestrict: authorizedUser,
+      datasetprice: pricePerAccess,
+      volume: numberOfAccess,
+      tag: ['tee', 'scone'],
+    });
+
+    const datasetorder = await iexec.order.signDatasetorder(
+      datasetorderTemplate
+    );
+
+    await iexec.order.publishDatasetorder(datasetorder);
+
+    return formatGrantedAccess(datasetorder);
+  } catch (error) {
+    console.error(error);
+    throw new Error('Failed to grant access');
+  }
 };
 
 export const formatGrantedAccess = (order: {
