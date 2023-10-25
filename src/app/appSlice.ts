@@ -183,6 +183,7 @@ export const homeApi = api.injectEndpoints({
     fetchMyContacts: builder.query<Contact[], string>({
       queryFn: async () => {
         try {
+          //TODO : update function parameters (page, pageSize)
           const contacts = await iExecWeb3Mail?.fetchMyContacts();
           return { data: contacts || [] };
         } catch (e: any) {
