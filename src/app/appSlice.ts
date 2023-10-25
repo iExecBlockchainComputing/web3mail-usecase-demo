@@ -175,6 +175,7 @@ export const homeApi = api.injectEndpoints({
       queryFn: async (args) => {
         try {
           // const data = await iExecDataProtector?.grantAccess(args);
+          // Go through a more low level iexec function = bypass enclave check done in dataprotector-sdk
           const data = await grantAccess({ iexec, ...args });
           return { data: data?.sign || '' };
         } catch (e: any) {
