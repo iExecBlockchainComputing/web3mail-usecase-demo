@@ -19,6 +19,7 @@ export const grantAccess = async ({
   return formatGrantedAccess(datasetorder);
 };
 
+// Duplicated from dataprotector-sdk
 export const formatGrantedAccess = (order: {
   datasetprice: number | string;
   volume: number | string;
