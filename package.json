@@ -27,7 +27,6 @@
     "@web3modal/ethereum": "^2.2.2",
     "@web3modal/react": "^2.2.2",
     "ethers": "^5.7.2",
-    "prettier": "^2.8.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^8.0.5",
@@ -49,6 +48,7 @@
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-sonarjs": "^0.21.0",
+    "prettier": "^2.8.4",
     "typescript": "^5.0.2",
     "vite": "^4.3.9"
   }
