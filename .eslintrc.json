@@ -20,7 +20,8 @@
     "sonarjs/cognitive-complexity": "warn",
     "@typescript-eslint/no-explicit-any": "warn",
     "react/react-in-jsx-scope": "off",
-    "import/order": "error"
+    "import/order": "error",
+    "no-duplicate-imports": "error"
   },
   "env": {
     "cypress/globals": true
