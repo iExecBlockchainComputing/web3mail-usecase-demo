@@ -1,4 +1,4 @@
-import './GrantAccessModal.css';
+import { useEffect, useState } from 'react';
 import {
   TextField,
   Modal,
@@ -7,10 +7,10 @@ import {
   Snackbar,
   Alert,
 } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { Button } from '@iexec/react-ui-kit';
 import { useGrantNewAccessMutation } from '../../app/appSlice';
 import { DAPP_WEB3_MAIL_ENS } from '../../config/config';
-import { Button } from '@iexec/react-ui-kit';
+import './GrantAccessModal.css';
 
 type GrantAccessModalParams = {
   protectedData: string;

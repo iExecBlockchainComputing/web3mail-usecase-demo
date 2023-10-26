@@ -1,14 +1,14 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import { api } from './api';
 import {
   EthereumClient,
   w3mProvider,
   w3mConnectors,
 } from '@web3modal/ethereum';
 import { createClient, configureChains } from 'wagmi';
-import { bellecour } from '../utils/walletConnection';
-import appReducer, { initSDK } from './appSlice';
 import { watchAccount, watchNetwork } from 'wagmi/actions';
+import { bellecour } from '../utils/walletConnection';
+import { api } from './api';
+import appReducer, { initSDK } from './appSlice';
 
 // Wagmi Client initialization
 if (!import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID) {
