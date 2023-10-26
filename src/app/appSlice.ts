@@ -181,12 +181,27 @@ export const homeApi = api.injectEndpoints({
       invalidatesTags: ['GRANTED_ACCESS'],
     }),
     fetchMyContacts: builder.query<Contact[], string>({
-      queryFn: async () => {
+      queryFn: async (args) => {
+        console.log('args', args);
+        const { page, pageSize } = args;
         try {
           //TODO : update function parameters (page, pageSize)
-          const contacts = await iExecWeb3Mail?.fetchMyContacts();
+          console.log('CALL');
+          const contacts = await iExecWeb3Mail?.fetchMyContacts({
+            page: page || 1,
+            pageSize: pageSize,
+          });
+          console.log('-> contacts', contacts);
+          for (let i = 0; i < 15; i++) {
+            contacts.push({
+              accessGrantTimestamp: '2023-10-24T15:30:27.419Z',
+              address: i + '0xcd7c44e832ae9371f7956a73322498064fc5183',
+              owner: i + '0x253bde8071d213a8a87e93a674f516f9fb623b4',
+            });
+          }
           return { data: contacts || [] };
         } catch (e: any) {
+          console.log('plop?', e);
           return { error: e.message };
         }
       },
