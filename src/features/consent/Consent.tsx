@@ -55,17 +55,13 @@ export default function Consent() {
       </Box>
 
       <Box id="summary">
-        <ul>
+        <ul
+          style={{ display: 'flex', flexDirection: 'column', rowGap: '24px' }}
+        >
+          <li>Owned by {protectedDataSelected?.owner}</li>
+          <li>Data Protected Address: {protectedDataSelected?.address}</li>
           <li>
-            <h6>Owned by {protectedDataSelected?.owner}</h6>
-          </li>
-          <li>
-            <h6>Data Protected Address: {protectedDataSelected?.address}</h6>
-          </li>
-          <li>
-            <h6>
-              IPFS link: {'Set in future with the next version of subgraph'}
-            </h6>
+            IPFS link: {'Set in future with the next version of subgraph'}
           </li>
         </ul>
       </Box>
