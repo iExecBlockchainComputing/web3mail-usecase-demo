@@ -100,6 +100,7 @@ export const homeApi = api.injectEndpoints({
             ]
           : ['PROTECTED_DATA'],
     }),
+
     createProtectedData: builder.mutation<string, ProtectDataParams>({
       queryFn: async (args) => {
         try {
@@ -111,6 +112,7 @@ export const homeApi = api.injectEndpoints({
       },
       invalidatesTags: ['PROTECTED_DATA'],
     }),
+
     fetchGrantedAccess: builder.query<string[], string>({
       queryFn: async (protectedData) => {
         try {
@@ -139,6 +141,7 @@ export const homeApi = api.injectEndpoints({
             ]
           : ['GRANTED_ACCESS'],
     }),
+
     revokeOneAccess: builder.mutation<
       RevokedAccess | null,
       { protectedData: string; authorizedUser: string }
@@ -168,6 +171,7 @@ export const homeApi = api.injectEndpoints({
         { type: 'GRANTED_ACCESS', id: args.authorizedUser },
       ],
     }),
+
     grantNewAccess: builder.mutation<string, GrantAccessParams>({
       queryFn: async (args) => {
         try {
@@ -180,6 +184,7 @@ export const homeApi = api.injectEndpoints({
       },
       invalidatesTags: ['GRANTED_ACCESS'],
     }),
+
     fetchMyContacts: builder.query<Contact[], string>({
       queryFn: async (args) => {
         console.log('args', args);
@@ -206,6 +211,7 @@ export const homeApi = api.injectEndpoints({
         }
       },
     }),
+
     sendEmail: builder.mutation<SendEmailResponse | null, SendEmailParams>({
       queryFn: async (args) => {
         try {

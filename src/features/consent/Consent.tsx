@@ -53,6 +53,7 @@ export default function Consent() {
           children={''}
         />
       </Box>
+
       <Box id="summary">
         <ul>
           <li>
@@ -68,6 +69,7 @@ export default function Consent() {
           </li>
         </ul>
       </Box>
+
       <Box sx={{ textAlign: 'left', my: 5, mb: 20 }}>
         {grantedAccessList?.length ? (
           <Box>
@@ -79,6 +81,7 @@ export default function Consent() {
             <h4>No authorized user for web3Mail dApp</h4>
           </Box>
         )}
+
         <Fab
           color="primary"
           sx={{ mx: 1.9, width: 42, height: 42, mt: 1 }}
@@ -86,6 +89,7 @@ export default function Consent() {
         >
           <AddIcon />
         </Fab>
+
         <GrantAcessModal
           protectedData={ProtectedDataId as string}
           open={modalOpen}
