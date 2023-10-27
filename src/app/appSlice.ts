@@ -14,13 +14,14 @@ import {
   SendEmailResponse,
   Contact,
 } from '@iexec/web3mail';
-import { DAPP_WEB3_MAIL_ENS } from '../config/config';
+import { SMART_CONTRACT_WEB3MAIL_WHITELIST } from '../config/config';
 import { RootState } from './store';
 import { api } from './api';
 
 // Configure iExec Data Protector & Web3Mail
 let iExecDataProtector: IExecDataProtector | null = null;
 let iExecWeb3Mail: IExecWeb3mail | null = null;
+let iexec: IExec;
 
 export interface AppState {
   status: 'Not Connected' | 'Connected' | 'Loading' | 'Failed';
@@ -38,6 +39,7 @@ export const initSDK = createAsyncThunk('app/initSDK', async () => {
     const provider = await result.connector?.getProvider();
     iExecDataProtector = new IExecDataProtector(provider);
     iExecWeb3Mail = new IExecWeb3mail(provider);
+    iexec = new IExec({ ethProvider: provider });
   } catch (e: any) {
     return { error: e.message };
   }
@@ -116,7 +118,7 @@ export const homeApi = api.injectEndpoints({
         try {
           const grantedAccess = await iExecDataProtector?.fetchGrantedAccess({
             protectedData,
-            authorizedApp: DAPP_WEB3_MAIL_ENS,
+            authorizedApp: SMART_CONTRACT_WEB3MAIL_WHITELIST,
           });
           const grantedAccessList = grantedAccess?.map(
             (item: GrantedAccess) => {
@@ -148,7 +150,7 @@ export const homeApi = api.injectEndpoints({
           const grantedAccessList =
             await iExecDataProtector?.fetchGrantedAccess({
               ...args,
-              authorizedApp: DAPP_WEB3_MAIL_ENS,
+              authorizedApp: SMART_CONTRACT_WEB3MAIL_WHITELIST,
             });
           let revokedAccess: RevokedAccess | null = null;
           if (grantedAccessList && grantedAccessList.length !== 0) {
@@ -171,8 +173,9 @@ export const homeApi = api.injectEndpoints({
     grantNewAccess: builder.mutation<string, GrantAccessParams>({
       queryFn: async (args) => {
         try {
-          const data = await iExecDataProtector?.grantAccess(args);
-
+          // const data = await iExecDataProtector?.grantAccess(args);
+          // Go through a more low level iexec function = bypass enclave check done in dataprotector-sdk
+          const data = await grantAccess({ iexec, ...args });
           return { data: data?.sign || '' };
         } catch (e: any) {
           return { error: e.message };
