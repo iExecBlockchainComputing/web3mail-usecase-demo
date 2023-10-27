@@ -35,10 +35,6 @@ export default function EmailDapp() {
     page: 0,
   });
 
-  useEffect(() => {
-    console.log('plop', paginationModel);
-  }, [paginationModel]);
-
   //query RTK API as query hook
   const { data: myContacts = [], isLoading } = useFetchMyContactsQuery(
     // address, // unused?

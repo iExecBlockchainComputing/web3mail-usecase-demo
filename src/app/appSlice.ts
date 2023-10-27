@@ -114,26 +114,32 @@ export const homeApi = api.injectEndpoints({
     }),
 
     fetchGrantedAccess: builder.query<string[], string>({
-      queryFn: async (protectedData) => {
+      queryFn: async (args) => {
+        const { protectedData, page, pageSize } = args;
         try {
-          const grantedAccess = await iExecDataProtector?.fetchGrantedAccess({
-            protectedData,
-            authorizedApp: DAPP_WEB3_MAIL_ENS,
-          });
-          const grantedAccessList = grantedAccess?.map(
+          const { grantedAccess: grantedAddresses, count } =
+            await iExecDataProtector?.fetchGrantedAccess({
+              protectedData,
+              authorizedApp: DAPP_WEB3_MAIL_ENS,
+              page,
+              pageSize,
+            });
+          const grantedAddressesList = grantedAddresses?.map(
             (item: GrantedAccess) => {
               return item.requesterrestrict.toLowerCase();
             }
           );
-          return { data: grantedAccessList || [] };
+          return {
+            data: { grantedAccessList: grantedAddressesList || [], count },
+          };
         } catch (e: any) {
           return { error: e.message };
         }
       },
       providesTags: (result) =>
-        result
+        result.grantedAccessList
           ? [
-              ...result.map((address) => ({
+              ...result.grantedAccessList.map((address) => ({
                 type: 'GRANTED_ACCESS' as const,
                 id: address,
               })),

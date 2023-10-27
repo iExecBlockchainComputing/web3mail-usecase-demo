@@ -10,20 +10,32 @@ import {
 } from '../../app/appSlice';
 import { isKeyInDataSchema } from '../../utils/utils';
 import './Consent.css';
-import GrantAcessModal from './GrantAcessModal';
-import ToggleList from './ToggleList';
+import GrantAccessModal from './GrantAccessModal';
+import AuthorizedUsersList from './AuthorizedUsersList';
+
+// The list of users authorized to access the protected data is paginated
+// Must be greater than or equal to 10
+const AUTHORIZED_ADDRESSES_PER_PAGE = 10;
 
 export default function Consent() {
   const { ProtectedDataId } = useParams();
   const { address } = useAccount();
 
+  const [page, setPage] = useState(0);
+
   //query RTK API as query hook
-  const { data: grantedAccessList = [] } = useFetchGrantedAccessQuery(
-    ProtectedDataId!,
-    {
-      skip: !ProtectedDataId,
-    }
-  );
+  const { data: { grantedAccessList = [], count } = {} } =
+    useFetchGrantedAccessQuery(
+      {
+        protectedData: ProtectedDataId!,
+        page,
+        pageSize: AUTHORIZED_ADDRESSES_PER_PAGE,
+      },
+      {
+        skip: !ProtectedDataId,
+      }
+    );
+
   const { data: protectedData = [] } = useFetchProtectedDataQuery(
     address as string
   );
@@ -70,7 +82,13 @@ export default function Consent() {
         {grantedAccessList?.length ? (
           <Box>
             <h2>1 to 1 messaging</h2>
-            <ToggleList authorizedUser={grantedAccessList} />
+            <AuthorizedUsersList
+              authorizedUsers={grantedAccessList}
+              count={count}
+              pageSize={AUTHORIZED_ADDRESSES_PER_PAGE}
+              page={page}
+              onPageChanged={(newPage: number) => setPage(newPage)}
+            />
           </Box>
         ) : (
           <Box sx={{ textAlign: 'center' }}>
@@ -86,7 +104,7 @@ export default function Consent() {
           <AddIcon />
         </Fab>
 
-        <GrantAcessModal
+        <GrantAccessModal
           protectedData={ProtectedDataId as string}
           open={modalOpen}
           handleClose={() => setModalOpen(false)}
