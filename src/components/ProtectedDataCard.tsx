@@ -43,6 +43,7 @@ export default function ProtectedDataCard(props: ProtectedDataProps) {
             flexDirection: 'column',
             textAlign: 'left',
           }}
+          data-cy={`protectedDataCard`}
         >
           <h5>{props.title}</h5>
           <Chip
