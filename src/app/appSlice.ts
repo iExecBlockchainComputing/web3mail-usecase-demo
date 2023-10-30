@@ -117,17 +117,25 @@ export const homeApi = api.injectEndpoints({
       invalidatesTags: ['PROTECTED_DATA'],
     }),
 
-    fetchGrantedAccess: builder.query<string[], string>({
+    fetchGrantedAccess: builder.query<
+      { grantedAccessList: string[]; count: number },
+      { protectedData: string; page: number; pageSize: number }
+    >({
       queryFn: async (args) => {
-        const { protectedData, page, pageSize } = args;
         try {
-          const { grantedAccess: grantedAddresses, count } =
-            await iExecDataProtector?.fetchGrantedAccess({
+          const { protectedData, page, pageSize } = args;
+          const allGrantedAccess = await iExecDataProtector?.fetchGrantedAccess(
+            {
               protectedData,
               authorizedApp: SMART_CONTRACT_WEB3MAIL_WHITELIST,
               page,
               pageSize,
-            });
+            }
+          );
+          if (!allGrantedAccess) {
+            throw new Error('No granted access found');
+          }
+          const { grantedAccess: grantedAddresses, count } = allGrantedAccess;
           const grantedAddressesList = grantedAddresses?.map(
             (item: GrantedAccess) => {
               return item.requesterrestrict.toLowerCase();
@@ -140,16 +148,18 @@ export const homeApi = api.injectEndpoints({
           return { error: e.message };
         }
       },
-      providesTags: (result) =>
-        result.grantedAccessList
-          ? [
-              ...result.grantedAccessList.map((address) => ({
-                type: 'GRANTED_ACCESS' as const,
-                id: address,
-              })),
-              'GRANTED_ACCESS',
-            ]
-          : ['GRANTED_ACCESS'],
+      providesTags: (result) => {
+        if (!result?.grantedAccessList) {
+          return ['GRANTED_ACCESS'];
+        }
+        return [
+          ...result.grantedAccessList.map((address) => ({
+            type: 'GRANTED_ACCESS' as const,
+            id: address,
+          })),
+          'GRANTED_ACCESS',
+        ];
+      },
     }),
 
     revokeOneAccess: builder.mutation<
@@ -158,15 +168,21 @@ export const homeApi = api.injectEndpoints({
     >({
       queryFn: async (args) => {
         try {
-          const grantedAccessList =
-            await iExecDataProtector?.fetchGrantedAccess({
-              ...args,
+          const { protectedData, authorizedUser } = args;
+          const allGrantedAccess = await iExecDataProtector?.fetchGrantedAccess(
+            {
+              protectedData,
               authorizedApp: SMART_CONTRACT_WEB3MAIL_WHITELIST,
-            });
+              authorizedUser,
+            }
+          );
           let revokedAccess: RevokedAccess | null = null;
-          if (grantedAccessList && grantedAccessList.length !== 0) {
+          if (
+            allGrantedAccess &&
+            allGrantedAccess.grantedAccess?.length !== 0
+          ) {
             const tempRevokedAccess = await iExecDataProtector?.revokeOneAccess(
-              grantedAccessList[0]
+              allGrantedAccess.grantedAccess[0]
             );
             if (tempRevokedAccess) {
               revokedAccess = tempRevokedAccess;
