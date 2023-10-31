@@ -61,7 +61,7 @@ export default function GrantAccessModal(props: GrantAccessModalParams) {
   useEffect(() => {
     if (result.isError) {
       setSuccess(false);
-      setErrorMessage(result.error);
+      setErrorMessage(result.error as string);
       setSnackbarVisible(true);
       return;
     }

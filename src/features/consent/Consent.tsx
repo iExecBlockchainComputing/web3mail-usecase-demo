@@ -24,7 +24,7 @@ export default function Consent() {
   const [page, setPage] = useState(0);
 
   //query RTK API as query hook
-  const { data: { grantedAccessList = [], count } = {} } =
+  const { data: { grantedAccessList = [], count = 0 } = {} } =
     useFetchGrantedAccessQuery(
       {
         protectedData: ProtectedDataId!,
