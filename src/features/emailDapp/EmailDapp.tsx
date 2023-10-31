@@ -1,11 +1,10 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Address, Contact, TimeStamp } from '@iexec/web3mail';
 import SearchIcon from '@mui/icons-material/Search';
 import { Box, InputBase } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAccount } from 'wagmi';
-import { Button } from '@iexec/react-ui-kit';
 import {
   selectAppIsConnected,
   useFetchMyContactsQuery,
@@ -13,6 +12,7 @@ import {
 import { useAppSelector } from '../../app/hooks';
 import { getLocalDateFromTimeStamp } from '../../utils/utils';
 import './EmailDapp.css';
+import { Button } from '@iexec/react-ui-kit';
 
 type Row = {
   id: string;

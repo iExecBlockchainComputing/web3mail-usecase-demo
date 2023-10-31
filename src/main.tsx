@@ -1,12 +1,12 @@
 import React from 'react';
+import './index.css';
+import App from './App';
 import { createRoot } from 'react-dom/client';
 import { ThemeProvider, createTheme } from '@mui/material';
 import { WagmiConfig } from 'wagmi';
 import { Web3Modal } from '@web3modal/react';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import './index.css';
-import App from './App';
 import { store, ethereumClient, projectId, wagmiClient } from './app/store';
 
 const rootElement = document.getElementById('root');

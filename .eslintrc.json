@@ -1,6 +1,6 @@
 {
   "parser": "@typescript-eslint/parser",
-  "plugins": ["@typescript-eslint", "import", "sonarjs", "cypress", "react", "import"],
+  "plugins": ["@typescript-eslint", "import", "sonarjs", "cypress", "react"],
   "parserOptions": {
     "ecmaVersion": "latest",
     "project": "./tsconfig.eslint.json",
@@ -20,7 +20,6 @@
     "sonarjs/cognitive-complexity": "warn",
     "@typescript-eslint/no-explicit-any": "warn",
     "react/react-in-jsx-scope": "off",
-    "import/order": "error",
     "no-duplicate-imports": "error"
   },
   "env": {

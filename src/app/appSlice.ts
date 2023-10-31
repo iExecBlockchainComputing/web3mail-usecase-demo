@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { getAccount } from 'wagmi/actions';
-import { IExec } from 'iexec';
+import { RootState } from './store';
 import {
   ProtectedData,
   IExecDataProtector,
@@ -9,16 +8,17 @@ import {
   RevokedAccess,
   GrantAccessParams,
 } from '@iexec/dataprotector';
+import { api } from './api';
+import { getAccount } from 'wagmi/actions';
+import { SMART_CONTRACT_WEB3MAIL_WHITELIST } from '../config/config';
 import {
   IExecWeb3mail,
   SendEmailParams,
   SendEmailResponse,
   Contact,
 } from '@iexec/web3mail';
-import { SMART_CONTRACT_WEB3MAIL_WHITELIST } from '../config/config';
 import { grantAccess } from './grantAccess';
-import { RootState } from './store';
-import { api } from './api';
+import { IExec } from 'iexec';
 
 // Configure iExec Data Protector & Web3Mail
 let iExecDataProtector: IExecDataProtector | null = null;
