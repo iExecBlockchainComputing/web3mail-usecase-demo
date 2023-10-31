@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAccount } from 'wagmi';
+import { Address, Contact, TimeStamp } from '@iexec/web3mail';
 import SearchIcon from '@mui/icons-material/Search';
 import { Box, InputBase } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { Address, Contact, TimeStamp } from '@iexec/web3mail';
+import { useAccount } from 'wagmi';
 import { Button } from '@iexec/react-ui-kit';
 import {
   selectAppIsConnected,
@@ -13,10 +13,6 @@ import {
 import { useAppSelector } from '../../app/hooks';
 import { getLocalDateFromTimeStamp } from '../../utils/utils';
 import './EmailDapp.css';
-
-// The list of contacts is server-side paginated
-// Must be greater than or equal to 10
-const CONTACTS_PER_PAGE = 10;
 
 type Row = {
   id: string;
@@ -27,21 +23,12 @@ type Row = {
 
 export default function EmailDapp() {
   const navigate = useNavigate();
-  // const { address } = useAccount();
+  const { address } = useAccount();
   const isAccountConnected = useAppSelector(selectAppIsConnected);
-
-  const [paginationModel, setPaginationModel] = useState({
-    pageSize: CONTACTS_PER_PAGE,
-    page: 0,
-  });
 
   //query RTK API as query hook
   const { data: myContacts = [], isLoading } = useFetchMyContactsQuery(
-    // address, // unused?
-    {
-      page: paginationModel.page,
-      pageSize: CONTACTS_PER_PAGE,
-    },
+    address as string,
     {
       skip: !isAccountConnected,
     }
@@ -133,9 +120,7 @@ export default function EmailDapp() {
             disableColumnMenu
             rows={filteredRows}
             columns={columns}
-            paginationModel={paginationModel}
-            onPaginationModelChange={setPaginationModel}
-            pageSizeOptions={[CONTACTS_PER_PAGE]}
+            autoPageSize={true}
             sx={{ border: 'none' }}
           />
         </Box>
