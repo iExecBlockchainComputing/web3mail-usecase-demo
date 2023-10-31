@@ -7,7 +7,8 @@ import { WagmiConfig } from 'wagmi';
 import { Web3Modal } from '@web3modal/react';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { store, ethereumClient, projectId, wagmiClient } from './app/store';
+import { store } from './app/store';
+import { ethereumClient, projectId, wagmiClient } from './app/store';
 
 const rootElement = document.getElementById('root');
 const root = createRoot(rootElement!);

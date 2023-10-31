@@ -19,8 +19,7 @@
     "no-console": "warn",
     "sonarjs/cognitive-complexity": "warn",
     "@typescript-eslint/no-explicit-any": "warn",
-    "react/react-in-jsx-scope": "off",
-    "no-duplicate-imports": "error"
+    "react/react-in-jsx-scope": "off"
   },
   "env": {
     "cypress/globals": true
