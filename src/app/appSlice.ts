@@ -168,20 +168,19 @@ export const homeApi = api.injectEndpoints({
       queryFn: async (args) => {
         try {
           const { protectedData, authorizedUser } = args;
-          const allGrantedAccess = await iExecDataProtector?.fetchGrantedAccess(
-            {
+          const grantedAccessResponse =
+            await iExecDataProtector?.fetchGrantedAccess({
               protectedData,
               authorizedApp: SMART_CONTRACT_WEB3MAIL_WHITELIST,
               authorizedUser,
-            }
-          );
+            });
           let revokedAccess: RevokedAccess | null = null;
           if (
-            allGrantedAccess &&
-            allGrantedAccess.grantedAccess?.length !== 0
+            grantedAccessResponse &&
+            grantedAccessResponse.grantedAccess?.length !== 0
           ) {
             const tempRevokedAccess = await iExecDataProtector?.revokeOneAccess(
-              allGrantedAccess.grantedAccess[0]
+              grantedAccessResponse.grantedAccess[0]
             );
             if (tempRevokedAccess) {
               revokedAccess = tempRevokedAccess;
