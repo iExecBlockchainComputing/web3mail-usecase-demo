@@ -124,19 +124,18 @@ export const homeApi = api.injectEndpoints({
       queryFn: async (args) => {
         try {
           const { protectedData, page, pageSize } = args;
-          const allGrantedAccess = await iExecDataProtector?.fetchGrantedAccess(
-            {
+          const grantedAccessResponse =
+            await iExecDataProtector?.fetchGrantedAccess({
               protectedData,
               authorizedApp: SMART_CONTRACT_WEB3MAIL_WHITELIST,
               page,
               pageSize,
-            }
-          );
-          if (!allGrantedAccess) {
+            });
+          if (!grantedAccessResponse) {
             throw new Error('No granted access found');
           }
-          const { grantedAccess: grantedAddresses, count } = allGrantedAccess;
-          const grantedAddressesList = grantedAddresses?.map(
+          const { grantedAccess, count } = grantedAccessResponse;
+          const grantedAddressesList = grantedAccess?.map(
             (item: GrantedAccess) => {
               return item.requesterrestrict.toLowerCase();
             }
