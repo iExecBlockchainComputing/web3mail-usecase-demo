@@ -1,5 +1,5 @@
-describe('grant and remove acces to a protected data plus verify the property of a card', () => {
-  it('as user i want verify the proprerty of a protected data card, grant and revoke access to an ETH address', () => {
+describe('grant and remove access to a protected data plus verify the property of a card', () => {
+  it('as user i want to verify the property of a protected data card, grant and revoke access to an ETH address', () => {
     cy.contains('Login').click();
     cy.viewport(1000, 660);
     cy.get('@body').click(350, 600);
