@@ -13,7 +13,7 @@
     "cypress:run": "cypress run",
     "test:local": "cross-env BASE_URL=http://localhost:5173 npm run cypress:run -- --config chromeWebSecurity=false",
     "test:dev": "cross-env BASE_URL=https://dev-web3mail.iex.ec/protectedData npm run cypress:run",
-    "test:prod": "cross-env BASE_URL=https://web3mail.iex.ec/protectedData npm run cypress:open",
+    "test:open-prod": "cross-env BASE_URL=https://web3mail.iex.ec/protectedData npm run cypress:open",
     "test:open-local": "cross-env BASE_URL=http://localhost:5173 npm run cypress:open -- --config chromeWebSecurity=false",
     "test:open-dev": "cross-env BASE_URL=https://dev-web3mail.iex.ec/protectedData npm run cypress:open"
   },
