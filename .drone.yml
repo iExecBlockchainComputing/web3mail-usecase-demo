@@ -30,6 +30,11 @@ steps:
     commands:
       - npm run check-format
 
+  # - name: check lint
+  #   image: node:18
+  #  commands:
+  #    - npm run lint
+
   - name: build
     image: node:18
     commands:
@@ -81,6 +86,11 @@ steps:
     image: node:18
     commands:
       - npm run check-format
+
+  # - name: check lint
+  #   image: node:18
+  #  commands:
+  #    - npm run lint
 
   - name: build
     image: node:18
@@ -184,6 +194,11 @@ steps:
     image: node:18
     commands:
       - npm run check-format
+
+  # - name: check lint
+  #   image: node:18
+  #  commands:
+  #    - npm run lint
 
   - name: build
     image: node:18
