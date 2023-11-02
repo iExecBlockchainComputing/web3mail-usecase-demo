@@ -4,7 +4,10 @@ describe('grant and remove access to a protected data plus verify the property o
     cy.viewport(1000, 660);
     cy.get('@body').click(350, 600);
     //as user i want to click on a wild card containing a protected data and information about
-    cy.get('[data-cy="protectedDataCard"]').eq(0).should('be.visible').click();
+    cy.get('[data-cy="protected-data-card"]')
+      .eq(0)
+      .should('be.visible')
+      .click();
     //as user i want to check who owns this card
     cy.get('li').eq(0).should('contain', 'Owned by ');
     //as user i want to check the Data protected address
