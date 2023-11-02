@@ -10,7 +10,12 @@
     "format": "prettier --write \"src/**/*.ts\"",
     "check-format": "prettier --check \"src/**/*.ts\"",
     "cypress:open": "cypress open",
-    "cypress:run": "cypress run"
+    "cypress:run": "cypress run",
+    "test:local": "cross-env BASE_URL=http://localhost:5173 npm run cypress:run -- --config chromeWebSecurity=false",
+    "test:dev": "cross-env BASE_URL=https://dev-web3mail.iex.ec/protectedData npm run cypress:run",
+    "test:open-prod": "cross-env BASE_URL=https://web3mail.iex.ec/protectedData npm run cypress:open",
+    "test:open-local": "cross-env BASE_URL=http://localhost:5173 npm run cypress:open -- --config chromeWebSecurity=false",
+    "test:open-dev": "cross-env BASE_URL=https://dev-web3mail.iex.ec/protectedData npm run cypress:open"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
@@ -42,6 +47,7 @@
     "@typescript-eslint/eslint-plugin": "^5.57.1",
     "@typescript-eslint/parser": "^5.57.1",
     "@vitejs/plugin-react": "^4.0.0",
+    "cross-env": "^7.0.3",
     "cypress": "^12.3.0",
     "eslint": "^8.38.0",
     "eslint-config-airbnb-typescript": "^17.1.0",
