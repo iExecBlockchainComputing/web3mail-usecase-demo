@@ -5,7 +5,7 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useRevokeOneAccessMutation } from '../../app/appSlice';
 
-interface ToggleProps {
+interface AuthorizedUsersListProps {
   authorizedUsers: string[];
   count: number;
   pageSize: number;
@@ -13,7 +13,7 @@ interface ToggleProps {
   onPageChanged: (newPage: number) => void;
 }
 
-export default function AuthorizedUsersList(props: ToggleProps) {
+export default function AuthorizedUsersList(props: AuthorizedUsersListProps) {
   const { authorizedUsers, count, pageSize, page, onPageChanged } = props;
   const { ProtectedDataId } = useParams();
 
