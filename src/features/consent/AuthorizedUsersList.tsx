@@ -4,6 +4,7 @@ import { Avatar, List, IconButton, Snackbar, Alert } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useRevokeOneAccessMutation } from '../../app/appSlice';
+import './AuthorizedUsersList.css';
 
 interface AuthorizedUsersListProps {
   authorizedUsers: string[];
@@ -88,9 +89,6 @@ export default function AuthorizedUsersList(props: AuthorizedUsersListProps) {
     <>
       <List>
         <DataGrid
-          slots={{
-            columnHeaders: () => null,
-          }}
           disableColumnMenu
           autoHeight
           rows={users}
