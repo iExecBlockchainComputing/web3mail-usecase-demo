@@ -58,7 +58,6 @@ export default function AuthorizedUsersList(props: AuthorizedUsersListProps) {
     {
       field: 'avatar',
       sortable: false,
-      type: 'string',
       width: 60,
       renderHeader: () => null,
       renderCell: () => <Avatar alt={`Avatar`} />,
@@ -68,11 +67,11 @@ export default function AuthorizedUsersList(props: AuthorizedUsersListProps) {
       sortable: false,
       type: 'string',
       flex: 1,
-      minWidth: 400,
     },
     {
       field: 'Actions',
       sortable: false,
+      width: 60,
       renderCell: (params) => (
         <IconButton
           edge="end"
