@@ -1,6 +1,7 @@
 import Chip from '@iexec/react-ui-kit/components/Chip';
-import AddIcon from '@mui/icons-material/Add';
-import { Box, Fab } from '@mui/material';
+import { Button } from '@iexec/react-ui-kit';
+// import AddIcon from '@mui/icons-material/Add';
+import { Box } from '@mui/material';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAccount } from 'wagmi';
@@ -96,13 +97,10 @@ export default function Consent() {
           </Box>
         )}
 
-        <Fab
-          color="primary"
-          sx={{ mx: 1.9, width: 42, height: 42, mt: 1 }}
-          onClick={() => setModalOpen(true)}
-        >
-          <AddIcon />
-        </Fab>
+        <Button onClick={() => setModalOpen(true)}>
+          {/*<AddIcon fontSize="small" />*/}
+          <span>Authorize a new user</span>
+        </Button>
 
         <GrantAccessModal
           protectedData={ProtectedDataId as string}
