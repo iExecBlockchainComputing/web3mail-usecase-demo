@@ -2,7 +2,7 @@ import { Box, Grid, Pagination, Paper } from '@mui/material';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAccount } from 'wagmi';
-import { Button } from '@iexec/react-ui-kit';
+import { Button } from '@/components/ui/button';
 import {
   selectAppIsConnected,
   useFetchProtectedDataQuery,
