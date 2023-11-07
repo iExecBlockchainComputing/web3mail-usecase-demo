@@ -82,7 +82,7 @@ export default function Consent() {
       <Box sx={{ textAlign: 'left', my: 5, mb: 20 }}>
         {grantedAccessList?.length ? (
           <Box>
-            <h2>1 to 1 messaging</h2>
+            <h2>Authorized users</h2>
             <AuthorizedUsersList
               authorizedUsers={grantedAccessList}
               count={count}
