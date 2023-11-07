@@ -1,6 +1,6 @@
 import Chip from '@iexec/react-ui-kit/components/Chip';
-import { Button } from '@iexec/react-ui-kit';
-// import AddIcon from '@mui/icons-material/Add';
+import { Button } from '@/components/ui/button';
+import AddIcon from '@mui/icons-material/Add';
 import { Box } from '@mui/material';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -66,7 +66,6 @@ export default function Consent() {
           children={''}
         />
       </Box>
-
       <Box id="summary">
         <ul
           style={{ display: 'flex', flexDirection: 'column', rowGap: '24px' }}
@@ -78,7 +77,6 @@ export default function Consent() {
           </li>
         </ul>
       </Box>
-
       <Box sx={{ textAlign: 'left', my: 5, mb: 20 }}>
         {grantedAccessList?.length ? (
           <Box>
@@ -97,9 +95,9 @@ export default function Consent() {
           </Box>
         )}
 
-        <Button onClick={() => setModalOpen(true)}>
-          {/*<AddIcon fontSize="small" />*/}
-          <span>Authorize a new user</span>
+        <Button onClick={() => setModalOpen(true)} className="pl-3">
+          <AddIcon fontSize="small" />
+          <span className="pl-2">Authorize a new user</span>
         </Button>
 
         <GrantAccessModal

@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Avatar, List, IconButton, Snackbar, Alert } from '@mui/material';
+import { Avatar, List, Snackbar, Alert } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useRevokeOneAccessMutation } from '../../app/appSlice';
 import './AuthorizedUsersList.css';
+import { Button } from '@/components/ui/button';
 
 interface AuthorizedUsersListProps {
   authorizedUsers: string[];
@@ -85,15 +86,17 @@ export default function AuthorizedUsersList(props: AuthorizedUsersListProps) {
     {
       field: 'Actions',
       sortable: false,
-      width: 60,
+      width: 165,
       renderCell: (params) => (
-        <IconButton
-          edge="end"
-          aria-label="delete"
-          onClick={handleDelete(params.value)}
+        <Button
+          size="sm"
+          variant="secondary"
+          onClick={() => handleDelete(params.value)}
+          className="pl-3"
         >
-          <DeleteIcon />
-        </IconButton>
+          <DeleteIcon fontSize="small" aria-label="delete" />
+          <span className="pl-2">Revoke access</span>
+        </Button>
       ),
     },
   ];
