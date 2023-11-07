@@ -19,6 +19,7 @@ import {
 } from '@iexec/web3mail';
 import { grantAccess } from './grantAccess';
 import { IExec } from 'iexec';
+import { buildErrorData } from '../utils/errorForClient';
 
 // Configure iExec Data Protector & Web3Mail
 let iExecDataProtector: IExecDataProtector | null = null;
@@ -187,8 +188,10 @@ export const homeApi = api.injectEndpoints({
             }
           }
           return { data: revokedAccess };
-        } catch (e: any) {
-          return { error: e.message };
+        } catch (err: any) {
+          const errorData = buildErrorData(err);
+          console.error('[revokeOneAccess]', errorData);
+          return { error: errorData.reason || err.message };
         }
       },
       invalidatesTags: (_result, _error, args) => [

@@ -28,20 +28,23 @@ export default function AuthorizedUsersList(props: AuthorizedUsersListProps) {
   //query RTK API as mutation hook
   const [revokeOneAccess] = useRevokeOneAccessMutation();
 
-  // Snackbar notification
+  // Snackbar notifications
   const [isSnackbarVisible, setSnackbarVisible] = useState(false);
+  const [isErrorSnackbarVisible, setErrorSnackbarVisible] = useState(false);
 
   const handleDelete = (value: string) => async () => {
     if (ProtectedDataId !== undefined) {
-      try {
-        await revokeOneAccess({
-          protectedData: ProtectedDataId,
-          authorizedUser: value,
+      revokeOneAccess({
+        protectedData: ProtectedDataId,
+        authorizedUser: value,
+      })
+        .unwrap()
+        .then(() => {
+          setSnackbarVisible(true);
+        })
+        .catch(() => {
+          setErrorSnackbarVisible(true);
         });
-        setSnackbarVisible(true);
-      } catch (error) {
-        console.error('Error revoking access:', error);
-      }
     }
   };
 
@@ -53,6 +56,16 @@ export default function AuthorizedUsersList(props: AuthorizedUsersListProps) {
       return;
     }
     setSnackbarVisible(false);
+  };
+
+  const handleCloseErrorSnackbar = (
+    _: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setErrorSnackbarVisible(false);
   };
 
   const columns: GridColDef[] = [
@@ -116,6 +129,21 @@ export default function AuthorizedUsersList(props: AuthorizedUsersListProps) {
             sx={{ width: '100%' }}
           >
             The granted access has been successfully revoked!
+          </Alert>
+        </Snackbar>
+
+        <Snackbar
+          open={isErrorSnackbarVisible}
+          autoHideDuration={6000}
+          onClose={handleCloseErrorSnackbar}
+          anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
+        >
+          <Alert
+            onClose={handleCloseErrorSnackbar}
+            severity="error"
+            sx={{ width: '100%' }}
+          >
+            Failed to revoke access
           </Alert>
         </Snackbar>
       </List>
