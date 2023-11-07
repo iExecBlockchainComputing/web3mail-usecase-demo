@@ -2,6 +2,7 @@ import { Box, Grid, Pagination, Paper } from '@mui/material';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAccount } from 'wagmi';
+import AddIcon from '@mui/icons-material/Add';
 import { Button } from '@/components/ui/button';
 import {
   selectAppIsConnected,
@@ -98,6 +99,9 @@ export default function ProtectedData() {
 function NewProtectedDataButton() {
   const navigate = useNavigate();
   return (
-    <Button onClick={() => navigate(`./${CREATE}`)}>Protect your data</Button>
+    <Button onClick={() => navigate(`./${CREATE}`)} className="pl-4">
+      <AddIcon fontSize="small" />
+      <span className="pl-2">Add new</span>
+    </Button>
   );
 }

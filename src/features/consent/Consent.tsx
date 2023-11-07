@@ -95,7 +95,7 @@ export default function Consent() {
           </Box>
         )}
 
-        <Button onClick={() => setModalOpen(true)} className="pl-3">
+        <Button onClick={() => setModalOpen(true)} className="pl-4">
           <AddIcon fontSize="small" />
           <span className="pl-2">Authorize a new user</span>
         </Button>

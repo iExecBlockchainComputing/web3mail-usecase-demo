@@ -1,3 +1,4 @@
+import { useRef, useState } from 'react';
 import { Verified } from '@mui/icons-material';
 import {
   Alert,
@@ -12,11 +13,10 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { useRef, useState } from 'react';
+import { Button } from '@/components/ui/button';
 import { useCreateProtectedDataMutation } from '../../app/appSlice';
 import { createArrayBufferFromFile } from '../../utils/utils';
 import './NewProtectedData.css';
-import { Button } from '@iexec/react-ui-kit';
 
 export default function NewProtectedData() {
   const fileInput = useRef<HTMLInputElement>(null);
@@ -77,7 +77,7 @@ export default function NewProtectedData() {
   return (
     <Box id="newProtectedData">
       <Box sx={{ textAlign: 'left' }}>
-        <h2>Protect Data</h2>
+        <h2>Protect New Data</h2>
       </Box>
       <FormControl fullWidth sx={{ mt: '24px' }}>
         <InputLabel>Select your data type</InputLabel>
@@ -185,12 +185,15 @@ export default function NewProtectedData() {
         </Alert>
       )}
       {result.isLoading && (
-        <CircularProgress sx={{ margin: '20px auto' }}></CircularProgress>
+        <div className="flex flex-col items-center gap-y-4">
+          <CircularProgress className="mt-10"></CircularProgress>
+          Protecting data...
+        </div>
       )}
       {dataType && !result.isLoading && (
         <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
           <Button className="protectNewDataButton" onClick={handleSubmit}>
-            Protect the data
+            Protect data
           </Button>
         </Box>
       )}
