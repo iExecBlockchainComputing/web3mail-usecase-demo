@@ -18,7 +18,7 @@ type GrantAccessModalParams = {
   handleClose: () => void;
 };
 
-export default function GrantAcessModal(props: GrantAccessModalParams) {
+export default function GrantAccessModal(props: GrantAccessModalParams) {
   //rtk mutation
   const [grantNewAccess, result] = useGrantNewAccessMutation();
 
@@ -46,21 +46,28 @@ export default function GrantAcessModal(props: GrantAccessModalParams) {
     });
   };
 
-  //snackbar notification
-  const [open, setOpen] = useState(false);
+  // Snackbar success / error notification
+  const [isSnackbarVisible, setSnackbarVisible] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleClose = (_: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === 'clickaway') {
       return;
     }
-    setOpen(false);
+    setSnackbarVisible(false);
   };
 
   useEffect(() => {
-    if (result.isSuccess || result.isError) {
+    if (result.isError) {
+      setSuccess(false);
+      setErrorMessage(result.error as string);
+      setSnackbarVisible(true);
+      return;
+    }
+    if (result.isSuccess) {
       setSuccess(result.isSuccess);
-      setOpen(true);
+      setSnackbarVisible(true);
       result.reset();
       setEthAddress('');
       setNbOfAccess(1);
@@ -71,7 +78,7 @@ export default function GrantAcessModal(props: GrantAccessModalParams) {
   return (
     <div>
       <Snackbar
-        open={open}
+        open={isSnackbarVisible}
         autoHideDuration={6000}
         onClose={handleClose}
         anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
@@ -81,7 +88,9 @@ export default function GrantAcessModal(props: GrantAccessModalParams) {
           severity={success ? 'success' : 'error'}
           sx={{ width: '100%' }}
         >
-          {success ? 'New access granted!' : 'Failed to grant access!'}
+          {success
+            ? 'New access granted!'
+            : errorMessage || 'Failed to grant access!'}
         </Alert>
       </Snackbar>
 
@@ -120,7 +129,11 @@ export default function GrantAcessModal(props: GrantAccessModalParams) {
             onChange={handleNbOfAccessChange}
             sx={{ mt: 3 }}
           />
-          <Button onClick={handleGrantAccess}>Validate</Button>
+          {/* TODO: Have a proper form and submit button */}
+          {/*<button type="submit">Validate</button>*/}
+          <Button disabled={result.isLoading} onClick={handleGrantAccess}>
+            {result.isLoading ? 'Loading...' : 'Validate'}
+          </Button>
         </Box>
       </Modal>
     </div>

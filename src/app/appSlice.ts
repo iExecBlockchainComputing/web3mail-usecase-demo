@@ -19,6 +19,7 @@ import {
 } from '@iexec/web3mail';
 import { grantAccess } from './grantAccess';
 import { IExec } from 'iexec';
+
 // Configure iExec Data Protector & Web3Mail
 let iExecDataProtector: IExecDataProtector | null = null;
 let iExecWeb3Mail: IExecWeb3mail | null = null;
@@ -103,6 +104,7 @@ export const homeApi = api.injectEndpoints({
             ]
           : ['PROTECTED_DATA'],
     }),
+
     createProtectedData: builder.mutation<string, ProtectDataParams>({
       queryFn: async (args) => {
         try {
@@ -114,49 +116,71 @@ export const homeApi = api.injectEndpoints({
       },
       invalidatesTags: ['PROTECTED_DATA'],
     }),
-    fetchGrantedAccess: builder.query<string[], string>({
-      queryFn: async (protectedData) => {
+
+    fetchGrantedAccess: builder.query<
+      { grantedAccessList: string[]; count: number },
+      { protectedData: string; page: number; pageSize: number }
+    >({
+      queryFn: async (args) => {
         try {
-          const grantedAccess = await iExecDataProtector?.fetchGrantedAccess({
-            protectedData,
-            authorizedApp: SMART_CONTRACT_WEB3MAIL_WHITELIST,
-          });
-          const grantedAccessList = grantedAccess?.map(
+          const { protectedData, page, pageSize } = args;
+          const grantedAccessResponse =
+            await iExecDataProtector?.fetchGrantedAccess({
+              protectedData,
+              authorizedApp: SMART_CONTRACT_WEB3MAIL_WHITELIST,
+              page,
+              pageSize,
+            });
+          if (!grantedAccessResponse) {
+            throw new Error('No granted access found');
+          }
+          const { grantedAccess, count } = grantedAccessResponse;
+          const grantedAddressesList = grantedAccess?.map(
             (item: GrantedAccess) => {
               return item.requesterrestrict.toLowerCase();
             }
           );
-          return { data: grantedAccessList || [] };
+          return {
+            data: { grantedAccessList: grantedAddressesList || [], count },
+          };
         } catch (e: any) {
           return { error: e.message };
         }
       },
-      providesTags: (result) =>
-        result
-          ? [
-              ...result.map((address) => ({
-                type: 'GRANTED_ACCESS' as const,
-                id: address,
-              })),
-              'GRANTED_ACCESS',
-            ]
-          : ['GRANTED_ACCESS'],
+      providesTags: (result) => {
+        if (!result?.grantedAccessList) {
+          return ['GRANTED_ACCESS'];
+        }
+        return [
+          ...result.grantedAccessList.map((address) => ({
+            type: 'GRANTED_ACCESS' as const,
+            id: address,
+          })),
+          'GRANTED_ACCESS',
+        ];
+      },
     }),
+
     revokeOneAccess: builder.mutation<
       RevokedAccess | null,
       { protectedData: string; authorizedUser: string }
     >({
       queryFn: async (args) => {
         try {
-          const grantedAccessList =
+          const { protectedData, authorizedUser } = args;
+          const grantedAccessResponse =
             await iExecDataProtector?.fetchGrantedAccess({
-              ...args,
+              protectedData,
               authorizedApp: SMART_CONTRACT_WEB3MAIL_WHITELIST,
+              authorizedUser,
             });
           let revokedAccess: RevokedAccess | null = null;
-          if (grantedAccessList && grantedAccessList.length !== 0) {
+          if (
+            grantedAccessResponse &&
+            grantedAccessResponse.grantedAccess?.length !== 0
+          ) {
             const tempRevokedAccess = await iExecDataProtector?.revokeOneAccess(
-              grantedAccessList[0]
+              grantedAccessResponse.grantedAccess[0]
             );
             if (tempRevokedAccess) {
               revokedAccess = tempRevokedAccess;
@@ -171,6 +195,7 @@ export const homeApi = api.injectEndpoints({
         { type: 'GRANTED_ACCESS', id: args.authorizedUser },
       ],
     }),
+
     grantNewAccess: builder.mutation<string, GrantAccessParams>({
       queryFn: async (args) => {
         try {
@@ -184,6 +209,7 @@ export const homeApi = api.injectEndpoints({
       },
       invalidatesTags: ['GRANTED_ACCESS'],
     }),
+
     fetchMyContacts: builder.query<Contact[], string>({
       queryFn: async () => {
         try {
@@ -194,6 +220,7 @@ export const homeApi = api.injectEndpoints({
         }
       },
     }),
+
     sendEmail: builder.mutation<SendEmailResponse | null, SendEmailParams>({
       queryFn: async (args) => {
         try {

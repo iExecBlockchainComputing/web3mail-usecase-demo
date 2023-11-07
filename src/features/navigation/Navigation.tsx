@@ -26,7 +26,7 @@ export default function Navigation() {
   const dispatch = useAppDispatch();
 
   const match = useMatch(`/:currentTab/*`);
-  const currentTab = match?.params.currentTab;
+  const currentTab = match?.params.currentTab ?? PROTECTED_DATA;
 
   //get the state from the store
   const isAccountConnected = useAppSelector(selectAppIsConnected);

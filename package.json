@@ -21,7 +21,7 @@
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@fontsource/space-mono": "^4.5.12",
-    "@iexec/dataprotector": "^0.2.0",
+    "@iexec/dataprotector": "^0.3.0",
     "@iexec/react-ui-kit": "github:iExecBlockchainComputing/react-ui-kit#semver:^2.0.2",
     "@iexec/web3mail": "^0.5.2",
     "@mui/icons-material": "^5.11.11",
@@ -33,7 +33,6 @@
     "@web3modal/react": "^2.2.2",
     "ethers": "^5.7.2",
     "iexec": "^8.4.0",
-    "prettier": "^2.8.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^8.0.5",
@@ -56,7 +55,8 @@
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-sonarjs": "^0.21.0",
+    "prettier": "^2.8.8",
     "typescript": "^5.0.2",
-    "vite": "^4.3.2"
+    "vite": "^4.5.0"
   }
 }
