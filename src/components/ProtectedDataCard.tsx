@@ -45,7 +45,7 @@ export default function ProtectedDataCard(props: ProtectedDataProps) {
           }}
           data-cy="protected-data-card"
         >
-          <h5>{props.title}</h5>
+          <h5 className="font-bold my-6">{props.title}</h5>
           <Chip
             className="chipDate"
             label={props.date}

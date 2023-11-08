@@ -10,8 +10,8 @@ import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
-
-import { Typography, Button } from '@iexec/react-ui-kit';
+import { Button } from '@/components/ui/button';
+import { Typography } from '@iexec/react-ui-kit';
 import './SendEmail.css';
 import { useParams } from 'react-router-dom';
 import { useSendEmailMutation } from '../../app/appSlice';
@@ -130,8 +130,8 @@ export default function SendEmail() {
           placeholder="Enter email content"
           value={message}
           onChange={handleChange}
-          style={{ width: '100%', marginTop: 10, height: 380 }}
           id="textArea"
+          className="w-full border mt-4 !h-[200px] p-3"
         />
         <Typography sx={{ mt: 2, fontStyle: 'italic', fontSize: 'smaller' }}>
           {charactersRemainingMessage} characters remaining
@@ -140,6 +140,7 @@ export default function SendEmail() {
           Send
         </Button>
       </Box>
+
       <Snackbar
         open={open}
         autoHideDuration={6000}
