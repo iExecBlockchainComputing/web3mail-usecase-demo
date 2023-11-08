@@ -231,7 +231,7 @@ export const homeApi = api.injectEndpoints({
           return { data: sendEmailResponse || null };
         } catch (err: any) {
           const errorData = buildErrorData(err);
-          console.error('[revokeOneAccess]', errorData);
+          console.error('[sendEmail]', errorData);
           return { error: errorData.reason || err.message };
         }
       },
