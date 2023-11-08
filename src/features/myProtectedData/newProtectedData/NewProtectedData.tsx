@@ -199,13 +199,14 @@ export default function NewProtectedData() {
       {result.isLoading && (
         <div className="flex flex-col items-center gap-y-4">
           <CircularProgress className="mt-10"></CircularProgress>
-          Protecting data...
+          Your protected data is currently being created. Please wait a few
+          moments.
         </div>
       )}
       {dataType && !result.isLoading && !result.data && !result.error && (
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
           <Button className="mt-6" onClick={handleSubmit}>
-            Protect data
+            Create Protected Data
           </Button>
         </Box>
       )}
