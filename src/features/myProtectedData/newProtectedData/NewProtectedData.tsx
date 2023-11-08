@@ -1,5 +1,7 @@
 import { useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Verified } from '@mui/icons-material';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import {
   Alert,
   Box,
@@ -7,15 +9,16 @@ import {
   FormControl,
   Grid,
   InputLabel,
-  Link,
+  // Link,
   MenuItem,
   Select,
   TextField,
   Typography,
 } from '@mui/material';
 import { Button } from '@/components/ui/button';
-import { useCreateProtectedDataMutation } from '../../app/appSlice';
-import { createArrayBufferFromFile } from '../../utils/utils';
+import { PROTECTED_DATA } from '@/config/path';
+import { useCreateProtectedDataMutation } from '@/app/appSlice';
+import { createArrayBufferFromFile } from '@/utils/utils';
 import './NewProtectedData.css';
 
 export default function NewProtectedData() {
@@ -75,7 +78,15 @@ export default function NewProtectedData() {
     { value: 'file', label: 'File' },
   ];
   return (
-    <Box id="newProtectedData">
+    <div>
+      <div className="text-left">
+        <Button asChild variant="text">
+          <Link to={`/${PROTECTED_DATA}`} className="pl-4">
+            <ChevronLeftIcon />
+            <span className="pl-1">Back</span>
+          </Link>
+        </Button>
+      </div>
       <Box sx={{ textAlign: 'left' }}>
         <h2>Protect New Data</h2>
       </Box>
@@ -190,13 +201,13 @@ export default function NewProtectedData() {
           Protecting data...
         </div>
       )}
-      {dataType && !result.isLoading && (
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <Button className="protectNewDataButton" onClick={handleSubmit}>
+      {dataType && !result.isLoading && !result.data && !result.error && (
+        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+          <Button className="mt-6" onClick={handleSubmit}>
             Protect data
           </Button>
         </Box>
       )}
-    </Box>
+    </div>
   );
 }

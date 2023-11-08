@@ -7,16 +7,16 @@ import { Button } from '@/components/ui/button';
 import {
   selectAppIsConnected,
   useFetchProtectedDataQuery,
-} from '../../app/appSlice';
-import { useAppSelector } from '../../app/hooks';
+} from '@/app/appSlice';
+import { useAppSelector } from '@/app/hooks';
 import img from '../../assets/noData.png';
-import ProtectedDataCard from '../../components/ProtectedDataCard';
-import { ITEMS_PER_PAGE } from '../../config/config';
-import './ProtectedData.css';
-import { CREATE } from '../../config/path';
-import { getLocalDateFromBlockchainTimestamp } from '../../utils/utils';
+import ProtectedDataCard from '@/components/ProtectedDataCard';
+import { ITEMS_PER_PAGE } from '@/config/config';
+import { CREATE } from '@/config/path';
+import { getLocalDateFromBlockchainTimestamp } from '@/utils/utils';
+import './MyProtectedData.css';
 
-export default function ProtectedData() {
+export default function MyProtectedData() {
   const { address } = useAccount();
   const isAccountConnected = useAppSelector(selectAppIsConnected);
 
@@ -38,9 +38,9 @@ export default function ProtectedData() {
   const currentData = protectedData.slice(startIndex, endIndex);
 
   return (
-    <Box sx={{ mx: 10 }}>
+    <div>
       {protectedData.length !== 0 ? (
-        <Box>
+        <div>
           <Box
             sx={{
               display: 'flex',
@@ -79,7 +79,7 @@ export default function ProtectedData() {
               />
             </Paper>
           </Box>
-        </Box>
+        </div>
       ) : (
         <Box>
           <img src={img} alt="The image can't be loaded" id="logo" />
@@ -92,7 +92,7 @@ export default function ProtectedData() {
           </Box>
         </Box>
       )}
-    </Box>
+    </div>
   );
 }
 

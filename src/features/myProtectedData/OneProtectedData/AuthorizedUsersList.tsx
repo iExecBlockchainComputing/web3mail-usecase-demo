@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { Avatar, List, Snackbar, Alert } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { useRevokeOneAccessMutation } from '../../app/appSlice';
+import { useRevokeOneAccessMutation } from '@/app/appSlice';
 import './AuthorizedUsersList.css';
 import { Button } from '@/components/ui/button';
 

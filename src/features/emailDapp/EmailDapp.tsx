@@ -6,12 +6,9 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { useNavigate } from 'react-router-dom';
 import { useAccount } from 'wagmi';
 import { Button } from '@/components/ui/button';
-import {
-  selectAppIsConnected,
-  useFetchMyContactsQuery,
-} from '../../app/appSlice';
+import { selectAppIsConnected, useFetchMyContactsQuery } from '@/app/appSlice';
 import { useAppSelector } from '../../app/hooks';
-import { getLocalDateFromTimeStamp } from '../../utils/utils';
+import { getLocalDateFromTimeStamp } from '@/utils/utils';
 import './EmailDapp.css';
 
 type Row = {

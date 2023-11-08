@@ -2,23 +2,25 @@ import { useState } from 'react';
 import Chip from '@iexec/react-ui-kit/components/Chip';
 import AddIcon from '@mui/icons-material/Add';
 import { Box } from '@mui/material';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useAccount } from 'wagmi';
 import { Button } from '@/components/ui/button';
 import {
   useFetchGrantedAccessQuery,
   useFetchProtectedDataQuery,
-} from '../../app/appSlice';
-import { isKeyInDataSchema } from '../../utils/utils';
-import './Consent.css';
+} from '@/app/appSlice';
+import { isKeyInDataSchema } from '@/utils/utils';
 import GrantAccessModal from './GrantAccessModal';
 import AuthorizedUsersList from './AuthorizedUsersList';
+import { PROTECTED_DATA } from '@/config/path.ts';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import './OneProtectedData.css';
 
 // The list of users authorized to access the protected data is paginated
 // Must be greater than or equal to 10
 const AUTHORIZED_ADDRESSES_PER_PAGE = 10;
 
-export default function Consent() {
+export default function OneProtectedData() {
   const { ProtectedDataId } = useParams();
   const { address } = useAccount();
 
@@ -50,7 +52,15 @@ export default function Consent() {
   const [modalOpen, setModalOpen] = useState(false);
 
   return (
-    <Box id="consent">
+    <div>
+      <div className="text-left">
+        <Button asChild variant="text">
+          <Link to={`/${PROTECTED_DATA}`} className="pl-4">
+            <ChevronLeftIcon />
+            <span className="pl-1">Back</span>
+          </Link>
+        </Button>
+      </div>
       <Box sx={{ textAlign: 'left' }}>
         <h2>{protectedDataSelected?.name}</h2>
         <Chip
@@ -106,6 +116,6 @@ export default function Consent() {
           handleClose={() => setModalOpen(false)}
         />
       </Box>
-    </Box>
+    </div>
   );
 }

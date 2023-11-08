@@ -9,8 +9,8 @@ import {
   Alert,
 } from '@mui/material';
 import { Button } from '@/components/ui/button';
-import { useGrantNewAccessMutation } from '../../app/appSlice';
-import { SMART_CONTRACT_WEB3MAIL_WHITELIST } from '../../config/config';
+import { useGrantNewAccessMutation } from '@/app/appSlice';
+import { SMART_CONTRACT_WEB3MAIL_WHITELIST } from '@/config/config';
 
 type GrantAccessModalParams = {
   protectedData: string;

@@ -2,7 +2,7 @@ import { FC, ReactNode } from 'react';
 import { useAccount, useNetwork, useSwitchNetwork } from 'wagmi';
 import { Box } from '@mui/material';
 import { Button } from '@/components/ui/button';
-import { selectAppIsConnected } from '../../app/appSlice';
+import { selectAppIsConnected } from '@/app/appSlice';
 import { useAppSelector } from '../../app/hooks';
 
 const LoginGuard: FC<{ children: ReactNode }> = ({ children }) => {

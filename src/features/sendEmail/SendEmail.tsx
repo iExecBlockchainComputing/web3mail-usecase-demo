@@ -13,7 +13,7 @@ import InputLabel from '@mui/material/InputLabel';
 import { Button } from '@/components/ui/button';
 import './SendEmail.css';
 import { useParams } from 'react-router-dom';
-import { useSendEmailMutation } from '../../app/appSlice';
+import { useSendEmailMutation } from '@/app/appSlice';
 
 const MAX_CHARACTERS_SENDER_NAME = 20;
 const MAX_CHARACTERS_MESSAGE_SUBJECT = 78;
