@@ -18,6 +18,7 @@ export default function ProtectedDataCard(props: ProtectedDataProps) {
   return (
     <Card
       sx={{ minWidth: 260, cursor: 'pointer' }}
+      className="transition-colors hover:bg-gray-50"
       onClick={() => navigate(`/${PROTECTED_DATA}/${CONSENT}/${props.id}`)}
     >
       <CardContent className="cardContent">
