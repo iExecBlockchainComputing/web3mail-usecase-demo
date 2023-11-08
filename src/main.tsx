@@ -1,4 +1,5 @@
 import React from 'react';
+import './modified-tailwind-preflight.css';
 import './index.css';
 import App from './App';
 import { createRoot } from 'react-dom/client';
