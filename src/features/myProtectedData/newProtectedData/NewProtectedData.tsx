@@ -1,4 +1,7 @@
+import { useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Verified } from '@mui/icons-material';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import {
   Alert,
   Box,
@@ -6,17 +9,17 @@ import {
   FormControl,
   Grid,
   InputLabel,
-  Link,
+  // Link,
   MenuItem,
   Select,
   TextField,
   Typography,
 } from '@mui/material';
-import { useRef, useState } from 'react';
-import { useCreateProtectedDataMutation } from '../../app/appSlice';
-import { createArrayBufferFromFile } from '../../utils/utils';
+import { Button } from '@/components/ui/button.tsx';
+import { PROTECTED_DATA } from '@/config/path.ts';
+import { useCreateProtectedDataMutation } from '@/app/appSlice.ts';
+import { createArrayBufferFromFile } from '@/utils/utils.ts';
 import './NewProtectedData.css';
-import { Button } from '@iexec/react-ui-kit';
 
 export default function NewProtectedData() {
   const fileInput = useRef<HTMLInputElement>(null);
@@ -75,9 +78,17 @@ export default function NewProtectedData() {
     { value: 'file', label: 'File' },
   ];
   return (
-    <Box id="newProtectedData">
+    <div>
+      <div className="text-left">
+        <Button asChild variant="text">
+          <Link to={`/${PROTECTED_DATA}`} className="pl-4">
+            <ChevronLeftIcon />
+            <span className="pl-1">Back</span>
+          </Link>
+        </Button>
+      </div>
       <Box sx={{ textAlign: 'left' }}>
-        <h2>Protect Data</h2>
+        <h2>Protect New Data</h2>
       </Box>
       <FormControl fullWidth sx={{ mt: '24px' }}>
         <InputLabel>Select your data type</InputLabel>
@@ -174,26 +185,30 @@ export default function NewProtectedData() {
           severity="success"
         >
           <Typography variant="h6"> Your data has been protected!</Typography>
-          <Link
+          <a
             href={`https://explorer.iex.ec/bellecour/dataset/${result.data}`}
             target="_blank"
-            sx={{ color: 'green', textDecorationColor: 'green' }}
+            rel="noreferrer"
+            className="underline"
           >
             See Details
-          </Link>
+          </a>
           <p>Your protected data address: {result.data}</p>
         </Alert>
       )}
       {result.isLoading && (
-        <CircularProgress sx={{ margin: '20px auto' }}></CircularProgress>
+        <div className="flex flex-col items-center gap-y-4">
+          <CircularProgress className="mt-10"></CircularProgress>
+          Protecting data...
+        </div>
       )}
-      {dataType && !result.isLoading && (
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <Button className="protectNewDataButton" onClick={handleSubmit}>
-            Protect the data
+      {dataType && !result.isLoading && !result.data && !result.error && (
+        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+          <Button className="mt-6" onClick={handleSubmit}>
+            Protect data
           </Button>
         </Box>
       )}
-    </Box>
+    </div>
   );
 }

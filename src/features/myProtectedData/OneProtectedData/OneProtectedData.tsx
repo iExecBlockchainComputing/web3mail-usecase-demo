@@ -1,15 +1,17 @@
-import Chip from '@iexec/react-ui-kit/components/Chip';
-import AddIcon from '@mui/icons-material/Add';
-import { Box, Fab } from '@mui/material';
 import { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import AddIcon from '@mui/icons-material/Add';
+import { Box } from '@mui/material';
 import { useAccount } from 'wagmi';
+import { Button } from '@/components/ui/button.tsx';
 import {
   useFetchGrantedAccessQuery,
   useFetchProtectedDataQuery,
-} from '../../app/appSlice';
-import { isKeyInDataSchema } from '../../utils/utils';
-import './Consent.css';
+} from '@/app/appSlice.ts';
+import { isKeyInDataSchema } from '@/utils/utils.ts';
+import { PROTECTED_DATA } from '@/config/path.ts';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import { Badge } from '@/components/ui/badge.tsx';
 import GrantAccessModal from './GrantAccessModal';
 import AuthorizedUsersList from './AuthorizedUsersList';
 
@@ -17,7 +19,7 @@ import AuthorizedUsersList from './AuthorizedUsersList';
 // Must be greater than or equal to 10
 const AUTHORIZED_ADDRESSES_PER_PAGE = 10;
 
-export default function Consent() {
+export default function OneProtectedData() {
   const { ProtectedDataId } = useParams();
   const { address } = useAccount();
 
@@ -49,39 +51,38 @@ export default function Consent() {
   const [modalOpen, setModalOpen] = useState(false);
 
   return (
-    <Box id="consent">
+    <div>
+      <div className="text-left">
+        <Button asChild variant="text">
+          <Link to={`/${PROTECTED_DATA}`} className="pl-4">
+            <ChevronLeftIcon />
+            <span className="pl-1">Back</span>
+          </Link>
+        </Button>
+      </div>
       <Box sx={{ textAlign: 'left' }}>
         <h2>{protectedDataSelected?.name}</h2>
-        <Chip
-          className="chipType"
-          label={
-            (isKeyInDataSchema(protectedDataSelected?.schema || {}, 'email') &&
-              'Email') ||
-            (isKeyInDataSchema(protectedDataSelected?.schema || {}, 'file') &&
-              'File') ||
-            'Unknown'
-          }
-          size="small"
-          children={''}
-        />
+        <Badge>
+          {isKeyInDataSchema(protectedDataSelected?.schema || {}, 'email')
+            ? 'Email'
+            : isKeyInDataSchema(protectedDataSelected?.schema || {}, 'file')
+            ? 'File'
+            : 'Unknown'}
+        </Badge>
       </Box>
-
-      <Box id="summary">
-        <ul
-          style={{ display: 'flex', flexDirection: 'column', rowGap: '24px' }}
-        >
+      <div className="mt-8 rounded-sm border border-grey-800/40 px-5 py-6 text-left">
+        <ul className="flex list-disc flex-col gap-y-4 pl-6">
           <li>Owned by {protectedDataSelected?.owner}</li>
           <li>Data Protected Address: {protectedDataSelected?.address}</li>
           <li>
             IPFS link: {'Set in future with the next version of subgraph'}
           </li>
         </ul>
-      </Box>
-
-      <Box sx={{ textAlign: 'left', my: 5, mb: 20 }}>
-        {grantedAccessList?.length ? (
-          <Box>
-            <h2>1 to 1 messaging</h2>
+      </div>
+      <Box sx={{ my: 5, mb: 20 }}>
+        {grantedAccessList?.length > 0 ? (
+          <>
+            <h2>Authorized users</h2>
             <AuthorizedUsersList
               authorizedUsers={grantedAccessList}
               count={count}
@@ -89,20 +90,19 @@ export default function Consent() {
               page={page}
               onPageChanged={(newPage: number) => setPage(newPage)}
             />
-          </Box>
+          </>
         ) : (
-          <Box sx={{ textAlign: 'center' }}>
+          <div className="mb-6 text-center">
             <h4>No authorized user for web3Mail dApp</h4>
-          </Box>
+          </div>
         )}
 
-        <Fab
-          color="primary"
-          sx={{ mx: 1.9, width: 42, height: 42, mt: 1 }}
-          onClick={() => setModalOpen(true)}
-        >
-          <AddIcon />
-        </Fab>
+        <div className="text-center">
+          <Button onClick={() => setModalOpen(true)} className="pl-4">
+            <AddIcon fontSize="small" />
+            <span className="pl-2">Authorize a new user</span>
+          </Button>
+        </div>
 
         <GrantAccessModal
           protectedData={ProtectedDataId as string}
@@ -110,6 +110,6 @@ export default function Consent() {
           handleClose={() => setModalOpen(false)}
         />
       </Box>
-    </Box>
+    </div>
   );
 }

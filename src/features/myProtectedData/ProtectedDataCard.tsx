@@ -1,9 +1,9 @@
-import { DataSchema } from '@iexec/dataprotector';
-import Chip from '@iexec/react-ui-kit/components/Chip';
-import { Box, Card, CardContent, Divider } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { CONSENT, PROTECTED_DATA } from '../config/path';
-import { isKeyInDataSchema } from '../utils/utils';
+import { DataSchema } from '@iexec/dataprotector';
+import { Box, Card, CardContent, Divider } from '@mui/material';
+import { Badge } from '@/components/ui/badge.tsx';
+import { CONSENT, PROTECTED_DATA } from '@/config/path.ts';
+import { isKeyInDataSchema } from '@/utils/utils.ts';
 import './ProtectedDataCard.css';
 
 export interface ProtectedDataProps {
@@ -18,23 +18,19 @@ export default function ProtectedDataCard(props: ProtectedDataProps) {
   return (
     <Card
       sx={{ minWidth: 260, cursor: 'pointer' }}
+      className="transition-colors hover:bg-gray-50"
       onClick={() => navigate(`/${PROTECTED_DATA}/${CONSENT}/${props.id}`)}
     >
       <CardContent className="cardContent">
-        <Box
-          sx={{ height: '60px', display: 'flex', justifyContent: 'flex-end' }}
-        >
-          <Chip
-            className="chipLabel"
-            label={
-              (isKeyInDataSchema(props.schema, 'email') && 'Email') ||
-              (isKeyInDataSchema(props.schema, 'file') && 'File') ||
-              'Unknown'
-            }
-            size="small"
-            children={''}
-          />
-        </Box>
+        <div className="p-3 text-right">
+          <Badge>
+            {isKeyInDataSchema(props.schema, 'email')
+              ? 'Email'
+              : isKeyInDataSchema(props.schema, 'file')
+              ? 'File'
+              : 'Unknown'}
+          </Badge>
+        </div>
         <Divider />
         <Box
           sx={{
@@ -45,13 +41,10 @@ export default function ProtectedDataCard(props: ProtectedDataProps) {
           }}
           data-cy="protected-data-card"
         >
-          <h5>{props.title}</h5>
-          <Chip
-            className="chipDate"
-            label={props.date}
-            size="small"
-            children={''}
-          />
+          <h5 className="my-6 font-bold">{props.title}</h5>
+          <div className="text-right">
+            <Badge variant="secondary">{props.date}</Badge>
+          </div>
         </Box>
       </CardContent>
     </Card>

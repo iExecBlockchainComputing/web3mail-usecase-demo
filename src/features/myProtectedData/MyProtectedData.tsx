@@ -1,26 +1,27 @@
-import { Box, Grid, Pagination, Paper } from '@mui/material';
 import { useState } from 'react';
+import { Box, Grid, Pagination, Paper } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useAccount } from 'wagmi';
-import { Button } from '@iexec/react-ui-kit';
+import AddIcon from '@mui/icons-material/Add';
+import { Button } from '@/components/ui/button.tsx';
 import {
   selectAppIsConnected,
   useFetchProtectedDataQuery,
-} from '../../app/appSlice';
-import { useAppSelector } from '../../app/hooks';
+} from '@/app/appSlice.ts';
+import { useAppSelector } from '@/app/hooks.ts';
 import img from '../../assets/noData.png';
-import ProtectedDataCard from '../../components/ProtectedDataCard';
-import { ITEMS_PER_PAGE } from '../../config/config';
-import './ProtectedData.css';
-import { CREATE } from '../../config/path';
-import { getLocalDateFromBlockchainTimestamp } from '../../utils/utils';
+import ProtectedDataCard from '@/features/myProtectedData/ProtectedDataCard.tsx';
+import { ITEMS_PER_PAGE } from '@/config/config.ts';
+import { CREATE } from '@/config/path.ts';
+import { getLocalDateFromBlockchainTimestamp } from '@/utils/utils.ts';
+import './MyProtectedData.css';
 
-export default function ProtectedData() {
+export default function MyProtectedData() {
   const { address } = useAccount();
   const isAccountConnected = useAppSelector(selectAppIsConnected);
 
   //query RTK API as query hook
-  const { data: protectedData = [] } = useFetchProtectedDataQuery(
+  const { data: protectedData = [], isLoading } = useFetchProtectedDataQuery(
     address as string,
     {
       skip: !isAccountConnected,
@@ -37,9 +38,31 @@ export default function ProtectedData() {
   const currentData = protectedData.slice(startIndex, endIndex);
 
   return (
-    <Box sx={{ mx: 10 }}>
-      {protectedData.length !== 0 ? (
-        <Box>
+    <div>
+      {isLoading && (
+        <div className="text-center">Fetching your protected data...</div>
+      )}
+
+      {!isLoading && protectedData.length === 0 && (
+        <div className="text-center">
+          <img
+            src={img}
+            alt="The image can't be loaded"
+            id="logo"
+            className="mx-auto"
+          />
+          <p>
+            You haven't protected any data yet. Starting is as easy as pressing
+            the button below.
+          </p>
+          <Box sx={{ mt: 7 }}>
+            <NewProtectedDataButton />
+          </Box>
+        </div>
+      )}
+
+      {!isLoading && protectedData.length > 0 && (
+        <div>
           <Box
             sx={{
               display: 'flex',
@@ -78,26 +101,18 @@ export default function ProtectedData() {
               />
             </Paper>
           </Box>
-        </Box>
-      ) : (
-        <Box>
-          <img src={img} alt="The image can't be loaded" id="logo" />
-          <p>
-            You haven't protected any data yet. Starting is as easy as pressing
-            the button below.
-          </p>
-          <Box sx={{ mt: 7 }}>
-            <NewProtectedDataButton />
-          </Box>
-        </Box>
+        </div>
       )}
-    </Box>
+    </div>
   );
 }
 
 function NewProtectedDataButton() {
   const navigate = useNavigate();
   return (
-    <Button onClick={() => navigate(`./${CREATE}`)}>Protect your data</Button>
+    <Button onClick={() => navigate(`./${CREATE}`)} className="pl-4">
+      <AddIcon fontSize="small" />
+      <span className="pl-2">Add new</span>
+    </Button>
   );
 }
