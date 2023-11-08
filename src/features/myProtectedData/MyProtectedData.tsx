@@ -21,7 +21,7 @@ export default function MyProtectedData() {
   const isAccountConnected = useAppSelector(selectAppIsConnected);
 
   //query RTK API as query hook
-  const { data: protectedData = [] } = useFetchProtectedDataQuery(
+  const { data: protectedData = [], isLoading } = useFetchProtectedDataQuery(
     address as string,
     {
       skip: !isAccountConnected,
@@ -39,7 +39,29 @@ export default function MyProtectedData() {
 
   return (
     <div>
-      {protectedData.length !== 0 ? (
+      {isLoading && (
+        <div className="text-center">Fetching your protected data...</div>
+      )}
+
+      {!isLoading && protectedData.length === 0 && (
+        <div className="text-center">
+          <img
+            src={img}
+            alt="The image can't be loaded"
+            id="logo"
+            className="mx-auto"
+          />
+          <p>
+            You haven't protected any data yet. Starting is as easy as pressing
+            the button below.
+          </p>
+          <Box sx={{ mt: 7 }}>
+            <NewProtectedDataButton />
+          </Box>
+        </div>
+      )}
+
+      {!isLoading && protectedData.length > 0 && (
         <div>
           <Box
             sx={{
@@ -80,17 +102,6 @@ export default function MyProtectedData() {
             </Paper>
           </Box>
         </div>
-      ) : (
-        <Box>
-          <img src={img} alt="The image can't be loaded" id="logo" />
-          <p>
-            You haven't protected any data yet. Starting is as easy as pressing
-            the button below.
-          </p>
-          <Box sx={{ mt: 7 }}>
-            <NewProtectedDataButton />
-          </Box>
-        </Box>
       )}
     </div>
   );
