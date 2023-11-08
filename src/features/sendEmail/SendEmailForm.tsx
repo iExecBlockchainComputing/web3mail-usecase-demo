@@ -92,10 +92,10 @@ export default function SendEmailForm() {
   return (
     <div className="mx-auto mb-28 w-[70%]">
       <div className="text-left">
-        <Button asChild variant="text">
-          <Link to={`/${SEND_EMAIL}`} className="pl-4">
+        <Button asChild variant="text" size="sm">
+          <Link to={`/${SEND_EMAIL}`} className="pl-2">
             <ChevronLeftIcon />
-            <span className="pl-1">Back</span>
+            <span className="pl-0.5">Back</span>
           </Link>
         </Button>
       </div>

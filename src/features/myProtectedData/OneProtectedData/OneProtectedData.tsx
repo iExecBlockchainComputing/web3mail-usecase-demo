@@ -53,10 +53,10 @@ export default function OneProtectedData() {
   return (
     <div>
       <div className="text-left">
-        <Button asChild variant="text">
-          <Link to={`/${PROTECTED_DATA}`} className="pl-4">
+        <Button asChild variant="text" size="sm">
+          <Link to={`/${PROTECTED_DATA}`} className="pl-2">
             <ChevronLeftIcon />
-            <span className="pl-1">Back</span>
+            <span className="pl-0.5">Back</span>
           </Link>
         </Button>
       </div>

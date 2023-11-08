@@ -28,6 +28,10 @@ module.exports = {
           DEFAULT: 'hsl(var(--secondary))',
           foreground: 'hsl(var(--secondary-foreground))',
         },
+        danger: {
+          DEFAULT: 'hsl(var(--danger))',
+          foreground: 'hsl(var(--danger-foreground))',
+        },
         // destructive: {
         //   DEFAULT: 'hsl(var(--destructive))',
         //   foreground: 'hsl(var(--destructive-foreground))',
@@ -37,8 +41,8 @@ module.exports = {
         //   foreground: 'hsl(var(--muted-foreground))',
         // },
         accent: {
-          DEFAULT: 'var(--accent)',
-          foreground: 'var(--accent-foreground)',
+          DEFAULT: 'hsl(var(--accent))',
+          foreground: 'hsl(var(--accent-foreground))',
         },
         // popover: {
         //   DEFAULT: 'hsl(var(--popover))',

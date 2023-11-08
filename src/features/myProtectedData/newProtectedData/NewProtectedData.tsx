@@ -16,12 +16,15 @@ import {
   Typography,
 } from '@mui/material';
 import { Button } from '@/components/ui/button.tsx';
+import { useToast } from '@/components/ui/use-toast.ts';
 import { PROTECTED_DATA } from '@/config/path.ts';
 import { useCreateProtectedDataMutation } from '@/app/appSlice.ts';
 import { createArrayBufferFromFile } from '@/utils/utils.ts';
 import './NewProtectedData.css';
 
 export default function NewProtectedData() {
+  const { toast } = useToast();
+
   const fileInput = useRef<HTMLInputElement>(null);
   //query RTK API as mutation hook
   const [createProtectedData, result] = useCreateProtectedDataMutation();
@@ -70,6 +73,11 @@ export default function NewProtectedData() {
     }
     if (dataType && name && ((isValidEmail && email) || file)) {
       await createProtectedData({ data, name });
+    } else {
+      toast({
+        variant: 'danger',
+        title: 'Please fill in all required fields.',
+      });
     }
   };
 
@@ -80,10 +88,10 @@ export default function NewProtectedData() {
   return (
     <div>
       <div className="text-left">
-        <Button asChild variant="text">
-          <Link to={`/${PROTECTED_DATA}`} className="pl-4">
+        <Button asChild variant="text" size="sm">
+          <Link to={`/${PROTECTED_DATA}`} className="pl-2">
             <ChevronLeftIcon />
-            <span className="pl-1">Back</span>
+            <span className="pl-0.5">Back</span>
           </Link>
         </Button>
       </div>
@@ -149,6 +157,7 @@ export default function NewProtectedData() {
       )}
       {dataType && (
         <TextField
+          required
           fullWidth
           id="Name of your Protected Data"
           label="Name of your Protected Data"
@@ -211,11 +220,11 @@ export default function NewProtectedData() {
         </div>
       )}
       {dataType && !result.isLoading && !result.data && !result.error && (
-        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+        <div className="text-center">
           <Button className="mt-6" onClick={handleSubmit}>
             Create Protected Data
           </Button>
-        </Box>
+        </div>
       )}
     </div>
   );

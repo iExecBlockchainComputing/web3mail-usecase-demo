@@ -86,7 +86,7 @@ export default function AuthorizedUsersList(props: AuthorizedUsersListProps) {
     {
       field: 'Actions',
       sortable: false,
-      width: 165,
+      width: 170,
       renderCell: (params) => (
         <Button
           size="sm"

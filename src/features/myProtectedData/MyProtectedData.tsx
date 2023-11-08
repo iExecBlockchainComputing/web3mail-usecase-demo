@@ -77,7 +77,7 @@ export default function MyProtectedData() {
             </Box>
           </Box>
           <Box sx={{ mx: 4, paddingBottom: 20 }}>
-            <Grid container spacing={2}>
+            <Grid container spacing={3}>
               {currentData?.map(
                 ({ address, name, schema, creationTimestamp }) => (
                   <Grid item key={address}>
