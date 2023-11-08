@@ -91,8 +91,8 @@ export default function AuthorizedUsersList(props: AuthorizedUsersListProps) {
         <Button
           size="sm"
           variant="secondary"
-          onClick={() => handleDelete(params.value)}
           className="pl-4"
+          onClick={() => handleDelete(params.value)}
         >
           <DeleteIcon fontSize="small" aria-label="delete" />
           <span className="pl-2">Revoke access</span>

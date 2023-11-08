@@ -2,8 +2,8 @@ import { DataSchema } from '@iexec/dataprotector';
 import Chip from '@iexec/react-ui-kit/components/Chip';
 import { Box, Card, CardContent, Divider } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { CONSENT, PROTECTED_DATA } from '../config/path';
-import { isKeyInDataSchema } from '../utils/utils';
+import { CONSENT, PROTECTED_DATA } from '@/config/path';
+import { isKeyInDataSchema } from '@/utils/utils';
 import './ProtectedDataCard.css';
 
 export interface ProtectedDataProps {
@@ -21,9 +21,7 @@ export default function ProtectedDataCard(props: ProtectedDataProps) {
       onClick={() => navigate(`/${PROTECTED_DATA}/${CONSENT}/${props.id}`)}
     >
       <CardContent className="cardContent">
-        <Box
-          sx={{ height: '60px', display: 'flex', justifyContent: 'flex-end' }}
-        >
+        <div className="text-right p-3">
           <Chip
             className="chipLabel"
             label={
@@ -34,7 +32,7 @@ export default function ProtectedDataCard(props: ProtectedDataProps) {
             size="small"
             children={''}
           />
-        </Box>
+        </div>
         <Divider />
         <Box
           sx={{

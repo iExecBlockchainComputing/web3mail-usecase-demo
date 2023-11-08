@@ -1,12 +1,10 @@
 .cardContent {
-  padding: 0px;
+  padding: 0;
   padding-bottom: 10px;
 }
 
 .chipLabel {
   margin: auto;
-  margin-top: 10px;
-  margin-right: 10px;
   background-color: #fcd15a !important;
   color: #1d1d24;
 }

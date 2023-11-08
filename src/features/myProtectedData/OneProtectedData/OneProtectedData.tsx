@@ -85,9 +85,9 @@ export default function OneProtectedData() {
           </li>
         </ul>
       </div>
-      <Box sx={{ textAlign: 'left', my: 5, mb: 20 }}>
-        {grantedAccessList?.length ? (
-          <Box>
+      <Box sx={{ my: 5, mb: 20 }}>
+        {grantedAccessList?.length > 0 ? (
+          <>
             <h2>Authorized users</h2>
             <AuthorizedUsersList
               authorizedUsers={grantedAccessList}
@@ -96,17 +96,19 @@ export default function OneProtectedData() {
               page={page}
               onPageChanged={(newPage: number) => setPage(newPage)}
             />
-          </Box>
+          </>
         ) : (
-          <Box sx={{ textAlign: 'center' }}>
+          <div className="text-center mb-6">
             <h4>No authorized user for web3Mail dApp</h4>
-          </Box>
+          </div>
         )}
 
-        <Button onClick={() => setModalOpen(true)} className="pl-4">
-          <AddIcon fontSize="small" />
-          <span className="pl-2">Authorize a new user</span>
-        </Button>
+        <div className="text-center">
+          <Button onClick={() => setModalOpen(true)} className="pl-4">
+            <AddIcon fontSize="small" />
+            <span className="pl-2">Authorize a new user</span>
+          </Button>
+        </div>
 
         <GrantAccessModal
           protectedData={ProtectedDataId as string}

@@ -1,4 +1,3 @@
-import './App.css';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider } from '@iexec/react-ui-kit';
 import {
@@ -6,8 +5,8 @@ import {
   NewProtectedData,
   MyProtectedData,
   OneProtectedData,
-  EmailDapp,
   SendEmail,
+  SendEmailForm,
   LoginGuard,
 } from './features';
 import {
@@ -23,7 +22,7 @@ function App() {
     <div className="App">
       <ThemeProvider>
         <Navigation />
-        <div className="mx-auto mt-12 w-[70%]">
+        <div className="mx-auto mt-12 w-[80%]">
           <Routes>
             <Route
               path={`/${PROTECTED_DATA}`}
@@ -53,7 +52,7 @@ function App() {
               path={`/${SEND_EMAIL}`}
               element={
                 <LoginGuard>
-                  <EmailDapp />
+                  <SendEmail />
                 </LoginGuard>
               }
             />
@@ -61,7 +60,7 @@ function App() {
               path={`/${SEND_EMAIL}/:receiverAddress/:protectedDataAddress`}
               element={
                 <LoginGuard>
-                  <SendEmail />
+                  <SendEmailForm />
                 </LoginGuard>
               }
             />

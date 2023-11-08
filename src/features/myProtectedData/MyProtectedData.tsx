@@ -10,7 +10,7 @@ import {
 } from '@/app/appSlice';
 import { useAppSelector } from '@/app/hooks';
 import img from '../../assets/noData.png';
-import ProtectedDataCard from '@/components/ProtectedDataCard';
+import ProtectedDataCard from '@/features/myProtectedData/ProtectedDataCard.tsx';
 import { ITEMS_PER_PAGE } from '@/config/config';
 import { CREATE } from '@/config/path';
 import { getLocalDateFromBlockchainTimestamp } from '@/utils/utils';
