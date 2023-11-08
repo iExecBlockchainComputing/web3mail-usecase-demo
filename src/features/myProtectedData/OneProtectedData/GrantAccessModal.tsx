@@ -1,16 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import './GrantAccessModal.css';
-import {
-  TextField,
-  Modal,
-  Box,
-  Typography,
-  Snackbar,
-  Alert,
-} from '@mui/material';
+import { TextField, Modal, Box, Typography } from '@mui/material';
 import { Button } from '@/components/ui/button.tsx';
 import { useGrantNewAccessMutation } from '@/app/appSlice.ts';
 import { SMART_CONTRACT_WEB3MAIL_WHITELIST } from '@/config/config.ts';
+import { toast } from '@/components/ui/use-toast.ts';
 
 type GrantAccessModalParams = {
   protectedData: string;
@@ -37,105 +31,79 @@ export default function GrantAccessModal(props: GrantAccessModalParams) {
   };
 
   const handleGrantAccess = () => {
+    if (!ethAddress.trim()) {
+      toast({
+        variant: 'danger',
+        title: 'Please fill in all required fields.',
+      });
+      return;
+    }
     const protectedData = props.protectedData;
     grantNewAccess({
       protectedData,
       authorizedApp: SMART_CONTRACT_WEB3MAIL_WHITELIST,
       authorizedUser: ethAddress,
       numberOfAccess: NbOfAccess,
-    });
+    })
+      .unwrap()
+      .then(() => {
+        toast({
+          title: 'New access granted!',
+        });
+        setEthAddress('');
+        setNbOfAccess(1);
+        props.handleClose();
+      })
+      .catch((err) => {
+        toast({
+          variant: 'danger',
+          title: err || 'Failed to grant access!',
+        });
+      });
   };
-
-  // Snackbar success / error notification
-  const [isSnackbarVisible, setSnackbarVisible] = useState(false);
-  const [success, setSuccess] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
-
-  const handleClose = (_: React.SyntheticEvent | Event, reason?: string) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setSnackbarVisible(false);
-  };
-
-  useEffect(() => {
-    if (result.isError) {
-      setSuccess(false);
-      setErrorMessage(result.error as string);
-      setSnackbarVisible(true);
-      return;
-    }
-    if (result.isSuccess) {
-      setSuccess(result.isSuccess);
-      setSnackbarVisible(true);
-      result.reset();
-      setEthAddress('');
-      setNbOfAccess(1);
-      props.handleClose();
-    }
-  }, [result, props]);
 
   return (
-    <div>
-      <Snackbar
-        open={isSnackbarVisible}
-        autoHideDuration={6000}
-        onClose={handleClose}
-        anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
-      >
-        <Alert
-          onClose={handleClose}
-          severity={success ? 'success' : 'error'}
-          sx={{ width: '100%' }}
+    <Modal open={props.open} onClose={props.handleClose}>
+      <Box id="modalBox">
+        <Typography
+          component="h1"
+          variant="h5"
+          sx={{ alignSelf: 'flex-start' }}
         >
-          {success
-            ? 'New access granted!'
-            : errorMessage || 'Failed to grant access!'}
-        </Alert>
-      </Snackbar>
-
-      <Modal open={props.open} onClose={props.handleClose}>
-        <Box id="modalBox">
-          <Typography
-            component="h1"
-            variant="h5"
-            sx={{ alignSelf: 'flex-start' }}
-          >
-            Add a new contact
-          </Typography>
-          <TextField
-            required
-            fullWidth
-            id="ethAddress"
-            label="Ethereum Address"
-            variant="outlined"
-            sx={{ mt: 3 }}
-            value={ethAddress}
-            onChange={handleEthAddressChange}
-            type="ethAddress"
-            error={!isValidEthAddress}
-            helperText={
-              !isValidEthAddress && 'Please enter a valid ethereum Address'
-            }
-          />
-          <TextField
-            fullWidth
-            type="NbOfAccess"
-            id="age"
-            label="Number of Access"
-            variant="outlined"
-            value={NbOfAccess}
-            InputProps={{ inputProps: { min: 1 } }}
-            onChange={handleNbOfAccessChange}
-            sx={{ mt: 3 }}
-          />
-          {/* TODO: Have a proper form and submit button */}
-          {/*<button type="submit">Validate</button>*/}
-          <Button disabled={result.isLoading} onClick={handleGrantAccess}>
-            {result.isLoading ? 'Loading...' : 'Validate'}
-          </Button>
-        </Box>
-      </Modal>
-    </div>
+          New user
+        </Typography>
+        <TextField
+          required
+          fullWidth
+          id="ethAddress"
+          label="Ethereum Address"
+          variant="outlined"
+          sx={{ mt: 3 }}
+          value={ethAddress}
+          onChange={handleEthAddressChange}
+          type="ethAddress"
+          error={!isValidEthAddress}
+          helperText={
+            !isValidEthAddress && 'Please enter a valid ethereum Address'
+          }
+        />
+        <TextField
+          fullWidth
+          type="NbOfAccess"
+          id="age"
+          label="Number of Access"
+          variant="outlined"
+          value={NbOfAccess}
+          InputProps={{ inputProps: { min: 1 } }}
+          onChange={handleNbOfAccessChange}
+          sx={{ mt: 3 }}
+        />
+        {/* TODO: Have a proper form and submit button */}
+        {/*<button type="submit">Validate</button>*/}
+        <Button disabled={result.isLoading} onClick={handleGrantAccess}>
+          {result.isLoading ? 'Loading...' : 'Validate'}
+        </Button>
+      </Box>
+    </Modal>
   );
 }

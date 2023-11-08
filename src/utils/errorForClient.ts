@@ -6,7 +6,11 @@ export function buildErrorData(err?: any) {
     code: '',
     action: '',
   };
-  if (!err || !err.originalError) {
+  if (!err) {
+    return errorData;
+  }
+  if (!err.originalError) {
+    errorData.message = err.message;
     return errorData;
   }
   return {
