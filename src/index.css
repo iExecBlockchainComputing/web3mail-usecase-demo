@@ -9,7 +9,7 @@
     /* Grey/grey-100 = #F2F2F7 */
     --grey-100: hsl(240 24% 96%);
     /* Grey/grey-800 = #1D1D24 */
-    --grey-800: hsl(240 11% 13%);
+    --grey-800: 240 11% 13%;
 
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
