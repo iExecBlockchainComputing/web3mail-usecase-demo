@@ -134,10 +134,10 @@ export default function SendEmail() {
         </Box>
       )}
       {isLoading && (
-        <Box sx={{ textAlign: 'center', my: 5 }}>
+        <div className="flex flex-col items-center gap-y-4">
           <CircularProgress className="mt-10"></CircularProgress>
           <h4>Fetching your contacts...</h4>
-        </Box>
+        </div>
       )}
     </Box>
   );
