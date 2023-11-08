@@ -206,8 +206,10 @@ export const homeApi = api.injectEndpoints({
           // Go through a more low level iexec function = bypass enclave check done in dataprotector-sdk
           const data = await grantAccess({ iexec, ...args });
           return { data: data?.sign || '' };
-        } catch (e: any) {
-          return { error: e.message };
+        } catch (err: any) {
+          const errorData = buildErrorData(err);
+          console.error('[grantNewAccess]', errorData);
+          return { error: errorData.reason || err.message };
         }
       },
       invalidatesTags: ['GRANTED_ACCESS'],
