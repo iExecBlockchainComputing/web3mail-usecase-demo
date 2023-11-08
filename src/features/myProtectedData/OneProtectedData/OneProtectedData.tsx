@@ -76,17 +76,15 @@ export default function OneProtectedData() {
           children={''}
         />
       </Box>
-      <Box id="summary">
-        <ul
-          style={{ display: 'flex', flexDirection: 'column', rowGap: '24px' }}
-        >
+      <div className="mt-8 px-5 py-6 border border-grey-800/40 text-left rounded-sm">
+        <ul className="flex flex-col gap-y-4 list-disc pl-6">
           <li>Owned by {protectedDataSelected?.owner}</li>
           <li>Data Protected Address: {protectedDataSelected?.address}</li>
           <li>
             IPFS link: {'Set in future with the next version of subgraph'}
           </li>
         </ul>
-      </Box>
+      </div>
       <Box sx={{ textAlign: 'left', my: 5, mb: 20 }}>
         {grantedAccessList?.length ? (
           <Box>
