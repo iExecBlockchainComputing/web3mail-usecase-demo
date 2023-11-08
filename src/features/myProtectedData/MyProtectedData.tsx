@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAccount } from 'wagmi';
-import { Box, Grid, Pagination, Paper } from '@mui/material';
+import { Box, CircularProgress, Grid, Pagination, Paper } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { CSSTransition } from 'react-transition-group';
 import { Button } from '@/components/ui/button.tsx';
@@ -43,7 +43,10 @@ export default function MyProtectedData() {
   return (
     <div>
       {isLoading && (
-        <div className="text-center">Fetching your protected data...</div>
+        <div className="flex flex-col items-center gap-y-4">
+          <CircularProgress className="mt-10"></CircularProgress>
+          Fetching your protected data...
+        </div>
       )}
 
       {!isLoading && protectedData.length === 0 && (
