@@ -1,18 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import {
-  Alert,
-  Box,
-  Snackbar,
-  TextField,
-  TextareaAutosize,
-} from '@mui/material';
+import { Box, TextField, TextareaAutosize } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import { Loader } from 'react-feather';
 import { Button } from '@/components/ui/button.tsx';
+import { toast } from '@/components/ui/use-toast.ts';
 import { useSendEmailMutation } from '@/app/appSlice.ts';
 import { SEND_EMAIL } from '@/config/path.ts';
 import './SendEmailForm.css';
@@ -60,25 +56,19 @@ export default function SendEmailForm() {
       emailSubject: messageSubject,
       emailContent: message,
       protectedData: protectedDataAddress,
-    });
-  };
-
-  //snackbar notification
-  const [open, setOpen] = useState(false);
-  const [success, setSuccess] = useState(false);
-
-  useEffect(() => {
-    if (result.isSuccess || result.isError) {
-      setSuccess(result.isSuccess);
-      setOpen(true);
-    }
-  }, [result]);
-
-  const handleClose = (_: React.SyntheticEvent | Event, reason?: string) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setOpen(false);
+    })
+      .unwrap()
+      .then(() => {
+        toast({
+          title: 'The email has been sent!',
+        });
+      })
+      .catch((err) => {
+        toast({
+          variant: 'danger',
+          title: err || 'Failed to send email.',
+        });
+      });
   };
 
   const handleSelectContentType = (event: SelectChangeEvent) => {
@@ -161,25 +151,13 @@ export default function SendEmailForm() {
         </p>
         <div className="text-right">
           <Button disabled={result.isLoading} onClick={sendEmailHandle}>
-            {result.isLoading ? 'Loading...' : 'Send'}
+            {result.isLoading && (
+              <Loader className="animate-spin-slow -ml-1 mr-2" size="16" />
+            )}
+            <span>Send</span>
           </Button>
         </div>
       </Box>
-
-      <Snackbar
-        open={open}
-        autoHideDuration={6000}
-        onClose={handleClose}
-        anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
-      >
-        <Alert
-          onClose={handleClose}
-          severity={success ? 'success' : 'error'}
-          sx={{ width: '100%' }}
-        >
-          {success ? 'The email has been sent!' : 'Failed to send email!'}
-        </Alert>
-      </Snackbar>
     </div>
   );
 }
