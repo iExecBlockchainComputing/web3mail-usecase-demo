@@ -11,10 +11,12 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 import { Button } from '@/components/ui/button';
-import { Typography } from '@iexec/react-ui-kit';
 import './SendEmail.css';
 import { useParams } from 'react-router-dom';
 import { useSendEmailMutation } from '../../app/appSlice';
+
+const MAX_CHARACTERS_SENDER_NAME = 20;
+const MAX_CHARACTERS_MESSAGE_SUBJECT = 78;
 
 export default function SendEmail() {
   const { receiverAddress, protectedDataAddress } = useParams();
@@ -28,12 +30,14 @@ export default function SendEmail() {
 
   //for name et dataType
   const [messageSubject, setMessageSubject] = useState('');
-  const charactersRemainingSubject = 78 - messageSubject.length;
+  const charactersRemainingSubject =
+    MAX_CHARACTERS_MESSAGE_SUBJECT - messageSubject.length;
 
   const [contentType, setContentType] = useState('text/plain');
 
   const [senderName, setSenderName] = useState('');
-  const charactersRemainingSenderName = 20 - senderName.length;
+  const charactersRemainingSenderName =
+    MAX_CHARACTERS_SENDER_NAME - senderName.length;
 
   //handle functions
   const handleMessageSubjectChange = (event: any) => {
@@ -94,11 +98,16 @@ export default function SendEmail() {
           variant="outlined"
           value={senderName}
           onChange={handleSenderNameChange}
-          sx={{ mt: 3 }}
+          className="mt-6"
+          inputProps={{ maxLength: MAX_CHARACTERS_SENDER_NAME }}
         />
-        <Typography sx={{ my: 2, fontStyle: 'italic', fontSize: 'smaller' }}>
-          {charactersRemainingSenderName} characters remaining
-        </Typography>
+        <p className="italic text-sm my-2">
+          {charactersRemainingSenderName >= 0
+            ? charactersRemainingSenderName
+            : 0}{' '}
+          {charactersRemainingSenderName > 1 ? 'characters' : 'character'}{' '}
+          remaining
+        </p>
         <TextField
           fullWidth
           id="Message subject"
@@ -107,11 +116,14 @@ export default function SendEmail() {
           required
           value={messageSubject}
           onChange={handleMessageSubjectChange}
-          sx={{ mt: 3 }}
+          inputProps={{ maxLength: MAX_CHARACTERS_MESSAGE_SUBJECT }}
+          className="mt-6"
         />
-        <Typography sx={{ my: 2, fontStyle: 'italic', fontSize: 'smaller' }}>
-          {charactersRemainingSubject} characters remaining
-        </Typography>
+        <p className="italic text-sm my-2">
+          {charactersRemainingSubject >= 0 ? charactersRemainingSubject : 0}{' '}
+          {charactersRemainingSubject > 1 ? 'characters' : 'character'}{' '}
+          remaining
+        </p>
         <FormControl sx={{ textAlign: 'left', mt: 3 }} fullWidth>
           <InputLabel id="content-type-label">Content Type</InputLabel>
           <Select
@@ -133,9 +145,9 @@ export default function SendEmail() {
           id="textArea"
           className="w-full border mt-4 !h-[200px] p-3"
         />
-        <Typography sx={{ mt: 2, fontStyle: 'italic', fontSize: 'smaller' }}>
+        <p className="italic text-sm my-2">
           {charactersRemainingMessage} characters remaining
-        </Typography>
+        </p>
         <Button className="sendEmailButton" onClick={sendEmailHandle}>
           Send
         </Button>
