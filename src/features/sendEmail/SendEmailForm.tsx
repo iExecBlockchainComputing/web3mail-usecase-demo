@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import {
   Alert,
   Box,
@@ -11,8 +11,10 @@ import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { Button } from '@/components/ui/button.tsx';
 import { useSendEmailMutation } from '@/app/appSlice.ts';
+import { SEND_EMAIL } from '@/config/path.ts';
 import './SendEmailForm.css';
 
 const MAX_CHARACTERS_SENDER_NAME = 20;
@@ -89,6 +91,14 @@ export default function SendEmailForm() {
   };
   return (
     <div className="mx-auto mb-28 w-[70%]">
+      <div className="text-left">
+        <Button asChild variant="text">
+          <Link to={`/${SEND_EMAIL}`} className="pl-4">
+            <ChevronLeftIcon />
+            <span className="pl-1">Back</span>
+          </Link>
+        </Button>
+      </div>
       <h2>Send Mail to {receiverAddress}</h2>
       <Box sx={{ my: 2, display: 'flex', flexDirection: 'column' }}>
         <TextField
