@@ -3,17 +3,17 @@ import { Box, Grid, Pagination, Paper } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useAccount } from 'wagmi';
 import AddIcon from '@mui/icons-material/Add';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/button.tsx';
 import {
   selectAppIsConnected,
   useFetchProtectedDataQuery,
-} from '@/app/appSlice';
-import { useAppSelector } from '@/app/hooks';
+} from '@/app/appSlice.ts';
+import { useAppSelector } from '@/app/hooks.ts';
 import img from '../../assets/noData.png';
 import ProtectedDataCard from '@/features/myProtectedData/ProtectedDataCard.tsx';
-import { ITEMS_PER_PAGE } from '@/config/config';
-import { CREATE } from '@/config/path';
-import { getLocalDateFromBlockchainTimestamp } from '@/utils/utils';
+import { ITEMS_PER_PAGE } from '@/config/config.ts';
+import { CREATE } from '@/config/path.ts';
+import { getLocalDateFromBlockchainTimestamp } from '@/utils/utils.ts';
 import './MyProtectedData.css';
 
 export default function MyProtectedData() {

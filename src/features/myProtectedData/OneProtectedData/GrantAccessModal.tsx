@@ -8,9 +8,9 @@ import {
   Snackbar,
   Alert,
 } from '@mui/material';
-import { Button } from '@/components/ui/button';
-import { useGrantNewAccessMutation } from '@/app/appSlice';
-import { SMART_CONTRACT_WEB3MAIL_WHITELIST } from '@/config/config';
+import { Button } from '@/components/ui/button.tsx';
+import { useGrantNewAccessMutation } from '@/app/appSlice.ts';
+import { SMART_CONTRACT_WEB3MAIL_WHITELIST } from '@/config/config.ts';
 
 type GrantAccessModalParams = {
   protectedData: string;

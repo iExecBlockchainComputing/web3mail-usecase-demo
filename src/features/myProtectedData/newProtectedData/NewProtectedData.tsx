@@ -15,10 +15,10 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { Button } from '@/components/ui/button';
-import { PROTECTED_DATA } from '@/config/path';
-import { useCreateProtectedDataMutation } from '@/app/appSlice';
-import { createArrayBufferFromFile } from '@/utils/utils';
+import { Button } from '@/components/ui/button.tsx';
+import { PROTECTED_DATA } from '@/config/path.ts';
+import { useCreateProtectedDataMutation } from '@/app/appSlice.ts';
+import { createArrayBufferFromFile } from '@/utils/utils.ts';
 import './NewProtectedData.css';
 
 export default function NewProtectedData() {
@@ -185,13 +185,14 @@ export default function NewProtectedData() {
           severity="success"
         >
           <Typography variant="h6"> Your data has been protected!</Typography>
-          <Link
+          <a
             href={`https://explorer.iex.ec/bellecour/dataset/${result.data}`}
             target="_blank"
-            sx={{ color: 'green', textDecorationColor: 'green' }}
+            rel="noreferrer"
+            className="underline"
           >
             See Details
-          </Link>
+          </a>
           <p>Your protected data address: {result.data}</p>
         </Alert>
       )}

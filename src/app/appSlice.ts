@@ -8,17 +8,17 @@ import {
   RevokedAccess,
   GrantAccessParams,
 } from '@iexec/dataprotector';
-import { api } from './api';
 import { getAccount } from 'wagmi/actions';
-import { SMART_CONTRACT_WEB3MAIL_WHITELIST } from '../config/config';
+import { IExec } from 'iexec';
 import {
   IExecWeb3mail,
   SendEmailParams,
   SendEmailResponse,
   Contact,
 } from '@iexec/web3mail';
+import { SMART_CONTRACT_WEB3MAIL_WHITELIST } from '../config/config';
 import { grantAccess } from './grantAccess';
-import { IExec } from 'iexec';
+import { api } from './api';
 import { buildErrorData } from '../utils/errorForClient';
 
 // Configure iExec Data Protector & Web3Mail
@@ -229,8 +229,10 @@ export const homeApi = api.injectEndpoints({
         try {
           const sendEmailResponse = await iExecWeb3Mail?.sendEmail(args);
           return { data: sendEmailResponse || null };
-        } catch (e: any) {
-          return { error: e.message };
+        } catch (err: any) {
+          const errorData = buildErrorData(err);
+          console.error('[revokeOneAccess]', errorData);
+          return { error: errorData.reason || err.message };
         }
       },
     }),

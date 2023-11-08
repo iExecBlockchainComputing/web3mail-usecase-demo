@@ -4,12 +4,12 @@ import AddIcon from '@mui/icons-material/Add';
 import { Box } from '@mui/material';
 import { Link, useParams } from 'react-router-dom';
 import { useAccount } from 'wagmi';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/button.tsx';
 import {
   useFetchGrantedAccessQuery,
   useFetchProtectedDataQuery,
-} from '@/app/appSlice';
-import { isKeyInDataSchema } from '@/utils/utils';
+} from '@/app/appSlice.ts';
+import { isKeyInDataSchema } from '@/utils/utils.ts';
 import GrantAccessModal from './GrantAccessModal';
 import AuthorizedUsersList from './AuthorizedUsersList';
 import { PROTECTED_DATA } from '@/config/path.ts';
@@ -76,8 +76,8 @@ export default function OneProtectedData() {
           children={''}
         />
       </Box>
-      <div className="mt-8 px-5 py-6 border border-grey-800/40 text-left rounded-sm">
-        <ul className="flex flex-col gap-y-4 list-disc pl-6">
+      <div className="mt-8 rounded-sm border border-grey-800/40 px-5 py-6 text-left">
+        <ul className="flex list-disc flex-col gap-y-4 pl-6">
           <li>Owned by {protectedDataSelected?.owner}</li>
           <li>Data Protected Address: {protectedDataSelected?.address}</li>
           <li>
@@ -98,7 +98,7 @@ export default function OneProtectedData() {
             />
           </>
         ) : (
-          <div className="text-center mb-6">
+          <div className="mb-6 text-center">
             <h4>No authorized user for web3Mail dApp</h4>
           </div>
         )}
