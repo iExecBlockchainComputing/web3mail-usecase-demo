@@ -49,6 +49,7 @@ module.exports = {
         /* ---  Custom --- */
         'grey-100': 'var(--grey-100)',
         'grey-800': 'hsl(var(--grey-800))',
+        'grey-900': 'hsl(var(--grey-900))',
       },
       borderRadius: {
         lg: 'var(--radius)',

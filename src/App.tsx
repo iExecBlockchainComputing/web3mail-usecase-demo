@@ -1,5 +1,6 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider } from '@iexec/react-ui-kit';
+// import NavBar from '@/components/NavBar.tsx';
 import {
   Navigation,
   NewProtectedData,
@@ -22,6 +23,7 @@ function App() {
     <div className="App">
       <ThemeProvider>
         <Navigation />
+        {/*<NavBar />*/}
         <div className="mx-auto mt-12 w-[80%]">
           <Routes>
             <Route

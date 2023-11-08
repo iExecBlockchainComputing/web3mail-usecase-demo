@@ -10,6 +10,8 @@
     --grey-100: hsl(240 24% 96%);
     /* Grey/grey-800 = #1D1D24 */
     --grey-800: 240 11% 13%;
+    /* Grey/grey-900 = #0D0D12 */
+    --grey-900: 240 16% 6%;
 
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
