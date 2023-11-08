@@ -174,27 +174,34 @@ export default function NewProtectedData() {
         </Alert>
       )}
       {result.data && !result.error && (
-        <Alert
-          sx={{
-            margin: 'auto',
-            mt: 3,
-            mb: 2,
-            justifyContent: 'center',
-            maxWidth: '400px',
-          }}
-          severity="success"
-        >
-          <Typography variant="h6"> Your data has been protected!</Typography>
-          <a
-            href={`https://explorer.iex.ec/bellecour/dataset/${result.data}`}
-            target="_blank"
-            rel="noreferrer"
-            className="underline"
+        <>
+          <Alert
+            sx={{
+              margin: 'auto',
+              mt: 3,
+              mb: 2,
+              justifyContent: 'center',
+              maxWidth: '400px',
+            }}
+            severity="success"
           >
-            See Details
-          </a>
-          <p>Your protected data address: {result.data}</p>
-        </Alert>
+            <Typography variant="h6"> Your data has been protected!</Typography>
+            <a
+              href={`https://explorer.iex.ec/bellecour/dataset/${result.data}`}
+              target="_blank"
+              rel="noreferrer"
+              className="underline"
+            >
+              See Details
+            </a>
+            <p>Your protected data address: {result.data}</p>
+          </Alert>
+          <div className="text-center">
+            <Link to={`/${PROTECTED_DATA}`} className="p-2 underline">
+              See my protected data
+            </Link>
+          </div>
+        </>
       )}
       {result.isLoading && (
         <div className="flex flex-col items-center gap-y-4">
