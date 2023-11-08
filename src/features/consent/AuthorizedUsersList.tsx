@@ -118,6 +118,7 @@ export default function AuthorizedUsersList(props: AuthorizedUsersListProps) {
           }
           sx={{ border: 'none' }}
           disableRowSelectionOnClick={true}
+          className="authorized-users-list"
         />
 
         <Snackbar
