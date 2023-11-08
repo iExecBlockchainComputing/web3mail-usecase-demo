@@ -6,8 +6,10 @@
   :root {
     /* iExec Yellow/iexec-yellow-300 = #FCD15A */
     --iexec-yellow-300: hsl(44 96% 67%);
+
     /* Grey/grey-100 = #F2F2F7 */
-    --grey-100: hsl(240 24% 96%);
+    --grey-100: 240 24% 96%;
+    --grey-100_2: hsl(240 24% 96%); /* Do not use: Just to see the color */
     /* Grey/grey-800 = #1D1D24 */
     --grey-800: 240 11% 13%;
     /* Grey/grey-900 = #0D0D12 */
