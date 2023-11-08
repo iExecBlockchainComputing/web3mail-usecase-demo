@@ -1,8 +1,9 @@
-import { useState } from 'react';
-import { Box, Grid, Pagination, Paper } from '@mui/material';
+import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAccount } from 'wagmi';
+import { Box, Grid, Pagination, Paper } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
+import { CSSTransition } from 'react-transition-group';
 import { Button } from '@/components/ui/button.tsx';
 import {
   selectAppIsConnected,
@@ -37,6 +38,8 @@ export default function MyProtectedData() {
   const endIndex = startIndex + ITEMS_PER_PAGE;
   const currentData = protectedData.slice(startIndex, endIndex);
 
+  const nodeRef = useRef(null);
+
   return (
     <div>
       {isLoading && (
@@ -61,8 +64,17 @@ export default function MyProtectedData() {
         </div>
       )}
 
-      {!isLoading && protectedData.length > 0 && (
-        <div>
+      <CSSTransition
+        appear={!isLoading && protectedData.length > 0}
+        in={!isLoading && protectedData.length > 0}
+        nodeRef={nodeRef}
+        timeout={200}
+        classNames="fade"
+        onEntered={() => {
+          nodeRef.current?.classList.remove('opacity-0');
+        }}
+      >
+        <div ref={nodeRef} className="opacity-0">
           <Box
             sx={{
               display: 'flex',
@@ -102,7 +114,7 @@ export default function MyProtectedData() {
             </Paper>
           </Box>
         </div>
-      )}
+      </CSSTransition>
     </div>
   );
 }

@@ -61,7 +61,7 @@ export default function OneProtectedData() {
         </Button>
       </div>
       <Box sx={{ textAlign: 'left' }}>
-        <h2>{protectedDataSelected?.name}</h2>
+        <h2 className="h-8">{protectedDataSelected?.name}</h2>
         <Badge>
           {isKeyInDataSchema(protectedDataSelected?.schema || {}, 'email')
             ? 'Email'
@@ -72,7 +72,7 @@ export default function OneProtectedData() {
       </Box>
       <div className="mt-8 rounded-sm border border-grey-800/40 px-5 py-6 text-left">
         <ul className="flex list-disc flex-col gap-y-4 pl-6">
-          <li>Owned by {protectedDataSelected?.owner}</li>
+          <li>Owned by: {protectedDataSelected?.owner}</li>
           <li>Data Protected Address: {protectedDataSelected?.address}</li>
           <li>
             IPFS link: {'Set in future with the next version of subgraph'}
@@ -92,8 +92,8 @@ export default function OneProtectedData() {
             />
           </>
         ) : (
-          <div className="mb-6 text-center">
-            <h4>No authorized user for web3Mail dApp</h4>
+          <div className="mb-10 text-center">
+            <h4>No authorized user</h4>
           </div>
         )}
 
