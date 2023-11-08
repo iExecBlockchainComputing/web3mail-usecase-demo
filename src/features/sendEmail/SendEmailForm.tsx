@@ -88,7 +88,7 @@ export default function SendEmailForm() {
     setSenderName(inputValue);
   };
   return (
-    <div className="w-[70%] mx-auto mb-28">
+    <div className="mx-auto mb-28 w-[70%]">
       <h2>Send Mail to {receiverAddress}</h2>
       <Box sx={{ my: 2, display: 'flex', flexDirection: 'column' }}>
         <TextField
@@ -101,7 +101,7 @@ export default function SendEmailForm() {
           className="mt-6"
           inputProps={{ maxLength: MAX_CHARACTERS_SENDER_NAME }}
         />
-        <p className="italic text-sm my-2">
+        <p className="my-2 text-sm italic">
           {charactersRemainingSenderName >= 0
             ? charactersRemainingSenderName
             : 0}{' '}
@@ -119,7 +119,7 @@ export default function SendEmailForm() {
           inputProps={{ maxLength: MAX_CHARACTERS_MESSAGE_SUBJECT }}
           className="mt-6"
         />
-        <p className="italic text-sm my-2">
+        <p className="my-2 text-sm italic">
           {charactersRemainingSubject >= 0 ? charactersRemainingSubject : 0}{' '}
           {charactersRemainingSubject > 1 ? 'characters' : 'character'}{' '}
           remaining
@@ -143,9 +143,9 @@ export default function SendEmailForm() {
           value={message}
           onChange={handleChange}
           id="textArea"
-          className="w-full border mt-4 !h-[200px] p-3"
+          className="mt-4 !h-[200px] w-full border p-3"
         />
-        <p className="italic text-sm my-2">
+        <p className="my-2 text-sm italic">
           {charactersRemainingMessage} characters remaining
         </p>
         <Button className="sendEmailButton" onClick={sendEmailHandle}>

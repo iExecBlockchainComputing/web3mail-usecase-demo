@@ -30,9 +30,8 @@ export const grantAccess = async ({
       tag: ['tee', 'scone'],
     });
 
-    const datasetorder = await iexec.order.signDatasetorder(
-      datasetorderTemplate
-    );
+    const datasetorder =
+      await iexec.order.signDatasetorder(datasetorderTemplate);
 
     await iexec.order.publishDatasetorder(datasetorder);
 
