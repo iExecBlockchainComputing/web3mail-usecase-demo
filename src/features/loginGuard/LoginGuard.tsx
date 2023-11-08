@@ -1,9 +1,9 @@
 import { FC, ReactNode } from 'react';
 import { useAccount, useNetwork, useSwitchNetwork } from 'wagmi';
 import { Box } from '@mui/material';
-import { Button } from '@/components/ui/button';
-import { selectAppIsConnected } from '@/app/appSlice';
-import { useAppSelector } from '../../app/hooks';
+import { Button } from '@/components/ui/button.tsx';
+import { selectAppIsConnected } from '@/app/appSlice.ts';
+import { useAppSelector } from '@/app/hooks.ts';
 
 const LoginGuard: FC<{ children: ReactNode }> = ({ children }) => {
   const { isConnected } = useAccount();
