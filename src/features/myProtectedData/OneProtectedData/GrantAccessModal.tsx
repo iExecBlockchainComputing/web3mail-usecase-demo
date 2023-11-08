@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import './GrantAccessModal.css';
 import { TextField, Modal, Box, Typography } from '@mui/material';
+import { Loader } from 'react-feather';
 import { Button } from '@/components/ui/button.tsx';
+import { toast } from '@/components/ui/use-toast.ts';
 import { useGrantNewAccessMutation } from '@/app/appSlice.ts';
 import { SMART_CONTRACT_WEB3MAIL_WHITELIST } from '@/config/config.ts';
-import { toast } from '@/components/ui/use-toast.ts';
 
 type GrantAccessModalParams = {
   protectedData: string;
@@ -101,7 +102,10 @@ export default function GrantAccessModal(props: GrantAccessModalParams) {
         {/* TODO: Have a proper form and submit button */}
         {/*<button type="submit">Validate</button>*/}
         <Button disabled={result.isLoading} onClick={handleGrantAccess}>
-          {result.isLoading ? 'Loading...' : 'Validate'}
+          {result.isLoading && (
+            <Loader className="animate-spin-slow -ml-1 mr-2" size="16" />
+          )}
+          <span>Validate</span>
         </Button>
       </Box>
     </Modal>
