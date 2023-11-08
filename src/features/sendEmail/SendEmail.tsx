@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import {
   Alert,
   Box,
@@ -13,7 +14,6 @@ import InputLabel from '@mui/material/InputLabel';
 import { Typography, Button } from '@iexec/react-ui-kit';
 import './SendEmail.css';
 import { useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
 import { useSendEmailMutation } from '../../app/appSlice';
 
 export default function SendEmail() {

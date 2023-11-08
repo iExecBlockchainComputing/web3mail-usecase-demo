@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import './GrantAccessModal.css';
 import {
   TextField,
@@ -7,10 +8,9 @@ import {
   Snackbar,
   Alert,
 } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { Button } from '@/components/ui/button';
 import { useGrantNewAccessMutation } from '../../app/appSlice';
 import { SMART_CONTRACT_WEB3MAIL_WHITELIST } from '../../config/config';
-import { Button } from '@iexec/react-ui-kit';
 
 type GrantAccessModalParams = {
   protectedData: string;

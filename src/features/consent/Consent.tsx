@@ -1,10 +1,10 @@
+import { useState } from 'react';
 import Chip from '@iexec/react-ui-kit/components/Chip';
-import { Button } from '@/components/ui/button';
 import AddIcon from '@mui/icons-material/Add';
 import { Box } from '@mui/material';
-import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAccount } from 'wagmi';
+import { Button } from '@/components/ui/button';
 import {
   useFetchGrantedAccessQuery,
   useFetchProtectedDataQuery,

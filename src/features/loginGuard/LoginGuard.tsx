@@ -1,10 +1,9 @@
-import './LoginGuard.css';
 import { FC, ReactNode } from 'react';
 import { useAccount, useNetwork, useSwitchNetwork } from 'wagmi';
+import { Box } from '@mui/material';
+import { Button } from '@/components/ui/button';
 import { selectAppIsConnected } from '../../app/appSlice';
 import { useAppSelector } from '../../app/hooks';
-import { Box } from '@mui/material';
-import { Button, Typography } from '@iexec/react-ui-kit';
 
 const LoginGuard: FC<{ children: ReactNode }> = ({ children }) => {
   const { isConnected } = useAccount();
@@ -25,7 +24,7 @@ const LoginGuard: FC<{ children: ReactNode }> = ({ children }) => {
             margin: '3rem auto',
           }}
         >
-          <Typography>Please login with your wallet</Typography>
+          <p>Please login with your wallet</p>
         </Box>
       )}
       {isConnected && isAccountConnected && chain?.id !== 134 && (
@@ -34,15 +33,13 @@ const LoginGuard: FC<{ children: ReactNode }> = ({ children }) => {
             margin: '3rem auto',
           }}
         >
-          <Typography>Oops, you're on the wrong network</Typography>
-          <Typography>
-            Click on the following button to switch to the right network
-          </Typography>
+          <p>Oops, you're on the wrong network</p>
+          <p>Click on the following button to switch to the right network</p>
           <Button
-            className="switch-network-button"
             disabled={!switchNetwork || chain?.id === chains[0]?.id}
             key={chains[0]?.id}
             onClick={() => switchNetwork?.(chains[0]?.id)}
+            className="mt-4"
           >
             Switch to {chains[0].name}
             {isLoading && pendingChainId === chains[0]?.id && ' (switching)'}
