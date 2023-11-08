@@ -1,8 +1,7 @@
 import { useState } from 'react';
-import Chip from '@iexec/react-ui-kit/components/Chip';
+import { Link, useParams } from 'react-router-dom';
 import AddIcon from '@mui/icons-material/Add';
 import { Box } from '@mui/material';
-import { Link, useParams } from 'react-router-dom';
 import { useAccount } from 'wagmi';
 import { Button } from '@/components/ui/button.tsx';
 import {
@@ -10,11 +9,11 @@ import {
   useFetchProtectedDataQuery,
 } from '@/app/appSlice.ts';
 import { isKeyInDataSchema } from '@/utils/utils.ts';
-import GrantAccessModal from './GrantAccessModal';
-import AuthorizedUsersList from './AuthorizedUsersList';
 import { PROTECTED_DATA } from '@/config/path.ts';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import './OneProtectedData.css';
+import { Badge } from '@/components/ui/badge.tsx';
+import GrantAccessModal from './GrantAccessModal';
+import AuthorizedUsersList from './AuthorizedUsersList';
 
 // The list of users authorized to access the protected data is paginated
 // Must be greater than or equal to 10
@@ -63,18 +62,13 @@ export default function OneProtectedData() {
       </div>
       <Box sx={{ textAlign: 'left' }}>
         <h2>{protectedDataSelected?.name}</h2>
-        <Chip
-          className="chipType"
-          label={
-            (isKeyInDataSchema(protectedDataSelected?.schema || {}, 'email') &&
-              'Email') ||
-            (isKeyInDataSchema(protectedDataSelected?.schema || {}, 'file') &&
-              'File') ||
-            'Unknown'
-          }
-          size="small"
-          children={''}
-        />
+        <Badge>
+          {isKeyInDataSchema(protectedDataSelected?.schema || {}, 'email')
+            ? 'Email'
+            : isKeyInDataSchema(protectedDataSelected?.schema || {}, 'file')
+            ? 'File'
+            : 'Unknown'}
+        </Badge>
       </Box>
       <div className="mt-8 rounded-sm border border-grey-800/40 px-5 py-6 text-left">
         <ul className="flex list-disc flex-col gap-y-4 pl-6">

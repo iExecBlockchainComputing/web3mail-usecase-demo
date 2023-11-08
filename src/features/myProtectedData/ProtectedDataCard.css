@@ -2,14 +2,3 @@
   padding: 0;
   padding-bottom: 10px;
 }
-
-.chipLabel {
-  margin: auto;
-  background-color: #fcd15a !important;
-  color: #1d1d24;
-}
-
-.chipDate {
-  margin: auto;
-  margin-right: -5px;
-}

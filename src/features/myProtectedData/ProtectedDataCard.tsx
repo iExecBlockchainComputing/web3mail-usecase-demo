@@ -1,7 +1,7 @@
-import { DataSchema } from '@iexec/dataprotector';
-import Chip from '@iexec/react-ui-kit/components/Chip';
-import { Box, Card, CardContent, Divider } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { DataSchema } from '@iexec/dataprotector';
+import { Box, Card, CardContent, Divider } from '@mui/material';
+import { Badge } from '@/components/ui/badge.tsx';
 import { CONSENT, PROTECTED_DATA } from '@/config/path.ts';
 import { isKeyInDataSchema } from '@/utils/utils.ts';
 import './ProtectedDataCard.css';
@@ -23,16 +23,13 @@ export default function ProtectedDataCard(props: ProtectedDataProps) {
     >
       <CardContent className="cardContent">
         <div className="p-3 text-right">
-          <Chip
-            className="chipLabel"
-            label={
-              (isKeyInDataSchema(props.schema, 'email') && 'Email') ||
-              (isKeyInDataSchema(props.schema, 'file') && 'File') ||
-              'Unknown'
-            }
-            size="small"
-            children={''}
-          />
+          <Badge>
+            {isKeyInDataSchema(props.schema, 'email')
+              ? 'Email'
+              : isKeyInDataSchema(props.schema, 'file')
+              ? 'File'
+              : 'Unknown'}
+          </Badge>
         </div>
         <Divider />
         <Box
@@ -45,12 +42,9 @@ export default function ProtectedDataCard(props: ProtectedDataProps) {
           data-cy="protected-data-card"
         >
           <h5 className="my-6 font-bold">{props.title}</h5>
-          <Chip
-            className="chipDate"
-            label={props.date}
-            size="small"
-            children={''}
-          />
+          <div className="text-right">
+            <Badge variant="secondary">{props.date}</Badge>
+          </div>
         </Box>
       </CardContent>
     </Card>
