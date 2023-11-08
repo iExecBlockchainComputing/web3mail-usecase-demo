@@ -136,7 +136,7 @@ export default function SendEmail() {
       {isLoading && (
         <div className="flex flex-col items-center gap-y-4">
           <CircularProgress className="mt-10"></CircularProgress>
-          <h4>Fetching your contacts...</h4>
+          Fetching your contacts...
         </div>
       )}
     </Box>
