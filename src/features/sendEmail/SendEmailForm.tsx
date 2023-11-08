@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import {
   Alert,
   Box,
@@ -10,9 +11,8 @@ import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
-import { Button } from '@/components/ui/button';
-import { useParams } from 'react-router-dom';
-import { useSendEmailMutation } from '@/app/appSlice';
+import { Button } from '@/components/ui/button.tsx';
+import { useSendEmailMutation } from '@/app/appSlice.ts';
 import './SendEmailForm.css';
 
 const MAX_CHARACTERS_SENDER_NAME = 20;
@@ -96,6 +96,7 @@ export default function SendEmailForm() {
           id="sender-name"
           label="Sender name"
           variant="outlined"
+          required
           value={senderName}
           onChange={handleSenderNameChange}
           className="mt-6"
@@ -139,7 +140,7 @@ export default function SendEmailForm() {
         </FormControl>
         <TextareaAutosize
           required
-          placeholder="Enter email content"
+          placeholder="Enter email content *"
           value={message}
           onChange={handleChange}
           id="textArea"
@@ -148,9 +149,11 @@ export default function SendEmailForm() {
         <p className="my-2 text-sm italic">
           {charactersRemainingMessage} characters remaining
         </p>
-        <Button className="sendEmailButton" onClick={sendEmailHandle}>
-          Send
-        </Button>
+        <div className="text-right">
+          <Button disabled={result.isLoading} onClick={sendEmailHandle}>
+            {result.isLoading ? 'Loading...' : 'Send'}
+          </Button>
+        </div>
       </Box>
 
       <Snackbar
@@ -164,7 +167,7 @@ export default function SendEmailForm() {
           severity={success ? 'success' : 'error'}
           sx={{ width: '100%' }}
         >
-          {success ? 'The email has been sent!' : 'Failed to send the Email!'}
+          {success ? 'The email has been sent!' : 'Failed to send email!'}
         </Alert>
       </Snackbar>
     </div>

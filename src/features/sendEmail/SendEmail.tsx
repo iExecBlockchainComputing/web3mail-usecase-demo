@@ -6,10 +6,13 @@ import { Box, InputBase } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import SendIcon from '@mui/icons-material/Send';
 import { useAccount } from 'wagmi';
-import { Button } from '@/components/ui/button';
-import { selectAppIsConnected, useFetchMyContactsQuery } from '@/app/appSlice';
-import { useAppSelector } from '@/app/hooks';
-import { getLocalDateFromTimeStamp } from '@/utils/utils';
+import { Button } from '@/components/ui/button.tsx';
+import {
+  selectAppIsConnected,
+  useFetchMyContactsQuery,
+} from '@/app/appSlice.ts';
+import { useAppSelector } from '@/app/hooks.ts';
+import { getLocalDateFromTimeStamp } from '@/utils/utils.ts';
 import './SendEmail.css';
 
 type Row = {
