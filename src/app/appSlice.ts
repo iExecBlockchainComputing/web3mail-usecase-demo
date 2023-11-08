@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { RootState } from './store';
 import {
   ProtectedData,
   IExecDataProtector,
@@ -17,9 +16,10 @@ import {
   Contact,
 } from '@iexec/web3mail';
 import { SMART_CONTRACT_WEB3MAIL_WHITELIST } from '../config/config';
+import { buildErrorData } from '../utils/errorForClient';
+import { RootState } from './store';
 import { grantAccess } from './grantAccess';
 import { api } from './api';
-import { buildErrorData } from '../utils/errorForClient';
 
 // Configure iExec Data Protector & Web3Mail
 let iExecDataProtector: IExecDataProtector | null = null;
