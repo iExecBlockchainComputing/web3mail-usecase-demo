@@ -5,7 +5,7 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useRevokeOneAccessMutation } from '@/app/appSlice.ts';
 import { Button } from '@/components/ui/button.tsx';
-import { toast } from '@/components/ui/use-toast.ts';
+import { useToast } from '@/components/ui/use-toast.ts';
 import './AuthorizedUsersList.css';
 
 interface AuthorizedUsersListProps {
@@ -19,6 +19,8 @@ interface AuthorizedUsersListProps {
 export default function AuthorizedUsersList(props: AuthorizedUsersListProps) {
   const { authorizedUsers, count, pageSize, page, onPageChanged } = props;
   const { ProtectedDataId } = useParams();
+
+  const { toast } = useToast();
 
   const paginationModel = {
     pageSize,

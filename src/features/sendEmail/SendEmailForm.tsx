@@ -8,7 +8,7 @@ import InputLabel from '@mui/material/InputLabel';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { Loader } from 'react-feather';
 import { Button } from '@/components/ui/button.tsx';
-import { toast } from '@/components/ui/use-toast.ts';
+import { useToast } from '@/components/ui/use-toast.ts';
 import { useSendEmailMutation } from '@/app/appSlice.ts';
 import { SEND_EMAIL } from '@/config/path.ts';
 import './SendEmailForm.css';
@@ -18,6 +18,8 @@ const MAX_CHARACTERS_MESSAGE_SUBJECT = 78;
 
 export default function SendEmailForm() {
   const { receiverAddress, protectedDataAddress } = useParams();
+
+  const { toast } = useToast();
 
   //RTK Mutation hook
   const [sendEmail, result] = useSendEmailMutation();

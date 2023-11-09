@@ -3,7 +3,7 @@ import './GrantAccessModal.css';
 import { TextField, Modal, Box, Typography } from '@mui/material';
 import { Loader } from 'react-feather';
 import { Button } from '@/components/ui/button.tsx';
-import { toast } from '@/components/ui/use-toast.ts';
+import { useToast } from '@/components/ui/use-toast.ts';
 import { useGrantNewAccessMutation } from '@/app/appSlice.ts';
 import { SMART_CONTRACT_WEB3MAIL_WHITELIST } from '@/config/config.ts';
 
@@ -14,6 +14,8 @@ type GrantAccessModalParams = {
 };
 
 export default function GrantAccessModal(props: GrantAccessModalParams) {
+  const { toast } = useToast();
+
   //rtk mutation
   const [grantNewAccess, result] = useGrantNewAccessMutation();
 
