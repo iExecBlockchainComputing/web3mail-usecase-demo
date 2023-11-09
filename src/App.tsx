@@ -24,7 +24,7 @@ function App() {
       <ThemeProvider>
         <Navigation />
         {/*<NavBar />*/}
-        <div className="mx-auto mt-12 w-[80%]">
+        <div className="mx-auto mt-12 w-[80%] max-w-6xl">
           <Routes>
             <Route
               path={`/${PROTECTED_DATA}`}
