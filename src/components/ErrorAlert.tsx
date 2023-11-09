@@ -12,7 +12,7 @@ export default function ErrorAlert({
   return (
     <div
       className={cn(
-        'bg-danger text-danger-foreground flex items-center gap-x-5 rounded-md border border-orange-300 p-5 font-medium',
+        'flex items-center gap-x-5 rounded-md border border-orange-300 bg-danger p-5 font-medium text-danger-foreground',
         fullWidth ? 'w-full' : ''
       )}
     >
