@@ -33,6 +33,9 @@ export default function AuthorizedUsersList(props: AuthorizedUsersListProps) {
   const [revokeOneAccess, result] = useRevokeOneAccessMutation();
 
   function handleRevoke(value: string) {
+    if (!ProtectedDataId) {
+      return;
+    }
     revokeOneAccess({
       protectedData: ProtectedDataId,
       authorizedUser: value,

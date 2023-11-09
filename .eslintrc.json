@@ -18,8 +18,9 @@
   "rules": {
     "no-console": "warn",
     "sonarjs/cognitive-complexity": "warn",
+    "react/react-in-jsx-scope": "off",
     "@typescript-eslint/no-explicit-any": "warn",
-    "react/react-in-jsx-scope": "off"
+    "@typescript-eslint/ban-ts-comment": "warn"
   },
   "env": {
     "cypress/globals": true

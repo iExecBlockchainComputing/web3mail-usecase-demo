@@ -74,6 +74,7 @@ export default function MyProtectedData() {
         timeout={200}
         classNames="fade"
         onEntered={() => {
+          // @ts-ignore
           nodeRef.current?.classList.remove('opacity-0');
         }}
       >
