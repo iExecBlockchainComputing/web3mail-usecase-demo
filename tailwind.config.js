@@ -57,11 +57,12 @@ module.exports = {
         'grey-100': 'var(--grey-100)',
         'grey-800': 'hsl(var(--grey-800))',
         'grey-900': 'hsl(var(--grey-900))',
+        'orange-300': 'hsl(var(--orange-300))',
       },
       borderRadius: {
-        lg: 'var(--radius)',
-        md: 'calc(var(--radius) - 2px)',
-        sm: 'calc(var(--radius) - 4px)',
+        lg: 'var(--radius)' /* 10px */,
+        md: 'calc(var(--radius) - 2px)' /* 8px */,
+        sm: 'calc(var(--radius) - 4px)' /* 6px */,
       },
       fontFamily: {
         sans: ['"Mulish"', ...defaultTheme.fontFamily.sans],

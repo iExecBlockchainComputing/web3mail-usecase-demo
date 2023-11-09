@@ -90,8 +90,20 @@ export const homeApi = api.injectEndpoints({
         try {
           const data = await iExecDataProtector?.fetchProtectedData({ owner });
           return { data: data || [] };
-        } catch (e: any) {
-          return { error: e.message };
+
+          // --- TEST TO REMOVE: Add fake delay
+          // return new Promise((resolve) => {
+          //   setTimeout(async () => {
+          //     const data = await iExecDataProtector?.fetchProtectedData({
+          //       owner,
+          //     });
+          //     resolve({ data: data || [] });
+          //   }, 1000);
+          // });
+        } catch (err: any) {
+          const errorData = buildErrorData(err);
+          console.error('[fetchProtectedData]', errorData);
+          return { error: errorData.reason || err.message };
         }
       },
       providesTags: (result) =>

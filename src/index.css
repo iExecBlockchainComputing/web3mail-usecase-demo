@@ -19,6 +19,10 @@
     --orange-50: 32 100% 97%;
     --orange-50_2: hsl(32 100% 97%); /* Do not use: Just to see the color */
 
+    /* Orange/orange-300 = #FFAD4D */
+    --orange-300: 32 100% 65%;
+    --orange-300_2: hsl(32 100% 65%); /* Do not use: Just to see the color */
+
     /* Orange/orange-500 = #DA7B0B */
     --orange-500: 32 90% 45%;
     --orange-500_2: hsl(32 90% 45%); /* Do not use: Just to see the color */
