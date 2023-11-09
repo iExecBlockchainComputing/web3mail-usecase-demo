@@ -154,7 +154,7 @@ export default function SendEmailForm() {
         <div className="text-right">
           <Button disabled={result.isLoading} onClick={sendEmailHandle}>
             {result.isLoading && (
-              <Loader className="animate-spin-slow -ml-1 mr-2" size="16" />
+              <Loader className="-ml-1 mr-2 animate-spin-slow" size="16" />
             )}
             <span>Send</span>
           </Button>

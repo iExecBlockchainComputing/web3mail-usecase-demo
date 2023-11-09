@@ -70,6 +70,6 @@
   }
 
   h2 {
-    @apply text-2xl font-bold my-4;
+    @apply my-4 text-2xl font-bold;
   }
 }

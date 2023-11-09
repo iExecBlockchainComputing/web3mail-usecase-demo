@@ -6,7 +6,7 @@ import { PROTECTED_DATA, SEND_EMAIL } from '@/config/path.ts';
 
 export default function NavBar() {
   return (
-    <header className="bg-grey-900 flex h-[64px] items-center px-8 text-white">
+    <header className="flex h-[64px] items-center bg-grey-900 px-8 text-white">
       <div>
         <img src={iExecLogo} alt="iExec logo" />
       </div>

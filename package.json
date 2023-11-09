@@ -6,9 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "check-format": "prettier --check src",
+    "format": "prettier --write src",
     "lint": "eslint .",
-    "format": "prettier --write \"src/**/*.ts\"",
-    "check-format": "prettier --check \"src/**/*.ts\"",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
     "test:local": "cross-env BASE_URL=http://localhost:5173 npm run cypress:run -- --config chromeWebSecurity=false",
