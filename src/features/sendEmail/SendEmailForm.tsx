@@ -152,9 +152,13 @@ export default function SendEmailForm() {
           {charactersRemainingMessage} characters remaining
         </p>
         <div className="text-right">
-          <Button disabled={result.isLoading} onClick={sendEmailHandle}>
+          <Button
+            disabled={result.isLoading}
+            onClick={sendEmailHandle}
+            data-cy="send-email-button"
+          >
             {result.isLoading && (
-              <Loader className="-ml-1 mr-2 animate-spin-slow" size="16" />
+              <Loader className="animate-spin-slow -ml-1 mr-2" size="16" />
             )}
             <span>Send</span>
           </Button>

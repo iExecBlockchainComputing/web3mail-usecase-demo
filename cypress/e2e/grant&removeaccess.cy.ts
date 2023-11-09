@@ -9,7 +9,7 @@ describe('grant and remove access to a protected data plus verify the property o
       .should('be.visible')
       .click();
     //as user i want to check who owns this card
-    cy.get('li').eq(0).should('contain', 'Owned by ');
+    cy.get('li').eq(0).should('contain', 'Owned by');
     //as user i want to check the Data protected address
     cy.get('li').eq(1).should('contain', 'Data Protected Address');
     //as user i want to check the IPFS link
