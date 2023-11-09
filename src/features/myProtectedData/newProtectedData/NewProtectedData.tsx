@@ -89,7 +89,7 @@ export default function NewProtectedData() {
     { value: 'file', label: 'File' },
   ];
   return (
-    <div>
+    <div className="mx-auto mb-28 w-[70%]">
       <div className="text-left">
         <Button asChild variant="text" size="sm">
           <Link to={`/${PROTECTED_DATA}`} className="pl-2">
