@@ -28,6 +28,10 @@ module.exports = {
           DEFAULT: 'hsl(var(--secondary))',
           foreground: 'hsl(var(--secondary-foreground))',
         },
+        success: {
+          DEFAULT: 'hsl(var(--success))',
+          foreground: 'hsl(var(--success-foreground))',
+        },
         danger: {
           DEFAULT: 'hsl(var(--danger))',
           foreground: 'hsl(var(--danger-foreground))',
@@ -57,6 +61,7 @@ module.exports = {
         'grey-100': 'var(--grey-100)',
         'grey-800': 'hsl(var(--grey-800))',
         'grey-900': 'hsl(var(--grey-900))',
+        'green-400': 'hsl(var(--green-400))',
         'orange-300': 'hsl(var(--orange-300))',
       },
       borderRadius: {
