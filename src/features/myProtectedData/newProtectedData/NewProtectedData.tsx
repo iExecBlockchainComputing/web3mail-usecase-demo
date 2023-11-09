@@ -60,15 +60,18 @@ export default function NewProtectedData() {
 
   //ask for confirmation before leaving the page
   const handleSubmit = async () => {
-    const data: any = {};
-    let bufferFile: ArrayBuffer;
+    const data: {
+      email?: string;
+      file?: Uint8Array;
+    } = {};
+    let bufferFile: Uint8Array;
     switch (dataType) {
       case 'email':
-        data['email'] = email;
+        data.email = email;
         break;
       case 'file':
         bufferFile = await createArrayBufferFromFile(file);
-        data['file'] = bufferFile;
+        data.file = bufferFile;
         break;
     }
     if (dataType && name && ((isValidEmail && email) || file)) {
