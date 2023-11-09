@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Address, Contact, TimeStamp } from '@iexec/web3mail';
 import SearchIcon from '@mui/icons-material/Search';
-import { Box, InputBase } from '@mui/material';
+import { Box, CircularProgress, InputBase } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import SendIcon from '@mui/icons-material/Send';
 import { useAccount } from 'wagmi';
@@ -134,9 +134,10 @@ export default function SendEmail() {
         </Box>
       )}
       {isLoading && (
-        <Box sx={{ textAlign: 'center', my: 5 }}>
-          <h4>Fetching your contacts...</h4>
-        </Box>
+        <div className="flex flex-col items-center gap-y-4">
+          <CircularProgress className="mt-10"></CircularProgress>
+          Fetching your contacts...
+        </div>
       )}
     </Box>
   );

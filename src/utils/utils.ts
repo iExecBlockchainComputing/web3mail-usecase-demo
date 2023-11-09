@@ -28,7 +28,7 @@ export const isKeyInDataSchema = (
 
 export const createArrayBufferFromFile = async (
   file?: File
-): Promise<ArrayBuffer> => {
+): Promise<Uint8Array> => {
   const fileReader = new FileReader();
   if (file) {
     return new Promise((resolve, reject) => {
@@ -37,7 +37,7 @@ export const createArrayBufferFromFile = async (
         reject(new DOMException('Error parsing input file.'));
       };
       fileReader.onload = () => {
-        resolve(fileReader.result as ArrayBuffer);
+        resolve(fileReader.result as Uint8Array);
       };
       fileReader.readAsArrayBuffer(file);
     });

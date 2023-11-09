@@ -4,7 +4,7 @@ describe('creation of a protected data as an upload file', () => {
     cy.viewport(1000, 660);
     cy.get('@body').click(350, 600);
     // as user i want to go to "My protected Data" and see the list of my protected data (represented by Cards)
-    cy.contains('Protect your data').click();
+    cy.contains('Add new').click();
     //as user i want to choose Email the data type i want with a submenu
     cy.get('div[role="button"]').click();
     //as user i want to choose "File" type
@@ -19,7 +19,7 @@ describe('creation of a protected data as an upload file', () => {
     //as user i want to name my protect data
     cy.get('input[id="Name of your Protected Data"]').type('Uploadfile');
     //as user i want to create my protected data with a button
-    cy.contains('Protect the data').click();
+    cy.contains('Create Protected Data').click();
     //as user i want a hyperlink for my protected data (directing to iExec)
     cy.contains('See Detail').should('be.visible');
     //as user i want to verify the creation of the protected data on iExec Explorer

@@ -10,3 +10,17 @@
   padding-bottom: 1%;
   z-index: 1;
 }
+
+.fade-enter,
+.appear-enter {
+  opacity: 0;
+}
+.fade-enter-active,
+.fade-appear-active {
+  opacity: 1;
+  transition: opacity 200ms;
+}
+.fade-enter-done,
+.fade-appear-done {
+  opacity: 1;
+}

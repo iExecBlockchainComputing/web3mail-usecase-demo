@@ -16,12 +16,15 @@ import {
   Typography,
 } from '@mui/material';
 import { Button } from '@/components/ui/button.tsx';
+import { useToast } from '@/components/ui/use-toast.ts';
 import { PROTECTED_DATA } from '@/config/path.ts';
 import { useCreateProtectedDataMutation } from '@/app/appSlice.ts';
 import { createArrayBufferFromFile } from '@/utils/utils.ts';
 import './NewProtectedData.css';
 
 export default function NewProtectedData() {
+  const { toast } = useToast();
+
   const fileInput = useRef<HTMLInputElement>(null);
   //query RTK API as mutation hook
   const [createProtectedData, result] = useCreateProtectedDataMutation();
@@ -57,19 +60,27 @@ export default function NewProtectedData() {
 
   //ask for confirmation before leaving the page
   const handleSubmit = async () => {
-    const data: any = {};
-    let bufferFile: ArrayBuffer;
+    const data: {
+      email?: string;
+      file?: Uint8Array;
+    } = {};
+    let bufferFile: Uint8Array;
     switch (dataType) {
       case 'email':
-        data['email'] = email;
+        data.email = email;
         break;
       case 'file':
         bufferFile = await createArrayBufferFromFile(file);
-        data['file'] = bufferFile;
+        data.file = bufferFile;
         break;
     }
     if (dataType && name && ((isValidEmail && email) || file)) {
       await createProtectedData({ data, name });
+    } else {
+      toast({
+        variant: 'danger',
+        title: 'Please fill in all required fields.',
+      });
     }
   };
 
@@ -78,12 +89,12 @@ export default function NewProtectedData() {
     { value: 'file', label: 'File' },
   ];
   return (
-    <div>
+    <div className="mx-auto mb-28 w-[70%]">
       <div className="text-left">
-        <Button asChild variant="text">
-          <Link to={`/${PROTECTED_DATA}`} className="pl-4">
+        <Button asChild variant="text" size="sm">
+          <Link to={`/${PROTECTED_DATA}`} className="pl-2">
             <ChevronLeftIcon />
-            <span className="pl-1">Back</span>
+            <span className="pl-0.5">Back</span>
           </Link>
         </Button>
       </div>
@@ -149,6 +160,7 @@ export default function NewProtectedData() {
       )}
       {dataType && (
         <TextField
+          required
           fullWidth
           id="Name of your Protected Data"
           label="Name of your Protected Data"
@@ -174,40 +186,48 @@ export default function NewProtectedData() {
         </Alert>
       )}
       {result.data && !result.error && (
-        <Alert
-          sx={{
-            margin: 'auto',
-            mt: 3,
-            mb: 2,
-            justifyContent: 'center',
-            maxWidth: '400px',
-          }}
-          severity="success"
-        >
-          <Typography variant="h6"> Your data has been protected!</Typography>
-          <a
-            href={`https://explorer.iex.ec/bellecour/dataset/${result.data}`}
-            target="_blank"
-            rel="noreferrer"
-            className="underline"
+        <>
+          <Alert
+            sx={{
+              margin: 'auto',
+              mt: 3,
+              mb: 2,
+              justifyContent: 'center',
+              maxWidth: '400px',
+            }}
+            severity="success"
           >
-            See Details
-          </a>
-          <p>Your protected data address: {result.data}</p>
-        </Alert>
+            <Typography variant="h6"> Your data has been protected!</Typography>
+            <a
+              href={`https://explorer.iex.ec/bellecour/dataset/${result.data}`}
+              target="_blank"
+              rel="noreferrer"
+              className="underline"
+            >
+              See Details
+            </a>
+            <p>Your protected data address: {result.data}</p>
+          </Alert>
+          <div className="text-center">
+            <Link to={`/${PROTECTED_DATA}`} className="p-2 underline">
+              See my protected data
+            </Link>
+          </div>
+        </>
       )}
       {result.isLoading && (
         <div className="flex flex-col items-center gap-y-4">
           <CircularProgress className="mt-10"></CircularProgress>
-          Protecting data...
+          Your protected data is currently being created. Please wait a few
+          moments.
         </div>
       )}
       {dataType && !result.isLoading && !result.data && !result.error && (
-        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+        <div className="text-center">
           <Button className="mt-6" onClick={handleSubmit}>
-            Protect data
+            Create Protected Data
           </Button>
-        </Box>
+        </div>
       )}
     </div>
   );

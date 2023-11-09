@@ -1,5 +1,6 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider } from '@iexec/react-ui-kit';
+// import NavBar from '@/components/NavBar.tsx';
 import {
   Navigation,
   NewProtectedData,
@@ -22,7 +23,8 @@ function App() {
     <div className="App">
       <ThemeProvider>
         <Navigation />
-        <div className="mx-auto mt-12 w-[80%]">
+        {/*<NavBar />*/}
+        <div className="mx-auto mt-12 w-[80%] max-w-6xl">
           <Routes>
             <Route
               path={`/${PROTECTED_DATA}`}

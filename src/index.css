@@ -6,10 +6,22 @@
   :root {
     /* iExec Yellow/iexec-yellow-300 = #FCD15A */
     --iexec-yellow-300: hsl(44 96% 67%);
+
     /* Grey/grey-100 = #F2F2F7 */
-    --grey-100: hsl(240 24% 96%);
+    --grey-100: 240 24% 96%;
+    --grey-100_2: hsl(240 24% 96%); /* Do not use: Just to see the color */
     /* Grey/grey-800 = #1D1D24 */
     --grey-800: 240 11% 13%;
+    /* Grey/grey-900 = #0D0D12 */
+    --grey-900: 240 16% 6%;
+
+    /* Orange/orange-50 = #FFF8F0 */
+    --orange-50: 32 100% 97%;
+    --orange-50_2: hsl(32 100% 97%); /* Do not use: Just to see the color */
+
+    /* Orange/orange-500 = #DA7B0B */
+    --orange-500: 32 90% 45%;
+    --orange-500_2: hsl(32 90% 45%); /* Do not use: Just to see the color */
 
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
@@ -34,6 +46,9 @@
     --accent-foreground: 222.2 47.4% 11.2%;
     /*--accent-foreground: var(--grey-grey-100);*/
 
+    --danger: var(--orange-50);
+    --danger-foreground: var(--orange-500);
+
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
@@ -55,6 +70,6 @@
   }
 
   h2 {
-    @apply text-2xl font-bold my-4;
+    @apply my-4 text-2xl font-bold;
   }
 }

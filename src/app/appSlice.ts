@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { RootState } from './store';
 import {
   ProtectedData,
   IExecDataProtector,
@@ -17,9 +16,10 @@ import {
   Contact,
 } from '@iexec/web3mail';
 import { SMART_CONTRACT_WEB3MAIL_WHITELIST } from '../config/config';
+import { buildErrorData } from '../utils/errorForClient';
+import { RootState } from './store';
 import { grantAccess } from './grantAccess';
 import { api } from './api';
-import { buildErrorData } from '../utils/errorForClient';
 
 // Configure iExec Data Protector & Web3Mail
 let iExecDataProtector: IExecDataProtector | null = null;
@@ -206,8 +206,10 @@ export const homeApi = api.injectEndpoints({
           // Go through a more low level iexec function = bypass enclave check done in dataprotector-sdk
           const data = await grantAccess({ iexec, ...args });
           return { data: data?.sign || '' };
-        } catch (e: any) {
-          return { error: e.message };
+        } catch (err: any) {
+          const errorData = buildErrorData(err);
+          console.error('[grantNewAccess]', errorData);
+          return { error: errorData.reason || err.message };
         }
       },
       invalidatesTags: ['GRANTED_ACCESS'],
@@ -231,7 +233,7 @@ export const homeApi = api.injectEndpoints({
           return { data: sendEmailResponse || null };
         } catch (err: any) {
           const errorData = buildErrorData(err);
-          console.error('[revokeOneAccess]', errorData);
+          console.error('[sendEmail]', errorData);
           return { error: errorData.reason || err.message };
         }
       },
