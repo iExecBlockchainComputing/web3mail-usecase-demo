@@ -1,8 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { Avatar } from '@mui/material';
-import { Loader } from 'react-feather';
+import { Loader, Trash } from 'react-feather';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import DeleteIcon from '@mui/icons-material/Delete';
 import { useRevokeOneAccessMutation } from '@/app/appSlice.ts';
 import { Button } from '@/components/ui/button.tsx';
 import { useToast } from '@/components/ui/use-toast.ts';
@@ -77,12 +76,13 @@ export default function AuthorizedUsersList(props: AuthorizedUsersListProps) {
           size="sm"
           variant="secondary"
           className="pl-4"
+          disabled={result.isLoading}
           onClick={() => handleRevoke(params.value)}
         >
           {result.isLoading ? (
-            <Loader className="animate-spin-slow" size="16" />
+            <Loader size="16" className="animate-spin-slow" />
           ) : (
-            <DeleteIcon fontSize="small" aria-label="delete" />
+            <Trash size="16" aria-label="delete" />
           )}
           <span className="pl-2">Revoke access</span>
         </Button>
