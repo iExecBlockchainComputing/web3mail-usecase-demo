@@ -3,7 +3,7 @@ import { DataSchema } from '@iexec/dataprotector';
 import { Box, Card, CardContent, Divider } from '@mui/material';
 import { Badge } from '@/components/ui/badge.tsx';
 import { CONSENT, PROTECTED_DATA } from '@/config/path.ts';
-import { isKeyInDataSchema } from '@/utils/utils.ts';
+import { getTypeOfProtectedData } from '@/utils/utils.ts';
 import './ProtectedDataCard.css';
 
 export interface ProtectedDataProps {
@@ -23,12 +23,14 @@ export default function ProtectedDataCard(props: ProtectedDataProps) {
     >
       <CardContent className="cardContent">
         <div className="p-3 text-right">
-          <Badge>
-            {isKeyInDataSchema(props.schema, 'email')
-              ? 'Email'
-              : isKeyInDataSchema(props.schema, 'file')
-              ? 'File'
-              : 'Unknown'}
+          <Badge
+            variant={
+              getTypeOfProtectedData(props.schema) === 'Unknown type'
+                ? 'secondary'
+                : 'default'
+            }
+          >
+            {getTypeOfProtectedData(props.schema)}
           </Badge>
         </div>
         <Divider />
@@ -43,7 +45,7 @@ export default function ProtectedDataCard(props: ProtectedDataProps) {
         >
           <h5 className="my-6 font-bold">{props.title}</h5>
           <div className="text-right">
-            <Badge variant="secondary">{props.date}</Badge>
+            <Badge variant="outline">{props.date}</Badge>
           </div>
         </Box>
       </CardContent>

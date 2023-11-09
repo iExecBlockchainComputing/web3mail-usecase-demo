@@ -26,6 +26,14 @@ export const isKeyInDataSchema = (
   return false;
 };
 
+export const getTypeOfProtectedData = (schema?: DataSchema) => {
+  return isKeyInDataSchema(schema || {}, 'email')
+    ? 'Email'
+    : isKeyInDataSchema(schema || {}, 'file')
+    ? 'File'
+    : 'Unknown type';
+};
+
 export const createArrayBufferFromFile = async (
   file?: File
 ): Promise<Uint8Array> => {

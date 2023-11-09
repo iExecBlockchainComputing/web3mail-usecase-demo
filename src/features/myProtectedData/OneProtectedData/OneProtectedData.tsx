@@ -8,7 +8,7 @@ import {
   useFetchGrantedAccessQuery,
   useFetchProtectedDataQuery,
 } from '@/app/appSlice.ts';
-import { isKeyInDataSchema } from '@/utils/utils.ts';
+import { getTypeOfProtectedData } from '@/utils/utils.ts';
 import { PROTECTED_DATA } from '@/config/path.ts';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { Badge } from '@/components/ui/badge.tsx';
@@ -67,12 +67,15 @@ export default function OneProtectedData() {
       </div>
       <Box sx={{ textAlign: 'left' }}>
         <h2 className="h-8">{protectedDataSelected?.name}</h2>
-        <Badge>
-          {isKeyInDataSchema(protectedDataSelected?.schema || {}, 'email')
-            ? 'Email'
-            : isKeyInDataSchema(protectedDataSelected?.schema || {}, 'file')
-            ? 'File'
-            : 'Unknown'}
+        <Badge
+          variant={
+            getTypeOfProtectedData(protectedDataSelected?.schema) ===
+            'Unknown type'
+              ? 'secondary'
+              : 'default'
+          }
+        >
+          {getTypeOfProtectedData(protectedDataSelected?.schema)}
         </Badge>
       </Box>
       <div className="mt-8 rounded-sm border border-grey-800/40 px-5 py-6 text-left">
