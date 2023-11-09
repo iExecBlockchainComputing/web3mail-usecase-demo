@@ -170,8 +170,17 @@ export const homeApi = api.injectEndpoints({
           return {
             data: { grantedAccessList: grantedAddressesList || [], count },
           };
-        } catch (e: any) {
-          return { error: e.message };
+        } catch (err: any) {
+          const errorData = buildErrorData(err);
+          console.error('[createProtectedData]', errorData);
+          return { error: errorData.reason || err.message };
+
+          // --- TEST TO REMOVE: Add fake delay
+          // return new Promise((resolve) => {
+          //   setTimeout(async () => {
+          //     resolve({ error: errorData.reason || err.message });
+          //   }, 800);
+          // });
         }
       },
       providesTags: (result) => {

@@ -137,7 +137,7 @@ export default function SendEmail() {
         </div>
       )}
 
-      {!isLoading && !isError && filteredRows.length === 0 && !isLoading && (
+      {!isLoading && !isError && filteredRows.length === 0 && (
         <div className="my-10 text-center">You have no subscribers!</div>
       )}
 
