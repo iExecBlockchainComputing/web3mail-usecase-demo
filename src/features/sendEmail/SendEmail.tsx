@@ -7,6 +7,7 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import SendIcon from '@mui/icons-material/Send';
 import { useAccount } from 'wagmi';
 import { Button } from '@/components/ui/button.tsx';
+import ErrorAlert from '@/components/ErrorAlert.tsx';
 import {
   selectAppIsConnected,
   useFetchMyContactsQuery,
@@ -28,12 +29,13 @@ export default function SendEmail() {
   const isAccountConnected = useAppSelector(selectAppIsConnected);
 
   //query RTK API as query hook
-  const { data: myContacts = [], isLoading } = useFetchMyContactsQuery(
-    address as string,
-    {
-      skip: !isAccountConnected,
-    }
-  );
+  const {
+    data: myContacts = [],
+    isLoading,
+    isError,
+  } = useFetchMyContactsQuery(address as string, {
+    skip: !isAccountConnected,
+  });
 
   //for search bar
   const [searchTerm, setSearchTerm] = useState('');
@@ -99,12 +101,13 @@ export default function SendEmail() {
 
   return (
     <Box>
-      <h2>Contact List</h2>
+      <h2>Contacts List</h2>
       <p>
         Contacts who have protected their email address data and have allowed
         you to use it. You can send them an email, without having access to
         their email address.
       </p>
+
       <Box id="search" sx={{ mt: 5 }}>
         <div id="iconWrapper">
           <SearchIcon sx={{ color: '#788896' }} />
@@ -118,6 +121,26 @@ export default function SendEmail() {
           onChange={handleSearchChange}
         />
       </Box>
+
+      {isLoading && (
+        <div className="flex flex-col items-center gap-y-4">
+          <CircularProgress className="mt-10"></CircularProgress>
+          Fetching your contacts...
+        </div>
+      )}
+
+      {isError && (
+        <div className="mt-10 flex flex-col items-center">
+          <ErrorAlert>
+            Oops, something went wrong while fetching your contacts.
+          </ErrorAlert>
+        </div>
+      )}
+
+      {!isLoading && !isError && filteredRows.length === 0 && (
+        <div className="my-10 text-center">You have no subscribers!</div>
+      )}
+
       {filteredRows.length > 0 && !isLoading && (
         <div className="mt-8 w-full">
           <DataGrid
@@ -126,17 +149,6 @@ export default function SendEmail() {
             columns={columns}
             sx={{ border: 'none' }}
           />
-        </div>
-      )}
-      {filteredRows.length === 0 && !isLoading && (
-        <Box sx={{ textAlign: 'center', my: 5 }}>
-          <h4>You have no subscribers!</h4>
-        </Box>
-      )}
-      {isLoading && (
-        <div className="flex flex-col items-center gap-y-4">
-          <CircularProgress className="mt-10"></CircularProgress>
-          Fetching your contacts...
         </div>
       )}
     </Box>

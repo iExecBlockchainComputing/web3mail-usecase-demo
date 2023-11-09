@@ -5,6 +5,7 @@ import { Box, CircularProgress, Grid, Pagination, Paper } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { CSSTransition } from 'react-transition-group';
 import { Button } from '@/components/ui/button.tsx';
+import ErrorAlert from '@/components/ErrorAlert.tsx';
 import {
   selectAppIsConnected,
   useFetchProtectedDataQuery,
@@ -22,12 +23,13 @@ export default function MyProtectedData() {
   const isAccountConnected = useAppSelector(selectAppIsConnected);
 
   //query RTK API as query hook
-  const { data: protectedData = [], isLoading } = useFetchProtectedDataQuery(
-    address as string,
-    {
-      skip: !isAccountConnected,
-    }
-  );
+  const {
+    data: protectedData = [],
+    isLoading,
+    isError,
+  } = useFetchProtectedDataQuery(address as string, {
+    skip: !isAccountConnected,
+  });
 
   //for pagination
   const [currentPage, setCurrentPage] = useState(1);
@@ -49,7 +51,15 @@ export default function MyProtectedData() {
         </div>
       )}
 
-      {!isLoading && protectedData.length === 0 && (
+      {isError && (
+        <div className="flex flex-col items-center">
+          <ErrorAlert>
+            Oops, something went wrong while fetching your protected data.
+          </ErrorAlert>
+        </div>
+      )}
+
+      {!isLoading && !isError && protectedData.length === 0 && (
         <div className="text-center">
           <img
             src={img}

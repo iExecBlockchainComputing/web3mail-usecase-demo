@@ -70,6 +70,7 @@ export const appSlice = createSlice({
 });
 
 export default appSlice.reducer;
+
 export const selectThereIsSomeRequestPending = (state: RootState) =>
   Object.values(state.api.queries).some(
     (query) => query?.status === 'pending'
@@ -77,10 +78,14 @@ export const selectThereIsSomeRequestPending = (state: RootState) =>
   Object.values(state.api.mutations).some(
     (query) => query?.status === 'pending'
   );
+
 export const selectAppIsConnected = (state: RootState) =>
   state.app.status === 'Connected';
+
 export const selectAppStatus = (state: RootState) => state.app.status;
+
 export const selectAppError = (state: RootState) => state.app.error;
+
 export const { resetAppState } = appSlice.actions;
 
 export const homeApi = api.injectEndpoints({
@@ -90,8 +95,20 @@ export const homeApi = api.injectEndpoints({
         try {
           const data = await iExecDataProtector?.fetchProtectedData({ owner });
           return { data: data || [] };
-        } catch (e: any) {
-          return { error: e.message };
+
+          // --- TEST TO REMOVE: Add fake delay
+          // return new Promise((resolve) => {
+          //   setTimeout(async () => {
+          //     const data = await iExecDataProtector?.fetchProtectedData({
+          //       owner,
+          //     });
+          //     resolve({ data: data || [] });
+          //   }, 1000);
+          // });
+        } catch (err: any) {
+          const errorData = buildErrorData(err);
+          console.error('[fetchProtectedData]', errorData);
+          return { error: errorData.reason || err.message };
         }
       },
       providesTags: (result) =>
@@ -111,8 +128,17 @@ export const homeApi = api.injectEndpoints({
         try {
           const data = await iExecDataProtector?.protectData(args);
           return { data: data?.address || 'No Protected Data Created' };
-        } catch (e: any) {
-          return { error: e.message };
+        } catch (err: any) {
+          const errorData = buildErrorData(err);
+          console.error('[createProtectedData]', errorData);
+          return { error: errorData.reason || err.message };
+
+          // --- TEST TO REMOVE: Add fake delay
+          // return new Promise((resolve) => {
+          //   setTimeout(async () => {
+          //     resolve({ error: errorData.reason || err.message });
+          //   }, 800);
+          // });
         }
       },
       invalidatesTags: ['PROTECTED_DATA'],
@@ -144,8 +170,17 @@ export const homeApi = api.injectEndpoints({
           return {
             data: { grantedAccessList: grantedAddressesList || [], count },
           };
-        } catch (e: any) {
-          return { error: e.message };
+        } catch (err: any) {
+          const errorData = buildErrorData(err);
+          console.error('[createProtectedData]', errorData);
+          return { error: errorData.reason || err.message };
+
+          // --- TEST TO REMOVE: Add fake delay
+          // return new Promise((resolve) => {
+          //   setTimeout(async () => {
+          //     resolve({ error: errorData.reason || err.message });
+          //   }, 800);
+          // });
         }
       },
       providesTags: (result) => {
@@ -220,8 +255,10 @@ export const homeApi = api.injectEndpoints({
         try {
           const contacts = await iExecWeb3Mail?.fetchMyContacts();
           return { data: contacts || [] };
-        } catch (e: any) {
-          return { error: e.message };
+        } catch (err: any) {
+          const errorData = buildErrorData(err);
+          console.error('[fetchMyContacts]', errorData);
+          return { error: errorData.reason || err.message };
         }
       },
     }),

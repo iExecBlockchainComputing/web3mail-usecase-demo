@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import AddIcon from '@mui/icons-material/Add';
-import { Box } from '@mui/material';
+import { Box, CircularProgress } from '@mui/material';
 import { useAccount } from 'wagmi';
 import { Button } from '@/components/ui/button.tsx';
 import {
@@ -12,6 +12,7 @@ import { isKeyInDataSchema } from '@/utils/utils.ts';
 import { PROTECTED_DATA } from '@/config/path.ts';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { Badge } from '@/components/ui/badge.tsx';
+import ErrorAlert from '@/components/ErrorAlert.tsx';
 import GrantAccessModal from './GrantAccessModal';
 import AuthorizedUsersList from './AuthorizedUsersList';
 
@@ -26,17 +27,21 @@ export default function OneProtectedData() {
   const [page, setPage] = useState(0);
 
   //query RTK API as query hook
-  const { data: { grantedAccessList = [], count = 0 } = {} } =
-    useFetchGrantedAccessQuery(
-      {
-        protectedData: ProtectedDataId!,
-        page,
-        pageSize: AUTHORIZED_ADDRESSES_PER_PAGE,
-      },
-      {
-        skip: !ProtectedDataId,
-      }
-    );
+  const {
+    data: { grantedAccessList = [], count = 0 } = {},
+    isLoading,
+    isError,
+    error,
+  } = useFetchGrantedAccessQuery(
+    {
+      protectedData: ProtectedDataId!,
+      page,
+      pageSize: AUTHORIZED_ADDRESSES_PER_PAGE,
+    },
+    {
+      skip: !ProtectedDataId,
+    }
+  );
 
   const { data: protectedData = [] } = useFetchProtectedDataQuery(
     address as string
@@ -79,8 +84,32 @@ export default function OneProtectedData() {
           </li>
         </ul>
       </div>
-      <Box sx={{ my: 5, mb: 20 }}>
-        {grantedAccessList?.length > 0 ? (
+      <div className="my-10">
+        {isLoading && (
+          <div className="flex flex-col items-center gap-y-4">
+            <CircularProgress />
+            Fetching authorized users...
+          </div>
+        )}
+
+        {isError && (
+          <div className="mt-10 flex flex-col items-center">
+            <ErrorAlert>
+              <div className="flex flex-col">
+                <p>
+                  Oops, something went wrong while fetching authorized users.
+                </p>
+                <p className="text-orange-300">{error.toString()}</p>
+              </div>
+            </ErrorAlert>
+          </div>
+        )}
+
+        {!isLoading && !isError && grantedAccessList?.length === 0 && (
+          <div className="my-10 text-center">No authorized user</div>
+        )}
+
+        {grantedAccessList?.length > 0 && (
           <>
             <h2>Authorized users</h2>
             <AuthorizedUsersList
@@ -91,13 +120,9 @@ export default function OneProtectedData() {
               onPageChanged={(newPage: number) => setPage(newPage)}
             />
           </>
-        ) : (
-          <div className="mb-10 text-center">
-            <h4>No authorized user</h4>
-          </div>
         )}
 
-        <div className="text-center">
+        <div className="mt-10 text-center">
           <Button onClick={() => setModalOpen(true)} className="pl-4">
             <AddIcon fontSize="small" />
             <span className="pl-2">Authorize a new user</span>
@@ -109,7 +134,7 @@ export default function OneProtectedData() {
           open={modalOpen}
           handleClose={() => setModalOpen(false)}
         />
-      </Box>
+      </div>
     </div>
   );
 }
