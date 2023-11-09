@@ -3,9 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { useAccount } from 'wagmi';
 import { Box, CircularProgress, Grid, Pagination, Paper } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import { Info } from 'react-feather';
 import { CSSTransition } from 'react-transition-group';
 import { Button } from '@/components/ui/button.tsx';
+import ErrorAlert from '@/components/ErrorAlert.tsx';
 import {
   selectAppIsConnected,
   useFetchProtectedDataQuery,
@@ -53,10 +53,9 @@ export default function MyProtectedData() {
 
       {isError && (
         <div className="flex flex-col items-center">
-          <div className="bg-danger text-danger-foreground flex items-center gap-x-3 rounded-md border border-orange-300 p-5 font-medium">
-            <Info size="20" />
+          <ErrorAlert>
             Oops, something went wrong while fetching your protected data.
-          </div>
+          </ErrorAlert>
         </div>
       )}
 

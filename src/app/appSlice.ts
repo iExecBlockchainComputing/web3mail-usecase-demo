@@ -123,8 +123,17 @@ export const homeApi = api.injectEndpoints({
         try {
           const data = await iExecDataProtector?.protectData(args);
           return { data: data?.address || 'No Protected Data Created' };
-        } catch (e: any) {
-          return { error: e.message };
+        } catch (err: any) {
+          const errorData = buildErrorData(err);
+          console.error('[createProtectedData]', errorData);
+          return { error: errorData.reason || err.message };
+
+          // --- TEST TO REMOVE: Add fake delay
+          // return new Promise((resolve) => {
+          //   setTimeout(async () => {
+          //     resolve({ error: errorData.reason || err.message });
+          //   }, 800);
+          // });
         }
       },
       invalidatesTags: ['PROTECTED_DATA'],

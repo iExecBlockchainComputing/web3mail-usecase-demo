@@ -17,6 +17,7 @@ import {
 } from '@mui/material';
 import { Button } from '@/components/ui/button.tsx';
 import { useToast } from '@/components/ui/use-toast.ts';
+import ErrorAlert from '@/components/ErrorAlert.tsx';
 import { PROTECTED_DATA } from '@/config/path.ts';
 import { useCreateProtectedDataMutation } from '@/app/appSlice.ts';
 import { createArrayBufferFromFile } from '@/utils/utils.ts';
@@ -26,6 +27,7 @@ export default function NewProtectedData() {
   const { toast } = useToast();
 
   const fileInput = useRef<HTMLInputElement>(null);
+
   //query RTK API as mutation hook
   const [createProtectedData, result] = useCreateProtectedDataMutation();
 
@@ -158,6 +160,7 @@ export default function NewProtectedData() {
           </Grid>
         </Grid>
       )}
+
       {dataType && (
         <TextField
           required
@@ -170,21 +173,28 @@ export default function NewProtectedData() {
           sx={{ mt: 3 }}
         />
       )}
-      {result.error && (
-        <Alert
-          sx={{
-            margin: 'auto',
-            mt: 3,
-            mb: 2,
-            justifyContent: 'center',
-            maxWidth: '400px',
-          }}
-          severity="error"
-        >
-          <Typography variant="h6"> Creation failed </Typography>
-          {result.error.toString()}
-        </Alert>
+
+      {result.isLoading && (
+        <div className="flex flex-col items-center gap-y-4">
+          <CircularProgress className="mt-10"></CircularProgress>
+          Your protected data is currently being created. Please wait a few
+          moments.
+        </div>
       )}
+
+      {result.error && (
+        <div className="mb-3 mt-6 flex flex-col items-center">
+          <ErrorAlert fullWidth={true}>
+            <div className="flex flex-col">
+              <p>
+                Oops, something went wrong while creating your protected data.
+              </p>
+              <p className="text-orange-300">{result.error.toString()}</p>
+            </div>
+          </ErrorAlert>
+        </div>
+      )}
+
       {result.data && !result.error && (
         <>
           <Alert
@@ -215,14 +225,8 @@ export default function NewProtectedData() {
           </div>
         </>
       )}
-      {result.isLoading && (
-        <div className="flex flex-col items-center gap-y-4">
-          <CircularProgress className="mt-10"></CircularProgress>
-          Your protected data is currently being created. Please wait a few
-          moments.
-        </div>
-      )}
-      {dataType && !result.isLoading && !result.data && !result.error && (
+
+      {dataType && !result.isLoading && !result.data && (
         <div className="text-center">
           <Button className="mt-6" onClick={handleSubmit}>
             Create Protected Data
