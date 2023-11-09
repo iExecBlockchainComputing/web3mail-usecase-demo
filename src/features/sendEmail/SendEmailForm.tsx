@@ -91,7 +91,7 @@ export default function SendEmailForm() {
           </Link>
         </Button>
       </div>
-      <h2>Send Mail to {receiverAddress}</h2>
+      <h2>Send email to {receiverAddress}</h2>
       <Box sx={{ my: 2, display: 'flex', flexDirection: 'column' }}>
         <TextField
           fullWidth

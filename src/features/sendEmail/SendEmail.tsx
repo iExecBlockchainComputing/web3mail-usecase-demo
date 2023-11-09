@@ -103,8 +103,8 @@ export default function SendEmail() {
     <Box>
       <h2>Contacts List</h2>
       <p>
-        Contacts who have protected their email address data and have allowed
-        you to use it. You can send them an email, without having access to
+        These are contacts that have protected their email address data and have
+        allowed you to use it. You can send them a message, without knowing
         their email address.
       </p>
 
