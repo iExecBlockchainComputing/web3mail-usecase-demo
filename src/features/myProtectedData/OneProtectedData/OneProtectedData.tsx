@@ -78,7 +78,7 @@ export default function OneProtectedData() {
           {getTypeOfProtectedData(protectedDataSelected?.schema)}
         </Badge>
       </Box>
-      <div className="mt-8 rounded-sm border border-grey-800/40 px-5 py-6 text-left">
+      <div className="mt-8 rounded-md border border-grey-800/40 px-5 py-6 text-left">
         <ul className="flex list-disc flex-col gap-y-4 pl-6">
           <li>
             Owned by: <strong>{protectedDataSelected?.owner}</strong>
