@@ -254,6 +254,12 @@ export const homeApi = api.injectEndpoints({
         } catch (err: any) {
           const errorData = buildErrorData(err);
           console.error('[sendEmail]', errorData);
+          // Temporary workaround to have a more explicit error
+          if (err.message === 'Dataset order not found') {
+            return {
+              error: `${err.message}: you might have exceeded the allowed quota defined by the user.`,
+            };
+          }
           return { error: errorData.reason || err.message };
         }
       },
