@@ -66,7 +66,7 @@ export default function SendEmailForm() {
           title: 'The email has been sent!',
         });
         setTimeout(() => {
-          navigate(`./${SEND_EMAIL}`);
+          navigate(`/${SEND_EMAIL}`);
         }, 250);
       })
       .catch((err) => {
