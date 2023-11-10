@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import './GrantAccessModal.css';
-import { TextField, Modal, Box, Typography } from '@mui/material';
+import { TextField, Modal, Typography } from '@mui/material';
 import { Loader } from 'react-feather';
 import { Button } from '@/components/ui/button.tsx';
 import { useToast } from '@/components/ui/use-toast.ts';
@@ -67,7 +67,7 @@ export default function GrantAccessModal(props: GrantAccessModalParams) {
 
   return (
     <Modal open={props.open} onClose={props.handleClose}>
-      <Box id="modalBox">
+      <div id="modalBox">
         <Typography
           component="h1"
           variant="h5"
@@ -109,7 +109,7 @@ export default function GrantAccessModal(props: GrantAccessModalParams) {
           )}
           <span>Validate</span>
         </Button>
-      </Box>
+      </div>
     </Modal>
   );
 }
