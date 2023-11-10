@@ -53,7 +53,7 @@ export default function SendEmail() {
       type: 'string',
       flex: 2,
     },
-    { field: 'accessGrantTimestamp', headerName: 'Subscribed on', flex: 1 },
+    { field: 'accessGrantTimestamp', headerName: 'Access granted on', flex: 1 },
     {
       field: 'Actions',
       headerName: 'Actions',
@@ -132,13 +132,16 @@ export default function SendEmail() {
       {isError && (
         <div className="mt-10 flex flex-col items-center">
           <ErrorAlert>
-            Oops, something went wrong while fetching your contacts.
+            Oops, something went wrong while fetching protected data shared with
+            you.
           </ErrorAlert>
         </div>
       )}
 
       {!isLoading && !isError && filteredRows.length === 0 && (
-        <div className="my-10 text-center">You have no subscribers!</div>
+        <div className="my-10 text-center">
+          So far, nobody shared their protected data with you.
+        </div>
       )}
 
       {filteredRows.length > 0 && !isLoading && (
