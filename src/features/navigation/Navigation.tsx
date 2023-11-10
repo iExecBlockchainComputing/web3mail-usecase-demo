@@ -2,10 +2,10 @@ import { NavBar } from '@iexec/react-ui-kit';
 import { useNavigate, useMatch } from 'react-router-dom';
 import { useAccount, useDisconnect } from 'wagmi';
 import { useWeb3Modal } from '@web3modal/react';
-import { resetAppState, selectAppIsConnected } from '../../app/appSlice';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { HOME, PROTECTED_DATA, SEND_EMAIL } from '../../config/path';
-import { bellecour } from '../../utils/walletConnection';
+import { resetAppState, selectAppIsConnected } from '@/app/appSlice.ts';
+import { useAppDispatch, useAppSelector } from '@/app/hooks.ts';
+import { HOME, PROTECTED_DATA, SEND_EMAIL } from '@/config/path.ts';
+import { bellecour } from '@/utils/walletConnection.ts';
 
 const TABS = [
   {
@@ -26,7 +26,7 @@ export default function Navigation() {
   const dispatch = useAppDispatch();
 
   const match = useMatch(`/:currentTab/*`);
-  const currentTab = match?.params.currentTab;
+  const currentTab = match?.params.currentTab ?? PROTECTED_DATA;
 
   //get the state from the store
   const isAccountConnected = useAppSelector(selectAppIsConnected);

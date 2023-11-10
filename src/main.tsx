@@ -1,6 +1,8 @@
 import React from 'react';
+import './modified-tailwind-preflight.css';
 import './index.css';
 import App from './App';
+import { Toaster } from '@/components/ui/toaster.tsx';
 import { createRoot } from 'react-dom/client';
 import { ThemeProvider, createTheme } from '@mui/material';
 import { WagmiConfig } from 'wagmi';
@@ -30,6 +32,7 @@ root.render(
         <ThemeProvider theme={theme}>
           <WagmiConfig client={wagmiClient}>
             <App />
+            <Toaster />
           </WagmiConfig>
           <Web3Modal projectId={projectId} ethereumClient={ethereumClient} />
         </ThemeProvider>

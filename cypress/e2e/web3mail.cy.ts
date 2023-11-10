@@ -13,18 +13,18 @@ describe('send an email using web3mail', () => {
     cy.contains('15').should('be.visible');
     //as user i want to type a message subject in a placeholder
     cy.get('input[id="Message subject"]').type('email testing');
-    //as user i want to see how man y caracters it remains in the message subject
+    //as user i want to see how man y characters it remains in the message subject
     cy.contains('65').should('be.visible');
     //as user i want to select the content type (plain text/html)
     cy.get('div[id="content-type-select"]').click();
     //as user i want to choose text/html type
     cy.contains('text/html').click({ force: true });
     //as user i want to type my email in a placeholder
-    cy.get('textarea[id="textArea"]').type('Hello, this is an email test :)', {
+    cy.get('textarea[id="textArea"]').type('Hello, this is a test email :)', {
       force: true,
     });
     //as user i want to see how man y caracters it remains in mailbox
-    cy.contains('511969').should('be.visible');
+    cy.contains('511970').should('be.visible');
     //as user i want to click on a button in order to send my email
     cy.get('[data-cy="send-email-button"]').click();
     //as user i want a pop up that inform me the mail is send

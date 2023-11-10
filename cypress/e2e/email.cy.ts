@@ -9,6 +9,7 @@ describe('creation of a protected data with a valid email', () => {
     cy.get('div[role="button"]').click();
     //as user i want to choose "Email address" type
     cy.contains('Email Address').click();
+
     //as user i want to enter my mail address in a placeholder
     cy.get('input[id="email"]').type(emailAddress()).type('@gmail.com');
     function emailAddress() {
@@ -20,6 +21,7 @@ describe('creation of a protected data with a valid email', () => {
 
       return text;
     }
+
     //as user, i want to Name my protected data in a placeholder
     cy.get('input[id="Name of your Protected Data"]').type(
       protectedDataNameMock()
@@ -33,6 +35,7 @@ describe('creation of a protected data with a valid email', () => {
 
       return text;
     }
+
     //as user i want to create my protected data with a button
     cy.contains('Create Protected Data').click();
     //as user i want a phrase that tells me to wait a bit
