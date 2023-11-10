@@ -85,6 +85,7 @@ export default function SendEmailForm() {
     const inputValue = event.target.value;
     setSenderName(inputValue);
   };
+
   return (
     <div className="mx-auto mb-28 w-[70%]">
       <div className="text-left">
