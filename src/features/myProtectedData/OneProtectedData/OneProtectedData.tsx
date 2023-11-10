@@ -80,10 +80,16 @@ export default function OneProtectedData() {
       </Box>
       <div className="mt-8 rounded-sm border border-grey-800/40 px-5 py-6 text-left">
         <ul className="flex list-disc flex-col gap-y-4 pl-6">
-          <li>Owned by: {protectedDataSelected?.owner}</li>
-          <li>Data Protected Address: {protectedDataSelected?.address}</li>
           <li>
-            IPFS link: {'Set in future with the next version of subgraph'}
+            Owned by: <strong>{protectedDataSelected?.owner}</strong>
+          </li>
+          <li>
+            Data Protected Address:{' '}
+            <strong>{protectedDataSelected?.address}</strong>
+          </li>
+          <li>
+            IPFS link:{' '}
+            <i>{'Will be provided with the next version of subgraph'}</i>
           </li>
         </ul>
       </div>
@@ -109,12 +115,17 @@ export default function OneProtectedData() {
         )}
 
         {!isLoading && !isError && grantedAccessList?.length === 0 && (
-          <div className="my-10 text-center">No authorized user</div>
+          <div className="my-10 text-center">
+            Nobody is allowed to access this protected data.
+          </div>
         )}
 
         {grantedAccessList?.length > 0 && (
           <>
             <h2>Authorized users</h2>
+            <h3 className="-mt-4">
+              These are the users who are allowed to access this protected data.
+            </h3>
             <AuthorizedUsersList
               authorizedUsers={grantedAccessList}
               count={count}
