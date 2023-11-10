@@ -3,6 +3,8 @@ import { Link, useParams } from 'react-router-dom';
 import AddIcon from '@mui/icons-material/Add';
 import { Box, CircularProgress } from '@mui/material';
 import { useAccount } from 'wagmi';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import { Slash } from 'react-feather';
 import { Button } from '@/components/ui/button.tsx';
 import {
   useFetchGrantedAccessQuery,
@@ -10,7 +12,6 @@ import {
 } from '@/app/appSlice.ts';
 import { getTypeOfProtectedData } from '@/utils/utils.ts';
 import { PROTECTED_DATA } from '@/config/path.ts';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { Badge } from '@/components/ui/badge.tsx';
 import ErrorAlert from '@/components/ErrorAlert.tsx';
 import GrantAccessModal from './GrantAccessModal';
@@ -115,7 +116,8 @@ export default function OneProtectedData() {
         )}
 
         {!isLoading && !isError && grantedAccessList?.length === 0 && (
-          <div className="my-10 text-center">
+          <div className="my-10 flex items-center justify-center gap-x-2">
+            <Slash size="18" className="inline" />
             Nobody is allowed to access this protected data.
           </div>
         )}
