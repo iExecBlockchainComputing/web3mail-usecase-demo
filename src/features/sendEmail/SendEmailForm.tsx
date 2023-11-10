@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import { Box, TextField, TextareaAutosize } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
@@ -19,6 +19,7 @@ const MAX_CHARACTERS_MESSAGE_SUBJECT = 78;
 export default function SendEmailForm() {
   const { receiverAddress, protectedDataAddress } = useParams();
 
+  const navigate = useNavigate();
   const { toast } = useToast();
 
   //RTK Mutation hook
@@ -64,6 +65,9 @@ export default function SendEmailForm() {
         toast({
           title: 'The email has been sent!',
         });
+        setTimeout(() => {
+          navigate(`./${SEND_EMAIL}`);
+        }, 250);
       })
       .catch((err) => {
         toast({
@@ -158,7 +162,7 @@ export default function SendEmailForm() {
             data-cy="send-email-button"
           >
             {result.isLoading && (
-              <Loader className="-ml-1 mr-2 animate-spin-slow" size="16" />
+              <Loader className="animate-spin-slow -ml-1 mr-2" size="16" />
             )}
             <span>Send</span>
           </Button>
