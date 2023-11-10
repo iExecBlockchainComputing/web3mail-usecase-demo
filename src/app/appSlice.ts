@@ -71,20 +71,8 @@ export const appSlice = createSlice({
 
 export default appSlice.reducer;
 
-export const selectThereIsSomeRequestPending = (state: RootState) =>
-  Object.values(state.api.queries).some(
-    (query) => query?.status === 'pending'
-  ) ||
-  Object.values(state.api.mutations).some(
-    (query) => query?.status === 'pending'
-  );
-
 export const selectAppIsConnected = (state: RootState) =>
   state.app.status === 'Connected';
-
-export const selectAppStatus = (state: RootState) => state.app.status;
-
-export const selectAppError = (state: RootState) => state.app.error;
 
 export const { resetAppState } = appSlice.actions;
 
