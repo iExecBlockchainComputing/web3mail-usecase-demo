@@ -147,7 +147,7 @@ export const homeApi = api.injectEndpoints({
           };
         } catch (err: any) {
           const errorData = buildErrorData(err);
-          console.error('[createProtectedData]', errorData);
+          console.error('[fetchGrantedAccess]', errorData);
           return { error: errorData.reason || err.message };
 
           // --- TEST TO REMOVE: Add fake delay
