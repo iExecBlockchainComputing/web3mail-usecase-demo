@@ -210,6 +210,7 @@ export const homeApi = api.injectEndpoints({
       },
       invalidatesTags: (_result, _error, args) => [
         { type: 'GRANTED_ACCESS', id: args.authorizedUser },
+        'CONTACTS',
       ],
     }),
 
@@ -226,7 +227,7 @@ export const homeApi = api.injectEndpoints({
           return { error: errorData.reason || err.message };
         }
       },
-      invalidatesTags: ['GRANTED_ACCESS'],
+      invalidatesTags: ['GRANTED_ACCESS', 'CONTACTS'],
     }),
 
     fetchMyContacts: builder.query<Contact[], string>({
@@ -239,6 +240,9 @@ export const homeApi = api.injectEndpoints({
           console.error('[fetchMyContacts]', errorData);
           return { error: errorData.reason || err.message };
         }
+      },
+      providesTags: () => {
+        return ['CONTACTS'];
       },
     }),
 
