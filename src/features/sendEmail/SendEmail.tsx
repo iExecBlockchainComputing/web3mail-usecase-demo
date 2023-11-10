@@ -5,6 +5,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import { Box, CircularProgress, InputBase } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import SendIcon from '@mui/icons-material/Send';
+import { Slash } from 'react-feather';
 import { useAccount } from 'wagmi';
 import { Button } from '@/components/ui/button.tsx';
 import ErrorAlert from '@/components/ErrorAlert.tsx';
@@ -139,7 +140,8 @@ export default function SendEmail() {
       )}
 
       {!isLoading && !isError && filteredRows.length === 0 && (
-        <div className="my-10 text-center">
+        <div className="my-10 flex items-center justify-center gap-x-2">
+          <Slash size="18" className="inline" />
           So far, nobody shared their protected data with you.
         </div>
       )}
