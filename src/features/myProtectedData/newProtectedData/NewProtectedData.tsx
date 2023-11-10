@@ -20,6 +20,7 @@ import { useToast } from '@/components/ui/use-toast.ts';
 import ErrorAlert from '@/components/ErrorAlert.tsx';
 import { PROTECTED_DATA } from '@/config/path.ts';
 import { useCreateProtectedDataMutation } from '@/app/appSlice.ts';
+import { cn } from '@/lib/utils.ts';
 import { createArrayBufferFromFile } from '@/utils/utils.ts';
 import './NewProtectedData.css';
 
@@ -42,6 +43,8 @@ export default function NewProtectedData() {
   //for file
   const [filePath, setFilePath] = useState('');
   const [file, setFile] = useState<File | undefined>();
+
+  const [showBackToListLink, setShowBackToListLink] = useState(false);
 
   //handle functions
   const handleDataTypeChange = (event: any) => {
@@ -78,6 +81,9 @@ export default function NewProtectedData() {
     }
     if (dataType && name && ((isValidEmail && email) || file)) {
       await createProtectedData({ data, name });
+      setTimeout(() => {
+        setShowBackToListLink(true);
+      }, 1500);
     } else {
       toast({
         variant: 'danger',
@@ -203,9 +209,9 @@ export default function NewProtectedData() {
               mt: 3,
               mb: 2,
               justifyContent: 'center',
-              maxWidth: '400px',
             }}
             severity="success"
+            className="rounded-md"
           >
             <Typography variant="h6"> Your data has been protected!</Typography>
             <a
@@ -218,7 +224,12 @@ export default function NewProtectedData() {
             </a>
             <p>Your protected data address: {result.data}</p>
           </Alert>
-          <div className="text-center">
+          <div
+            className={cn(
+              'text-center transition-opacity',
+              showBackToListLink ? 'opacity-1' : 'opacity-0'
+            )}
+          >
             <Link to={`/${PROTECTED_DATA}`} className="p-2 underline">
               See my protected data
             </Link>
