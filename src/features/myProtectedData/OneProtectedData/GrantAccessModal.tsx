@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { type FormEvent, useState } from 'react';
 import './GrantAccessModal.css';
 import { TextField, Modal, Typography } from '@mui/material';
 import { Loader } from 'react-feather';
@@ -33,7 +33,8 @@ export default function GrantAccessModal(props: GrantAccessModalParams) {
     setNbOfAccess(event.target.value);
   };
 
-  const handleGrantAccess = () => {
+  const handleGrantAccess = (event: FormEvent) => {
+    event.preventDefault();
     if (!ethAddress.trim()) {
       toast({
         variant: 'danger',
@@ -67,7 +68,7 @@ export default function GrantAccessModal(props: GrantAccessModalParams) {
 
   return (
     <Modal open={props.open} onClose={props.handleClose}>
-      <div id="modalBox">
+      <div id="modalBox" className="w-[500px] rounded-md bg-white p-8">
         <Typography
           component="h1"
           variant="h5"
@@ -75,40 +76,46 @@ export default function GrantAccessModal(props: GrantAccessModalParams) {
         >
           New user
         </Typography>
-        <TextField
-          required
-          fullWidth
-          id="ethAddress"
-          label="Ethereum Address"
-          variant="outlined"
-          sx={{ mt: 3 }}
-          value={ethAddress}
-          onChange={handleEthAddressChange}
-          type="ethAddress"
-          error={!isValidEthAddress}
-          helperText={
-            !isValidEthAddress && 'Please enter a valid ethereum Address'
-          }
-        />
-        <TextField
-          fullWidth
-          type="NbOfAccess"
-          id="age"
-          label="Number of Access"
-          variant="outlined"
-          value={NbOfAccess}
-          InputProps={{ inputProps: { min: 1 } }}
-          onChange={handleNbOfAccessChange}
-          sx={{ mt: 3 }}
-        />
-        {/* TODO: Have a proper form and submit button */}
-        {/*<button type="submit">Validate</button>*/}
-        <Button disabled={result.isLoading} onClick={handleGrantAccess}>
-          {result.isLoading && (
-            <Loader className="-ml-1 mr-2 animate-spin-slow" size="16" />
-          )}
-          <span>Validate</span>
-        </Button>
+        <form
+          noValidate
+          className="flex w-full flex-col gap-4"
+          onSubmit={handleGrantAccess}
+        >
+          <TextField
+            required
+            fullWidth
+            id="ethAddress"
+            label="Ethereum Address"
+            variant="outlined"
+            sx={{ mt: 3 }}
+            value={ethAddress}
+            onChange={handleEthAddressChange}
+            type="ethAddress"
+            error={!isValidEthAddress}
+            helperText={
+              !isValidEthAddress && 'Please enter a valid ethereum Address'
+            }
+          />
+          <TextField
+            fullWidth
+            type="NbOfAccess"
+            id="age"
+            label="Number of Access"
+            variant="outlined"
+            value={NbOfAccess}
+            InputProps={{ inputProps: { min: 1 } }}
+            onChange={handleNbOfAccessChange}
+            sx={{ mt: 2 }}
+          />
+          <div className="mt-2 flex justify-center">
+            <Button type="submit" disabled={result.isLoading}>
+              {result.isLoading && (
+                <Loader className="-ml-1 mr-2 animate-spin-slow" size="16" />
+              )}
+              <span>Validate</span>
+            </Button>
+          </div>
+        </form>
       </div>
     </Modal>
   );
