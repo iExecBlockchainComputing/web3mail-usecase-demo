@@ -3,14 +3,15 @@ import { Link, useParams } from 'react-router-dom';
 import AddIcon from '@mui/icons-material/Add';
 import { Box, CircularProgress } from '@mui/material';
 import { useAccount } from 'wagmi';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import { Slash } from 'react-feather';
 import { Button } from '@/components/ui/button.tsx';
 import {
   useFetchGrantedAccessQuery,
   useFetchProtectedDataQuery,
 } from '@/app/appSlice.ts';
-import { isKeyInDataSchema } from '@/utils/utils.ts';
+import { getTypeOfProtectedData } from '@/utils/utils.ts';
 import { PROTECTED_DATA } from '@/config/path.ts';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { Badge } from '@/components/ui/badge.tsx';
 import ErrorAlert from '@/components/ErrorAlert.tsx';
 import GrantAccessModal from './GrantAccessModal';
@@ -67,20 +68,29 @@ export default function OneProtectedData() {
       </div>
       <Box sx={{ textAlign: 'left' }}>
         <h2 className="h-8">{protectedDataSelected?.name}</h2>
-        <Badge>
-          {isKeyInDataSchema(protectedDataSelected?.schema || {}, 'email')
-            ? 'Email'
-            : isKeyInDataSchema(protectedDataSelected?.schema || {}, 'file')
-            ? 'File'
-            : 'Unknown'}
+        <Badge
+          variant={
+            getTypeOfProtectedData(protectedDataSelected?.schema) ===
+            'Unknown type'
+              ? 'secondary'
+              : 'default'
+          }
+        >
+          {getTypeOfProtectedData(protectedDataSelected?.schema)}
         </Badge>
       </Box>
-      <div className="mt-8 rounded-sm border border-grey-800/40 px-5 py-6 text-left">
+      <div className="mt-8 rounded-md border border-grey-800/40 px-5 py-6 text-left">
         <ul className="flex list-disc flex-col gap-y-4 pl-6">
-          <li>Owned by: {protectedDataSelected?.owner}</li>
-          <li>Data Protected Address: {protectedDataSelected?.address}</li>
           <li>
-            IPFS link: {'Set in future with the next version of subgraph'}
+            Owned by: <strong>{protectedDataSelected?.owner}</strong>
+          </li>
+          <li>
+            Data Protected Address:{' '}
+            <strong>{protectedDataSelected?.address}</strong>
+          </li>
+          <li>
+            IPFS link:{' '}
+            <i>{'Will be provided with the next version of subgraph'}</i>
           </li>
         </ul>
       </div>
@@ -106,12 +116,18 @@ export default function OneProtectedData() {
         )}
 
         {!isLoading && !isError && grantedAccessList?.length === 0 && (
-          <div className="my-10 text-center">No authorized user</div>
+          <div className="my-10 flex items-center justify-center gap-x-2">
+            <Slash size="18" className="inline" />
+            Nobody is allowed to access this protected data.
+          </div>
         )}
 
         {grantedAccessList?.length > 0 && (
           <>
             <h2>Authorized users</h2>
+            <h3 className="-mt-4">
+              These are the users who you allowed to access this protected data.
+            </h3>
             <AuthorizedUsersList
               authorizedUsers={grantedAccessList}
               count={count}
@@ -129,11 +145,13 @@ export default function OneProtectedData() {
           </Button>
         </div>
 
-        <GrantAccessModal
-          protectedData={ProtectedDataId as string}
-          open={modalOpen}
-          handleClose={() => setModalOpen(false)}
-        />
+        {modalOpen && (
+          <GrantAccessModal
+            protectedData={ProtectedDataId as string}
+            open={modalOpen}
+            handleClose={() => setModalOpen(false)}
+          />
+        )}
       </div>
     </div>
   );

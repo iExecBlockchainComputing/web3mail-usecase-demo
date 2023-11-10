@@ -5,6 +5,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import { Box, CircularProgress, InputBase } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import SendIcon from '@mui/icons-material/Send';
+import { Slash } from 'react-feather';
 import { useAccount } from 'wagmi';
 import { Button } from '@/components/ui/button.tsx';
 import ErrorAlert from '@/components/ErrorAlert.tsx';
@@ -53,7 +54,7 @@ export default function SendEmail() {
       type: 'string',
       flex: 2,
     },
-    { field: 'accessGrantTimestamp', headerName: 'Subscribed on', flex: 1 },
+    { field: 'accessGrantTimestamp', headerName: 'Access granted on', flex: 1 },
     {
       field: 'Actions',
       headerName: 'Actions',
@@ -132,13 +133,17 @@ export default function SendEmail() {
       {isError && (
         <div className="mt-10 flex flex-col items-center">
           <ErrorAlert>
-            Oops, something went wrong while fetching your contacts.
+            Oops, something went wrong while fetching protected data shared with
+            you.
           </ErrorAlert>
         </div>
       )}
 
       {!isLoading && !isError && filteredRows.length === 0 && (
-        <div className="my-10 text-center">You have no subscribers!</div>
+        <div className="my-10 flex items-center justify-center gap-x-2">
+          <Slash size="18" className="inline" />
+          So far, nobody shared their protected data with you.
+        </div>
       )}
 
       {filteredRows.length > 0 && !isLoading && (

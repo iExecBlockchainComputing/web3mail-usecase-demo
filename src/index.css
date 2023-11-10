@@ -15,6 +15,18 @@
     /* Grey/grey-900 = #0D0D12 */
     --grey-900: 240 16% 6%;
 
+    /* Green/green-50 = #F1FDF9 */
+    --green-50: 160 75% 97%;
+    --green-50_2: hsl(160 75% 97%); /* Do not use: Just to see the color */
+
+    /* Green/green-300 = #39DBA5 */
+    --green-400: 160 69% 54%;
+    --green-400_2: hsl(160 69% 54%); /* Do not use: Just to see the color */
+
+    /* Green/green-600 = #00A36E */
+    --green-600: 160 100% 32%;
+    --green-600_2: hsl(160 100% 32%); /* Do not use: Just to see the color */
+
     /* Orange/orange-50 = #FFF8F0 */
     --orange-50: 32 100% 97%;
     --orange-50_2: hsl(32 100% 97%); /* Do not use: Just to see the color */
@@ -49,6 +61,9 @@
     --accent: var(--grey-100);
     --accent-foreground: 222.2 47.4% 11.2%;
     /*--accent-foreground: var(--grey-grey-100);*/
+
+    --success: var(--green-50);
+    --success-foreground: var(--green-600);
 
     --danger: var(--orange-50);
     --danger-foreground: var(--orange-500);

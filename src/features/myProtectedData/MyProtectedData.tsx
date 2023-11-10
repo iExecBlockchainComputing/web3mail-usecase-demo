@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAccount } from 'wagmi';
-import { Box, CircularProgress, Grid, Pagination, Paper } from '@mui/material';
+import { Box, CircularProgress, Pagination } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { CSSTransition } from 'react-transition-group';
 import { Button } from '@/components/ui/button.tsx';
@@ -102,31 +102,41 @@ export default function MyProtectedData() {
               <NewProtectedDataButton />
             </Box>
           </Box>
-          <Box sx={{ mx: 4, paddingBottom: 20 }}>
-            <Grid container spacing={3}>
+          <div className="mb-28">
+            <div
+              className="mx-6 grid gap-7"
+              style={{
+                gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+              }}
+            >
               {currentData?.map(
                 ({ address, name, schema, creationTimestamp }) => (
-                  <Grid item key={address}>
-                    <ProtectedDataCard
-                      id={address}
-                      title={name || 'Undefined'}
-                      schema={schema}
-                      date={getLocalDateFromBlockchainTimestamp(
-                        creationTimestamp
-                      )}
-                    />
-                  </Grid>
+                  <div
+                    key={address}
+                    className="flex w-full items-center justify-center"
+                  >
+                    <div className="max-w-[300px] flex-1">
+                      <ProtectedDataCard
+                        id={address}
+                        title={name || 'Undefined'}
+                        schema={schema}
+                        date={getLocalDateFromBlockchainTimestamp(
+                          creationTimestamp
+                        )}
+                      />
+                    </div>
+                  </div>
                 )
               )}
-            </Grid>
-            <Paper id="pagination">
+            </div>
+            <div className="mt-16 flex justify-center">
               <Pagination
                 count={Math.ceil(protectedData.length / ITEMS_PER_PAGE)}
                 page={currentPage}
                 onChange={handlePageChange}
               />
-            </Paper>
-          </Box>
+            </div>
+          </div>
         </div>
       </CSSTransition>
     </div>

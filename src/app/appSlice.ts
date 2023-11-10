@@ -71,20 +71,8 @@ export const appSlice = createSlice({
 
 export default appSlice.reducer;
 
-export const selectThereIsSomeRequestPending = (state: RootState) =>
-  Object.values(state.api.queries).some(
-    (query) => query?.status === 'pending'
-  ) ||
-  Object.values(state.api.mutations).some(
-    (query) => query?.status === 'pending'
-  );
-
 export const selectAppIsConnected = (state: RootState) =>
   state.app.status === 'Connected';
-
-export const selectAppStatus = (state: RootState) => state.app.status;
-
-export const selectAppError = (state: RootState) => state.app.error;
 
 export const { resetAppState } = appSlice.actions;
 
@@ -111,16 +99,7 @@ export const homeApi = api.injectEndpoints({
           return { error: errorData.reason || err.message };
         }
       },
-      providesTags: (result) =>
-        result
-          ? [
-              ...result.map(({ address }) => ({
-                type: 'PROTECTED_DATA' as const,
-                id: address,
-              })),
-              'PROTECTED_DATA',
-            ]
-          : ['PROTECTED_DATA'],
+      providesTags: ['PROTECTED_DATA'],
     }),
 
     createProtectedData: builder.mutation<string, ProtectDataParams>({
@@ -231,6 +210,7 @@ export const homeApi = api.injectEndpoints({
       },
       invalidatesTags: (_result, _error, args) => [
         { type: 'GRANTED_ACCESS', id: args.authorizedUser },
+        'CONTACTS',
       ],
     }),
 
@@ -247,7 +227,7 @@ export const homeApi = api.injectEndpoints({
           return { error: errorData.reason || err.message };
         }
       },
-      invalidatesTags: ['GRANTED_ACCESS'],
+      invalidatesTags: ['GRANTED_ACCESS', 'CONTACTS'],
     }),
 
     fetchMyContacts: builder.query<Contact[], string>({
@@ -261,6 +241,9 @@ export const homeApi = api.injectEndpoints({
           return { error: errorData.reason || err.message };
         }
       },
+      providesTags: () => {
+        return ['CONTACTS'];
+      },
     }),
 
     sendEmail: builder.mutation<SendEmailResponse | null, SendEmailParams>({
@@ -271,6 +254,12 @@ export const homeApi = api.injectEndpoints({
         } catch (err: any) {
           const errorData = buildErrorData(err);
           console.error('[sendEmail]', errorData);
+          // Temporary workaround to have a more explicit error
+          if (err.message === 'Dataset order not found') {
+            return {
+              error: `${err.message}: you might have exceeded the allowed quota defined by the user.`,
+            };
+          }
           return { error: errorData.reason || err.message };
         }
       },
