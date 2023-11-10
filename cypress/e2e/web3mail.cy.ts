@@ -26,7 +26,7 @@ describe('send an email using web3mail', () => {
     //as user i want to see how man y caracters it remains in mailbox
     cy.contains('511969').should('be.visible');
     //as user i want to click on a button in order to send my email
-    cy.get('.sendEmailButton').click();
+    cy.get('[data-cy="send-email-button"]').click();
     //as user i want a pop up that inform me the mail is send
     cy.contains('The email has been sent!').should('be.visible');
   });
