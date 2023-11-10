@@ -99,16 +99,7 @@ export const homeApi = api.injectEndpoints({
           return { error: errorData.reason || err.message };
         }
       },
-      providesTags: (result) =>
-        result
-          ? [
-              ...result.map(({ address }) => ({
-                type: 'PROTECTED_DATA' as const,
-                id: address,
-              })),
-              'PROTECTED_DATA',
-            ]
-          : ['PROTECTED_DATA'],
+      providesTags: ['PROTECTED_DATA'],
     }),
 
     createProtectedData: builder.mutation<string, ProtectDataParams>({
