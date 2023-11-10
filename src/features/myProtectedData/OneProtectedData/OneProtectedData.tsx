@@ -132,11 +132,13 @@ export default function OneProtectedData() {
           </Button>
         </div>
 
-        <GrantAccessModal
-          protectedData={ProtectedDataId as string}
-          open={modalOpen}
-          handleClose={() => setModalOpen(false)}
-        />
+        {modalOpen && (
+          <GrantAccessModal
+            protectedData={ProtectedDataId as string}
+            open={modalOpen}
+            handleClose={() => setModalOpen(false)}
+          />
+        )}
       </div>
     </div>
   );
