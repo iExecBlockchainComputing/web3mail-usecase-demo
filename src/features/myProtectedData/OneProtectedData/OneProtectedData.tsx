@@ -126,7 +126,7 @@ export default function OneProtectedData() {
           <>
             <h2>Authorized users</h2>
             <h3 className="-mt-4">
-              These are the users who are allowed to access this protected data.
+              These are the users who you allowed to access this protected data.
             </h3>
             <AuthorizedUsersList
               authorizedUsers={grantedAccessList}
