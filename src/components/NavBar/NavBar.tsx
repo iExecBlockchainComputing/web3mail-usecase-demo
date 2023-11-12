@@ -76,7 +76,7 @@ export default function NavBar() {
         </div>
       ) : (
         <div className="flex flex-1 items-center justify-end">
-          {/* w-[98px] = Match previous usecase-demo version with @mui */}
+          {/* w-[98px] = Match what's in react ui kit */}
           <Button
             size="sm"
             className="w-[98px]"
