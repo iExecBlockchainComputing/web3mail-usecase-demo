@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { Verified } from '@mui/icons-material';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import {
-  Alert,
   CircularProgress,
   FormControl,
   Grid,
@@ -15,7 +14,7 @@ import {
 } from '@mui/material';
 import { Button } from '@/components/ui/button.tsx';
 import { useToast } from '@/components/ui/use-toast.ts';
-import ErrorAlert from '@/components/ErrorAlert.tsx';
+import Alert from '@/components/Alert.tsx';
 import { PROTECTED_DATA } from '@/config/path.ts';
 import { useCreateProtectedDataMutation } from '@/app/appSlice.ts';
 import { cn } from '@/utils/style.utils.ts';
@@ -201,40 +200,33 @@ export default function NewProtectedData() {
 
       {result.error && (
         <div className="mb-3 mt-6 flex flex-col items-center">
-          <ErrorAlert fullWidth={true}>
-            <div className="flex flex-col">
-              <p>
-                Oops, something went wrong while creating your protected data.
-              </p>
-              <p className="text-orange-300">{result.error.toString()}</p>
-            </div>
-          </ErrorAlert>
+          <Alert variant="error" fullWidth={true}>
+            <p>
+              Oops, something went wrong while creating your protected data.
+            </p>
+            <p className="text-orange-300">{result.error.toString()}</p>
+          </Alert>
         </div>
       )}
 
       {result.data && !result.error && (
         <>
-          <Alert
-            sx={{
-              margin: 'auto',
-              mt: 3,
-              mb: 2,
-              justifyContent: 'center',
-            }}
-            severity="success"
-            className="rounded-md"
-          >
-            <Typography variant="h6"> Your data has been protected!</Typography>
-            <a
-              href={`https://explorer.iex.ec/bellecour/dataset/${result.data}`}
-              target="_blank"
-              rel="noreferrer"
-              className="underline"
-            >
-              See Details
-            </a>
-            <p>Your protected data address: {result.data}</p>
-          </Alert>
+          <div className="my-6 flex flex-col items-center">
+            <Alert variant="success" fullWidth={true}>
+              <p>Your data has been protected!</p>
+              <a
+                href={`https://explorer.iex.ec/bellecour/dataset/${result.data}`}
+                target="_blank"
+                rel="noreferrer"
+                className="text-sm underline"
+              >
+                See Details
+              </a>
+              <p className="text-sm">
+                Your protected data address: {result.data}
+              </p>
+            </Alert>
+          </div>
 
           <div
             className={cn(

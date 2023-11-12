@@ -8,7 +8,7 @@ import SendIcon from '@mui/icons-material/Send';
 import { Slash } from 'react-feather';
 import { useAccount } from 'wagmi';
 import { Button } from '@/components/ui/button.tsx';
-import ErrorAlert from '@/components/ErrorAlert.tsx';
+import Alert from '@/components/Alert.tsx';
 import {
   selectAppIsConnected,
   useFetchMyContactsQuery,
@@ -132,10 +132,10 @@ export default function SendEmail() {
 
       {isError && (
         <div className="mt-10 flex flex-col items-center">
-          <ErrorAlert>
+          <Alert variant="error">
             Oops, something went wrong while fetching protected data shared with
             you.
-          </ErrorAlert>
+          </Alert>
         </div>
       )}
 

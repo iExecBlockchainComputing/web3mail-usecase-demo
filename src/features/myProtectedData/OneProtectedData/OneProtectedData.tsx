@@ -13,7 +13,7 @@ import {
 import { getTypeOfProtectedData } from '@/utils/utils.ts';
 import { PROTECTED_DATA } from '@/config/path.ts';
 import { Badge } from '@/components/ui/badge.tsx';
-import ErrorAlert from '@/components/ErrorAlert.tsx';
+import Alert from '@/components/Alert.tsx';
 import GrantAccessModal from './GrantAccessModal';
 import AuthorizedUsersList from './AuthorizedUsersList';
 
@@ -104,14 +104,10 @@ export default function OneProtectedData() {
 
         {isError && (
           <div className="mt-10 flex flex-col items-center">
-            <ErrorAlert>
-              <div className="flex flex-col">
-                <p>
-                  Oops, something went wrong while fetching authorized users.
-                </p>
-                <p className="text-orange-300">{error.toString()}</p>
-              </div>
-            </ErrorAlert>
+            <Alert variant="error">
+              <p>Oops, something went wrong while fetching authorized users.</p>
+              <p className="text-orange-300">{error.toString()}</p>
+            </Alert>
           </div>
         )}
 
