@@ -1,6 +1,6 @@
 import { Info } from 'react-feather';
 import { ReactNode } from 'react';
-import { cn } from '@/lib/utils.ts';
+import { cn } from '@/utils/style.utils.ts';
 
 export default function ErrorAlert({
   children,

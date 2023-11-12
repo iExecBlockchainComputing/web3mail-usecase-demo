@@ -2,8 +2,7 @@ import * as React from 'react';
 import * as ToastPrimitives from '@radix-ui/react-toast';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { X } from 'react-feather';
-
-import { cn } from '@/lib/utils.ts';
+import { cn } from '@/utils/style.utils.ts';
 
 const ToastProvider = ToastPrimitives.Provider;
 

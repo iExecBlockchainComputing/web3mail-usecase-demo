@@ -20,7 +20,7 @@ import { useToast } from '@/components/ui/use-toast.ts';
 import ErrorAlert from '@/components/ErrorAlert.tsx';
 import { PROTECTED_DATA } from '@/config/path.ts';
 import { useCreateProtectedDataMutation } from '@/app/appSlice.ts';
-import { cn } from '@/lib/utils.ts';
+import { cn } from '@/utils/style.utils.ts';
 import { createArrayBufferFromFile } from '@/utils/utils.ts';
 import './NewProtectedData.css';
 
