@@ -4,7 +4,7 @@ import { LogOut } from 'react-feather';
 import '@fontsource/space-mono/700.css';
 import iExecLogo from '@/assets/iexec-logo.svg';
 import { HOME, PROTECTED_DATA, SEND_EMAIL } from '@/config/path.ts';
-import { useUser } from '@/app/useUser.ts';
+import { useUser } from '@/components/NavBar/useUser.ts';
 import AddressChip from '@/components/NavBar/AddressChip.tsx';
 import { Button } from '@/components/ui/button.tsx';
 
