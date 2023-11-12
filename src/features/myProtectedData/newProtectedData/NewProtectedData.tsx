@@ -1,15 +1,13 @@
-import { useRef, useState } from 'react';
+import { type FormEvent, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Verified } from '@mui/icons-material';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import {
   Alert,
-  Box,
   CircularProgress,
   FormControl,
   Grid,
   InputLabel,
-  // Link,
   MenuItem,
   Select,
   TextField,
@@ -64,7 +62,8 @@ export default function NewProtectedData() {
   };
 
   //ask for confirmation before leaving the page
-  const handleSubmit = async () => {
+  const handleSubmit = async (event: FormEvent) => {
+    event.preventDefault();
     const data: {
       email?: string;
       file?: Uint8Array;
@@ -106,78 +105,90 @@ export default function NewProtectedData() {
           </Link>
         </Button>
       </div>
-      <Box sx={{ textAlign: 'left' }}>
-        <h2>Protect New Data</h2>
-      </Box>
-      <FormControl fullWidth sx={{ mt: '24px' }}>
-        <InputLabel>Select your data type</InputLabel>
-        <Select
-          fullWidth
-          value={dataType}
-          onChange={handleDataTypeChange}
-          label="Select your data type"
-          sx={{ textAlign: 'left' }}
-        >
-          {dataTypes.map((item) => (
-            <MenuItem key={item.value} value={item.value}>
-              {item.label}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-      {dataType === 'email' && (
-        <TextField
-          required
-          fullWidth
-          id="email"
-          label="Email"
-          variant="outlined"
-          sx={{ mt: 3 }}
-          value={email}
-          onChange={handleEmailChange}
-          type="email"
-          error={!isValidEmail}
-          helperText={!isValidEmail && 'Please enter a valid email address'}
-        />
-      )}
-      {dataType === 'file' && (
-        <Button
-          className="uploadFileButton"
-          variant="secondary"
-          onClick={() => fileInput.current?.click()}
-        >
-          {!filePath ? 'Upload' : 'Updated File'}
-          <input
-            ref={fileInput}
-            hidden
-            multiple
-            type="file"
-            onChange={(e) => handleFileChange(e)}
-          />
-        </Button>
-      )}
-      {filePath && dataType === 'file' && (
-        <Grid container columnSpacing={1} sx={{ mt: 1 }}>
-          <Grid item>
-            <Typography>{filePath.split('\\').slice(-1)}</Typography>
-          </Grid>
-          <Grid item>
-            <Verified color="success" />
-          </Grid>
-        </Grid>
-      )}
 
-      {dataType && (
-        <TextField
-          required
-          fullWidth
-          id="Name of your Protected Data"
-          label="Name of your Protected Data"
-          variant="outlined"
-          value={name}
-          onChange={handleNameChange}
-          sx={{ mt: 3 }}
-        />
+      <h2>Protect New Data</h2>
+
+      {(!result.data || result.error) && (
+        <form noValidate onSubmit={handleSubmit}>
+          <FormControl fullWidth sx={{ mt: '24px' }}>
+            <InputLabel>Select your data type</InputLabel>
+            <Select
+              fullWidth
+              value={dataType}
+              onChange={handleDataTypeChange}
+              label="Select your data type"
+              sx={{ textAlign: 'left' }}
+            >
+              {dataTypes.map((item) => (
+                <MenuItem key={item.value} value={item.value}>
+                  {item.label}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          {dataType === 'email' && (
+            <TextField
+              required
+              fullWidth
+              id="email"
+              label="Email"
+              variant="outlined"
+              sx={{ mt: 3 }}
+              value={email}
+              onChange={handleEmailChange}
+              type="email"
+              error={!isValidEmail}
+              helperText={!isValidEmail && 'Please enter a valid email address'}
+            />
+          )}
+          {dataType === 'file' && (
+            <Button
+              className="uploadFileButton"
+              variant="secondary"
+              onClick={() => fileInput.current?.click()}
+            >
+              {!filePath ? 'Upload' : 'Updated File'}
+              <input
+                ref={fileInput}
+                hidden
+                multiple
+                type="file"
+                onChange={(e) => handleFileChange(e)}
+              />
+            </Button>
+          )}
+          {filePath && dataType === 'file' && (
+            <Grid container columnSpacing={1} sx={{ mt: 1 }}>
+              <Grid item>
+                <Typography>{filePath.split('\\').slice(-1)}</Typography>
+              </Grid>
+              <Grid item>
+                <Verified color="success" />
+              </Grid>
+            </Grid>
+          )}
+
+          {dataType && (
+            <TextField
+              required
+              fullWidth
+              id="Name of your Protected Data"
+              label="Name of your Protected Data"
+              variant="outlined"
+              value={name}
+              onChange={handleNameChange}
+              sx={{ mt: 3 }}
+            />
+          )}
+
+          {dataType && !result.isLoading && (
+            <div className="text-center">
+              <Button type="submit" className="mt-6">
+                Create Protected Data
+              </Button>
+            </div>
+          )}
+        </form>
       )}
 
       {result.isLoading && (
@@ -224,6 +235,7 @@ export default function NewProtectedData() {
             </a>
             <p>Your protected data address: {result.data}</p>
           </Alert>
+
           <div
             className={cn(
               'text-center transition-opacity',
@@ -235,14 +247,6 @@ export default function NewProtectedData() {
             </Link>
           </div>
         </>
-      )}
-
-      {dataType && !result.isLoading && !result.data && (
-        <div className="text-center">
-          <Button className="mt-6" onClick={handleSubmit}>
-            Create Protected Data
-          </Button>
-        </div>
       )}
     </div>
   );
