@@ -73,6 +73,13 @@ export default function NewProtectedData() {
         data.email = email;
         break;
       case 'file':
+        if (!file) {
+          toast({
+            variant: 'danger',
+            title: 'Please upload a file.',
+          });
+          return;
+        }
         bufferFile = await createArrayBufferFromFile(file);
         data.file = bufferFile;
         break;
