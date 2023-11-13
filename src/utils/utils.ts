@@ -26,24 +26,28 @@ export const isKeyInDataSchema = (
   return false;
 };
 
+export const getTypeOfProtectedData = (schema?: DataSchema) => {
+  return isKeyInDataSchema(schema || {}, 'email')
+    ? 'Email'
+    : isKeyInDataSchema(schema || {}, 'file')
+    ? 'File'
+    : 'Unknown type';
+};
+
 export const createArrayBufferFromFile = async (
-  file?: File
-): Promise<ArrayBuffer> => {
+  file: File
+): Promise<Uint8Array> => {
   const fileReader = new FileReader();
-  if (file) {
-    return new Promise((resolve, reject) => {
-      fileReader.onerror = () => {
-        fileReader.abort();
-        reject(new DOMException('Error parsing input file.'));
-      };
-      fileReader.onload = () => {
-        resolve(fileReader.result as ArrayBuffer);
-      };
-      fileReader.readAsArrayBuffer(file);
-    });
-  } else {
-    return Promise.reject(new Error('No file selected'));
-  }
+  return new Promise((resolve, reject) => {
+    fileReader.onerror = () => {
+      fileReader.abort();
+      reject(new DOMException('Error parsing input file.'));
+    };
+    fileReader.onload = () => {
+      resolve(fileReader.result as Uint8Array);
+    };
+    fileReader.readAsArrayBuffer(file);
+  });
 };
 
 // from TimeStamp => 2023-06-23T17:46:37.212Z

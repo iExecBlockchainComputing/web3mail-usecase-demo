@@ -1,13 +1,94 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* iExec Yellow/iexec-yellow-300 = #FCD15A */
+    --iexec-yellow-300: hsl(44 96% 67%);
+
+    /* Grey/grey-100 = #F2F2F7 */
+    --grey-100: 240 24% 96%;
+    --grey-100_2: hsl(240 24% 96%); /* Do not use: Just to see the color */
+    /* Grey/grey-800 = #1D1D24 */
+    --grey-800: 240 11% 13%;
+    /* Grey/grey-900 = #0D0D12 */
+    --grey-900: 240 16% 6%;
+
+    /* Green/green-50 = #F1FDF9 */
+    --green-50: 160 75% 97%;
+    --green-50_2: hsl(160 75% 97%); /* Do not use: Just to see the color */
+
+    /* Green/green-300 = #39DBA5 */
+    --green-400: 160 69% 54%;
+    --green-400_2: hsl(160 69% 54%); /* Do not use: Just to see the color */
+
+    /* Green/green-600 = #00A36E */
+    --green-600: 160 100% 32%;
+    --green-600_2: hsl(160 100% 32%); /* Do not use: Just to see the color */
+
+    /* Orange/orange-50 = #FFF8F0 */
+    --orange-50: 32 100% 97%;
+    --orange-50_2: hsl(32 100% 97%); /* Do not use: Just to see the color */
+
+    /* Orange/orange-300 = #FFAD4D */
+    --orange-300: 32 100% 65%;
+    --orange-300_2: hsl(32 100% 65%); /* Do not use: Just to see the color */
+
+    /* Orange/orange-500 = #DA7B0B */
+    --orange-500: 32 90% 45%;
+    --orange-500_2: hsl(32 90% 45%); /* Do not use: Just to see the color */
+
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    --primary: var(--iexec-yellow-300);
+    --primary-foreground: var(--grey-800);
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    /*--accent: 210 40% 96.1%;*/
+    --accent: var(--grey-100);
+    --accent-foreground: 222.2 47.4% 11.2%;
+    /*--accent-foreground: var(--grey-grey-100);*/
+
+    --success: var(--green-50);
+    --success-foreground: var(--green-600);
+
+    --danger: var(--orange-50);
+    --danger-foreground: var(--orange-500);
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: hsl(214.3 31.8% 91.4%);
+    --input: var(--grey-800);
+    --ring: 222.2 84% 4.9%;
+
+    --radius: 10px; /* border-radius: calc(var(--radius) - 2px); ?? */
+  }
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  h2 {
+    @apply my-4 text-2xl font-bold;
+  }
 }

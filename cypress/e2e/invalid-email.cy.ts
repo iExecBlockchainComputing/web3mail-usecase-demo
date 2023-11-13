@@ -4,7 +4,7 @@ describe('creation of a protected data with an invalid email', () => {
     cy.viewport(1000, 660);
     cy.get('@body').click(350, 600);
     // as user i want to go to "My protected Data" and see the list of my protected data (represented by Cards)
-    cy.contains('Protect your data').click();
+    cy.contains('Add new').click();
     //as user i want to choose Email the data type i want with a submenu
     cy.get('div[role="button"]').click();
     //as user i want to choose "Email address" type
