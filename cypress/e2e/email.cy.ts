@@ -38,6 +38,10 @@ describe('creation of a protected data with a valid email', () => {
 
     //as user i want to create my protected data with a button
     cy.contains('Create Protected Data').click();
+    //as user i want a phrase that tells me to wait a bit
+    cy.contains(
+      'Your protected data is currently being created. Please wait a few moments.'
+    ).should('be.visible');
     //as user i want a hyperlink for my protected data (directing to iExec)
     cy.contains('See Detail').should('be.visible');
     //as user i want to verify the creation of the protected data on iExec Explorer

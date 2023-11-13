@@ -9,11 +9,11 @@ describe('grant and remove access to a protected data plus verify the property o
       .should('be.visible')
       .click();
     //as user i want to check who owns this card
-    cy.get('li').eq(0).should('contain', 'Owned by');
+    cy.get('li').eq(0).should('contain', 'Owned by: ');
     //as user i want to check the Data protected address
-    cy.get('li').eq(1).should('contain', 'Data Protected Address');
+    cy.get('li').eq(1).should('contain', 'Data Protected Address: ');
     //as user i want to check the IPFS link
-    cy.get('li').eq(2).should('contain', 'IPFS link');
+    cy.get('li').eq(2).should('contain', 'IPFS link: ');
     //as user i want to grant access
     cy.get('button[type="button"]').eq(4).click();
     //as user i want to enter an ETH address on a placeholder
@@ -26,7 +26,7 @@ describe('grant and remove access to a protected data plus verify the property o
     cy.contains('Validate').click();
     cy.contains('New access granted!').should('be.visible');
     //as user i want to remove access to my protected data
-    cy.get('button[aria-label="delete"]').click();
+    cy.contains('Revoke access').click();
     cy.contains('The granted access has been successfully revoked!');
     //as user i want to click on a  button to disconnect
     cy.get('button[type="button"]').eq(3).click();
