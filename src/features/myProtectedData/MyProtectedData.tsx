@@ -5,7 +5,7 @@ import { Box, CircularProgress, Pagination } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { CSSTransition } from 'react-transition-group';
 import { Button } from '@/components/ui/button.tsx';
-import ErrorAlert from '@/components/ErrorAlert.tsx';
+import Alert from '@/components/Alert.tsx';
 import {
   selectAppIsConnected,
   useFetchProtectedDataQuery,
@@ -53,9 +53,9 @@ export default function MyProtectedData() {
 
       {isError && (
         <div className="flex flex-col items-center">
-          <ErrorAlert>
+          <Alert variant="error">
             Oops, something went wrong while fetching your protected data.
-          </ErrorAlert>
+          </Alert>
         </div>
       )}
 

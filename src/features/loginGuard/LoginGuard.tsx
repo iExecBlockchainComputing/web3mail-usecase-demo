@@ -19,7 +19,7 @@ const LoginGuard: FC<{ children: ReactNode }> = ({ children }) => {
         <>{children}</>
       )}
       {!isConnected && !isAccountConnected && (chain?.id !== 134 || chain) && (
-        <p className="text-center">Please login with your wallet</p>
+        <p className="text-center text-lg">Please login with your wallet.</p>
       )}
       {isConnected && isAccountConnected && chain?.id !== 134 && (
         <Box
