@@ -10,3 +10,6 @@ interface ImportMetaEnv {
 interface ImportMeta {
   readonly env: ImportMetaEnv;
 }
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
+declare const __COMMIT_HASH__: string;
