@@ -30,15 +30,15 @@ steps:
     commands:
       - npm run check-format
 
-  # - name: check lint
-  #   image: node:18
-  #  commands:
-  #    - npm run lint
+#  - name: check lint
+#    image: node:18
+#    commands:
+#      - npm run lint
 
   - name: build
     image: node:18
     commands:
-      - npm run build
+      - VITE_COMMIT_HASH=${DRONE_COMMIT} npm run build
 
   # Build the docker image an dry-run publication
   - name: docker dry-run

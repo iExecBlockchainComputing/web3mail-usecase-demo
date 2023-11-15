@@ -5,11 +5,9 @@ interface Window {
 
 interface ImportMetaEnv {
   readonly WALLET_CONNECT_PROJECT_ID: string;
+  readonly VITE_COMMIT_HASH: string;
 }
 
 interface ImportMeta {
   readonly env: ImportMetaEnv;
 }
-
-// eslint-disable-next-line @typescript-eslint/naming-convention
-declare const __COMMIT_HASH__: string;
