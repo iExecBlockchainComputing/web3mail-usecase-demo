@@ -1,5 +1,7 @@
 # Build setp
 FROM node:18 AS build
+ARG COMMIT
+ARG VERSION
 WORKDIR /app
 COPY . .
 # Download public key for github.com
