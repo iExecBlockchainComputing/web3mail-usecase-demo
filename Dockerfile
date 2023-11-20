@@ -6,7 +6,9 @@ COPY . .
 RUN mkdir -p -m 0600 ~/.ssh && ssh-keyscan github.com >> ~/.ssh/known_hosts
 # we need to access ui-kit github private repo through ssh
 RUN --mount=type=ssh npm ci
-RUN npm run build
+RUN if [ "$VERSION" = "prod" ]; then export VITE_APP_VERSION=$(npm pkg get version | sed 's/"//g'); else export VITE_APP_VERSION="dev"; fi; \
+    VITE_APP_COMMIT=${COMMIT} \
+    npm run build
 
 # Production step
 FROM nginx:1.24.0-alpine AS production

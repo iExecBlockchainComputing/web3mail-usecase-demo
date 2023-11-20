@@ -106,6 +106,9 @@ steps:
       tags:
         - dev-${DRONE_COMMIT}
         - dev
+      build_args:
+        - COMMIT=${DRONE_COMMIT}
+        - VERSION=dev
       dockerfile: Dockerfile
       username:
         from_secret: nexus-user
@@ -218,6 +221,9 @@ steps:
     settings:
       registry: docker-regis.iex.ec
       repo: docker-regis.iex.ec/product/web3mail-usecase-demo
+      build_args:
+        - COMMIT=${DRONE_COMMIT}
+        - VERSION=prod
       dockerfile: Dockerfile
       username:
         from_secret: nexus-user
