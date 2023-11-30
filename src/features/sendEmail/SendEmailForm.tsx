@@ -147,11 +147,13 @@ export default function SendEmailForm() {
         </FormControl>
         <TextareaAutosize
           required
+          minRows={8}
+          maxRows={10}
           placeholder="Enter email content *"
           value={message}
           onChange={handleChange}
           id="textArea"
-          className="mt-4 !h-[200px] w-full border p-3"
+          className="mt-4 w-full border p-3"
         />
         <p className="my-2 text-sm italic">
           {charactersRemainingMessage} characters remaining
