@@ -21,7 +21,9 @@ export default function Alert({
         fullWidth ? 'w-full' : ''
       )}
     >
-      {variant === 'success' ? <CheckCircle size="20" /> : <Info size="20" />}
+      <div>
+        {variant === 'success' ? <CheckCircle size="20" /> : <Info size="20" />}
+      </div>
       <div className="flex flex-col">{children}</div>
     </div>
   );
