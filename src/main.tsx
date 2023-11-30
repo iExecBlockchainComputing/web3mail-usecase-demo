@@ -6,11 +6,10 @@ import { Toaster } from '@/components/ui/toaster.tsx';
 import { createRoot } from 'react-dom/client';
 import { ThemeProvider, createTheme } from '@mui/material';
 import { WagmiConfig } from 'wagmi';
-import { Web3Modal } from '@web3modal/react';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { store } from './app/store';
-import { ethereumClient, projectId, wagmiClient } from './app/store';
+import { wagmiConfig } from '@/utils/wagmiConfig.ts';
 
 const rootElement = document.getElementById('root');
 const root = createRoot(rootElement!);
@@ -28,15 +27,14 @@ const theme = createTheme({
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <Provider store={store}>
-        <ThemeProvider theme={theme}>
-          <WagmiConfig client={wagmiClient}>
+      <WagmiConfig config={wagmiConfig}>
+        <Provider store={store}>
+          <ThemeProvider theme={theme}>
             <App />
             <Toaster />
-          </WagmiConfig>
-          <Web3Modal projectId={projectId} ethereumClient={ethereumClient} />
-        </ThemeProvider>
-      </Provider>
+          </ThemeProvider>
+        </Provider>
+      </WagmiConfig>
     </BrowserRouter>
   </React.StrictMode>
 );

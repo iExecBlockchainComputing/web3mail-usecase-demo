@@ -1,4 +1,6 @@
+import { useEffect } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
+import { useAccount, useNetwork } from 'wagmi';
 import { ThemeProvider } from '@iexec/react-ui-kit';
 import NavBar from '@/components/NavBar/NavBar.tsx';
 import {
@@ -16,8 +18,20 @@ import {
   CREATE,
   HOME,
 } from './config/path';
+import { store } from '@/app/store.ts';
+import { initSDK } from '@/app/appSlice.ts';
 
 function App() {
+  const { connector } = useAccount();
+  const { chain } = useNetwork();
+
+  useEffect(() => {
+    if (!connector) {
+      return;
+    }
+    store.dispatch(initSDK({ connector }));
+  }, [connector, chain]);
+
   return (
     <div className="App">
       <ThemeProvider>

@@ -1,5 +1,6 @@
-import { Chain } from '@wagmi/core';
+import { type Chain } from 'wagmi';
 
+// https://wagmi.sh/react/chains#build-your-own
 export const bellecour = {
   id: 0x86,
   name: 'iExec Sidechain',
