@@ -1,4 +1,8 @@
-import { defaultWagmiConfig, createWeb3Modal } from '@web3modal/wagmi/react';
+import { createWeb3Modal } from '@web3modal/wagmi/react';
+import { walletConnectProvider, EIP6963Connector } from '@web3modal/wagmi';
+import { createConfig, configureChains } from 'wagmi';
+import { publicProvider } from 'wagmi/providers/public';
+import { WalletConnectConnector } from 'wagmi/connectors/walletConnect';
 import { bellecour } from '@/utils/walletConnection.ts';
 
 // Wagmi Client initialization
@@ -10,7 +14,10 @@ if (!import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID) {
 
 export const projectId = import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID!;
 
-const chains = [bellecour];
+const { chains, publicClient } = configureChains(
+  [bellecour],
+  [walletConnectProvider({ projectId }), publicProvider()]
+);
 
 const metadata = {
   name: 'Web3Modal',
@@ -19,7 +26,21 @@ const metadata = {
   icons: ['https://avatars.githubusercontent.com/u/37784886'],
 };
 
-export const wagmiConfig = defaultWagmiConfig({ chains, projectId, metadata });
+// Custom config instead of using defaultWagmiConfig
+// https://docs.walletconnect.com/web3modal/react/about?platform=wagmi#implementation
+// -> To avoid having @coinbase/wallet-sdk end up into our bundle
+export const wagmiConfig = createConfig({
+  autoConnect: true,
+  connectors: [
+    new WalletConnectConnector({
+      chains,
+      options: { projectId, showQrModal: false, metadata },
+    }),
+    // Needed to detect Metamask
+    new EIP6963Connector({ chains }),
+  ],
+  publicClient,
+});
 
 // 3. Create modal
-createWeb3Modal({ wagmiConfig, projectId, chains });
+createWeb3Modal({ wagmiConfig, projectId, chains, defaultChain: bellecour });
