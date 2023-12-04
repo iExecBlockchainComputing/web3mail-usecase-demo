@@ -9,16 +9,39 @@ const ToastProvider = ToastPrimitives.Provider;
 const ToastViewport = React.forwardRef<
   React.ElementRef<typeof ToastPrimitives.Viewport>,
   React.ComponentPropsWithoutRef<typeof ToastPrimitives.Viewport>
->(({ className, ...props }, ref) => (
-  <ToastPrimitives.Viewport
-    ref={ref}
-    className={cn(
-      'fixed top-[4.4rem] z-[1400] flex max-h-screen w-full flex-col-reverse p-4 sm:right-0 sm:flex-col md:max-w-[420px]',
-      className
-    )}
-    {...props}
-  />
-));
+>(({ className, ...props }, ref) => {
+  const [scrollY, setScrollY] = React.useState(64);
+
+  const updateScrollY = React.useCallback(() => {
+    if (window.scrollY >= 64) {
+      setScrollY(0);
+    } else {
+      setScrollY(64 - window.scrollY);
+    }
+  }, []);
+
+  React.useEffect(() => {
+    const onScroll = () => {
+      window.requestAnimationFrame(updateScrollY);
+    };
+
+    window.addEventListener('scroll', onScroll);
+
+    return () => window.removeEventListener('scroll', onScroll);
+  });
+
+  return (
+    <ToastPrimitives.Viewport
+      ref={ref}
+      className={cn(
+        'fixed z-[1400] flex max-h-screen w-full flex-col-reverse p-4 sm:right-0 sm:flex-col md:max-w-[420px]',
+        className
+      )}
+      style={{ top: `${scrollY}px` }}
+      {...props}
+    />
+  );
+});
 ToastViewport.displayName = ToastPrimitives.Viewport.displayName;
 
 const toastVariants = cva(
