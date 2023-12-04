@@ -9,11 +9,7 @@ import { Slash } from 'react-feather';
 import { useAccount } from 'wagmi';
 import { Button } from '@/components/ui/button.tsx';
 import Alert from '@/components/Alert.tsx';
-import {
-  selectAppIsConnected,
-  useFetchMyContactsQuery,
-} from '@/app/appSlice.ts';
-import { useAppSelector } from '@/app/hooks.ts';
+import { useFetchMyContactsQuery } from '@/app/appSlice.ts';
 import { getLocalDateFromTimeStamp } from '@/utils/utils.ts';
 import './SendEmail.css';
 
@@ -27,16 +23,13 @@ type Row = {
 export default function SendEmail() {
   const navigate = useNavigate();
   const { address } = useAccount();
-  const isAccountConnected = useAppSelector(selectAppIsConnected);
 
   //query RTK API as query hook
   const {
     data: myContacts = [],
     isLoading,
     isError,
-  } = useFetchMyContactsQuery(address as string, {
-    skip: !isAccountConnected,
-  });
+  } = useFetchMyContactsQuery(address as string);
 
   //for search bar
   const [searchTerm, setSearchTerm] = useState('');

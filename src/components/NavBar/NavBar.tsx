@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button.tsx';
 
 export default function NavBar() {
   const location = useLocation();
-  const { isConnected, address, isAccountConnected, login, logout } = useUser();
+  const { isConnected, address, login, logout } = useUser();
 
   const myProtectedDataLeft = 'left-[13px]';
   const myProtectedDataWidth = 'w-[104px]';
@@ -63,7 +63,7 @@ export default function NavBar() {
         ></div>
       </div>
 
-      {isConnected && isAccountConnected ? (
+      {isConnected ? (
         <div className="flex flex-1 items-center justify-end gap-x-1">
           <AddressChip address={address!} />
           <button

@@ -6,11 +6,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { CSSTransition } from 'react-transition-group';
 import { Button } from '@/components/ui/button.tsx';
 import Alert from '@/components/Alert.tsx';
-import {
-  selectAppIsConnected,
-  useFetchProtectedDataQuery,
-} from '@/app/appSlice.ts';
-import { useAppSelector } from '@/app/hooks.ts';
+import { useFetchProtectedDataQuery } from '@/app/appSlice.ts';
 import img from '../../assets/noData.png';
 import ProtectedDataCard from '@/features/myProtectedData/ProtectedDataCard.tsx';
 import { ITEMS_PER_PAGE } from '@/config/config.ts';
@@ -20,16 +16,13 @@ import './MyProtectedData.css';
 
 export default function MyProtectedData() {
   const { address } = useAccount();
-  const isAccountConnected = useAppSelector(selectAppIsConnected);
 
   //query RTK API as query hook
   const {
     data: protectedData = [],
     isLoading,
     isError,
-  } = useFetchProtectedDataQuery(address as string, {
-    skip: !isAccountConnected,
-  });
+  } = useFetchProtectedDataQuery(address as string);
 
   //for pagination
   const [currentPage, setCurrentPage] = useState(1);

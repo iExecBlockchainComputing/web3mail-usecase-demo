@@ -58,15 +58,17 @@ export const appSlice = createSlice({
       })
       .addCase(initSDK.rejected, (state, action) => {
         state.status = 'Failed';
-        state.error = '' + action.error.message;
+        state.error = String(action.error.message);
       });
   },
 });
 
 export default appSlice.reducer;
 
-export const selectAppIsConnected = (state: RootState) =>
+export const isSdksReady = (state: RootState) =>
   state.app.status === 'Connected';
+
+export const sdksInitError = (state: RootState) => state.app.error;
 
 export const { resetAppState } = appSlice.actions;
 
