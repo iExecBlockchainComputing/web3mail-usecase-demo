@@ -27,14 +27,14 @@ const theme = createTheme({
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <WagmiConfig config={wagmiConfig}>
-        <Provider store={store}>
-          <ThemeProvider theme={theme}>
+      <Provider store={store}>
+        <ThemeProvider theme={theme}>
+          <WagmiConfig config={wagmiConfig}>
             <App />
             <Toaster />
-          </ThemeProvider>
-        </Provider>
-      </WagmiConfig>
+          </WagmiConfig>
+        </ThemeProvider>
+      </Provider>
     </BrowserRouter>
   </React.StrictMode>
 );
