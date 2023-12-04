@@ -2,14 +2,14 @@ import React from 'react';
 import './modified-tailwind-preflight.css';
 import './index.css';
 import App from './App';
-import { Toaster } from '@/components/ui/toaster.tsx';
 import { createRoot } from 'react-dom/client';
 import { ThemeProvider, createTheme } from '@mui/material';
 import { WagmiConfig } from 'wagmi';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { store } from './app/store';
 import { wagmiConfig } from '@/utils/wagmiConfig.ts';
+import { store } from '@/app/store.ts';
+import { Toaster } from '@/components/ui/toaster.tsx';
 
 const rootElement = document.getElementById('root');
 const root = createRoot(rootElement!);
