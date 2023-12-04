@@ -37,50 +37,29 @@ function App() {
       <ThemeProvider>
         <NavBar />
         <div className="mx-auto mt-12 w-[80%] max-w-6xl">
-          <Routes>
-            <Route
-              path={`/${PROTECTED_DATA}`}
-              element={
-                <LoginGuard>
-                  <MyProtectedData />
-                </LoginGuard>
-              }
-            />
-            <Route
-              path={`/${PROTECTED_DATA}/${CONSENT}/:ProtectedDataId`}
-              element={
-                <LoginGuard>
-                  <OneProtectedData />
-                </LoginGuard>
-              }
-            />
-            <Route
-              path={`/${PROTECTED_DATA}/${CREATE}`}
-              element={
-                <LoginGuard>
-                  <NewProtectedData />
-                </LoginGuard>
-              }
-            />
-            <Route
-              path={`/${SEND_EMAIL}`}
-              element={
-                <LoginGuard>
-                  <SendEmail />
-                </LoginGuard>
-              }
-            />
-            <Route
-              path={`/${SEND_EMAIL}/:receiverAddress/:protectedDataAddress`}
-              element={
-                <LoginGuard>
-                  <SendEmailForm />
-                </LoginGuard>
-              }
-            />
-            {/* default redirect */}
-            <Route path="*" element={<Navigate to={`/${HOME}`} />} />
-          </Routes>
+          <LoginGuard>
+            <Routes>
+              <Route
+                path={`/${PROTECTED_DATA}`}
+                element={<MyProtectedData />}
+              />
+              <Route
+                path={`/${PROTECTED_DATA}/${CONSENT}/:ProtectedDataId`}
+                element={<OneProtectedData />}
+              />
+              <Route
+                path={`/${PROTECTED_DATA}/${CREATE}`}
+                element={<NewProtectedData />}
+              />
+              <Route path={`/${SEND_EMAIL}`} element={<SendEmail />} />
+              <Route
+                path={`/${SEND_EMAIL}/:receiverAddress/:protectedDataAddress`}
+                element={<SendEmailForm />}
+              />
+              {/* default redirect */}
+              <Route path="*" element={<Navigate to={`/${HOME}`} />} />
+            </Routes>
+          </LoginGuard>
         </div>
       </ThemeProvider>
     </div>
