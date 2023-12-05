@@ -4,19 +4,24 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { X } from 'react-feather';
 import { cn } from '@/utils/style.utils.ts';
 
+const HEADER_HEIGHT_IN_PX = 64;
+
 const ToastProvider = ToastPrimitives.Provider;
 
 const ToastViewport = React.forwardRef<
   React.ElementRef<typeof ToastPrimitives.Viewport>,
   React.ComponentPropsWithoutRef<typeof ToastPrimitives.Viewport>
 >(({ className, ...props }, ref) => {
-  const [scrollY, setScrollY] = React.useState(64);
+  // Inspiration taken from this lib:
+  // https://github.com/SMAKSS/react-scroll-direction/blob/master/src/index.ts
+
+  const [scrollY, setScrollY] = React.useState(HEADER_HEIGHT_IN_PX);
 
   const updateScrollY = React.useCallback(() => {
-    if (window.scrollY >= 64) {
+    if (window.scrollY >= HEADER_HEIGHT_IN_PX) {
       setScrollY(0);
     } else {
-      setScrollY(64 - window.scrollY);
+      setScrollY(HEADER_HEIGHT_IN_PX - window.scrollY);
     }
   }, []);
 
