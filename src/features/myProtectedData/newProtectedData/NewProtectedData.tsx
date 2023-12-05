@@ -19,7 +19,6 @@ import { PROTECTED_DATA } from '@/config/path.ts';
 import { useCreateProtectedDataMutation } from '@/app/appSlice.ts';
 import { cn } from '@/utils/style.utils.ts';
 import { createArrayBufferFromFile } from '@/utils/utils.ts';
-import './NewProtectedData.css';
 
 export default function NewProtectedData() {
   const { toast } = useToast();
@@ -139,18 +138,18 @@ export default function NewProtectedData() {
               id="email"
               label="Email"
               variant="outlined"
-              sx={{ mt: 3 }}
               value={email}
-              onChange={handleEmailChange}
               type="email"
               error={!isValidEmail}
               helperText={!isValidEmail && 'Please enter a valid email address'}
+              className="mt-6"
+              onChange={handleEmailChange}
             />
           )}
           {dataType === 'file' && (
             <Button
-              className="uploadFileButton"
               variant="secondary"
+              className="mt-6 w-full"
               onClick={() => fileInput.current?.click()}
             >
               {!filePath ? 'Upload' : 'Updated File'}
@@ -182,8 +181,8 @@ export default function NewProtectedData() {
               label="Name of your Protected Data"
               variant="outlined"
               value={name}
+              className="mt-6"
               onChange={handleNameChange}
-              sx={{ mt: 3 }}
             />
           )}
 
