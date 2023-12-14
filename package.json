@@ -43,7 +43,7 @@
     "react-transition-group": "^4.4.5",
     "tailwind-merge": "^2.0.0",
     "tailwindcss-animate": "^1.0.7",
-    "wagmi": "^1.4.7"
+    "wagmi": "^1.4.12"
   },
   "devDependencies": {
     "@ethersproject/experimental": "^5.7.0",
