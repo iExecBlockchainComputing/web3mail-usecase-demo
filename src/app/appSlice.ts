@@ -1,3 +1,4 @@
+import { type Connector } from 'wagmi';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import {
   ProtectedData,
@@ -7,7 +8,6 @@ import {
   RevokedAccess,
   GrantAccessParams,
 } from '@iexec/dataprotector';
-import { getAccount } from 'wagmi/actions';
 import {
   IExecWeb3mail,
   SendEmailParams,
@@ -33,16 +33,14 @@ const initialState: AppState = {
   error: null,
 };
 
-export const initSDK = createAsyncThunk('app/initSDK', async () => {
-  try {
-    const result = getAccount();
-    const provider = await result.connector?.getProvider();
+export const initSDK = createAsyncThunk(
+  'app/initSDK',
+  async ({ connector }: { connector: Connector }) => {
+    const provider = await connector?.getProvider();
     iExecDataProtector = new IExecDataProtector(provider);
     iExecWeb3Mail = new IExecWeb3mail(provider);
-  } catch (e: any) {
-    return { error: e.message };
   }
-});
+);
 
 export const appSlice = createSlice({
   name: 'app',

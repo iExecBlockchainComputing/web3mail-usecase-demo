@@ -2,15 +2,14 @@ import React from 'react';
 import './modified-tailwind-preflight.css';
 import './index.css';
 import App from './App';
-import { Toaster } from '@/components/ui/toaster.tsx';
 import { createRoot } from 'react-dom/client';
 import { ThemeProvider, createTheme } from '@mui/material';
 import { WagmiConfig } from 'wagmi';
-import { Web3Modal } from '@web3modal/react';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { store } from './app/store';
-import { ethereumClient, projectId, wagmiClient } from './app/store';
+import { wagmiConfig } from '@/utils/wagmiConfig.ts';
+import { store } from '@/app/store.ts';
+import { Toaster } from '@/components/ui/toaster.tsx';
 
 const rootElement = document.getElementById('root');
 const root = createRoot(rootElement!);
@@ -30,11 +29,10 @@ root.render(
     <BrowserRouter>
       <Provider store={store}>
         <ThemeProvider theme={theme}>
-          <WagmiConfig client={wagmiClient}>
+          <WagmiConfig config={wagmiConfig}>
             <App />
             <Toaster />
           </WagmiConfig>
-          <Web3Modal projectId={projectId} ethereumClient={ethereumClient} />
         </ThemeProvider>
       </Provider>
     </BrowserRouter>
