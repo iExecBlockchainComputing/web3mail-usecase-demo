@@ -1,6 +1,6 @@
 import { FC, ReactNode } from 'react';
+import { AlertCircle } from 'react-feather';
 import { useAccount, useNetwork, useSwitchNetwork } from 'wagmi';
-import { Box } from '@mui/material';
 import { Button } from '@/components/ui/button.tsx';
 import { selectAppIsConnected } from '@/app/appSlice.ts';
 import { useAppSelector } from '@/app/hooks.ts';
@@ -22,11 +22,7 @@ const LoginGuard: FC<{ children: ReactNode }> = ({ children }) => {
         <p className="text-center text-lg">Please login with your wallet.</p>
       )}
       {isConnected && isAccountConnected && chain?.id !== 134 && (
-        <Box
-          sx={{
-            margin: '3rem auto',
-          }}
-        >
+        <div className="mx-auto my-12">
           <p>Oops, you're on the wrong network</p>
           <p>Click on the following button to switch to the right network</p>
           <Button
@@ -38,8 +34,13 @@ const LoginGuard: FC<{ children: ReactNode }> = ({ children }) => {
             Switch to {chains[0].name}
             {isLoading && pendingChainId === chains[0]?.id && ' (switching)'}
           </Button>
-          <div>{error && error.message}</div>
-        </Box>
+          {error && (
+            <div className="ml-1 mt-1.5 flex items-center text-red-500">
+              <AlertCircle size="14" />
+              <span className="ml-1 text-sm">{error.message}</span>
+            </div>
+          )}
+        </div>
       )}
     </>
   );

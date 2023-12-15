@@ -1,11 +1,10 @@
-import { useWeb3Modal } from '@web3modal/react';
+import { useWeb3Modal } from '@web3modal/wagmi/react';
 import { useAccount, useDisconnect } from 'wagmi';
 import { useAppDispatch, useAppSelector } from '@/app/hooks.ts';
 import { resetAppState, selectAppIsConnected } from '@/app/appSlice.ts';
-import { bellecour } from '@/utils/walletConnection.ts';
 
 export function useUser() {
-  const { open, setDefaultChain } = useWeb3Modal();
+  const { open } = useWeb3Modal();
   const { isConnected, address } = useAccount();
   const { disconnectAsync } = useDisconnect();
   const dispatch = useAppDispatch();
@@ -19,7 +18,6 @@ export function useUser() {
   };
 
   const login = () => {
-    setDefaultChain(bellecour);
     open();
   };
 
