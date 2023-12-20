@@ -36,17 +36,16 @@
 //   }
 // }
 
-import { addEip6963ProviderToWindow } from './ethereum.ts';
+import { WALLET_MAP, addEip6963ProvidersToWindow } from './ethereum.ts';
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
     interface VisitOptions {
-      selectedWallet?: string;
-      walletChain?: 134;
+      injectWallets?: boolean;
     }
     interface Chainable {
-      login(walletName: string): Chainable<void>;
+      login(walletName?: string): Chainable<void>;
     }
   }
 }
@@ -68,14 +67,16 @@ Cypress.Commands.overwrite(
         onBeforeLoad(win) {
           options?.onBeforeLoad?.(win);
           win.localStorage.clear();
-          addEip6963ProviderToWindow(win, options);
+          if (options?.injectWallets) {
+            addEip6963ProvidersToWindow(win);
+          }
         },
       });
     });
   }
 );
 
-Cypress.Commands.add('login', (walletName: string) => {
+Cypress.Commands.add('login', (walletName: string = WALLET_MAP.TEST.name) => {
   cy.contains('Login').click();
   cy.contains(walletName, { includeShadowDom: true }).click();
 });

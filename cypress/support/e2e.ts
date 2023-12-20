@@ -15,10 +15,9 @@
 
 // Import commands.js using ES2015 syntax:
 import './commands.ts';
-import { METAMASK_MOCK_NAME } from './ethereum.ts';
 
 beforeEach(() => {
-  cy.visit('/', { selectedWallet: METAMASK_MOCK_NAME });
+  cy.visit('/', { injectWallets: true });
   cy.get('body').as('body');
   cy.on('uncaught:exception', (e, runnable) => {
     console.log('uncaught:exception', e);

@@ -1,9 +1,8 @@
-import { METAMASK_MOCK_NAME } from '../support/ethereum.ts';
 import { getRandomAddress } from '../support/utils.ts';
 
 describe('grant and remove access to a protected data plus verify the property of a card', () => {
   it('as user i want to verify the property of a protected data card, grant and revoke access to an ETH address', () => {
-    cy.login(METAMASK_MOCK_NAME);
+    cy.login();
     //as user i want to click on a wild card containing a protected data and information about
     cy.get('[data-cy="protected-data-card"]')
       .eq(0)

@@ -1,8 +1,6 @@
-import { METAMASK_MOCK_NAME } from '../support/ethereum.ts';
-
 describe('creation of a protected data with an invalid email', () => {
   it('as user i want to create a protected data', () => {
-    cy.login(METAMASK_MOCK_NAME);
+    cy.login();
     // as user i want to go to "My protected Data" and see the list of my protected data (represented by Cards)
     cy.contains('Add new').click();
     //as user i want to choose Email the data type i want with a submenu

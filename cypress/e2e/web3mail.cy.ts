@@ -1,8 +1,39 @@
-import { METAMASK_MOCK_NAME } from '../support/ethereum.ts';
+import { WALLET_MAP } from '../support/ethereum.ts';
+import { getRandomString } from '../support/utils.ts';
 
 describe('send an email using web3mail', () => {
+  before(() => {
+    // create a contact
+    cy.visit('/', { injectWallets: true });
+    cy.login(WALLET_MAP.RANDOM.name);
+    cy.contains('Add new').click();
+    cy.contains('Select your data type').parent().click();
+    cy.contains('Email Address').click();
+    cy.get('input[id="email"]').type(
+      getRandomString() + '@' + getRandomString(4) + getRandomString(3)
+    );
+    cy.get('input[id="Name of your Protected Data"]').type(getRandomString());
+    cy.contains('Create Protected Data').click();
+    cy.contains(
+      'Your protected data is currently being created. Please wait a few moments.'
+    ).should('be.visible');
+    cy.contains('See Detail').should('be.visible');
+
+    // authorize the TEST wallet to send an email
+    cy.contains('My Protected Data').click();
+    cy.get('[data-cy="protected-data-card"]')
+      .eq(0)
+      .should('be.visible')
+      .click();
+    cy.contains('Authorize a new user').click();
+    cy.contains('Ethereum Address')
+      .parent()
+      .type(WALLET_MAP.TEST.wallet.address);
+    cy.contains('Validate').click();
+    cy.contains('New access granted!').should('be.visible');
+  });
   it('as user i want to send a mail with web3mail', () => {
-    cy.login(METAMASK_MOCK_NAME);
+    cy.login();
     //as user i want to go to "Send mail" section
     cy.contains('Send Email').click();
     //as user i want to click on a button in order to send a email
