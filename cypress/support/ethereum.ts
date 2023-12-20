@@ -16,9 +16,6 @@ const TEST_PRIVATE_KEY =
   '0x564a9db84969c8159f7aa3d5393c5ecd014fce6a375842a45b12af6677b12407';
 export const TEST_ADDRESS = new Wallet(TEST_PRIVATE_KEY).address;
 
-export const toShortAddress = (address: string) =>
-  `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
-
 export const PROVIDERS_MAP = {
   134: new JsonRpcProvider('https://bellecour.iex.ec', {
     name: 'bellecour',
@@ -162,7 +159,7 @@ class Eip1193Bridge {
 }
 
 export class MetaMaskMock extends Eip1193Bridge {
-  constructor(signer: Wallet, provider: JsonRpcProvider) {
+  constructor(signer: Signer, provider: JsonRpcProvider) {
     super(signer.connect(provider), provider);
   }
 
