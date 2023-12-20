@@ -97,7 +97,7 @@ class Eip1193Bridge {
       case 'eth_call': {
         return await this.provider.call(params[0]);
       }
-      case 'estimateGas': {
+      case 'eth_estimateGas': {
         if (params[1] && params[1] !== 'latest') {
           throwUnsupported('estimateGas does not support blockTag');
         }
