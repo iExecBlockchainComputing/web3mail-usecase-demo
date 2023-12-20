@@ -42,11 +42,11 @@ declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
     interface VisitOptions {
-      selectedWallet?: 'metamask';
+      selectedWallet?: string;
       walletChain?: 134;
     }
     interface Chainable {
-      login(): Chainable<void>;
+      login(walletName: string): Chainable<void>;
     }
   }
 }
@@ -75,8 +75,7 @@ Cypress.Commands.overwrite(
   }
 );
 
-// Cypress.Commands.add('login', () => {
-//   cy.visit('/', { selectedWallet: 'metamask' });
-//   cy.contains('Login').click();
-//   cy.contains('metamask').click();
-// });
+Cypress.Commands.add('login', (walletName: string) => {
+  cy.contains('Login').click();
+  cy.contains(walletName, { includeShadowDom: true }).click();
+});
