@@ -9,10 +9,11 @@ In the Web3 ecosystem, users often rely on blockchain wallets for storing and ma
 We introduce Privacy-enhancing marketing, a novel approach designed to enable communication between Web3 users and decentralized applications (dApps) while prioritizing user privacy and consent. This approach leverages a combination of features that allow for targeted marketing and user engagement without compromising the privacy of individuals. Additionally, these tools empower users to monetize direct marketing actions, creating a more equitable and user-centric ecosystem.
 
 Key Components of Privacy-Enhancing Marketing:
+
 - **User Consent Management**: A user consent mechanism should be in place to ensure that users explicitly authorize the sharing of their personal data with third parties.
-- **Secure Data Sharing Protocols**: To facilitate secure data sharing between users and third parties, confidential computing technology should be employed. 
+- **Secure Data Sharing Protocols**: To facilitate secure data sharing between users and third parties, confidential computing technology should be employed.
 - **Privacy-Preserving Communication Channels**: To enable third parties to communicate with users without accessing their personal data directly, privacy-preserving communication channels can be used.
-- **Targeted marketing without personal data exposure**: Privacy-enhancing marketing techniques enable targeted marketing campaigns without exposing users' personal data. 
+- **Targeted marketing without personal data exposure**: Privacy-enhancing marketing techniques enable targeted marketing campaigns without exposing users' personal data.
 - **Monetizing direct marketing actions**: Privacy-enhancing marketing tools can empower users to monetize their engagement with direct marketing campaigns. By participating in targeted marketing efforts, users can earn rewards, such as cryptocurrency or utility tokens, incentivizing users to share their preferences and interests while maintaining control over their privacy.
 
 In summary, privacy-enhancing marketing introduces a new paradigm for communication and user engagement in the Web3 ecosystem. By leveraging cutting-edge privacy-preserving technologies and prioritizing user consent, this approach enables Web3 users and dApps to interact and share information without compromising user privacy. Furthermore, these tools allow users to monetize their involvement in direct marketing actions, fostering a more equitable and user-centric digital environment.
@@ -22,7 +23,7 @@ In the next section, we invite you to discover how iExec tools enable Web3 proje
 
 **[Stable channel v1](https://iex.ec/)**
 
- [![license](https://img.shields.io/badge/license-Apache%202-blue)](/LICENSE)
+[![license](https://img.shields.io/badge/license-Apache%202-blue)](/LICENSE)
 
 </div>
 
@@ -36,7 +37,6 @@ In the next section, we invite you to discover how iExec tools enable Web3 proje
 
 This project is licensed under the terms of the
 [Apache 2.0](/LICENSE).
-
 
 <h1 align="center">Run the use case demo</h1>
 
@@ -75,6 +75,28 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:5173) to view it in the browser. The page will automatically reload if you make changes to the code.
+
+## Automated tests
+
+To run the automated tests, use the following command:
+
+run the app locally
+
+```bash
+npm run dev
+```
+
+run the tests in a headless browser
+
+```bash
+npm run test:local
+```
+
+or open in a browser
+
+```bash
+npm run test:open-local
+```
 
 ## Building for production
 
