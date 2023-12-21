@@ -34,7 +34,7 @@ export default function AddressChip(props: AddressForNavBarProps) {
         <img
           src={addressIcon}
           alt="Generated address icon"
-          className="h-4 w-4 rounded-full"
+          className="size-4 rounded-full"
         />
       </button>
     </div>
