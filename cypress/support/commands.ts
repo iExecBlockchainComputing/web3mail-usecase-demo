@@ -36,20 +36,16 @@
 //   }
 // }
 
-import { MetaMaskMock, PROVIDERS_MAP, wallet } from './ethereum';
+import { WALLET_MAP, addEip6963ProvidersToWindow } from './ethereum.ts';
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
-    interface ApplicationWindow {
-      ethereum: MetaMaskMock;
-    }
     interface VisitOptions {
-      selectedWallet?: 'metamask';
-      walletChain?: 134;
+      injectWallets?: boolean;
     }
     interface Chainable {
-      login(): Chainable<void>;
+      login(walletName?: string): Chainable<void>;
     }
   }
 }
@@ -71,9 +67,8 @@ Cypress.Commands.overwrite(
         onBeforeLoad(win) {
           options?.onBeforeLoad?.(win);
           win.localStorage.clear();
-          if (options?.selectedWallet === 'metamask') {
-            const chain = options?.walletChain || 134;
-            win.ethereum = new MetaMaskMock(wallet, PROVIDERS_MAP[chain]);
+          if (options?.injectWallets) {
+            addEip6963ProvidersToWindow(win);
           }
         },
       });
@@ -81,8 +76,7 @@ Cypress.Commands.overwrite(
   }
 );
 
-Cypress.Commands.add('login', () => {
-  cy.visit('/', { selectedWallet: 'metamask' });
+Cypress.Commands.add('login', (walletName: string = WALLET_MAP.TEST.name) => {
   cy.contains('Login').click();
-  cy.contains('metamask').click();
+  cy.contains(walletName, { includeShadowDom: true }).click();
 });
