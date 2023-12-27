@@ -14,10 +14,10 @@
 // ***********************************************************
 
 // Import commands.js using ES2015 syntax:
-import './commands';
+import './commands.ts';
 
 beforeEach(() => {
-  cy.visit('/', { selectedWallet: 'metamask' });
+  cy.visit('/', { injectWallets: true });
   cy.get('body').as('body');
   cy.on('uncaught:exception', (e, runnable) => {
     console.log('uncaught:exception', e);

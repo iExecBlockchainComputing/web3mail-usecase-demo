@@ -5,7 +5,9 @@
     "lib": ["ES6", "dom"],
     "types": ["cypress"],
     "module": "NodeNext",
-    "moduleResolution": "NodeNext"
+    "moduleResolution": "NodeNext",
+    "allowImportingTsExtensions": true,
+    "noEmit": true
   },
   "include": ["**/*.ts"]
 }
