@@ -118,7 +118,7 @@ export default function MyProtectedData() {
                     <div className="max-w-[300px] flex-1">
                       <ProtectedDataCard
                         id={address}
-                        title={name || 'Undefined'}
+                        title={name || '(No name)'}
                         schema={schema}
                         date={getLocalDateFromBlockchainTimestamp(
                           creationTimestamp
