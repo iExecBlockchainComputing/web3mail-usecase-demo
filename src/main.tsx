@@ -26,7 +26,7 @@ const theme = createTheme({
 
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
       <Provider store={store}>
         <ThemeProvider theme={theme}>
           <WagmiConfig config={wagmiConfig}>

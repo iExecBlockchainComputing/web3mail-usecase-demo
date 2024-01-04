@@ -91,5 +91,5 @@ steps:
     commands:
       - npm install --global vercel@canary
       - vercel pull --yes --environment=production --scope i-exec --token $VERCEL_TOKEN
-      - VITE_APP_COMMIT=${DRONE_COMMIT} vercel build --prod --scope i-exec --token $VERCEL_TOKEN
+      - SET_SUBPATH_FOR_PROD=true VITE_APP_COMMIT=${DRONE_COMMIT} vercel build --prod --scope i-exec --token $VERCEL_TOKEN
       - vercel deploy --prod --prebuilt --scope i-exec --token $VERCEL_TOKEN
