@@ -34,7 +34,7 @@
     "@web3modal/wagmi": "^3.4.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
-    "ethers": "^5.7.2",
+    "ethers": "^6.9.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-feather": "^2.0.10",
@@ -46,7 +46,6 @@
     "wagmi": "^1.4.12"
   },
   "devDependencies": {
-    "@ethersproject/experimental": "^5.7.0",
     "@types/node": "^20.9.0",
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",
@@ -70,7 +69,7 @@
     "prettier": "^3.0.3",
     "prettier-plugin-tailwindcss": "^0.5.6",
     "rollup-plugin-visualizer": "^5.9.2",
-    "tailwindcss": "^3.3.5",
+    "tailwindcss": "^3.4.0",
     "typescript": "^5.0.2",
     "vite": "^4.5.0"
   }

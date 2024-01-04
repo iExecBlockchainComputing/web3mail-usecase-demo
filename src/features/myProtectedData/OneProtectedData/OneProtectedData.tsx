@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import AddIcon from '@mui/icons-material/Add';
-import { Box, CircularProgress } from '@mui/material';
+import { CircularProgress } from '@mui/material';
 import { useAccount } from 'wagmi';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { Slash } from 'react-feather';
@@ -66,21 +66,25 @@ export default function OneProtectedData() {
           </Link>
         </Button>
       </div>
-      <Box sx={{ textAlign: 'left' }}>
-        <h2 className="h-8">{protectedDataSelected?.name}</h2>
-        <Badge
-          variant={
-            getTypeOfProtectedData(protectedDataSelected?.schema) ===
-            'Unknown type'
-              ? 'secondary'
-              : 'default'
-          }
-        >
-          {getTypeOfProtectedData(protectedDataSelected?.schema)}
-        </Badge>
-      </Box>
-      <div className="mt-8 rounded-md border border-grey-800/40 px-5 py-6 text-left">
-        <ul className="flex list-disc flex-col gap-y-4 pl-6">
+      <div className="mt-4 rounded-md border border-grey-800/40 py-6 pl-3 pr-5 text-left">
+        <ul className="flex flex-col gap-y-4 pl-6">
+          {protectedDataSelected?.name && (
+            <li className="-mb-1">
+              <h2 className="inline">{protectedDataSelected?.name}</h2>
+            </li>
+          )}
+          <li>
+            <Badge
+              variant={
+                getTypeOfProtectedData(protectedDataSelected?.schema) ===
+                'Unknown type'
+                  ? 'secondary'
+                  : 'default'
+              }
+            >
+              {getTypeOfProtectedData(protectedDataSelected?.schema)}
+            </Badge>
+          </li>
           <li>
             Owned by: <strong>{protectedDataSelected?.owner}</strong>
           </li>
