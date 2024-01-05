@@ -1,16 +1,13 @@
 import { type FormEvent, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Verified } from '@mui/icons-material';
 import {
   FormControl,
-  Grid,
   InputLabel,
   MenuItem,
   Select,
   TextField,
-  Typography,
 } from '@mui/material';
-import { ChevronLeft } from 'react-feather';
+import { CheckCircle, ChevronLeft } from 'react-feather';
 import { Button } from '@/components/ui/button.tsx';
 import { useToast } from '@/components/ui/use-toast.ts';
 import { Alert } from '@/components/Alert.tsx';
@@ -164,14 +161,10 @@ export default function NewProtectedData() {
             </Button>
           )}
           {filePath && dataType === 'file' && (
-            <Grid container columnSpacing={1} sx={{ mt: 1 }}>
-              <Grid item>
-                <Typography>{filePath.split('\\').slice(-1)}</Typography>
-              </Grid>
-              <Grid item>
-                <Verified color="success" />
-              </Grid>
-            </Grid>
+            <div className="mt-2 flex items-center gap-x-2">
+              {filePath.split('\\').slice(-1)}
+              <CheckCircle size="20" className="text-success-foreground" />
+            </div>
           )}
 
           {dataType && (
