@@ -109,6 +109,9 @@ export default function NewProtectedData() {
       </div>
 
       <h2>Protect New Data</h2>
+      <p className="-mt-3 mb-4">
+        This will create a new protected data of which you will be the owner.
+      </p>
 
       {(!result.data || result.error) && (
         <form noValidate onSubmit={handleSubmit}>
