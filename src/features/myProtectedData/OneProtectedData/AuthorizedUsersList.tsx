@@ -56,11 +56,11 @@ export default function AuthorizedUsersList(props: AuthorizedUsersListProps) {
     {
       field: 'avatar',
       sortable: false,
-      width: 60,
+      width: 56,
       renderHeader: () => null,
       renderCell: () => (
-        <div className="rounded-full bg-[#bdbdbd] p-2">
-          <User size="22" aria-label="user-icon" className="text-white" />
+        <div className="bg-grey-300 rounded-full p-2">
+          <User size="20" aria-label="user-icon" className="text-white" />
         </div>
       ),
     },
