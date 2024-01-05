@@ -1,21 +1,19 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Address, Contact, TimeStamp } from '@iexec/web3mail';
-import SearchIcon from '@mui/icons-material/Search';
-import { Box, CircularProgress, InputBase } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import SendIcon from '@mui/icons-material/Send';
-import { Slash } from 'react-feather';
+import { Search, Send, Slash } from 'react-feather';
 import { useAccount } from 'wagmi';
 import { Button } from '@/components/ui/button.tsx';
-import Alert from '@/components/Alert.tsx';
+import { Alert } from '@/components/Alert.tsx';
 import {
   selectAppIsConnected,
   useFetchMyContactsQuery,
 } from '@/app/appSlice.ts';
 import { useAppSelector } from '@/app/hooks.ts';
 import { getLocalDateFromTimeStamp } from '@/utils/utils.ts';
-import './SendEmail.css';
+import { CircularLoader } from '@/components/CircularLoader.tsx';
+import { Input } from '@/components/ui/input.tsx';
 
 type Row = {
   id: string;
@@ -68,8 +66,8 @@ export default function SendEmail() {
             navigate(`./${params.row.owner}/${params.row.protectedDataAddress}`)
           }
         >
-          <SendIcon className="text-sm" />
-          <span className="pl-1.5">Send web3 email</span>
+          <Send size="15" />
+          <span className="pl-2">Send web3 email</span>
         </Button>
       ),
     },
@@ -101,7 +99,7 @@ export default function SendEmail() {
   };
 
   return (
-    <Box>
+    <>
       <h2>Contacts List</h2>
       <p>
         These are contacts that have protected their email address data and have
@@ -109,23 +107,20 @@ export default function SendEmail() {
         their email address.
       </p>
 
-      <Box id="search" sx={{ mt: 5 }}>
-        <div id="iconWrapper">
-          <SearchIcon sx={{ color: '#788896' }} />
-        </div>
-        <InputBase
+      <div className="relative mt-10">
+        <Search size="20" className="absolute top-3 ml-4" />
+        <Input
           placeholder="Search address"
-          inputProps={{ 'aria-label': 'search' }}
-          id="inputSearch"
-          sx={{ width: '100%' }}
+          className="pl-12"
+          aria-label="Search"
           value={searchTerm}
           onChange={handleSearchChange}
         />
-      </Box>
+      </div>
 
       {isLoading && (
         <div className="flex flex-col items-center gap-y-4">
-          <CircularProgress className="mt-10"></CircularProgress>
+          <CircularLoader className="mt-10" />
           Fetching your contacts...
         </div>
       )}
@@ -156,6 +151,6 @@ export default function SendEmail() {
           />
         </div>
       )}
-    </Box>
+    </>
   );
 }

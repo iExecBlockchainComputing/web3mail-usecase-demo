@@ -1,25 +1,21 @@
 import { type FormEvent, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Verified } from '@mui/icons-material';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import {
-  CircularProgress,
   FormControl,
-  Grid,
   InputLabel,
   MenuItem,
   Select,
   TextField,
-  Typography,
 } from '@mui/material';
+import { CheckCircle, ChevronLeft } from 'react-feather';
 import { Button } from '@/components/ui/button.tsx';
 import { useToast } from '@/components/ui/use-toast.ts';
-import Alert from '@/components/Alert.tsx';
+import { Alert } from '@/components/Alert.tsx';
 import { PROTECTED_DATA } from '@/config/path.ts';
 import { useCreateProtectedDataMutation } from '@/app/appSlice.ts';
 import { cn } from '@/utils/style.utils.ts';
 import { createArrayBufferFromFile } from '@/utils/utils.ts';
-import './NewProtectedData.css';
+import { CircularLoader } from '@/components/CircularLoader.tsx';
 
 export default function NewProtectedData() {
   const { toast } = useToast();
@@ -106,8 +102,8 @@ export default function NewProtectedData() {
       <div className="text-left">
         <Button asChild variant="text" size="sm">
           <Link to={`/${PROTECTED_DATA}`} className="pl-2">
-            <ChevronLeftIcon />
-            <span className="pl-0.5">Back</span>
+            <ChevronLeft size="22" />
+            <span className="pl-1">Back</span>
           </Link>
         </Button>
       </div>
@@ -149,7 +145,7 @@ export default function NewProtectedData() {
           )}
           {dataType === 'file' && (
             <Button
-              className="uploadFileButton"
+              className="mt-5 w-full"
               variant="secondary"
               onClick={() => fileInput.current?.click()}
             >
@@ -164,14 +160,10 @@ export default function NewProtectedData() {
             </Button>
           )}
           {filePath && dataType === 'file' && (
-            <Grid container columnSpacing={1} sx={{ mt: 1 }}>
-              <Grid item>
-                <Typography>{filePath.split('\\').slice(-1)}</Typography>
-              </Grid>
-              <Grid item>
-                <Verified color="success" />
-              </Grid>
-            </Grid>
+            <div className="mt-2 flex items-center gap-x-2">
+              {filePath.split('\\').slice(-1)}
+              <CheckCircle size="20" className="text-success-foreground" />
+            </div>
           )}
 
           {dataType && (
@@ -199,7 +191,7 @@ export default function NewProtectedData() {
 
       {result.isLoading && (
         <div className="flex flex-col items-center gap-y-4">
-          <CircularProgress className="mt-10"></CircularProgress>
+          <CircularLoader className="mt-10" />
           Your protected data is currently being created. Please wait a few
           moments.
         </div>

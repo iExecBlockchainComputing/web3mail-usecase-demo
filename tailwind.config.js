@@ -10,8 +10,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        border: 'var(--border)',
-        input: 'var(--input)',
+        button: 'hsl(var(--button))',
+        input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',

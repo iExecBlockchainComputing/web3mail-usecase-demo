@@ -1,11 +1,12 @@
 import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAccount } from 'wagmi';
-import { Box, CircularProgress, Pagination } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
+import { Box, Pagination } from '@mui/material';
+import { Plus } from 'react-feather';
 import { CSSTransition } from 'react-transition-group';
 import { Button } from '@/components/ui/button.tsx';
-import Alert from '@/components/Alert.tsx';
+import { Alert } from '@/components/Alert.tsx';
+import { CircularLoader } from '@/components/CircularLoader.tsx';
 import {
   selectAppIsConnected,
   useFetchProtectedDataQuery,
@@ -46,7 +47,7 @@ export default function MyProtectedData() {
     <div>
       {isLoading && (
         <div className="flex flex-col items-center gap-y-4">
-          <CircularProgress className="mt-10"></CircularProgress>
+          <CircularLoader className="mt-10"></CircularLoader>
           Fetching your protected data...
         </div>
       )}
@@ -147,7 +148,7 @@ function NewProtectedDataButton() {
   const navigate = useNavigate();
   return (
     <Button onClick={() => navigate(`./${CREATE}`)} className="pl-4">
-      <AddIcon fontSize="small" />
+      <Plus size="19" />
       <span className="pl-2">Add new</span>
     </Button>
   );

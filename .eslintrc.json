@@ -22,7 +22,8 @@
     // Already using TypeScript. Not sure we should also do runtime props validation, disabling this rule for now
     "react/prop-types": "off",
     "@typescript-eslint/no-explicit-any": "warn",
-    "@typescript-eslint/ban-ts-comment": "warn"
+    "@typescript-eslint/ban-ts-comment": "warn",
+    "@typescript-eslint/no-use-before-define": ["error", { "functions": false }]
   },
   "env": {
     "cypress/globals": true
@@ -33,9 +34,7 @@
     },
     "import/resolver": {
       "alias": {
-        "map": [
-          ["@", "./src"]
-        ]
+        "map": [["@", "./src"]]
       }
     }
   }

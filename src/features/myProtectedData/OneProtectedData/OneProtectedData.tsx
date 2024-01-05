@@ -1,10 +1,7 @@
 import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import AddIcon from '@mui/icons-material/Add';
-import { CircularProgress } from '@mui/material';
 import { useAccount } from 'wagmi';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import { Slash } from 'react-feather';
+import { ChevronLeft, Plus, Slash } from 'react-feather';
 import { Button } from '@/components/ui/button.tsx';
 import {
   useFetchGrantedAccessQuery,
@@ -12,8 +9,9 @@ import {
 } from '@/app/appSlice.ts';
 import { getTypeOfProtectedData } from '@/utils/utils.ts';
 import { PROTECTED_DATA } from '@/config/path.ts';
+import { Alert } from '@/components/Alert.tsx';
 import { Badge } from '@/components/ui/badge.tsx';
-import Alert from '@/components/Alert.tsx';
+import { CircularLoader } from '@/components/CircularLoader.tsx';
 import GrantAccessModal from './GrantAccessModal';
 import AuthorizedUsersList from './AuthorizedUsersList';
 
@@ -61,8 +59,8 @@ export default function OneProtectedData() {
       <div className="text-left">
         <Button asChild variant="text" size="sm">
           <Link to={`/${PROTECTED_DATA}`} className="pl-2">
-            <ChevronLeftIcon />
-            <span className="pl-0.5">Back</span>
+            <ChevronLeft size="22" />
+            <span className="pl-1">Back</span>
           </Link>
         </Button>
       </div>
@@ -101,7 +99,7 @@ export default function OneProtectedData() {
       <div className="my-10">
         {isLoading && (
           <div className="flex flex-col items-center gap-y-4">
-            <CircularProgress />
+            <CircularLoader />
             Fetching authorized users...
           </div>
         )}
@@ -140,7 +138,7 @@ export default function OneProtectedData() {
 
         <div className="mt-10 text-center">
           <Button onClick={() => setModalOpen(true)} className="pl-4">
-            <AddIcon fontSize="small" />
+            <Plus size="19" />
             <span className="pl-2">Authorize a new user</span>
           </Button>
         </div>

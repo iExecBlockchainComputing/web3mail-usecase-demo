@@ -2,7 +2,7 @@ import { CheckCircle, Info } from 'react-feather';
 import { ReactNode } from 'react';
 import { cn } from '@/utils/style.utils.ts';
 
-export default function Alert({
+export function Alert({
   children,
   variant,
   fullWidth = false,

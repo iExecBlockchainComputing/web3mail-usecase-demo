@@ -5,8 +5,7 @@ import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import { Loader } from 'react-feather';
+import { ChevronLeft, Loader } from 'react-feather';
 import { Button } from '@/components/ui/button.tsx';
 import { useToast } from '@/components/ui/use-toast.ts';
 import { useSendEmailMutation } from '@/app/appSlice.ts';
@@ -91,8 +90,8 @@ export default function SendEmailForm() {
       <div className="text-left">
         <Button asChild variant="text" size="sm">
           <Link to={`/${SEND_EMAIL}`} className="pl-2">
-            <ChevronLeftIcon />
-            <span className="pl-0.5">Back</span>
+            <ChevronLeft size="22" />
+            <span className="pl-1">Back</span>
           </Link>
         </Button>
       </div>

@@ -14,11 +14,11 @@ const buttonVariants = cva(
           'bg-primary text-primary-foreground hover:bg-grey-800 hover:text-white dark:hover:bg-grey-100 dark:hover:text-grey-800',
         // secondary ~= outline
         secondary:
-          'border border-input bg-background hover:bg-grey-800 hover:text-white',
+          'border border-button bg-background hover:bg-grey-800 hover:text-white',
         // text ~= ghost
         text: 'hover:bg-accent hover:text-accent-foreground',
         // destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
-        // outline: 'border border-input bg-background hover:bg-accent hover:text-accent-foreground',
+        // outline: 'border border-button bg-background hover:bg-accent hover:text-accent-foreground',
         // ghost: 'hover:bg-accent hover:text-accent-foreground',
         // link: 'text-primary underline-offset-4 hover:underline',
       },

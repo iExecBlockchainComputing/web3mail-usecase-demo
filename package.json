@@ -26,7 +26,6 @@
     "@iexec/dataprotector": "^0.4.1",
     "@iexec/react-ui-kit": "github:iExecBlockchainComputing/react-ui-kit#semver:^2.0.2",
     "@iexec/web3mail": "^0.5.2",
-    "@mui/icons-material": "^5.11.11",
     "@mui/material": "^5.13.4",
     "@mui/x-data-grid": "^6.0.4",
     "@radix-ui/react-slot": "^1.0.2",
