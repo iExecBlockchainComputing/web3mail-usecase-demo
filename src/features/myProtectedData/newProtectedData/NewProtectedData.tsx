@@ -15,7 +15,6 @@ import { PROTECTED_DATA } from '@/config/path.ts';
 import { useCreateProtectedDataMutation } from '@/app/appSlice.ts';
 import { cn } from '@/utils/style.utils.ts';
 import { createArrayBufferFromFile } from '@/utils/utils.ts';
-import './NewProtectedData.css';
 import { CircularLoader } from '@/components/CircularLoader.tsx';
 
 export default function NewProtectedData() {
@@ -146,7 +145,7 @@ export default function NewProtectedData() {
           )}
           {dataType === 'file' && (
             <Button
-              className="uploadFileButton"
+              className="mt-5 w-full"
               variant="secondary"
               onClick={() => fileInput.current?.click()}
             >
