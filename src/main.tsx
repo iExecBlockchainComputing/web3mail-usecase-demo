@@ -1,4 +1,5 @@
 import React from 'react';
+import { Analytics } from '@vercel/analytics/react';
 import './modified-tailwind-preflight.css';
 import './index.css';
 import App from './App';
@@ -36,5 +37,6 @@ root.render(
         </ThemeProvider>
       </Provider>
     </BrowserRouter>
+    <Analytics />
   </React.StrictMode>
 );
