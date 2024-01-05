@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { Verified } from '@mui/icons-material';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import {
-  CircularProgress,
   FormControl,
   Grid,
   InputLabel,
@@ -14,12 +13,13 @@ import {
 } from '@mui/material';
 import { Button } from '@/components/ui/button.tsx';
 import { useToast } from '@/components/ui/use-toast.ts';
-import Alert from '@/components/Alert.tsx';
+import { Alert } from '@/components/Alert.tsx';
 import { PROTECTED_DATA } from '@/config/path.ts';
 import { useCreateProtectedDataMutation } from '@/app/appSlice.ts';
 import { cn } from '@/utils/style.utils.ts';
 import { createArrayBufferFromFile } from '@/utils/utils.ts';
 import './NewProtectedData.css';
+import { CircularLoader } from '@/components/CircularLoader.tsx';
 
 export default function NewProtectedData() {
   const { toast } = useToast();
@@ -199,7 +199,7 @@ export default function NewProtectedData() {
 
       {result.isLoading && (
         <div className="flex flex-col items-center gap-y-4">
-          <CircularProgress className="mt-10"></CircularProgress>
+          <CircularLoader className="mt-10" />
           Your protected data is currently being created. Please wait a few
           moments.
         </div>

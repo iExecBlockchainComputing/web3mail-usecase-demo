@@ -2,13 +2,13 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Address, Contact, TimeStamp } from '@iexec/web3mail';
 import SearchIcon from '@mui/icons-material/Search';
-import { Box, CircularProgress, InputBase } from '@mui/material';
+import { Box, InputBase } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import SendIcon from '@mui/icons-material/Send';
 import { Slash } from 'react-feather';
 import { useAccount } from 'wagmi';
 import { Button } from '@/components/ui/button.tsx';
-import Alert from '@/components/Alert.tsx';
+import { Alert } from '@/components/Alert.tsx';
 import {
   selectAppIsConnected,
   useFetchMyContactsQuery,
@@ -16,6 +16,7 @@ import {
 import { useAppSelector } from '@/app/hooks.ts';
 import { getLocalDateFromTimeStamp } from '@/utils/utils.ts';
 import './SendEmail.css';
+import { CircularLoader } from '@/components/CircularLoader.tsx';
 
 type Row = {
   id: string;
@@ -125,7 +126,7 @@ export default function SendEmail() {
 
       {isLoading && (
         <div className="flex flex-col items-center gap-y-4">
-          <CircularProgress className="mt-10"></CircularProgress>
+          <CircularLoader className="mt-10" />
           Fetching your contacts...
         </div>
       )}
