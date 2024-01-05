@@ -1,7 +1,6 @@
 import { type FormEvent, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Verified } from '@mui/icons-material';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import {
   FormControl,
   Grid,
@@ -11,6 +10,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
+import { ChevronLeft } from 'react-feather';
 import { Button } from '@/components/ui/button.tsx';
 import { useToast } from '@/components/ui/use-toast.ts';
 import { Alert } from '@/components/Alert.tsx';
@@ -106,8 +106,8 @@ export default function NewProtectedData() {
       <div className="text-left">
         <Button asChild variant="text" size="sm">
           <Link to={`/${PROTECTED_DATA}`} className="pl-2">
-            <ChevronLeftIcon />
-            <span className="pl-0.5">Back</span>
+            <ChevronLeft size="22" />
+            <span className="pl-1">Back</span>
           </Link>
         </Button>
       </div>
