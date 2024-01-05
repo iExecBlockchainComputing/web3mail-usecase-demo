@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import AddIcon from '@mui/icons-material/Add';
 import { useAccount } from 'wagmi';
-import { ChevronLeft, Slash } from 'react-feather';
+import { ChevronLeft, Plus, Slash } from 'react-feather';
 import { Button } from '@/components/ui/button.tsx';
 import {
   useFetchGrantedAccessQuery,
@@ -139,7 +138,7 @@ export default function OneProtectedData() {
 
         <div className="mt-10 text-center">
           <Button onClick={() => setModalOpen(true)} className="pl-4">
-            <AddIcon fontSize="small" />
+            <Plus size="19" />
             <span className="pl-2">Authorize a new user</span>
           </Button>
         </div>

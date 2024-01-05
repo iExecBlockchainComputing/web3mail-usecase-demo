@@ -2,8 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Address, Contact, TimeStamp } from '@iexec/web3mail';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import SendIcon from '@mui/icons-material/Send';
-import { Search, Slash } from 'react-feather';
+import { Search, Send, Slash } from 'react-feather';
 import { useAccount } from 'wagmi';
 import { Button } from '@/components/ui/button.tsx';
 import { Alert } from '@/components/Alert.tsx';
@@ -67,8 +66,8 @@ export default function SendEmail() {
             navigate(`./${params.row.owner}/${params.row.protectedDataAddress}`)
           }
         >
-          <SendIcon className="text-sm" />
-          <span className="pl-1.5">Send web3 email</span>
+          <Send size="15" />
+          <span className="pl-2">Send web3 email</span>
         </Button>
       ),
     },
