@@ -59,7 +59,7 @@ export default function AuthorizedUsersList(props: AuthorizedUsersListProps) {
       width: 56,
       renderHeader: () => null,
       renderCell: () => (
-        <div className="bg-grey-300 rounded-full p-2">
+        <div className="rounded-full bg-grey-300 p-2">
           <User size="20" aria-label="user-icon" className="text-white" />
         </div>
       ),
