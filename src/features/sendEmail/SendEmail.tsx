@@ -101,10 +101,11 @@ export default function SendEmail() {
   return (
     <>
       <h2>Contacts List</h2>
-      <p>
+      <p className="-mt-3">
         These are contacts that have protected their email address data and have
-        allowed you to use it. You can send them a message, without knowing
-        their email address.
+        allowed you to use it.
+        <br />
+        You can send them a message, without knowing their email address.
       </p>
 
       <div className="relative mt-10">

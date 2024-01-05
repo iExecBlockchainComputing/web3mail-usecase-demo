@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAccount } from 'wagmi';
-import { Box, Pagination } from '@mui/material';
+import { Pagination } from '@mui/material';
 import { Plus } from 'react-feather';
 import { CSSTransition } from 'react-transition-group';
 import { Button } from '@/components/ui/button.tsx';
@@ -44,7 +44,7 @@ export default function MyProtectedData() {
   const nodeRef = useRef(null);
 
   return (
-    <div>
+    <>
       {isLoading && (
         <div className="flex flex-col items-center gap-y-4">
           <CircularLoader className="mt-10"></CircularLoader>
@@ -61,7 +61,7 @@ export default function MyProtectedData() {
       )}
 
       {!isLoading && !isError && protectedData.length === 0 && (
-        <div className="text-center">
+        <div className="-mt-8 text-center">
           <img
             src={img}
             alt="The image can't be loaded"
@@ -72,9 +72,9 @@ export default function MyProtectedData() {
             You haven't protected any data yet. Starting is as easy as pressing
             the button below.
           </p>
-          <Box sx={{ mt: 7 }}>
+          <div className="mt-10">
             <NewProtectedDataButton />
-          </Box>
+          </div>
         </div>
       )}
 
@@ -90,20 +90,17 @@ export default function MyProtectedData() {
         }}
       >
         <div ref={nodeRef} className="opacity-0">
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              my: 7,
-            }}
-          >
-            <h2>My Protected Data</h2>
-            <Box sx={{ my: 'auto' }}>
-              <NewProtectedDataButton />
-            </Box>
-          </Box>
-          <div className="mb-28">
+          <div className="flex flex-row justify-between">
+            <div>
+              <h2 className="mt-0">My Protected Data</h2>
+              <p className="-mt-3">
+                These are all the protected data of which you are the owner.
+              </p>
+            </div>
+            <NewProtectedDataButton />
+          </div>
+
+          <div className="mb-28 mt-14">
             <div
               className="mx-6 grid gap-7"
               style={{
@@ -140,7 +137,7 @@ export default function MyProtectedData() {
           </div>
         </div>
       </CSSTransition>
-    </div>
+    </>
   );
 }
 
