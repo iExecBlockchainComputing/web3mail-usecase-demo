@@ -1,6 +1,5 @@
 import { useParams } from 'react-router-dom';
-import { Avatar } from '@mui/material';
-import { Loader, Trash } from 'react-feather';
+import { Loader, Trash, User } from 'react-feather';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { useRevokeOneAccessMutation } from '@/app/appSlice.ts';
 import { Button } from '@/components/ui/button.tsx';
@@ -59,7 +58,11 @@ export default function AuthorizedUsersList(props: AuthorizedUsersListProps) {
       sortable: false,
       width: 60,
       renderHeader: () => null,
-      renderCell: () => <Avatar alt={`Avatar`} />,
+      renderCell: () => (
+        <div className="rounded-full bg-[#bdbdbd] p-2">
+          <User size="22" aria-label="user-icon" className="text-white" />
+        </div>
+      ),
     },
     {
       field: 'id',
