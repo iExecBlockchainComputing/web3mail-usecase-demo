@@ -94,7 +94,8 @@ export default function MyProtectedData() {
             <div>
               <h2 className="mt-0">My Protected Data</h2>
               <p className="-mt-3">
-                These are all the protected data of which you are the owner.
+                Confidentially manage your protected data. Easily create,
+                review, authorize, and revoke access.
               </p>
             </div>
             <NewProtectedDataButton />

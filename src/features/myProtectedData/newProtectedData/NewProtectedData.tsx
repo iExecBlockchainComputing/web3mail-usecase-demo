@@ -110,7 +110,7 @@ export default function NewProtectedData() {
 
       <h2>Protect New Data</h2>
       <p className="-mt-3 mb-4">
-        This will create a new protected data of which you will be the owner.
+        Protect new email or file: encrypt, monetize and control access.
       </p>
 
       {(!result.data || result.error) && (
