@@ -97,6 +97,7 @@
     --button: var(--grey-800);
     --input: var(--grey-400);
     --ring: 222.2 84% 4.9%;
+    --link: 224, 96%, 67%;
 
     --radius: 10px; /* border-radius: calc(var(--radius) - 2px); ?? */
   }

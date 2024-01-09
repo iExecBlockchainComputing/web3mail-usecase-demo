@@ -11,6 +11,7 @@ import { CheckCircle, ChevronLeft } from 'react-feather';
 import { Button } from '@/components/ui/button.tsx';
 import { useToast } from '@/components/ui/use-toast.ts';
 import { Alert } from '@/components/Alert.tsx';
+import { DocLink } from '@/components/DocLink.tsx';
 import { PROTECTED_DATA } from '@/config/path.ts';
 import { useCreateProtectedDataMutation } from '@/app/appSlice.ts';
 import { cn } from '@/utils/style.utils.ts';
@@ -114,82 +115,100 @@ export default function NewProtectedData() {
       </p>
 
       {(!result.data || result.error) && (
-        <form noValidate onSubmit={handleSubmit}>
-          <FormControl fullWidth sx={{ mt: '24px' }}>
-            <InputLabel>Select your data type</InputLabel>
-            <Select
-              fullWidth
-              value={dataType}
-              onChange={handleDataTypeChange}
-              label="Select your data type"
-              sx={{ textAlign: 'left' }}
-            >
-              {dataTypes.map((item) => (
-                <MenuItem key={item.value} value={item.value}>
-                  {item.label}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          {dataType === 'email' && (
-            <TextField
-              required
-              fullWidth
-              id="email"
-              label="Email"
-              variant="outlined"
-              sx={{ mt: 3 }}
-              value={email}
-              onChange={handleEmailChange}
-              type="email"
-              error={!isValidEmail}
-              helperText={!isValidEmail && 'Please enter a valid email address'}
-            />
-          )}
-          {dataType === 'file' && (
-            <Button
-              className="mt-5 w-full"
-              variant="secondary"
-              onClick={() => fileInput.current?.click()}
-            >
-              {!filePath ? 'Upload' : 'Updated File'}
-              <input
-                ref={fileInput}
-                hidden
-                multiple
-                type="file"
-                onChange={(e) => handleFileChange(e)}
+        <>
+          <form noValidate onSubmit={handleSubmit}>
+            <FormControl fullWidth sx={{ mt: '24px' }}>
+              <InputLabel>Select your data type</InputLabel>
+              <Select
+                fullWidth
+                value={dataType}
+                onChange={handleDataTypeChange}
+                label="Select your data type"
+                sx={{ textAlign: 'left' }}
+              >
+                {dataTypes.map((item) => (
+                  <MenuItem key={item.value} value={item.value}>
+                    {item.label}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            {dataType === 'email' && (
+              <TextField
+                required
+                fullWidth
+                id="email"
+                label="Email"
+                variant="outlined"
+                sx={{ mt: 3 }}
+                value={email}
+                onChange={handleEmailChange}
+                type="email"
+                error={!isValidEmail}
+                helperText={
+                  !isValidEmail && 'Please enter a valid email address'
+                }
               />
-            </Button>
-          )}
-          {filePath && dataType === 'file' && (
-            <div className="mt-2 flex items-center gap-x-2">
-              {filePath.split('\\').slice(-1)}
-              <CheckCircle size="20" className="text-success-foreground" />
-            </div>
-          )}
+            )}
+            {dataType === 'file' && (
+              <Button
+                className="mt-5 w-full"
+                variant="secondary"
+                onClick={() => fileInput.current?.click()}
+              >
+                {!filePath ? 'Upload' : 'Updated File'}
+                <input
+                  ref={fileInput}
+                  hidden
+                  multiple
+                  type="file"
+                  onChange={(e) => handleFileChange(e)}
+                />
+              </Button>
+            )}
+            {filePath && dataType === 'file' && (
+              <div className="mt-2 flex items-center gap-x-2">
+                {filePath.split('\\').slice(-1)}
+                <CheckCircle size="20" className="text-success-foreground" />
+              </div>
+            )}
+
+            {dataType && (
+              <TextField
+                required
+                fullWidth
+                id="Name of your Protected Data"
+                label="Name of your Protected Data"
+                variant="outlined"
+                value={name}
+                onChange={handleNameChange}
+                sx={{ mt: 3 }}
+              />
+            )}
+
+            {dataType && !result.isLoading && (
+              <div className="text-center">
+                <Button type="submit" className="mt-6">
+                  Create Protected Data
+                </Button>
+              </div>
+            )}
+          </form>
 
           {dataType && (
-            <TextField
-              required
-              fullWidth
-              id="Name of your Protected Data"
-              label="Name of your Protected Data"
-              variant="outlined"
-              value={name}
-              onChange={handleNameChange}
-              sx={{ mt: 3 }}
-            />
+            <DocLink className="mt-20">
+              dataprotector-sdk / Method called in this page:{' '}
+              <a
+                href="https://tools.docs.iex.ec/tools/dataprotector/methods/protectdata"
+                target="_blank"
+                rel="noreferrer"
+                className="text-link hover:underline"
+              >
+                protectData()
+              </a>
+            </DocLink>
           )}
-
-          {dataType && !result.isLoading && (
-            <div className="text-center">
-              <Button type="submit" className="mt-6">
-                Create Protected Data
-              </Button>
-            </div>
-          )}
-        </form>
+        </>
       )}
 
       {result.isLoading && (
