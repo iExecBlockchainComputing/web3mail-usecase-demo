@@ -7,6 +7,7 @@ import { CSSTransition } from 'react-transition-group';
 import { Button } from '@/components/ui/button.tsx';
 import { Alert } from '@/components/Alert.tsx';
 import { CircularLoader } from '@/components/CircularLoader.tsx';
+import { DocLink } from '@/components/DocLink.tsx';
 import {
   selectAppIsConnected,
   useFetchProtectedDataQuery,
@@ -136,6 +137,18 @@ export default function MyProtectedData() {
               />
             </div>
           </div>
+
+          <DocLink>
+            dataprotector-sdk / Method called in this page:{' '}
+            <a
+              href="https://tools.docs.iex.ec/tools/dataprotector/methods/fetchprotecteddata"
+              target="_blank"
+              rel="noreferrer"
+              className="text-link hover:underline"
+            >
+              fetchProtectedData()
+            </a>
+          </DocLink>
         </div>
       </CSSTransition>
     </>

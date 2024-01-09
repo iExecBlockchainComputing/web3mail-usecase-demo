@@ -14,6 +14,7 @@ import { useAppSelector } from '@/app/hooks.ts';
 import { getLocalDateFromTimeStamp } from '@/utils/utils.ts';
 import { CircularLoader } from '@/components/CircularLoader.tsx';
 import { Input } from '@/components/ui/input.tsx';
+import { DocLink } from '@/components/DocLink.tsx';
 
 type Row = {
   id: string;
@@ -152,6 +153,18 @@ export default function SendEmail() {
           />
         </div>
       )}
+
+      <DocLink className="mt-20">
+        web3mail-sdk / Method called in this page:{' '}
+        <a
+          href="https://tools.docs.iex.ec/tools/web3mail/methods/fetchmycontacts"
+          target="_blank"
+          rel="noreferrer"
+          className="text-link hover:underline"
+        >
+          fetchMyContacts()
+        </a>
+      </DocLink>
     </>
   );
 }

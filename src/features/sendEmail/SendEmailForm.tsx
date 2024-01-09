@@ -8,6 +8,7 @@ import InputLabel from '@mui/material/InputLabel';
 import { ChevronLeft, Loader } from 'react-feather';
 import { Button } from '@/components/ui/button.tsx';
 import { useToast } from '@/components/ui/use-toast.ts';
+import { DocLink } from '@/components/DocLink.tsx';
 import { useSendEmailMutation } from '@/app/appSlice.ts';
 import { SEND_EMAIL } from '@/config/path.ts';
 import './SendEmailForm.css';
@@ -170,6 +171,18 @@ export default function SendEmailForm() {
           </Button>
         </div>
       </Box>
+
+      <DocLink className="mt-20">
+        web3mail-sdk / Method called in this page:{' '}
+        <a
+          href="https://tools.docs.iex.ec/tools/web3mail/methods/sendemail"
+          target="_blank"
+          rel="noreferrer"
+          className="text-link hover:underline"
+        >
+          sendEmail()
+        </a>
+      </DocLink>
     </div>
   );
 }

@@ -13,6 +13,7 @@ module.exports = {
         button: 'hsl(var(--button))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
+        link: 'hsl(var(--link))',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         primary: {

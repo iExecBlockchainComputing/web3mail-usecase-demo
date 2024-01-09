@@ -12,6 +12,7 @@ import { PROTECTED_DATA } from '@/config/path.ts';
 import { Alert } from '@/components/Alert.tsx';
 import { Badge } from '@/components/ui/badge.tsx';
 import { CircularLoader } from '@/components/CircularLoader.tsx';
+import { DocLink } from '@/components/DocLink.tsx';
 import GrantAccessModal from './GrantAccessModal';
 import AuthorizedUsersList from './AuthorizedUsersList';
 
@@ -142,6 +143,44 @@ export default function OneProtectedData() {
             <span className="pl-2">Authorize a new user</span>
           </Button>
         </div>
+
+        <DocLink className="mt-20">
+          dataprotector-sdk / Methods called in this page:
+          <br />
+          <div className="mt-1 pl-10">
+            -{' '}
+            <a
+              href="https://tools.docs.iex.ec/tools/dataprotector/methods/fetchgrantedaccess"
+              target="_blank"
+              rel="noreferrer"
+              className="text-link hover:underline"
+            >
+              fetchGrantedAccess()
+            </a>
+          </div>
+          <div className="mt-1 pl-10">
+            -{' '}
+            <a
+              href="https://tools.docs.iex.ec/tools/dataprotector/methods/grantaccess"
+              target="_blank"
+              rel="noreferrer"
+              className="text-link hover:underline"
+            >
+              grantAccess()
+            </a>
+          </div>
+          <div className="mt-1 pl-10">
+            -{' '}
+            <a
+              href="https://tools.docs.iex.ec/tools/dataprotector/methods/revokeoneaccess"
+              target="_blank"
+              rel="noreferrer"
+              className="text-link hover:underline"
+            >
+              revokeOneAccess()
+            </a>
+          </div>
+        </DocLink>
 
         {modalOpen && (
           <GrantAccessModal
