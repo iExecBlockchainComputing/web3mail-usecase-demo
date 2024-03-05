@@ -43,13 +43,13 @@ export default function SendEmail() {
   const columns: GridColDef[] = [
     {
       field: 'owner',
-      headerName: 'Eth Address',
+      headerName: 'Owner address',
       type: 'string',
       flex: 2,
     },
     {
       field: 'protectedDataAddress',
-      headerName: 'Protected Data',
+      headerName: 'Protected data address',
       type: 'string',
       flex: 2,
     },
@@ -112,7 +112,7 @@ export default function SendEmail() {
       <div className="relative mt-10">
         <Search size="20" className="absolute top-3 ml-4" />
         <Input
-          placeholder="Search address"
+          placeholder="Search owner address"
           className="pl-12"
           aria-label="Search"
           value={searchTerm}
