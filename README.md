@@ -40,6 +40,8 @@ This project is licensed under the terms of the
 
 <h1 align="center">Run the use case demo</h1>
 
+![Screenshot](Screenshot.png)
+
 This project is a simple React TypeScript application bootstrapped with [Vite](https://vitejs.dev/). Vite provides a faster and leaner development experience for modern web projects.
 
 ## Prerequisites
