@@ -7,6 +7,7 @@ import { ThemeProvider, createTheme } from '@mui/material';
 import { WagmiConfig } from 'wagmi';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
+import { Analytics } from '@vercel/analytics/react';
 import { wagmiConfig } from '@/utils/wagmiConfig.ts';
 import { store } from '@/app/store.ts';
 import { Toaster } from '@/components/ui/toaster.tsx';
@@ -36,5 +37,6 @@ root.render(
         </ThemeProvider>
       </Provider>
     </BrowserRouter>
+    <Analytics />
   </React.StrictMode>
 );
