@@ -1,4 +1,5 @@
 import { type FormEvent, useState } from 'react';
+import { ZeroAddress } from 'ethers';
 import './GrantAccessModal.css';
 import { TextField, Modal, Typography } from '@mui/material';
 import { Loader } from 'react-feather';
@@ -68,7 +69,7 @@ export default function GrantAccessModal(props: GrantAccessModalParams) {
 
   return (
     <Modal open={props.open} onClose={props.handleClose}>
-      <div id="modalBox" className="w-[500px] rounded-md bg-white p-8">
+      <div id="modalBox" className="w-[520px] rounded-md bg-white p-8">
         <Typography
           component="h1"
           variant="h5"
@@ -81,21 +82,36 @@ export default function GrantAccessModal(props: GrantAccessModalParams) {
           className="flex w-full flex-col gap-4"
           onSubmit={handleGrantAccess}
         >
-          <TextField
-            required
-            fullWidth
-            id="ethAddress"
-            label="Ethereum Address"
-            variant="outlined"
-            sx={{ mt: 3 }}
-            value={ethAddress}
-            onChange={handleEthAddressChange}
-            type="ethAddress"
-            error={!isValidEthAddress}
-            helperText={
-              !isValidEthAddress && 'Please enter a valid ethereum Address'
-            }
-          />
+          <div>
+            <TextField
+              required
+              fullWidth
+              id="ethAddress"
+              label="Ethereum Address"
+              variant="outlined"
+              sx={{ mt: 3 }}
+              value={ethAddress}
+              onChange={handleEthAddressChange}
+              type="ethAddress"
+              error={!isValidEthAddress}
+              helperText={
+                !isValidEthAddress && 'Please enter a valid ethereum Address'
+              }
+            />
+            <div className="ml-0.5 mt-1 text-xs">
+              Authorize any user:{' '}
+              <button
+                type="button"
+                className="bg-transparent underline"
+                onClick={() => {
+                  setEthAddress(ZeroAddress);
+                  setIsValidEthAddress(true);
+                }}
+              >
+                0x000...
+              </button>
+            </div>
+          </div>
           <TextField
             fullWidth
             type="NbOfAccess"
