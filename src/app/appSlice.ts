@@ -14,7 +14,7 @@ import {
   SendEmailResponse,
   Contact,
 } from '@iexec/web3mail';
-import { SMART_CONTRACT_WEB3MAIL_WHITELIST } from '../config/config';
+import { WEB3MAIL_IDAPPS_WHITELIST_SC } from '../config/config';
 import { buildErrorData } from '../utils/errorForClient';
 import { RootState } from './store';
 import { api } from './api';
@@ -77,16 +77,6 @@ export const homeApi = api.injectEndpoints({
         try {
           const data = await iExecDataProtector?.fetchProtectedData({ owner });
           return { data: data || [] };
-
-          // --- TEST TO REMOVE: Add fake delay
-          // return new Promise((resolve) => {
-          //   setTimeout(async () => {
-          //     const data = await iExecDataProtector?.fetchProtectedData({
-          //       owner,
-          //     });
-          //     resolve({ data: data || [] });
-          //   }, 1000);
-          // });
         } catch (err: any) {
           const errorData = buildErrorData(err);
           console.error('[fetchProtectedData]', errorData);
@@ -105,13 +95,6 @@ export const homeApi = api.injectEndpoints({
           const errorData = buildErrorData(err);
           console.error('[createProtectedData]', errorData);
           return { error: errorData.reason || err.message };
-
-          // --- TEST TO REMOVE: Add fake delay
-          // return new Promise((resolve) => {
-          //   setTimeout(async () => {
-          //     resolve({ error: errorData.reason || err.message });
-          //   }, 800);
-          // });
         }
       },
       invalidatesTags: ['PROTECTED_DATA'],
@@ -127,7 +110,7 @@ export const homeApi = api.injectEndpoints({
           const grantedAccessResponse =
             await iExecDataProtector?.fetchGrantedAccess({
               protectedData,
-              authorizedApp: SMART_CONTRACT_WEB3MAIL_WHITELIST,
+              authorizedApp: WEB3MAIL_IDAPPS_WHITELIST_SC,
               page,
               pageSize,
             });
@@ -147,13 +130,6 @@ export const homeApi = api.injectEndpoints({
           const errorData = buildErrorData(err);
           console.error('[fetchGrantedAccess]', errorData);
           return { error: errorData.reason || err.message };
-
-          // --- TEST TO REMOVE: Add fake delay
-          // return new Promise((resolve) => {
-          //   setTimeout(async () => {
-          //     resolve({ error: errorData.reason || err.message });
-          //   }, 800);
-          // });
         }
       },
       providesTags: (result) => {
@@ -180,7 +156,7 @@ export const homeApi = api.injectEndpoints({
           const grantedAccessResponse =
             await iExecDataProtector?.fetchGrantedAccess({
               protectedData,
-              authorizedApp: SMART_CONTRACT_WEB3MAIL_WHITELIST,
+              authorizedApp: WEB3MAIL_IDAPPS_WHITELIST_SC,
               authorizedUser,
             });
           let revokedAccess: RevokedAccess | null = null;

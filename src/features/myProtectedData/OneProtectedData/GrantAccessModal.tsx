@@ -6,7 +6,7 @@ import { Loader } from 'react-feather';
 import { Button } from '@/components/ui/button.tsx';
 import { useToast } from '@/components/ui/use-toast.ts';
 import { useGrantNewAccessMutation } from '@/app/appSlice.ts';
-import { SMART_CONTRACT_WEB3MAIL_WHITELIST } from '@/config/config.ts';
+import { WEB3MAIL_IDAPPS_WHITELIST_SC } from '@/config/config.ts';
 
 type GrantAccessModalParams = {
   protectedData: string;
@@ -46,7 +46,7 @@ export default function GrantAccessModal(props: GrantAccessModalParams) {
     const protectedData = props.protectedData;
     grantNewAccess({
       protectedData,
-      authorizedApp: SMART_CONTRACT_WEB3MAIL_WHITELIST,
+      authorizedApp: WEB3MAIL_IDAPPS_WHITELIST_SC,
       authorizedUser: ethAddress,
       numberOfAccess: NbOfAccess,
     })
