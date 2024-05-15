@@ -24,7 +24,6 @@
     "@emotion/styled": "^11.11.0",
     "@fontsource/space-mono": "^4.5.12",
     "@iexec/dataprotector": "^0.5.1",
-    "@iexec/react-ui-kit": "github:iExecBlockchainComputing/react-ui-kit#semver:^2.0.2",
     "@iexec/web3mail": "^0.6.0",
     "@mui/material": "^5.13.4",
     "@mui/x-data-grid": "^6.0.4",
