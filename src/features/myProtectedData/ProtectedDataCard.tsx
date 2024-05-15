@@ -1,10 +1,9 @@
 import { Link } from 'react-router-dom';
 import { DataSchema } from '@iexec/dataprotector';
-import { Box, Card, CardContent, Divider } from '@mui/material';
+import { Box, Card, Divider } from '@mui/material';
 import { Badge } from '@/components/ui/badge.tsx';
 import { CONSENT, PROTECTED_DATA } from '@/config/path.ts';
 import { getTypeOfProtectedData } from '@/utils/utils.ts';
-import './ProtectedDataCard.css';
 
 export interface ProtectedDataProps {
   id: string;
@@ -17,7 +16,7 @@ export default function ProtectedDataCard(props: ProtectedDataProps) {
   return (
     <Link to={`/${PROTECTED_DATA}/${CONSENT}/${props.id}`}>
       <Card className="transition-colors hover:bg-gray-50">
-        <CardContent className="cardContent">
+        <div className="pb-6">
           <div className="p-3 text-right">
             <Badge
               variant={
@@ -39,12 +38,12 @@ export default function ProtectedDataCard(props: ProtectedDataProps) {
             }}
             data-cy="protected-data-card"
           >
-            <h5 className="my-6 font-bold">{props.title}</h5>
-            <div className="text-right">
+            <h5 className="my-6 font-semibold">{props.title}</h5>
+            <div className="font-semibold text-right">
               <Badge variant="outline">{props.date}</Badge>
             </div>
           </Box>
-        </CardContent>
+        </div>
       </Card>
     </Link>
   );
