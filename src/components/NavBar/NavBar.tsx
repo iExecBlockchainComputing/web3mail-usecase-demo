@@ -12,9 +12,9 @@ export default function NavBar() {
   const location = useLocation();
   const { isConnected, address, isAccountConnected, login, logout } = useUser();
 
-  const myProtectedDataLeft = 'left-[13px]';
+  const myProtectedDataLeft = 'left-[16px]';
   const myProtectedDataWidth = 'w-[104px]';
-  const sendEmailLeft = 'left-[170px]';
+  const sendEmailLeft = 'left-[176px]';
   const sendEmailWidth = 'w-[63px]';
   const [tabIndicatorLeft, setTabIndicatorLeft] = useState('');
   const [tabIndicatorWidth, setTabIndicatorWidth] = useState('');
@@ -45,7 +45,7 @@ export default function NavBar() {
         </div>
       </NavLink>
 
-      <div className="relative ml-20 flex h-full items-center gap-x-8 pr-2">
+      <div className="relative ml-20 flex h-full items-center gap-x-8 pr-2 text-base">
         <NavLink
           to={`/${PROTECTED_DATA}`}
           className="-mx-2 flex h-full items-center p-2"
