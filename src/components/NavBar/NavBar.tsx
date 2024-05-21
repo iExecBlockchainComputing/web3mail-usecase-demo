@@ -15,7 +15,7 @@ export default function NavBar() {
   const myProtectedDataLeft = 'left-[16px]';
   const myProtectedDataWidth = 'w-[104px]';
   const sendEmailLeft = 'left-[176px]';
-  const sendEmailWidth = 'w-[63px]';
+  const sendEmailWidth = 'w-[60px]';
   const [tabIndicatorLeft, setTabIndicatorLeft] = useState('');
   const [tabIndicatorWidth, setTabIndicatorWidth] = useState('');
 
