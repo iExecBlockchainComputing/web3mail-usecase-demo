@@ -38,7 +38,7 @@ export default function ProtectedDataCard(props: ProtectedDataProps) {
             }}
             data-cy="protected-data-card"
           >
-            <h5 className="my-6 font-semibold">{props.title}</h5>
+            <h5 className="my-6 text-[15px] font-semibold">{props.title}</h5>
             <div className="text-right">
               <Badge variant="outline">{props.date}</Badge>
             </div>
