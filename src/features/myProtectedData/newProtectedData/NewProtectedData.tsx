@@ -230,7 +230,6 @@ export default function NewProtectedData() {
         </>
       )}
 
-
       {result.data && !result.error && (
         <>
           <div className="my-6 flex flex-col items-center">
