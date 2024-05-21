@@ -91,7 +91,7 @@ export default function MyProtectedData() {
         }}
       >
         <div ref={nodeRef} className="opacity-0">
-          <div className="flex flex-row justify-between">
+          <div className="flex flex-row justify-between gap-x-12">
             <div>
               <h2 className="mt-0">My Protected Data</h2>
               <p className="-mt-3">
@@ -160,7 +160,7 @@ function NewProtectedDataButton() {
   return (
     <Button onClick={() => navigate(`./${CREATE}`)} className="pl-4">
       <Plus size="19" />
-      <span className="pl-2">Add new</span>
+      <span className="whitespace-nowrap pl-2">Add new</span>
     </Button>
   );
 }

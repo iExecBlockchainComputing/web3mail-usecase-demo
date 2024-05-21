@@ -195,6 +195,25 @@ export default function NewProtectedData() {
             )}
           </form>
 
+          {result.isLoading && (
+            <div className="flex flex-col items-center gap-y-4">
+              <CircularLoader className="mt-10" />
+              Your protected data is currently being created. Please wait a few
+              moments.
+            </div>
+          )}
+
+          {result.error && (
+            <div className="mb-3 mt-6 flex flex-col items-center">
+              <Alert variant="error" fullWidth={true}>
+                <p>
+                  Oops, something went wrong while creating your protected data.
+                </p>
+                <p className="text-orange-300">{result.error.toString()}</p>
+              </Alert>
+            </div>
+          )}
+
           {dataType && (
             <DocLink className="mt-20">
               dataprotector-sdk / Method called in this page:{' '}
@@ -209,25 +228,6 @@ export default function NewProtectedData() {
             </DocLink>
           )}
         </>
-      )}
-
-      {result.isLoading && (
-        <div className="flex flex-col items-center gap-y-4">
-          <CircularLoader className="mt-10" />
-          Your protected data is currently being created. Please wait a few
-          moments.
-        </div>
-      )}
-
-      {result.error && (
-        <div className="mb-3 mt-6 flex flex-col items-center">
-          <Alert variant="error" fullWidth={true}>
-            <p>
-              Oops, something went wrong while creating your protected data.
-            </p>
-            <p className="text-orange-300">{result.error.toString()}</p>
-          </Alert>
-        </div>
       )}
 
       {result.data && !result.error && (
