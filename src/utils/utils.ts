@@ -31,6 +31,8 @@ export const getTypeOfProtectedData = (schema?: DataSchema) => {
     ? 'Email'
     : isKeyInDataSchema(schema || {}, 'file')
       ? 'File'
+      : isKeyInDataSchema(schema || {}, 'telegram')
+        ? 'Telegram'
       : 'Unknown type';
 };
 

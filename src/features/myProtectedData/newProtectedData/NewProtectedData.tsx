@@ -34,6 +34,9 @@ export default function NewProtectedData() {
   const [email, setEmail] = useState('');
   const [isValidEmail, setIsValidEmail] = useState(true);
 
+  //for telegram
+  const [telegram, setTelegram] = useState('');
+
   //for file
   const [filePath, setFilePath] = useState('');
   const [file, setFile] = useState<File | undefined>();
@@ -49,6 +52,10 @@ export default function NewProtectedData() {
     setIsValidEmail(event.target.validity.valid);
   };
 
+  const handleTelegramChange = (event: any) => {
+    setTelegram(event.target.value);
+  };
+
   const handleFileChange = (event: any) => {
     setFilePath(event.target.value);
     setFile(event.target.files?.[0]);
@@ -61,6 +68,7 @@ export default function NewProtectedData() {
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
     const data: {
+      telegram?: string;
       email?: string;
       file?: Uint8Array;
     } = {};
@@ -80,8 +88,11 @@ export default function NewProtectedData() {
         bufferFile = await createArrayBufferFromFile(file);
         data.file = bufferFile;
         break;
+      case 'telegram':
+        data.telegram = telegram ;
+        break ;
     }
-    if (dataType && name && ((isValidEmail && email) || file)) {
+    if (dataType && name && ((isValidEmail && email) || file || telegram)) {
       await createProtectedData({ data, name });
       setTimeout(() => {
         setShowBackToListLink(true);
@@ -96,6 +107,7 @@ export default function NewProtectedData() {
 
   const dataTypes = [
     { value: 'email', label: 'Email Address' },
+    { value: 'telegram', label: 'Telegram' },
     { value: 'file', label: 'File' },
   ];
   return (
@@ -147,6 +159,23 @@ export default function NewProtectedData() {
                 error={!isValidEmail}
                 helperText={
                   !isValidEmail && 'Please enter a valid email address'
+                }
+              />
+            )}
+            {dataType === 'telegram' && (
+              <TextField
+                required
+                fullWidth
+                id="telegram"
+                label="Telegram Username"
+                variant="outlined"
+                sx={{ mt: 3 }}
+                value={telegram}
+                onChange={handleTelegramChange}
+                type="email"
+                error={!isValidEmail}
+                helperText={
+                  !isValidEmail && 'Please enter a valid telegram username'
                 }
               />
             )}
