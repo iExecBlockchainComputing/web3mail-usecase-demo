@@ -4,3 +4,4 @@ export { default as NewProtectedData } from './myProtectedData/newProtectedData/
 export { default as OneProtectedData } from './myProtectedData/OneProtectedData/OneProtectedData';
 export { default as SendEmail } from './sendEmail/SendEmail';
 export { default as SendEmailForm } from './sendEmail/SendEmailForm';
+export { default as SendTelegram } from './sendTelegram/SendTelegram';
