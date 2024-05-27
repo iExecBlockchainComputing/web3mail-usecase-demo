@@ -146,7 +146,7 @@ export default function NewProtectedData() {
                 helperText={
                   !isValidEmail && 'Please enter a valid email address'
                 }
-                className="mt-6"
+                className="!mt-6"
                 onChange={handleEmailChange}
               />
             )}
@@ -181,7 +181,7 @@ export default function NewProtectedData() {
                 label="Name of your Protected Data"
                 variant="outlined"
                 value={name}
-                className="mt-6"
+                className="!mt-6"
                 onChange={handleNameChange}
               />
             )}
