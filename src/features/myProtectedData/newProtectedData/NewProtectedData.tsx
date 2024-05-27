@@ -140,20 +140,20 @@ export default function NewProtectedData() {
                 id="email"
                 label="Email"
                 variant="outlined"
-                sx={{ mt: 3 }}
                 value={email}
-                onChange={handleEmailChange}
                 type="email"
                 error={!isValidEmail}
                 helperText={
                   !isValidEmail && 'Please enter a valid email address'
                 }
+                className="mt-6"
+                onChange={handleEmailChange}
               />
             )}
             {dataType === 'file' && (
               <Button
-                className="mt-5 w-full"
                 variant="secondary"
+                className="mt-5 w-full"
                 onClick={() => fileInput.current?.click()}
               >
                 {!filePath ? 'Upload' : 'Updated File'}
@@ -181,8 +181,8 @@ export default function NewProtectedData() {
                 label="Name of your Protected Data"
                 variant="outlined"
                 value={name}
+                className="mt-6"
                 onChange={handleNameChange}
-                sx={{ mt: 3 }}
               />
             )}
 

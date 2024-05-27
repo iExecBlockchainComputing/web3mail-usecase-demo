@@ -58,7 +58,7 @@ export const appSlice = createSlice({
       })
       .addCase(initSDK.rejected, (state, action) => {
         state.status = 'Failed';
-        state.error = '' + action.error.message;
+        state.error = String(action.error.message);
       });
   },
 });
