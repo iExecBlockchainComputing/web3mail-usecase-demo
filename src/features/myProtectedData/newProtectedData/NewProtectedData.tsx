@@ -214,19 +214,17 @@ export default function NewProtectedData() {
             </div>
           )}
 
-          {dataType && (
-            <DocLink className="mt-20">
-              dataprotector-sdk / Method called in this page:{' '}
-              <a
-                href="https://tools.docs.iex.ec/tools/dataprotector/methods/protectdata"
-                target="_blank"
-                rel="noreferrer"
-                className="text-link hover:underline"
-              >
-                protectData()
-              </a>
-            </DocLink>
-          )}
+          <DocLink className="mt-20">
+            dataprotector-sdk / Method called in this page:{' '}
+            <a
+              href="https://beta.tools.docs.iex.ec/tools/dataProtector/dataProtectorCore/protectData.html"
+              target="_blank"
+              rel="noreferrer"
+              className="text-link hover:underline"
+            >
+              protectData()
+            </a>
+          </DocLink>
         </>
       )}
 

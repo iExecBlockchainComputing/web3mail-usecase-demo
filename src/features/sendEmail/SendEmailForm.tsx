@@ -175,7 +175,7 @@ export default function SendEmailForm() {
       <DocLink className="mt-20">
         web3mail-sdk / Method called in this page:{' '}
         <a
-          href="https://tools.docs.iex.ec/tools/web3mail/methods/sendemail"
+          href="https://beta.tools.docs.iex.ec/tools/web3mail/methods/sendEmail.html"
           target="_blank"
           rel="noreferrer"
           className="text-link hover:underline"
