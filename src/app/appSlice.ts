@@ -14,6 +14,12 @@ import {
   SendEmailResponse,
   Contact,
 } from '@iexec/web3mail';
+import {
+  IExecWeb3telegram,
+  SendTelegramParams,
+  SendTelegramResponse,
+} from '@iexec/web3telegram'
+
 import { WEB3MAIL_IDAPPS_WHITELIST_SC } from '../config/config';
 import { buildErrorData } from '../utils/errorForClient';
 import { RootState } from './store';
@@ -22,6 +28,7 @@ import { api } from './api';
 // Configure iExec Data Protector & Web3Mail
 let iExecDataProtector: IExecDataProtector | null = null;
 let iExecWeb3Mail: IExecWeb3mail | null = null;
+let iExecWeb3Telegram: IExecWeb3telegram | null = null;
 
 export interface AppState {
   status: 'Not Connected' | 'Connected' | 'Loading' | 'Failed';
@@ -201,7 +208,7 @@ export const homeApi = api.injectEndpoints({
     fetchMyContacts: builder.query<Contact[], string>({
       queryFn: async () => {
         try {
-          const contacts = await iExecWeb3Mail?.fetchMyContacts();
+          const contacts = await iExecWeb3Mail?.fetchMyContacts();//todo : fetch pour afficher la liste des contact telegraù sur la page sendtelegram
           return { data: contacts || [] };
         } catch (err: any) {
           const errorData = buildErrorData(err);
@@ -232,6 +239,27 @@ export const homeApi = api.injectEndpoints({
         }
       },
     }),
+
+    //sendTelegram: builder.mutation<SendTelegramResponse | null, SendTelegramParams>({
+    sendTelegram: builder.mutation<SendTelegramResponse | null, SendTelegramParams>({
+      queryFn: async (args) => {
+        try {
+          const sendTelegramResponse = await iExecWeb3Telegram?.sendTelegram(args); //TODO : changer sendTelegram, avec le new sdk ?
+          return { data: sendTelegramResponse || null };
+        } catch (err: any) {
+          const errorData = buildErrorData(err);
+          console.error('[sendTelegram]', errorData);
+          // Temporary workaround to have a more explicit error
+          if (err.message === 'Dataset order not found') {
+            return {
+              error: `${err.message}: you might have exceeded the allowed quota defined by the user.`,
+            };
+          }
+          return { error: errorData.reason || err.message };
+        }
+      },
+    }),
+
   }),
 });
 
@@ -243,4 +271,5 @@ export const {
   useFetchMyContactsQuery,
   useGrantNewAccessMutation,
   useSendEmailMutation,
+  useSendTelegramMutation,
 } = homeApi;

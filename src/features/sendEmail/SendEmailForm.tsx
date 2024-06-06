@@ -17,7 +17,7 @@ const MAX_CHARACTERS_SENDER_NAME = 20;
 const MAX_CHARACTERS_MESSAGE_SUBJECT = 78;
 
 export default function SendEmailForm() {
-  const { receiverAddress, protectedDataAddress } = useParams();
+  const { receiverAddress, protectedDataAddress } = useParams(); //recupère l'address de la portected data depuis l'url
 
   const navigate = useNavigate();
   const { toast } = useToast();
