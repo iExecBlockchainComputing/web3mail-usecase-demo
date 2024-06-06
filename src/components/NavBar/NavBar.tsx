@@ -12,12 +12,12 @@ export default function NavBar() {
   const location = useLocation();
   const { isConnected, address, isAccountConnected, login, logout } = useUser();
 
-  const myProtectedDataLeft = 'left-[16px]';
-  const myProtectedDataWidth = 'w-[110px]';
-  const sendEmailLeft = 'left-[168px]';
-  const sendEmailWidth = 'w-[60px]';
-  const sendTelegramLeft = 'left-[270px]';
-  const sendTelegramWidth = 'w-[80px]';
+  const myProtectedDataLeft = 'left-0';
+  const myProtectedDataWidth = 'w-[124px]';
+  const sendEmailLeft = 'left-[157px]';
+  const sendEmailWidth = 'w-[73px]';
+  const sendTelegramLeft = 'left-[263px]';
+  const sendTelegramWidth = 'w-[98px]';
   const [tabIndicatorLeft, setTabIndicatorLeft] = useState('');
   const [tabIndicatorWidth, setTabIndicatorWidth] = useState('');
 
