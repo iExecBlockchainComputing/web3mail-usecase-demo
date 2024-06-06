@@ -63,7 +63,7 @@ export default function SendEmailForm() {
       .unwrap()
       .then(() => {
         toast({
-          title: 'The email has been sent!',
+          title: 'The email is being sent',
         });
         setTimeout(() => {
           navigate(`/${SEND_EMAIL}`);
