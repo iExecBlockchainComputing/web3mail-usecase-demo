@@ -6,7 +6,7 @@ import { Alert } from '@/components/Alert.tsx';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { DocLink } from '@/components/DocLink.tsx';
 import { useState } from 'react';
-import { selectAppIsConnected, useFetchMyContactsQuery } from '@/app/appSlice.ts';
+import { selectAppIsConnected, useFetchMyTelegramContactsQuery } from '@/app/appSlice.ts';
 import { useNavigate } from 'react-router-dom';
 import { useAccount } from 'wagmi';
 import { useAppSelector } from '@/app/hooks.ts';
@@ -38,7 +38,7 @@ export default function SendTelegram() {
     data: myContacts = [],
     isLoading,
     isError,
-  } = useFetchMyContactsQuery(address as string, {
+  } = useFetchMyTelegramContactsQuery(address as string, {
     skip: !isAccountConnected,
   });
 
@@ -155,7 +155,7 @@ export default function SendTelegram() {
         )}
 
         <DocLink className="mt-20">
-          web3mail-sdk / Method called in this page:{' '}
+          web3telegram-sdk / Method called in this page (not yet) :{' '}
           <a
             href="https://tools.docs.iex.ec/tools/web3mail/methods/fetchmycontacts"
             target="_blank"
