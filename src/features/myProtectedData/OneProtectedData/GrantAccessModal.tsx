@@ -108,7 +108,7 @@ export default function GrantAccessModal(props: GrantAccessModalParams) {
                   setIsValidEthAddress(true);
                 }}
               >
-                0x000...
+                {ZeroAddress}
               </button>
             </div>
           </div>

@@ -157,7 +157,7 @@ export default function SendEmail() {
       <DocLink className="mt-20">
         web3mail-sdk / Method called in this page:{' '}
         <a
-          href="https://tools.docs.iex.ec/tools/web3mail/methods/fetchmycontacts"
+          href="https://beta.tools.docs.iex.ec/tools/web3mail/methods/fetchMyContacts.html"
           target="_blank"
           rel="noreferrer"
           className="text-link hover:underline"

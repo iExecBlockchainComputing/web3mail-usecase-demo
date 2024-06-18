@@ -142,12 +142,12 @@ export default function MyProtectedData() {
           <DocLink>
             dataprotector-sdk / Method called in this page:{' '}
             <a
-              href="https://tools.docs.iex.ec/tools/dataprotector/methods/fetchprotecteddata"
+              href="https://beta.tools.docs.iex.ec/tools/dataProtector/dataProtectorCore/getProtectedData.html"
               target="_blank"
               rel="noreferrer"
               className="text-link hover:underline"
             >
-              fetchProtectedData()
+              getProtectedData()
             </a>
           </DocLink>
         </div>

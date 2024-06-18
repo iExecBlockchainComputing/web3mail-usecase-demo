@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { LogOut } from 'react-feather';
 import '@fontsource/space-mono/700.css';
@@ -8,35 +8,34 @@ import { useUser } from '@/components/NavBar/useUser.ts';
 import AddressChip from '@/components/NavBar/AddressChip.tsx';
 import { Button } from '@/components/ui/button.tsx';
 
+const activeLinkIndicatorWidthRatio = 0.7;
+
 export default function NavBar() {
   const location = useLocation();
   const { isConnected, address, isAccountConnected, login, logout } = useUser();
 
-  const myProtectedDataLeft = 'left-[16px]';
-  const myProtectedDataWidth = 'w-[110px]';
-  const sendEmailLeft = 'left-[168px]';
-  const sendEmailWidth = 'w-[60px]';
-  const sendTelegramLeft = 'left-[270px]';
-  const sendTelegramWidth = 'w-[80px]';
   const [tabIndicatorLeft, setTabIndicatorLeft] = useState('');
   const [tabIndicatorWidth, setTabIndicatorWidth] = useState('');
 
+  const navLinks = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
-    // FIRST tab is selected
-    if (location.pathname.startsWith(`/${PROTECTED_DATA}`)) {
-      setTabIndicatorLeft(myProtectedDataLeft);
-      setTabIndicatorWidth(myProtectedDataWidth);
+    if (!navLinks.current) {
+      return;
     }
-    // SECOND tab is selected
-    if (location.pathname.startsWith(`/${SEND_EMAIL}`)) {
-      setTabIndicatorLeft(sendEmailLeft);
-      setTabIndicatorWidth(sendEmailWidth);
+    const activeLink = navLinks.current.getElementsByClassName(
+      'active'
+    )[0] as HTMLAnchorElement | null;
+    if (!activeLink) {
+      return;
     }
-    // THIRD tab is selected
-    if (location.pathname.startsWith(`/${SEND_TELEGRAM}`))  {
-      setTabIndicatorLeft(sendTelegramLeft);
-      setTabIndicatorWidth(sendTelegramWidth);
-    }
+    const activeLinkWidth = activeLink.clientWidth;
+    const indicatorLeft =
+      (activeLinkWidth - activeLinkIndicatorWidthRatio * activeLinkWidth) / 2;
+    setTabIndicatorWidth(
+      activeLinkIndicatorWidthRatio * activeLinkWidth + 'px'
+    );
+    setTabIndicatorLeft(activeLink.offsetLeft + indicatorLeft + 'px');
   }, [location]);
 
   return (
@@ -52,7 +51,10 @@ export default function NavBar() {
         </div>
       </NavLink>
 
-      <div className="relative ml-20 flex h-full items-center gap-x-8 pr-2 text-base">
+      <div
+        ref={navLinks}
+        className="relative ml-20 flex h-full items-center gap-x-8 pr-2 text-base"
+      >
         <NavLink
           to={`/${PROTECTED_DATA}`}
           className="-mx-2 flex h-full items-center p-2"
@@ -72,7 +74,8 @@ export default function NavBar() {
           Send Telegram
         </NavLink>
         <div
-          className={`absolute bottom-0 h-1 rounded-md bg-white transition-all duration-300 ${tabIndicatorLeft} ${tabIndicatorWidth}`}
+          className="absolute bottom-0 h-1 rounded-md bg-white transition-all duration-300"
+          style={{ width: tabIndicatorWidth, left: tabIndicatorLeft }}
         ></div>
       </div>
 

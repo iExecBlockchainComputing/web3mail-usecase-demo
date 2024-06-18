@@ -150,18 +150,18 @@ export default function OneProtectedData() {
           <div className="mt-1 pl-10">
             -{' '}
             <a
-              href="https://tools.docs.iex.ec/tools/dataprotector/methods/fetchgrantedaccess"
+              href="https://beta.tools.docs.iex.ec/tools/dataProtector/dataProtectorCore/getGrantedAccess.html"
               target="_blank"
               rel="noreferrer"
               className="text-link hover:underline"
             >
-              fetchGrantedAccess()
+              getGrantedAccess()
             </a>
           </div>
           <div className="mt-1 pl-10">
             -{' '}
             <a
-              href="https://tools.docs.iex.ec/tools/dataprotector/methods/grantaccess"
+              href="https://beta.tools.docs.iex.ec/tools/dataProtector/dataProtectorCore/grantAccess.html"
               target="_blank"
               rel="noreferrer"
               className="text-link hover:underline"
@@ -172,7 +172,7 @@ export default function OneProtectedData() {
           <div className="mt-1 pl-10">
             -{' '}
             <a
-              href="https://tools.docs.iex.ec/tools/dataprotector/methods/revokeoneaccess"
+              href="https://beta.tools.docs.iex.ec/tools/dataProtector/dataProtectorCore/revokeOneAccess.html"
               target="_blank"
               rel="noreferrer"
               className="text-link hover:underline"

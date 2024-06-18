@@ -12,7 +12,7 @@
     "plugin:react-hooks/recommended",
     "airbnb-typescript",
     "plugin:@typescript-eslint/recommended",
-    "plugin:sonarjs/recommended",
+    "plugin:sonarjs/recommended-legacy",
     "prettier"
   ],
   "rules": {

@@ -152,14 +152,14 @@ export default function NewProtectedData() {
                 id="email"
                 label="Email"
                 variant="outlined"
-                sx={{ mt: 3 }}
                 value={email}
-                onChange={handleEmailChange}
                 type="email"
                 error={!isValidEmail}
                 helperText={
                   !isValidEmail && 'Please enter a valid email address'
                 }
+                className="!mt-6"
+                onChange={handleEmailChange}
               />
             )}
             {dataType === 'telegram' && (
@@ -181,8 +181,8 @@ export default function NewProtectedData() {
             )}
             {dataType === 'file' && (
               <Button
-                className="mt-5 w-full"
                 variant="secondary"
+                className="mt-5 w-full"
                 onClick={() => fileInput.current?.click()}
               >
                 {!filePath ? 'Upload' : 'Updated File'}
@@ -210,8 +210,8 @@ export default function NewProtectedData() {
                 label="Name of your Protected Data"
                 variant="outlined"
                 value={name}
+                className="!mt-6"
                 onChange={handleNameChange}
-                sx={{ mt: 3 }}
               />
             )}
 
@@ -243,19 +243,17 @@ export default function NewProtectedData() {
             </div>
           )}
 
-          {dataType && (
-            <DocLink className="mt-20">
-              dataprotector-sdk / Method called in this page:{' '}
-              <a
-                href="https://tools.docs.iex.ec/tools/dataprotector/methods/protectdata"
-                target="_blank"
-                rel="noreferrer"
-                className="text-link hover:underline"
-              >
-                protectData()
-              </a>
-            </DocLink>
-          )}
+          <DocLink className="mt-20">
+            dataprotector-sdk / Method called in this page:{' '}
+            <a
+              href="https://beta.tools.docs.iex.ec/tools/dataProtector/dataProtectorCore/protectData.html"
+              target="_blank"
+              rel="noreferrer"
+              className="text-link hover:underline"
+            >
+              protectData()
+            </a>
+          </DocLink>
         </>
       )}
 
