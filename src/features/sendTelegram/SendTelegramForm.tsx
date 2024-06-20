@@ -31,9 +31,14 @@ export default function SendTelegramForm() {
 
   const sendTelegramHandle = () => {
     if (!protectedDataAddress) return;
+    console.log('message', message)
+    console.log('protectedDataAddress', protectedDataAddress)
+    const workerpoolAddressOrEns = 'debug-v8-bellecour.main.pools.iexec.eth'
+    console.log('workerpoolAddressOrEns', workerpoolAddressOrEns)
     sendTelegram({
       telegramContent: message,
       protectedData: protectedDataAddress,//TODO : a changer après la umtation cf appslice
+      workerpoolAddressOrEns,
     })
       .unwrap()
       .then(() => {
