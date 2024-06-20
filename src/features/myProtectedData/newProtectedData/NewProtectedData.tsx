@@ -68,14 +68,17 @@ export default function NewProtectedData() {
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
     const data: {
-      telegram?: string;
       email?: string;
+      chatId?: string;
       file?: Uint8Array;
     } = {};
     let bufferFile: Uint8Array;
     switch (dataType) {
       case 'email':
         data.email = email;
+        break;
+      case 'telegram':
+        data.chatId = telegram;
         break;
       case 'file':
         if (!file) {
@@ -88,11 +91,9 @@ export default function NewProtectedData() {
         bufferFile = await createArrayBufferFromFile(file);
         data.file = bufferFile;
         break;
-      case 'telegram':
-        data.telegram = telegram ;
-        break ;
     }
     if (dataType && name && ((isValidEmail && email) || file || telegram)) {
+      console.log('protectedData > data', data);
       await createProtectedData({ data, name });
       setTimeout(() => {
         setShowBackToListLink(true);
