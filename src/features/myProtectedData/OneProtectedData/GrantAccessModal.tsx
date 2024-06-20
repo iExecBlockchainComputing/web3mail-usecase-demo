@@ -1,3 +1,4 @@
+import { useUser } from '@/components/NavBar/useUser.ts';
 import { type FormEvent, useState } from 'react';
 import { ZeroAddress } from 'ethers';
 import './GrantAccessModal.css';
@@ -15,6 +16,8 @@ type GrantAccessModalParams = {
 };
 
 export default function GrantAccessModal(props: GrantAccessModalParams) {
+  const { address } = useUser();
+
   const { toast } = useToast();
 
   //rtk mutation
@@ -98,17 +101,30 @@ export default function GrantAccessModal(props: GrantAccessModalParams) {
                 !isValidEthAddress && 'Please enter a valid ethereum Address'
               }
             />
-            <div className="ml-0.5 mt-1 text-xs">
-              Authorize any user:{' '}
+            <div className="ml-0.5 mt-1">
+              <span className="text-xs">Authorize any user: </span>
               <button
                 type="button"
-                className="bg-transparent underline"
+                className="bg-transparent text-xs underline"
                 onClick={() => {
                   setEthAddress(ZeroAddress);
                   setIsValidEthAddress(true);
                 }}
               >
                 {ZeroAddress}
+              </button>
+            </div>
+            <div className="ml-0.5">
+              <span className="text-xs">Authorize myself: </span>
+              <button
+                type="button"
+                className="bg-transparent text-xs underline"
+                onClick={() => {
+                  setEthAddress(address);
+                  setIsValidEthAddress(true);
+                }}
+              >
+                {address}
               </button>
             </div>
           </div>
