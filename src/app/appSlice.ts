@@ -18,7 +18,7 @@ import {
   IExecWeb3telegram,
   SendTelegramParams,
   SendTelegramResponse,
-} from '@iexec/web3telegram'
+} from '@iexec/web3telegram';
 
 import { WEB3MAIL_IDAPPS_WHITELIST_SC } from '../config/config';
 import { buildErrorData } from '../utils/errorForClient';
@@ -44,9 +44,19 @@ export const initSDK = createAsyncThunk(
   'app/initSDK',
   async ({ connector }: { connector: Connector }) => {
     const provider = await connector?.getProvider();
-    iExecDataProtector = new IExecDataProtector(provider);
+    const smsURL = 'https://sms.scone-debug.v8-bellecour.iex.ec';
+    console.log('smsURL', smsURL);
+    iExecDataProtector = new IExecDataProtector(provider, {
+      iexecOptions: {
+        smsURL,
+      },
+    });
     iExecWeb3Mail = new IExecWeb3mail(provider);
-    iExecWeb3Telegram = new IExecWeb3telegram(provider);
+    iExecWeb3Telegram = new IExecWeb3telegram(provider, {
+      iexecOptions: {
+        smsURL,
+      },
+    });
   }
 );
 
@@ -194,6 +204,7 @@ export const homeApi = api.injectEndpoints({
 
     grantNewAccess: builder.mutation<string, GrantAccessParams>({
       queryFn: async (args) => {
+        console.log('args', args);
         try {
           const data = await iExecDataProtector?.grantAccess(args);
           return { data: data?.sign || '' };
@@ -209,7 +220,7 @@ export const homeApi = api.injectEndpoints({
     fetchMyContacts: builder.query<Contact[], string>({
       queryFn: async () => {
         try {
-          const contacts = await iExecWeb3Mail?.fetchMyContacts();//todo : fetch pour afficher la liste des contact telegraù sur la page sendtelegram
+          const contacts = await iExecWeb3Mail?.fetchMyContacts(); //todo : fetch pour afficher la liste des contact telegraù sur la page sendtelegram
           return { data: contacts || [] };
         } catch (err: any) {
           const errorData = buildErrorData(err);
@@ -228,7 +239,7 @@ export const homeApi = api.injectEndpoints({
           console.log('appslice call');
           // console.log(iExecWeb3Telegram);
 
-          const contacts = await iExecWeb3Telegram?.fetchMyContacts();//todo : fetch pour afficher la liste des contact telegraù sur la page sendtelegram
+          const contacts = await iExecWeb3Telegram?.fetchMyContacts(); //todo : fetch pour afficher la liste des contact telegraù sur la page sendtelegram
           console.log('contacts :', contacts);
           return { data: contacts || [] };
         } catch (err: any) {
@@ -262,10 +273,15 @@ export const homeApi = api.injectEndpoints({
     }),
 
     //sendTelegram: builder.mutation<SendTelegramResponse | null, SendTelegramParams>({
-    sendTelegram: builder.mutation<SendTelegramResponse | null, SendTelegramParams>({
+    sendTelegram: builder.mutation<
+      SendTelegramResponse | null,
+      SendTelegramParams
+    >({
       queryFn: async (args) => {
+        console.log('args', args);
         try {
-          const sendTelegramResponse = await iExecWeb3Telegram?.sendTelegram(args); //TODO : changer sendTelegram, avec le new sdk ?
+          const sendTelegramResponse =
+            await iExecWeb3Telegram?.sendTelegram(args); //TODO : changer sendTelegram, avec le new sdk ?
           return { data: sendTelegramResponse || null };
         } catch (err: any) {
           const errorData = buildErrorData(err);
@@ -280,7 +296,6 @@ export const homeApi = api.injectEndpoints({
         }
       },
     }),
-
   }),
 });
 
