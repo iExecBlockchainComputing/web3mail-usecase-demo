@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
-import { Box, TextareaAutosize } from '@mui/material';
+import { Box, TextareaAutosize, TextField } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 import { ChevronLeft, Loader } from 'react-feather';
 import { Button } from '@/components/ui/button.tsx';
@@ -9,6 +9,8 @@ import { DocLink } from '@/components/DocLink.tsx';
 import { useSendTelegramMutation } from '@/app/appSlice.ts'; // A CHANGER
 import { SEND_TELEGRAM } from '@/config/path.ts';
 import './SendTelegram.css';
+
+const MAX_CHARACTERS_SENDER_NAME = 20;
 
 export default function SendTelegramForm() {
   const { receiverAddress, protectedDataAddress } = useParams();
@@ -21,6 +23,7 @@ export default function SendTelegramForm() {
 
   //for textarea
   const [message, setMessage] = useState('');
+  const [sender, setSender] = useState('');
   const charactersRemainingMessage = 512000 - message.length;
 
   //handle functions
@@ -29,9 +32,15 @@ export default function SendTelegramForm() {
     setMessage(inputValue);
   };
 
+  const handleChangeSender = (event: any) => {
+    const inputValue = event.target.value;
+    setSender(inputValue);
+  };
+
   const sendTelegramHandle = () => {
     if (!protectedDataAddress) return;
     sendTelegram({
+      //sender: sender, TODO 
       telegramContent: message,
       protectedData: protectedDataAddress,//TODO : a changer après la umtation cf appslice
     })
@@ -66,6 +75,17 @@ export default function SendTelegramForm() {
       <Box sx={{ my: 2, display: 'flex', flexDirection: 'column' }}>
         <FormControl sx={{ textAlign: 'left', mt: 3 }} fullWidth>
         </FormControl>
+        <TextField
+          fullWidth
+          id="Sender Name"
+          label="Sender Name"
+          variant="outlined"
+          required
+          value={sender}
+          onChange={handleChangeSender}
+          inputProps={{ maxLength: MAX_CHARACTERS_SENDER_NAME }}
+          className="mt-6"
+        />
         <TextareaAutosize
           required
           minRows={8}

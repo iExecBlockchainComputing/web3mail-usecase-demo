@@ -167,7 +167,7 @@ export default function NewProtectedData() {
                 required
                 fullWidth
                 id="telegram"
-                label="Telegram Username"
+                label="Telegram Chat ID"
                 variant="outlined"
                 sx={{ mt: 3 }}
                 value={telegram}
