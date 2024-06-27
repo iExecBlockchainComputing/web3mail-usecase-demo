@@ -34,6 +34,9 @@ export default function NewProtectedData() {
   const [email, setEmail] = useState('');
   const [isValidEmail, setIsValidEmail] = useState(true);
 
+  //for telegram
+  const [telegram, setTelegram] = useState('');
+
   //for file
   const [filePath, setFilePath] = useState('');
   const [file, setFile] = useState<File | undefined>();
@@ -49,6 +52,10 @@ export default function NewProtectedData() {
     setIsValidEmail(event.target.validity.valid);
   };
 
+  const handleTelegramChange = (event: any) => {
+    setTelegram(event.target.value);
+  };
+
   const handleFileChange = (event: any) => {
     setFilePath(event.target.value);
     setFile(event.target.files?.[0]);
@@ -62,12 +69,16 @@ export default function NewProtectedData() {
     event.preventDefault();
     const data: {
       email?: string;
+      chatId?: string;
       file?: Uint8Array;
     } = {};
     let bufferFile: Uint8Array;
     switch (dataType) {
       case 'email':
         data.email = email;
+        break;
+      case 'telegram':
+        data.chatId = telegram;
         break;
       case 'file':
         if (!file) {
@@ -81,7 +92,8 @@ export default function NewProtectedData() {
         data.file = bufferFile;
         break;
     }
-    if (dataType && name && ((isValidEmail && email) || file)) {
+    if (dataType && name && ((isValidEmail && email) || file || telegram)) {
+      console.log('protectedData > data', data);
       await createProtectedData({ data, name });
       setTimeout(() => {
         setShowBackToListLink(true);
@@ -96,6 +108,7 @@ export default function NewProtectedData() {
 
   const dataTypes = [
     { value: 'email', label: 'Email Address' },
+    { value: 'telegram', label: 'Telegram' },
     { value: 'file', label: 'File' },
   ];
   return (
@@ -111,7 +124,8 @@ export default function NewProtectedData() {
 
       <h2>Protect New Data</h2>
       <p className="-mt-3 mb-4">
-        Protect new email or file: encrypt, monetize and control access.
+        Protect new email, telegram or file : encrypt, monetize and control
+        access.
       </p>
 
       {(!result.data || result.error) && (
@@ -149,6 +163,48 @@ export default function NewProtectedData() {
                 className="!mt-6"
                 onChange={handleEmailChange}
               />
+            )}
+            {dataType === 'telegram' && (
+              <>
+                <TextField
+                  required
+                  fullWidth
+                  id="telegram"
+                  label="Telegram Chat ID"
+                  variant="outlined"
+                  sx={{ mt: 3 }}
+                  value={telegram}
+                  onChange={handleTelegramChange}
+                  type="email"
+                  // error={!isValidEmail}
+                  // helperText={
+                  //   !isValidEmail && 'Please enter a valid telegram username'
+                  // }
+                />
+                <div className="relative flex justify-between p-4">
+                  <div>
+                    <span className="">
+                      Initiate a conversation with the bot @Web3Telegram_Bot or
+                      you will be unable to receive messages.
+                    </span>
+                    <br />
+                    <br />
+                    <span className="">
+                      You can retrieve your chat ID using the following bot :
+                      @getmyid_bot on Telegram.
+                    </span>
+                  </div>
+                  <a
+                    href="https://beta.tools.docs.iex.ec/tools/web3mail/getting-started.html"
+                    target="_blank"
+                  >
+                    <span className="absolute bottom-0 right-0 rounded-xl bg-primary p-2">
+                      {' '}
+                      Learn more{' '}
+                    </span>
+                  </a>
+                </div>
+              </>
             )}
             {dataType === 'file' && (
               <Button

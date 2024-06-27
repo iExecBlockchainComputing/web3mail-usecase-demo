@@ -9,11 +9,14 @@ import {
   SendEmail,
   SendEmailForm,
   LoginGuard,
+  SendTelegram,
+  SendTelegramForm,
 } from './features';
 import {
   PROTECTED_DATA,
   CONSENT,
   SEND_EMAIL,
+  SEND_TELEGRAM,
   CREATE,
   HOME,
 } from './config/path';
@@ -73,6 +76,22 @@ function App() {
             element={
               <LoginGuard>
                 <SendEmailForm />
+              </LoginGuard>
+            }
+          />
+          <Route
+            path={`/${SEND_TELEGRAM}`}
+            element={
+              <LoginGuard>
+                <SendTelegram />
+              </LoginGuard>
+            }
+          />
+          <Route
+            path={`/${SEND_TELEGRAM}/:receiverAddress/:protectedDataAddress`}
+            element={
+              <LoginGuard>
+                <SendTelegramForm />
               </LoginGuard>
             }
           />
