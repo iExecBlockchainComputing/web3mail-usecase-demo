@@ -33,7 +33,9 @@ export const getTypeOfProtectedData = (schema?: DataSchema) => {
       ? 'File'
       : isKeyInDataSchema(schema || {}, 'telegram')
         ? 'Telegram'
-        : 'Unknown type';
+        : isKeyInDataSchema(schema || {}, 'chatId')
+          ? 'Telegram (chatId)'
+          : 'Unknown type';
 };
 
 export const createArrayBufferFromFile = async (

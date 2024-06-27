@@ -1,3 +1,4 @@
+import { useUser } from '@/components/NavBar/useUser.ts';
 import { type FormEvent, useState } from 'react';
 import { ZeroAddress } from 'ethers';
 import './GrantAccessModal.css';
@@ -6,7 +7,7 @@ import { Loader } from 'react-feather';
 import { Button } from '@/components/ui/button.tsx';
 import { useToast } from '@/components/ui/use-toast.ts';
 import { useGrantNewAccessMutation } from '@/app/appSlice.ts';
-import { WEB3MAIL_IDAPPS_WHITELIST_SC } from '@/config/config.ts';
+import { WEB3TELEGRAM_IDAPP_ADDRESS } from '@/config/config.ts';
 
 type GrantAccessModalParams = {
   protectedData: string;
@@ -15,6 +16,8 @@ type GrantAccessModalParams = {
 };
 
 export default function GrantAccessModal(props: GrantAccessModalParams) {
+  const { address } = useUser();
+
   const { toast } = useToast();
 
   //rtk mutation
@@ -46,7 +49,9 @@ export default function GrantAccessModal(props: GrantAccessModalParams) {
     const protectedData = props.protectedData;
     grantNewAccess({
       protectedData,
-      authorizedApp: WEB3MAIL_IDAPPS_WHITELIST_SC,
+      // TODO Check the type of the protected data we are about to grant access to.
+      // authorizedApp: WEB3MAIL_IDAPPS_WHITELIST_SC,
+      authorizedApp: WEB3TELEGRAM_IDAPP_ADDRESS,
       authorizedUser: ethAddress,
       numberOfAccess: NbOfAccess,
     })
@@ -98,19 +103,34 @@ export default function GrantAccessModal(props: GrantAccessModalParams) {
                 !isValidEthAddress && 'Please enter a valid ethereum Address'
               }
             />
-            <div className="ml-0.5 mt-1 text-xs">
-              Authorize any user:{' '}
+            <div className="ml-0.5 mt-1">
+              <span className="text-xs">Authorize any user: </span>
               <button
                 type="button"
-                className="bg-transparent underline"
+                className="bg-transparent text-xs underline"
                 onClick={() => {
                   setEthAddress(ZeroAddress);
                   setIsValidEthAddress(true);
                 }}
               >
-                0x000...
+                {ZeroAddress}
               </button>
             </div>
+            {address && (
+              <div className="ml-0.5">
+                <span className="text-xs">Authorize myself: </span>
+                <button
+                  type="button"
+                  className="bg-transparent text-xs underline"
+                  onClick={() => {
+                    setEthAddress(address);
+                    setIsValidEthAddress(true);
+                  }}
+                >
+                  {address}
+                </button>
+              </div>
+            )}
           </div>
           <TextField
             fullWidth

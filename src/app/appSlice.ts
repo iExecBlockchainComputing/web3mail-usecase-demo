@@ -44,9 +44,19 @@ export const initSDK = createAsyncThunk(
   'app/initSDK',
   async ({ connector }: { connector: Connector }) => {
     const provider = await connector?.getProvider();
-    iExecDataProtector = new IExecDataProtector(provider);
+    const smsURL = 'https://sms.scone-debug.v8-bellecour.iex.ec';
+    console.log('smsURL', smsURL);
+    iExecDataProtector = new IExecDataProtector(provider, {
+      iexecOptions: {
+        smsURL,
+      },
+    });
     iExecWeb3Mail = new IExecWeb3mail(provider);
-    iExecWeb3Telegram = new IExecWeb3telegram(provider);
+    iExecWeb3Telegram = new IExecWeb3telegram(provider, {
+      iexecOptions: {
+        smsURL,
+      },
+    });
   }
 );
 
@@ -66,7 +76,7 @@ export const appSlice = createSlice({
       })
       .addCase(initSDK.rejected, (state, action) => {
         state.status = 'Failed';
-        state.error = '' + action.error.message;
+        state.error = String(action.error.message);
       });
   },
 });
@@ -194,6 +204,7 @@ export const homeApi = api.injectEndpoints({
 
     grantNewAccess: builder.mutation<string, GrantAccessParams>({
       queryFn: async (args) => {
+        console.log('args', args);
         try {
           const data = await iExecDataProtector?.grantAccess(args);
           return { data: data?.sign || '' };
@@ -267,6 +278,7 @@ export const homeApi = api.injectEndpoints({
       SendTelegramParams
     >({
       queryFn: async (args) => {
+        console.log('args', args);
         try {
           const sendTelegramResponse =
             await iExecWeb3Telegram?.sendTelegram(args); //TODO : changer sendTelegram, avec le new sdk ?

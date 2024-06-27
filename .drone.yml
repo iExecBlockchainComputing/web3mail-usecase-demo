@@ -1,25 +1,17 @@
 kind: pipeline
 type: docker
-name: default
+name: default-ci
 
 trigger:
   event: push
   branch:
     exclude:
       - main
-      - develop
 
 steps:
   - name: npm install
     image: node:18.19
-    environment:
-      SSH_KEY:
-        from_secret: ssh-key-team-product-github
     commands:
-      # ssh setup to npm install private package via ssh+git
-      - mkdir /root/.ssh && echo "$SSH_KEY" > /root/.ssh/id_rsa && chmod 0600 /root/.ssh/id_rsa
-      - ssh-keyscan -H github.com >> /root/.ssh/known_hosts
-      # install
       - node -v
       - npm -v
       - npm ci
@@ -50,7 +42,7 @@ steps:
 ---
 kind: pipeline
 type: docker
-name: main-ci
+name: prod-ci
 
 trigger:
   event: push
@@ -59,14 +51,7 @@ trigger:
 steps:
   - name: npm install
     image: node:18.19
-    environment:
-      SSH_KEY:
-        from_secret: ssh-key-team-product-github
     commands:
-      # ssh setup to npm install private package via ssh+git
-      - mkdir /root/.ssh && echo "$SSH_KEY" > /root/.ssh/id_rsa && chmod 0600 /root/.ssh/id_rsa
-      - ssh-keyscan -H github.com >> /root/.ssh/known_hosts
-      # install
       - node -v
       - npm -v
       - npm ci

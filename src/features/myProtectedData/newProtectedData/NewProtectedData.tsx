@@ -68,14 +68,17 @@ export default function NewProtectedData() {
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
     const data: {
-      telegram?: string;
       email?: string;
+      chatId?: string;
       file?: Uint8Array;
     } = {};
     let bufferFile: Uint8Array;
     switch (dataType) {
       case 'email':
         data.email = email;
+        break;
+      case 'telegram':
+        data.chatId = telegram;
         break;
       case 'file':
         if (!file) {
@@ -88,11 +91,9 @@ export default function NewProtectedData() {
         bufferFile = await createArrayBufferFromFile(file);
         data.file = bufferFile;
         break;
-      case 'telegram':
-        data.telegram = telegram;
-        break;
     }
     if (dataType && name && ((isValidEmail && email) || file || telegram)) {
+      console.log('protectedData > data', data);
       await createProtectedData({ data, name });
       setTimeout(() => {
         setShowBackToListLink(true);
@@ -153,14 +154,14 @@ export default function NewProtectedData() {
                 id="email"
                 label="Email"
                 variant="outlined"
-                sx={{ mt: 3 }}
                 value={email}
-                onChange={handleEmailChange}
                 type="email"
                 error={!isValidEmail}
                 helperText={
                   !isValidEmail && 'Please enter a valid email address'
                 }
+                className="!mt-6"
+                onChange={handleEmailChange}
               />
             )}
             {dataType === 'telegram' && (
@@ -207,8 +208,8 @@ export default function NewProtectedData() {
             )}
             {dataType === 'file' && (
               <Button
-                className="mt-5 w-full"
                 variant="secondary"
+                className="mt-5 w-full"
                 onClick={() => fileInput.current?.click()}
               >
                 {!filePath ? 'Upload' : 'Updated File'}
@@ -236,8 +237,8 @@ export default function NewProtectedData() {
                 label="Name of your Protected Data"
                 variant="outlined"
                 value={name}
+                className="!mt-6"
                 onChange={handleNameChange}
-                sx={{ mt: 3 }}
               />
             )}
 
@@ -269,19 +270,17 @@ export default function NewProtectedData() {
             </div>
           )}
 
-          {dataType && (
-            <DocLink className="mt-20">
-              dataprotector-sdk / Method called in this page:{' '}
-              <a
-                href="https://tools.docs.iex.ec/tools/dataprotector/methods/protectdata"
-                target="_blank"
-                rel="noreferrer"
-                className="text-link hover:underline"
-              >
-                protectData()
-              </a>
-            </DocLink>
-          )}
+          <DocLink className="mt-20">
+            dataprotector-sdk / Method called in this page:{' '}
+            <a
+              href="https://beta.tools.docs.iex.ec/tools/dataProtector/dataProtectorCore/protectData.html"
+              target="_blank"
+              rel="noreferrer"
+              className="text-link hover:underline"
+            >
+              protectData()
+            </a>
+          </DocLink>
         </>
       )}
 
