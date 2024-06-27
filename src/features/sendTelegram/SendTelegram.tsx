@@ -6,7 +6,10 @@ import { Alert } from '@/components/Alert.tsx';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { DocLink } from '@/components/DocLink.tsx';
 import { useState } from 'react';
-import { selectAppIsConnected, useFetchMyTelegramContactsQuery } from '@/app/appSlice.ts';
+import {
+  selectAppIsConnected,
+  useFetchMyTelegramContactsQuery,
+} from '@/app/appSlice.ts';
 import { useNavigate } from 'react-router-dom';
 import { useAccount } from 'wagmi';
 import { useAppSelector } from '@/app/hooks.ts';
@@ -22,7 +25,6 @@ type Row = {
 };
 
 export default function SendTelegram() {
-
   const [searchTerm, setSearchTerm] = useState('');
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -63,7 +65,6 @@ export default function SendTelegram() {
     row.owner.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-
   // A CHANGER?
   const columns: GridColDef[] = [
     {
@@ -99,72 +100,72 @@ export default function SendTelegram() {
     },
   ];
 
-  return(
-      <>
-        <h2>Contacts List</h2>
-        <p className="-mt-3">
-          These are contacts that have protected their email address and have
-          allowed you to use it.
-          <br />
-          You can send them a message, without knowing their telegram username.
-        </p>
+  return (
+    <>
+      <h2>Contacts List</h2>
+      <p className="-mt-3">
+        These are contacts that have protected their email address and have
+        allowed you to use it.
+        <br />
+        You can send them a message, without knowing their telegram username.
+      </p>
 
-        <div className="relative mt-10">
-          <Search size="20" className="absolute top-3 ml-4" />
-          <Input
-            placeholder="Search owner address"
-            className="pl-12"
-            aria-label="Search"
-            value={searchTerm}
-            onChange={handleSearchChange}
+      <div className="relative mt-10">
+        <Search size="20" className="absolute top-3 ml-4" />
+        <Input
+          placeholder="Search owner address"
+          className="pl-12"
+          aria-label="Search"
+          value={searchTerm}
+          onChange={handleSearchChange}
+        />
+      </div>
+
+      {isLoading && (
+        <div className="flex flex-col items-center gap-y-4">
+          <CircularLoader className="mt-10" />
+          Fetching your contacts...
+        </div>
+      )}
+
+      {isError && (
+        <div className="mt-10 flex flex-col items-center">
+          <Alert variant="error">
+            Oops, something went wrong while fetching protected data shared with
+            you.
+          </Alert>
+        </div>
+      )}
+
+      {!isLoading && !isError && filteredRows.length === 0 && (
+        <div className="my-10 flex items-center justify-center gap-x-2">
+          <Slash size="18" className="inline" />
+          So far, nobody shared their protected data with you.
+        </div>
+      )}
+
+      {filteredRows.length > 0 && !isLoading && (
+        <div className="mt-8 w-full">
+          <DataGrid
+            disableColumnMenu
+            rows={filteredRows}
+            columns={columns}
+            sx={{ border: 'none' }}
           />
         </div>
+      )}
 
-        {isLoading && (
-          <div className="flex flex-col items-center gap-y-4">
-            <CircularLoader className="mt-10" />
-            Fetching your contacts...
-          </div>
-        )}
-
-        {isError && (
-          <div className="mt-10 flex flex-col items-center">
-            <Alert variant="error">
-              Oops, something went wrong while fetching protected data shared with
-              you.
-            </Alert>
-          </div>
-        )}
-
-        {!isLoading && !isError && filteredRows.length === 0 && (
-          <div className="my-10 flex items-center justify-center gap-x-2">
-            <Slash size="18" className="inline" />
-            So far, nobody shared their protected data with you.
-          </div>
-        )}
-
-        {filteredRows.length > 0 && !isLoading && (
-          <div className="mt-8 w-full">
-            <DataGrid
-              disableColumnMenu
-              rows={filteredRows}
-              columns={columns}
-              sx={{ border: 'none' }}
-            />
-          </div>
-        )}
-
-        <DocLink className="mt-20">
-          web3telegram-sdk / Method called in this page (not yet) :{' '}
-          <a
-            href="https://tools.docs.iex.ec/tools/web3mail/methods/fetchmycontacts"
-            target="_blank"
-            rel="noreferrer"
-            className="text-link hover:underline"
-          >
-            fetchMyContacts()
-          </a>
-        </DocLink>
+      <DocLink className="mt-20">
+        web3telegram-sdk / Method called in this page (not yet) :{' '}
+        <a
+          href="https://tools.docs.iex.ec/tools/web3mail/methods/fetchmycontacts"
+          target="_blank"
+          rel="noreferrer"
+          className="text-link hover:underline"
+        >
+          fetchMyContacts()
+        </a>
+      </DocLink>
     </>
   );
 }

@@ -40,9 +40,9 @@ export default function SendTelegramForm() {
   const sendTelegramHandle = () => {
     if (!protectedDataAddress) return;
     sendTelegram({
-      //sender: sender, TODO 
+      //sender: sender, TODO
       telegramContent: message,
-      protectedData: protectedDataAddress,//TODO : a changer après la umtation cf appslice
+      protectedData: protectedDataAddress, //TODO : a changer après la umtation cf appslice
     })
       .unwrap()
       .then(() => {
@@ -73,8 +73,7 @@ export default function SendTelegramForm() {
       </div>
       <h2>Send telegram message to {receiverAddress}</h2>
       <Box sx={{ my: 2, display: 'flex', flexDirection: 'column' }}>
-        <FormControl sx={{ textAlign: 'left', mt: 3 }} fullWidth>
-        </FormControl>
+        <FormControl sx={{ textAlign: 'left', mt: 3 }} fullWidth></FormControl>
         <TextField
           fullWidth
           id="Sender Name"

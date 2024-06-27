@@ -33,7 +33,6 @@ export default function MyProtectedData() {
     skip: !isAccountConnected,
   });
 
-
   //for pagination
   const [currentPage, setCurrentPage] = useState(1);
   const handlePageChange = (_: React.ChangeEvent<unknown>, value: number) => {

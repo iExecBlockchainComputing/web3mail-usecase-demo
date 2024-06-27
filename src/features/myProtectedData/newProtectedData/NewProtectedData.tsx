@@ -89,8 +89,8 @@ export default function NewProtectedData() {
         data.file = bufferFile;
         break;
       case 'telegram':
-        data.telegram = telegram ;
-        break ;
+        data.telegram = telegram;
+        break;
     }
     if (dataType && name && ((isValidEmail && email) || file || telegram)) {
       await createProtectedData({ data, name });
@@ -123,7 +123,8 @@ export default function NewProtectedData() {
 
       <h2>Protect New Data</h2>
       <p className="-mt-3 mb-4">
-        Protect new email or file: encrypt, monetize and control access.
+        Protect new email, telegram or file : encrypt, monetize and control
+        access.
       </p>
 
       {(!result.data || result.error) && (
@@ -163,21 +164,46 @@ export default function NewProtectedData() {
               />
             )}
             {dataType === 'telegram' && (
-              <TextField
-                required
-                fullWidth
-                id="telegram"
-                label="Telegram Chat ID"
-                variant="outlined"
-                sx={{ mt: 3 }}
-                value={telegram}
-                onChange={handleTelegramChange}
-                type="email"
-                error={!isValidEmail}
-                helperText={
-                  !isValidEmail && 'Please enter a valid telegram username'
-                }
-              />
+              <>
+                <TextField
+                  required
+                  fullWidth
+                  id="telegram"
+                  label="Telegram Chat ID"
+                  variant="outlined"
+                  sx={{ mt: 3 }}
+                  value={telegram}
+                  onChange={handleTelegramChange}
+                  type="email"
+                  // error={!isValidEmail}
+                  // helperText={
+                  //   !isValidEmail && 'Please enter a valid telegram username'
+                  // }
+                />
+                <div className="relative flex justify-between p-4">
+                  <div>
+                    <span className="">
+                      Initiate a conversation with the bot @Web3Telegram_Bot or
+                      you will be unable to receive messages.
+                    </span>
+                    <br />
+                    <br />
+                    <span className="">
+                      You can retrieve your chat ID using the following bot :
+                      @getmyid_bot on Telegram.
+                    </span>
+                  </div>
+                  <a
+                    href="https://beta.tools.docs.iex.ec/tools/web3mail/getting-started.html"
+                    target="_blank"
+                  >
+                    <span className="absolute bottom-0 right-0 rounded-xl bg-primary p-2">
+                      {' '}
+                      Learn more{' '}
+                    </span>
+                  </a>
+                </div>
+              </>
             )}
             {dataType === 'file' && (
               <Button
