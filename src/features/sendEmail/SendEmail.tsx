@@ -120,6 +120,9 @@ export default function SendEmail() {
         />
       </div>
 
+      {/*<label>Show grants to Zero address</label>*/}
+      {/*<Checkbox />*/}
+
       {isLoading && (
         <div className="flex flex-col items-center gap-y-4">
           <CircularLoader className="mt-10" />

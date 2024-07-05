@@ -201,7 +201,10 @@ export const homeApi = api.injectEndpoints({
     fetchMyContacts: builder.query<Contact[], string>({
       queryFn: async () => {
         try {
-          const contacts = await iExecWeb3Mail?.fetchMyContacts();
+          const contacts = await iExecWeb3Mail?.fetchMyContacts({
+            isUserStrict: false, // Keep existing behaviour
+            // isUserStrict, // TODO
+          });
           return { data: contacts || [] };
         } catch (err: any) {
           const errorData = buildErrorData(err);

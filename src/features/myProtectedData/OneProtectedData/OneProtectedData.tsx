@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useAccount } from 'wagmi';
-import { ChevronLeft, Plus, Slash } from 'react-feather';
+import { AtSign, ChevronLeft, Link, Plus, Slash, User } from 'react-feather';
 import { Button } from '@/components/ui/button.tsx';
 import {
   useFetchGrantedAccessQuery,
@@ -84,16 +84,23 @@ export default function OneProtectedData() {
               {getTypeOfProtectedData(protectedDataSelected?.schema)}
             </Badge>
           </li>
-          <li>
-            Owned by: <strong>{protectedDataSelected?.owner}</strong>
-          </li>
-          <li>
-            Data Protected Address:{' '}
+          <li className="flex items-center gap-x-1.5">
+            <AtSign size="18" aria-label="user-icon" />
+            Protected Data Address:{' '}
             <strong>{protectedDataSelected?.address}</strong>
           </li>
-          <li>
+          <li className="flex items-center gap-x-1.5">
+            <User size="18" aria-label="user-icon" />
+            Owned by: <strong>{protectedDataSelected?.owner}</strong>
+          </li>
+          <li className="flex items-center gap-x-1.5">
+            <Link size="18" aria-label="user-icon" />
             IPFS link:{' '}
             <i>{'Will be provided with the next version of subgraph'}</i>
+            {/*<strong>*/}
+            {/*  {protectedDataSelected?.multiaddr}*/}
+            {/*</strong>{' '}*/}
+            {/*(encrypted content)*/}
           </li>
         </ul>
       </div>
