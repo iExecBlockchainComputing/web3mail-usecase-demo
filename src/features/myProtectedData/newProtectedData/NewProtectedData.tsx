@@ -182,16 +182,18 @@ export default function NewProtectedData() {
                   // }
                 />
                 <div className="relative flex justify-between p-4">
-                  <div>
+                <div>
                     <span className="">
-                      Initiate a conversation with the bot @Web3Telegram_Bot or
-                      you will be unable to receive messages.
+                      Initiate a conversation with the bot 
+                      <Link to="https://t.me/Web3Telegram_Bot" className="text-blue-700 font-semibold"> @Web3Telegram_Bot </Link>
+                      or you will be unable to receive messages.
                     </span>
                     <br />
                     <br />
                     <span className="">
-                      You can retrieve your chat ID using the following bot :
-                      @getmyid_bot on Telegram.
+                      You can retrieve your <span className='font-semibold'>chat ID</span> using the following bot : 
+                      <Link to="https://t.me/getmyid_bot" className="text-blue-700 font-semibold"> @getmyid_bot </Link>
+                      on Telegram.
                     </span>
                   </div>
                   <a
