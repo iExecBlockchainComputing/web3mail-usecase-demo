@@ -44,9 +44,9 @@ export default function SendTelegramForm() {
     const workerpoolAddressOrEns = 'debug-v8-bellecour.main.pools.iexec.eth';
     console.log('workerpoolAddressOrEns', workerpoolAddressOrEns);
     sendTelegram({
-      //sender: sender, TODO
+      senderName: sender,
       telegramContent: message,
-      protectedData: protectedDataAddress, //TODO : a changer après la umtation cf appslice
+      protectedData: protectedDataAddress,
       workerpoolAddressOrEns,
     })
       .unwrap()
