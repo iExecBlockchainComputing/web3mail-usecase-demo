@@ -128,7 +128,10 @@ export const homeApi = api.injectEndpoints({
           const grantedAccessResponse =
             await iExecDataProtector?.fetchGrantedAccess({
               protectedData,
-              authorizedApp: WEB3MAIL_IDAPPS_WHITELIST_SC,
+              // TODO Set 'authorizedApp' value based on protected data content?
+              // "email" field -> WEB3MAIL_IDAPPS_WHITELIST_SC
+              // "chatId" field -> WEB3TELEGRAM_IDAPP_ADDRESS
+              // authorizedApp: WEB3MAIL_IDAPPS_WHITELIST_SC,
               page,
               pageSize,
             });
