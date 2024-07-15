@@ -4,7 +4,6 @@ import {
   ProtectedData,
   IExecDataProtector,
   ProtectDataParams,
-  GrantedAccess,
   RevokedAccess,
   GrantAccessParams,
 } from '@iexec/dataprotector';
@@ -19,7 +18,6 @@ import {
   SendTelegramParams,
   SendTelegramResponse,
 } from '@iexec/web3telegram';
-
 import { WEB3MAIL_IDAPPS_WHITELIST_SC } from '../config/config';
 import { buildErrorData } from '../utils/errorForClient';
 import { RootState } from './store';
@@ -119,7 +117,15 @@ export const homeApi = api.injectEndpoints({
     }),
 
     fetchGrantedAccess: builder.query<
-      { grantedAccessList: string[]; count: number },
+      {
+        grantedAccessList: Array<{
+          // Have an 'id' field for MUI data grid to be happy
+          id: string;
+          requesterRestrict: string;
+          appRestrict: string;
+        }>;
+        count: number;
+      },
       { protectedData: string; page: number; pageSize: number }
     >({
       queryFn: async (args) => {
@@ -139,11 +145,13 @@ export const homeApi = api.injectEndpoints({
             throw new Error('No granted access found');
           }
           const { grantedAccess, count } = grantedAccessResponse;
-          const grantedAddressesList = grantedAccess?.map(
-            (item: GrantedAccess) => {
-              return item.requesterrestrict.toLowerCase();
-            }
-          );
+          const grantedAddressesList = grantedAccess?.map((item) => {
+            return {
+              id: item.requesterrestrict.toLowerCase(),
+              requesterRestrict: item.requesterrestrict.toLowerCase(),
+              appRestrict: item.apprestrict.toLowerCase(),
+            };
+          });
           return {
             data: { grantedAccessList: grantedAddressesList || [], count },
           };
@@ -160,7 +168,7 @@ export const homeApi = api.injectEndpoints({
         return [
           ...result.grantedAccessList.map((address) => ({
             type: 'GRANTED_ACCESS' as const,
-            id: address,
+            id: address.id,
           })),
           'GRANTED_ACCESS',
         ];
@@ -207,7 +215,7 @@ export const homeApi = api.injectEndpoints({
 
     grantNewAccess: builder.mutation<string, GrantAccessParams>({
       queryFn: async (args) => {
-        console.log('args', args);
+        console.log('grantNewAccess() / args', args);
         try {
           const data = await iExecDataProtector?.grantAccess(args);
           return { data: data?.sign || '' };
@@ -226,7 +234,7 @@ export const homeApi = api.injectEndpoints({
           const contacts = await iExecWeb3Mail?.fetchMyContacts({
             isUserStrict: false, // Keep existing behaviour
             // isUserStrict, // TODO
-          }); //todo : fetch pour afficher la liste des contact telegraù sur la page sendtelegram
+          });
           return { data: contacts || [] };
         } catch (err: any) {
           const errorData = buildErrorData(err);
