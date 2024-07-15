@@ -24,7 +24,7 @@
     "@emotion/styled": "^11.11.0",
     "@fontsource/space-mono": "^4.5.12",
     "@iexec/dataprotector": "^0.5.1",
-    "@iexec/web3mail": "^0.6.0",
+    "@iexec/web3mail": "^1.0.2",
     "@iexec/web3telegram": "file:../web3telegram-sdk",
     "@mui/material": "^5.13.4",
     "@mui/x-data-grid": "^6.0.4",
