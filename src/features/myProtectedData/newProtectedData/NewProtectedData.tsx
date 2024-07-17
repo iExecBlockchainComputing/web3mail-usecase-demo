@@ -1,5 +1,3 @@
-import { type FormEvent, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
 import {
   FormControl,
   InputLabel,
@@ -7,16 +5,18 @@ import {
   Select,
   TextField,
 } from '@mui/material';
+import { type FormEvent, useRef, useState } from 'react';
 import { CheckCircle, ChevronLeft } from 'react-feather';
+import { Link } from 'react-router-dom';
+import { useCreateProtectedDataMutation } from '@/app/appSlice.ts';
+import { Alert } from '@/components/Alert.tsx';
+import { CircularLoader } from '@/components/CircularLoader.tsx';
+import { DocLink } from '@/components/DocLink.tsx';
 import { Button } from '@/components/ui/button.tsx';
 import { useToast } from '@/components/ui/use-toast.ts';
-import { Alert } from '@/components/Alert.tsx';
-import { DocLink } from '@/components/DocLink.tsx';
 import { PROTECTED_DATA } from '@/config/path.ts';
-import { useCreateProtectedDataMutation } from '@/app/appSlice.ts';
 import { cn } from '@/utils/style.utils.ts';
 import { createArrayBufferFromFile } from '@/utils/utils.ts';
-import { CircularLoader } from '@/components/CircularLoader.tsx';
 
 export default function NewProtectedData() {
   const { toast } = useToast();

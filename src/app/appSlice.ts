@@ -1,5 +1,3 @@
-import { type Connector } from 'wagmi';
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import {
   ProtectedData,
   IExecDataProtector,
@@ -14,10 +12,12 @@ import {
   SendEmailResponse,
   Contact,
 } from '@iexec/web3mail';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { type Connector } from 'wagmi';
 import { WEB3MAIL_IDAPPS_WHITELIST_SC } from '../config/config';
 import { buildErrorData } from '../utils/errorForClient';
-import { RootState } from './store';
 import { api } from './api';
+import { RootState } from './store';
 
 // Configure iExec Data Protector & Web3Mail
 let iExecDataProtector: IExecDataProtector | null = null;

@@ -1,13 +1,13 @@
-import { useUser } from '@/components/NavBar/useUser.ts';
-import { type FormEvent, useState } from 'react';
-import { ZeroAddress } from 'ethers';
-import './GrantAccessModal.css';
 import { TextField, Modal, Typography } from '@mui/material';
+import { ZeroAddress } from 'ethers';
+import { type FormEvent, useState } from 'react';
 import { Loader } from 'react-feather';
+import { useGrantNewAccessMutation } from '@/app/appSlice.ts';
+import { useUser } from '@/components/NavBar/useUser.ts';
 import { Button } from '@/components/ui/button.tsx';
 import { useToast } from '@/components/ui/use-toast.ts';
-import { useGrantNewAccessMutation } from '@/app/appSlice.ts';
 import { WEB3MAIL_IDAPPS_WHITELIST_SC } from '@/config/config.ts';
+import './GrantAccessModal.css';
 
 type GrantAccessModalParams = {
   protectedData: string;

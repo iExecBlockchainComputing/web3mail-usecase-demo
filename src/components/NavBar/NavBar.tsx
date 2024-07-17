@@ -1,12 +1,12 @@
-import { useState, useEffect, useRef } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
-import { LogOut } from 'react-feather';
 import '@fontsource/space-mono/700.css';
+import { useState, useEffect, useRef } from 'react';
+import { LogOut } from 'react-feather';
+import { NavLink, useLocation } from 'react-router-dom';
 import iExecLogo from '@/assets/iexec-logo.svg';
-import { HOME, PROTECTED_DATA, SEND_EMAIL } from '@/config/path.ts';
-import { useUser } from '@/components/NavBar/useUser.ts';
 import AddressChip from '@/components/NavBar/AddressChip.tsx';
+import { useUser } from '@/components/NavBar/useUser.ts';
 import { Button } from '@/components/ui/button.tsx';
+import { HOME, PROTECTED_DATA, SEND_EMAIL } from '@/config/path.ts';
 
 const activeLinkIndicatorWidthRatio = 0.7;
 

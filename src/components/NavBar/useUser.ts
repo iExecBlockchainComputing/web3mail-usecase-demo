@@ -1,7 +1,7 @@
 import { useWeb3Modal } from '@web3modal/wagmi/react';
 import { useAccount, useDisconnect } from 'wagmi';
-import { useAppDispatch, useAppSelector } from '@/app/hooks.ts';
 import { resetAppState, selectAppIsConnected } from '@/app/appSlice.ts';
+import { useAppDispatch, useAppSelector } from '@/app/hooks.ts';
 
 export function useUser() {
   const { open } = useWeb3Modal();

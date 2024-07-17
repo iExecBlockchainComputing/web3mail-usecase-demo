@@ -1,6 +1,6 @@
-import { useParams } from 'react-router-dom';
-import { Loader, Trash, User } from 'react-feather';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { Loader, Trash, User } from 'react-feather';
+import { useParams } from 'react-router-dom';
 import { useRevokeOneAccessMutation } from '@/app/appSlice.ts';
 import { Button } from '@/components/ui/button.tsx';
 import { useToast } from '@/components/ui/use-toast.ts';

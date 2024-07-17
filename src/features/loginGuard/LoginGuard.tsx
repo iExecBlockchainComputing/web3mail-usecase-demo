@@ -1,9 +1,9 @@
 import { FC, ReactNode } from 'react';
 import { AlertCircle } from 'react-feather';
 import { useAccount, useNetwork, useSwitchNetwork } from 'wagmi';
-import { Button } from '@/components/ui/button.tsx';
 import { selectAppIsConnected } from '@/app/appSlice.ts';
 import { useAppSelector } from '@/app/hooks.ts';
+import { Button } from '@/components/ui/button.tsx';
 
 const LoginGuard: FC<{ children: ReactNode }> = ({ children }) => {
   const { isConnected } = useAccount();

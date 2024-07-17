@@ -1,20 +1,20 @@
 import { useState } from 'react';
+import { AtSign, ChevronLeft, Link, Plus, Slash, User } from 'react-feather';
 import { useParams } from 'react-router-dom';
 import { useAccount } from 'wagmi';
-import { AtSign, ChevronLeft, Link, Plus, Slash, User } from 'react-feather';
-import { Button } from '@/components/ui/button.tsx';
 import {
   useFetchGrantedAccessQuery,
   useFetchProtectedDataQuery,
 } from '@/app/appSlice.ts';
-import { getTypeOfProtectedData } from '@/utils/utils.ts';
-import { PROTECTED_DATA } from '@/config/path.ts';
 import { Alert } from '@/components/Alert.tsx';
-import { Badge } from '@/components/ui/badge.tsx';
 import { CircularLoader } from '@/components/CircularLoader.tsx';
 import { DocLink } from '@/components/DocLink.tsx';
-import GrantAccessModal from './GrantAccessModal';
+import { Badge } from '@/components/ui/badge.tsx';
+import { Button } from '@/components/ui/button.tsx';
+import { PROTECTED_DATA } from '@/config/path.ts';
+import { getTypeOfProtectedData } from '@/utils/utils.ts';
 import AuthorizedUsersList from './AuthorizedUsersList';
+import GrantAccessModal from './GrantAccessModal';
 
 // The list of users authorized to access the protected data is paginated
 // Must be greater than or equal to 10

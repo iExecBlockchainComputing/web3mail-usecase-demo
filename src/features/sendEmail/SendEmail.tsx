@@ -1,20 +1,20 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Address, Contact, TimeStamp } from '@iexec/web3mail';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { useState } from 'react';
 import { Search, Send, Slash } from 'react-feather';
+import { useNavigate } from 'react-router-dom';
 import { useAccount } from 'wagmi';
-import { Button } from '@/components/ui/button.tsx';
-import { Alert } from '@/components/Alert.tsx';
 import {
   selectAppIsConnected,
   useFetchMyContactsQuery,
 } from '@/app/appSlice.ts';
 import { useAppSelector } from '@/app/hooks.ts';
-import { getLocalDateFromTimeStamp } from '@/utils/utils.ts';
+import { Alert } from '@/components/Alert.tsx';
 import { CircularLoader } from '@/components/CircularLoader.tsx';
-import { Input } from '@/components/ui/input.tsx';
 import { DocLink } from '@/components/DocLink.tsx';
+import { Button } from '@/components/ui/button.tsx';
+import { Input } from '@/components/ui/input.tsx';
+import { getLocalDateFromTimeStamp } from '@/utils/utils.ts';
 
 type Row = {
   id: string;

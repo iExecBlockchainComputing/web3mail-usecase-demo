@@ -1,42 +1,33 @@
-import React from 'react';
-import './modified-tailwind-preflight.css';
-import './index.css';
-import App from './App';
-import { createRoot } from 'react-dom/client';
-import { ThemeProvider, createTheme } from '@mui/material';
-import { WagmiConfig } from 'wagmi';
-import { BrowserRouter } from 'react-router-dom';
-import { Provider } from 'react-redux';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Analytics } from '@vercel/analytics/react';
-import { wagmiConfig } from '@/utils/wagmiConfig.ts';
-import { store } from '@/app/store.ts';
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
+import { WagmiProvider } from 'wagmi';
 import { Toaster } from '@/components/ui/toaster.tsx';
+import { checkEnvVars } from '@/utils/checkEnvVars.ts';
+import { wagmiConfig } from '@/utils/wagmiConfig.ts';
+import App from './App';
+import './index.css';
+import './modified-tailwind-preflight.css';
+
+checkEnvVars();
+
+const queryClient = new QueryClient();
 
 const rootElement = document.getElementById('root');
 const root = createRoot(rootElement!);
 
-// material ui theme
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#FCD15A',
-      contrastText: '#1D1D24',
-    },
-  },
-});
-
 root.render(
   <React.StrictMode>
-    <BrowserRouter basename={import.meta.env.BASE_URL}>
-      <Provider store={store}>
-        <ThemeProvider theme={theme}>
-          <WagmiConfig config={wagmiConfig}>
-            <App />
-            <Toaster />
-          </WagmiConfig>
-        </ThemeProvider>
-      </Provider>
-    </BrowserRouter>
+    <WagmiProvider config={wagmiConfig}>
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter basename={import.meta.env.BASE_URL}>
+          <App />
+          <Toaster />
+        </BrowserRouter>
+      </QueryClientProvider>
+    </WagmiProvider>
     <Analytics />
   </React.StrictMode>
 );

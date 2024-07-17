@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom';
 import { DataSchema } from '@iexec/dataprotector';
 import { Box, Card, Divider } from '@mui/material';
+import { Link } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge.tsx';
 import { CONSENT, PROTECTED_DATA } from '@/config/path.ts';
 import { getTypeOfProtectedData } from '@/utils/utils.ts';
