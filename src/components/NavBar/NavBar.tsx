@@ -3,7 +3,12 @@ import { NavLink, useLocation } from 'react-router-dom';
 import { LogOut } from 'react-feather';
 import '@fontsource/space-mono/700.css';
 import iExecLogo from '@/assets/iexec-logo.svg';
-import { HOME, PROTECTED_DATA, SEND_EMAIL } from '@/config/path.ts';
+import {
+  HOME,
+  PROTECTED_DATA,
+  SEND_EMAIL,
+  SEND_TELEGRAM,
+} from '@/config/path.ts';
 import { useUser } from '@/components/NavBar/useUser.ts';
 import AddressChip from '@/components/NavBar/AddressChip.tsx';
 import { Button } from '@/components/ui/button.tsx';
@@ -66,6 +71,12 @@ export default function NavBar() {
           className="-mx-2 flex h-full items-center p-2"
         >
           Send Email
+        </NavLink>
+        <NavLink
+          to={`/${SEND_TELEGRAM}`}
+          className="-mx-2 flex h-full items-center p-2"
+        >
+          Send Telegram
         </NavLink>
         <div
           className="absolute bottom-0 h-1 rounded-md bg-white transition-all duration-300"

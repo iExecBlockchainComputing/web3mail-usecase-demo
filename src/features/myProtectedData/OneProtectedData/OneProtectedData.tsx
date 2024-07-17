@@ -21,12 +21,11 @@ import AuthorizedUsersList from './AuthorizedUsersList';
 const AUTHORIZED_ADDRESSES_PER_PAGE = 10;
 
 export default function OneProtectedData() {
-  const { ProtectedDataId } = useParams();
+  const { protectedDataAddress } = useParams();
   const { address } = useAccount();
 
   const [page, setPage] = useState(0);
 
-  //query RTK API as query hook
   const {
     data: { grantedAccessList = [], count = 0 } = {},
     isLoading,
@@ -34,12 +33,12 @@ export default function OneProtectedData() {
     error,
   } = useFetchGrantedAccessQuery(
     {
-      protectedData: ProtectedDataId!,
+      protectedData: protectedDataAddress!,
       page,
       pageSize: AUTHORIZED_ADDRESSES_PER_PAGE,
     },
     {
-      skip: !ProtectedDataId,
+      skip: !protectedDataAddress,
     }
   );
 
@@ -49,7 +48,7 @@ export default function OneProtectedData() {
 
   //process queries to get the data we need
   const protectedDataSelected = protectedData?.find(
-    (item) => item.address === ProtectedDataId
+    (item) => item.address === protectedDataAddress
   );
 
   //modal state
@@ -191,7 +190,7 @@ export default function OneProtectedData() {
 
         {modalOpen && (
           <GrantAccessModal
-            protectedData={ProtectedDataId as string}
+            protectedData={protectedDataAddress as string}
             open={modalOpen}
             handleClose={() => setModalOpen(false)}
           />

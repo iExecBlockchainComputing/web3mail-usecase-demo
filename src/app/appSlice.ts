@@ -4,7 +4,6 @@ import {
   ProtectedData,
   IExecDataProtector,
   ProtectDataParams,
-  GrantedAccess,
   RevokedAccess,
   GrantAccessParams,
 } from '@iexec/dataprotector';
@@ -14,6 +13,11 @@ import {
   SendEmailResponse,
   Contact,
 } from '@iexec/web3mail';
+import {
+  IExecWeb3telegram,
+  SendTelegramParams,
+  SendTelegramResponse,
+} from '@iexec/web3telegram';
 import { WEB3MAIL_IDAPPS_WHITELIST_SC } from '../config/config';
 import { buildErrorData } from '../utils/errorForClient';
 import { RootState } from './store';
@@ -22,6 +26,7 @@ import { api } from './api';
 // Configure iExec Data Protector & Web3Mail
 let iExecDataProtector: IExecDataProtector | null = null;
 let iExecWeb3Mail: IExecWeb3mail | null = null;
+let iExecWeb3Telegram: IExecWeb3telegram | null = null;
 
 export interface AppState {
   status: 'Not Connected' | 'Connected' | 'Loading' | 'Failed';
@@ -37,8 +42,18 @@ export const initSDK = createAsyncThunk(
   'app/initSDK',
   async ({ connector }: { connector: Connector }) => {
     const provider = await connector?.getProvider();
-    iExecDataProtector = new IExecDataProtector(provider);
+    const smsURL = 'https://sms.scone-debug.v8-bellecour.iex.ec';
+    iExecDataProtector = new IExecDataProtector(provider, {
+      iexecOptions: {
+        smsURL,
+      },
+    });
     iExecWeb3Mail = new IExecWeb3mail(provider);
+    iExecWeb3Telegram = new IExecWeb3telegram(provider, {
+      iexecOptions: {
+        smsURL,
+      },
+    });
   }
 );
 
@@ -101,7 +116,15 @@ export const homeApi = api.injectEndpoints({
     }),
 
     fetchGrantedAccess: builder.query<
-      { grantedAccessList: string[]; count: number },
+      {
+        grantedAccessList: Array<{
+          // Have an 'id' field for MUI data grid to be happy
+          id: string;
+          requesterRestrict: string;
+          appRestrict: string;
+        }>;
+        count: number;
+      },
       { protectedData: string; page: number; pageSize: number }
     >({
       queryFn: async (args) => {
@@ -110,7 +133,10 @@ export const homeApi = api.injectEndpoints({
           const grantedAccessResponse =
             await iExecDataProtector?.fetchGrantedAccess({
               protectedData,
-              authorizedApp: WEB3MAIL_IDAPPS_WHITELIST_SC,
+              // TODO Set 'authorizedApp' value based on protected data content?
+              // "email" field -> WEB3MAIL_IDAPPS_WHITELIST_SC
+              // "chatId" field -> WEB3TELEGRAM_IDAPP_ADDRESS
+              // authorizedApp: WEB3MAIL_IDAPPS_WHITELIST_SC,
               page,
               pageSize,
             });
@@ -118,11 +144,13 @@ export const homeApi = api.injectEndpoints({
             throw new Error('No granted access found');
           }
           const { grantedAccess, count } = grantedAccessResponse;
-          const grantedAddressesList = grantedAccess?.map(
-            (item: GrantedAccess) => {
-              return item.requesterrestrict.toLowerCase();
-            }
-          );
+          const grantedAddressesList = grantedAccess?.map((item) => {
+            return {
+              id: item.requesterrestrict.toLowerCase(),
+              requesterRestrict: item.requesterrestrict.toLowerCase(),
+              appRestrict: item.apprestrict.toLowerCase(),
+            };
+          });
           return {
             data: { grantedAccessList: grantedAddressesList || [], count },
           };
@@ -139,7 +167,7 @@ export const homeApi = api.injectEndpoints({
         return [
           ...result.grantedAccessList.map((address) => ({
             type: 'GRANTED_ACCESS' as const,
-            id: address,
+            id: address.id,
           })),
           'GRANTED_ACCESS',
         ];
@@ -201,10 +229,23 @@ export const homeApi = api.injectEndpoints({
     fetchMyContacts: builder.query<Contact[], string>({
       queryFn: async () => {
         try {
-          const contacts = await iExecWeb3Mail?.fetchMyContacts({
-            isUserStrict: false, // Keep existing behaviour
-            // isUserStrict, // TODO
-          });
+          const contacts = await iExecWeb3Mail?.fetchMyContacts();
+          return { data: contacts || [] };
+        } catch (err: any) {
+          const errorData = buildErrorData(err);
+          console.error('[fetchMyContacts]', errorData);
+          return { error: errorData.reason || err.message };
+        }
+      },
+      providesTags: () => {
+        return ['CONTACTS'];
+      },
+    }),
+
+    fetchMyTelegramContacts: builder.query<Contact[], string>({
+      queryFn: async () => {
+        try {
+          const contacts = await iExecWeb3Telegram?.fetchMyContacts();
           return { data: contacts || [] };
         } catch (err: any) {
           const errorData = buildErrorData(err);
@@ -235,6 +276,29 @@ export const homeApi = api.injectEndpoints({
         }
       },
     }),
+
+    sendTelegram: builder.mutation<
+      SendTelegramResponse | null,
+      SendTelegramParams
+    >({
+      queryFn: async (args) => {
+        try {
+          const sendTelegramResponse =
+            await iExecWeb3Telegram?.sendTelegram(args);
+          return { data: sendTelegramResponse || null };
+        } catch (err: any) {
+          const errorData = buildErrorData(err);
+          console.error('[sendTelegram]', errorData);
+          // Temporary workaround to have a more explicit error
+          if (err.message === 'Dataset order not found') {
+            return {
+              error: `${err.message}: you might have exceeded the allowed quota defined by the user.`,
+            };
+          }
+          return { error: errorData.reason || err.message };
+        }
+      },
+    }),
   }),
 });
 
@@ -244,6 +308,8 @@ export const {
   useFetchGrantedAccessQuery,
   useRevokeOneAccessMutation,
   useFetchMyContactsQuery,
+  useFetchMyTelegramContactsQuery,
   useGrantNewAccessMutation,
   useSendEmailMutation,
+  useSendTelegramMutation,
 } = homeApi;

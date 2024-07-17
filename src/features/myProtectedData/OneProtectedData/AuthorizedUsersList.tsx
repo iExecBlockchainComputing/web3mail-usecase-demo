@@ -7,7 +7,11 @@ import { useToast } from '@/components/ui/use-toast.ts';
 import './AuthorizedUsersList.css';
 
 interface AuthorizedUsersListProps {
-  authorizedUsers: string[];
+  authorizedUsers: Array<{
+    id: string;
+    requesterRestrict: string;
+    appRestrict: string;
+  }>;
   count: number;
   pageSize: number;
   page: number;
@@ -16,7 +20,7 @@ interface AuthorizedUsersListProps {
 
 export default function AuthorizedUsersList(props: AuthorizedUsersListProps) {
   const { authorizedUsers, count, pageSize, page, onPageChanged } = props;
-  const { ProtectedDataId } = useParams();
+  const { protectedDataAddress } = useParams();
 
   const { toast } = useToast();
 
@@ -25,17 +29,15 @@ export default function AuthorizedUsersList(props: AuthorizedUsersListProps) {
     page,
   };
 
-  const users = authorizedUsers.map((user) => ({ id: user }));
-
   //query RTK API as mutation hook
   const [revokeOneAccess, result] = useRevokeOneAccessMutation();
 
   function handleRevoke(value: string) {
-    if (!ProtectedDataId) {
+    if (!protectedDataAddress) {
       return;
     }
     revokeOneAccess({
-      protectedData: ProtectedDataId,
+      protectedData: protectedDataAddress,
       authorizedUser: value,
     })
       .unwrap()
@@ -65,7 +67,13 @@ export default function AuthorizedUsersList(props: AuthorizedUsersListProps) {
       ),
     },
     {
-      field: 'id',
+      field: 'requesterRestrict',
+      sortable: false,
+      type: 'string',
+      flex: 1,
+    },
+    {
+      field: 'appRestrict',
       sortable: false,
       type: 'string',
       flex: 1,
@@ -98,7 +106,7 @@ export default function AuthorizedUsersList(props: AuthorizedUsersListProps) {
       <DataGrid
         disableColumnMenu
         autoHeight
-        rows={users}
+        rows={authorizedUsers}
         columns={columns}
         paginationMode="server"
         paginationModel={paginationModel}
