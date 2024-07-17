@@ -176,10 +176,6 @@ export default function NewProtectedData() {
                   value={telegram}
                   onChange={handleTelegramChange}
                   type="email"
-                  // error={!isValidEmail}
-                  // helperText={
-                  //   !isValidEmail && 'Please enter a valid telegram username'
-                  // }
                 />
                 <div className="relative flex justify-between p-4">
                   <div>

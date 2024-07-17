@@ -44,7 +44,7 @@ export default function SendTelegram() {
     skip: !isAccountConnected,
   });
 
-  //modified the return of fetchMyContact in the web3Mail SDK to order them by timestamp
+  // Order contacts by accessGrantTimestamp DESC
   const rows: Row[] = [...myContacts]
     .sort(
       (a: Contact, b: Contact) =>
@@ -65,7 +65,6 @@ export default function SendTelegram() {
     row.owner.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // A CHANGER?
   const columns: GridColDef[] = [
     {
       field: 'owner',
@@ -104,7 +103,7 @@ export default function SendTelegram() {
     <>
       <h2>Contacts List</h2>
       <p className="-mt-3">
-        These are contacts that have protected their email address and have
+        These are contacts that have protected their Telegram Chat ID and have
         allowed you to use it.
         <br />
         You can send them a message, without knowing their telegram username.
@@ -156,7 +155,7 @@ export default function SendTelegram() {
       )}
 
       <DocLink className="mt-20">
-        web3telegram-sdk / Method called in this page (not yet) :{' '}
+        wweb3telegram-sdk / Method called in this page:{' '}
         <a
           href="https://tools.docs.iex.ec/tools/web3mail/methods/fetchmycontacts"
           target="_blank"

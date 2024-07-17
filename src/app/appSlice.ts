@@ -45,7 +45,6 @@ export const initSDK = createAsyncThunk(
   async ({ connector }: { connector: Connector }) => {
     const provider = await connector?.getProvider();
     const smsURL = 'https://sms.scone-debug.v8-bellecour.iex.ec';
-    console.log('smsURL', smsURL);
     iExecDataProtector = new IExecDataProtector(provider, {
       iexecOptions: {
         smsURL,
@@ -204,7 +203,6 @@ export const homeApi = api.injectEndpoints({
 
     grantNewAccess: builder.mutation<string, GrantAccessParams>({
       queryFn: async (args) => {
-        console.log('args', args);
         try {
           const data = await iExecDataProtector?.grantAccess(args);
           return { data: data?.sign || '' };
@@ -220,10 +218,7 @@ export const homeApi = api.injectEndpoints({
     fetchMyContacts: builder.query<Contact[], string>({
       queryFn: async () => {
         try {
-          const contacts = await iExecWeb3Mail?.fetchMyContacts({
-            isUserStrict: false, // Keep existing behaviour
-            // isUserStrict, // TODO
-          }); //todo : fetch pour afficher la liste des contact telegraù sur la page sendtelegram
+          const contacts = await iExecWeb3Mail?.fetchMyContacts();
           return { data: contacts || [] };
         } catch (err: any) {
           const errorData = buildErrorData(err);
@@ -239,11 +234,7 @@ export const homeApi = api.injectEndpoints({
     fetchMyTelegramContacts: builder.query<Contact[], string>({
       queryFn: async () => {
         try {
-          console.log('appslice call');
-          // console.log(iExecWeb3Telegram);
-
-          const contacts = await iExecWeb3Telegram?.fetchMyContacts(); //todo : fetch pour afficher la liste des contact telegraù sur la page sendtelegram
-          console.log('contacts :', contacts);
+          const contacts = await iExecWeb3Telegram?.fetchMyContacts();
           return { data: contacts || [] };
         } catch (err: any) {
           const errorData = buildErrorData(err);
@@ -275,16 +266,14 @@ export const homeApi = api.injectEndpoints({
       },
     }),
 
-    //sendTelegram: builder.mutation<SendTelegramResponse | null, SendTelegramParams>({
     sendTelegram: builder.mutation<
       SendTelegramResponse | null,
       SendTelegramParams
     >({
       queryFn: async (args) => {
-        console.log('args', args);
         try {
           const sendTelegramResponse =
-            await iExecWeb3Telegram?.sendTelegram(args); //TODO : changer sendTelegram, avec le new sdk ?
+            await iExecWeb3Telegram?.sendTelegram(args);
           return { data: sendTelegramResponse || null };
         } catch (err: any) {
           const errorData = buildErrorData(err);
