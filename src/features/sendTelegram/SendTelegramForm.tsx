@@ -114,6 +114,7 @@ export default function SendTelegramForm() {
             )}
             <span>Send</span>
           </Button>
+          <div className="mt-1 text-sm">(Expect 3 Metamask interactions)</div>
         </div>
       </Box>
 

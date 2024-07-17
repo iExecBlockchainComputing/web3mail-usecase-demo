@@ -48,7 +48,7 @@ function App() {
             }
           />
           <Route
-            path={`/${PROTECTED_DATA}/${CONSENT}/:ProtectedDataId`}
+            path={`/${PROTECTED_DATA}/${CONSENT}/:protectedDataAddress`}
             element={
               <LoginGuard>
                 <OneProtectedData />
