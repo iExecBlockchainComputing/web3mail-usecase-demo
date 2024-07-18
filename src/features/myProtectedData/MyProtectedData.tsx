@@ -34,8 +34,8 @@ export default function MyProtectedData() {
 
   //for pagination
   const [currentPage, setCurrentPage] = useState(1);
-  const handlePageChange = (_: React.ChangeEvent<unknown>, value: number) => {
-    setCurrentPage(value);
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
   };
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
@@ -128,13 +128,16 @@ export default function MyProtectedData() {
                 )
               )}
             </div>
-            <div className="mt-16 flex justify-center">
-              <MyProtectedDataPagination
-                count={Math.ceil(protectedData?.length / ITEMS_PER_PAGE)}
-                page={currentPage}
-                onChange={handlePageChange}
-              />
-            </div>
+
+            {protectedData?.length > ITEMS_PER_PAGE && (
+              <div className="mt-16 flex justify-center">
+                <MyProtectedDataPagination
+                  count={Math.ceil(protectedData?.length / ITEMS_PER_PAGE)}
+                  currentPage={currentPage}
+                  onPageChange={handlePageChange}
+                />
+              </div>
+            )}
           </div>
 
           <DocLink>
