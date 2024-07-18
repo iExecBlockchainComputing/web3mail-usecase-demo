@@ -1,12 +1,12 @@
-import { TextField, Modal, Typography } from '@mui/material';
+import { useUserStore } from '@/stores/user.store.ts';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { ZeroAddress } from 'ethers';
 import { type FormEvent, useState } from 'react';
 import { Loader } from 'react-feather';
-import { useGrantNewAccessMutation } from '@/app/appSlice.ts';
-import { useUser } from '@/components/NavBar/useUser.ts';
 import { Button } from '@/components/ui/button.tsx';
 import { useToast } from '@/components/ui/use-toast.ts';
 import { WEB3MAIL_IDAPPS_WHITELIST_SC } from '@/config/config.ts';
+import { getDataProtectorClient } from '@/externals/dataProtectorClient.ts';
 import './GrantAccessModal.css';
 
 type GrantAccessModalParams = {
@@ -16,12 +16,11 @@ type GrantAccessModalParams = {
 };
 
 export default function GrantAccessModal(props: GrantAccessModalParams) {
-  const { address } = useUser();
+  const { address } = useUserStore();
 
   const { toast } = useToast();
 
-  //rtk mutation
-  const [grantNewAccess, result] = useGrantNewAccessMutation();
+  const queryClient = useQueryClient();
 
   //for ethAddress
   const [ethAddress, setEthAddress] = useState('');
@@ -37,8 +36,36 @@ export default function GrantAccessModal(props: GrantAccessModalParams) {
     setNbOfAccess(event.target.value);
   };
 
+  const grantNewAccessMutation = useMutation({
+    mutationFn: async () => {
+      const { dataProtector } = await getDataProtectorClient();
+      return dataProtector.grantAccess({
+        protectedData: props.protectedData,
+        authorizedApp: WEB3MAIL_IDAPPS_WHITELIST_SC,
+        authorizedUser: ethAddress,
+        numberOfAccess: NbOfAccess,
+      });
+    },
+    onSuccess: () => {
+      toast({
+        title: 'New access granted!',
+      });
+      setEthAddress('');
+      setNbOfAccess(1);
+      props.handleClose();
+      queryClient.invalidateQueries({ queryKey: ['myProtectedData'] });
+    },
+    onError: (err) => {
+      toast({
+        variant: 'danger',
+        title: err || 'Failed to grant access!',
+      });
+    },
+  });
+
   const handleGrantAccess = (event: FormEvent) => {
     event.preventDefault();
+
     if (!ethAddress.trim()) {
       toast({
         variant: 'danger',
@@ -46,28 +73,8 @@ export default function GrantAccessModal(props: GrantAccessModalParams) {
       });
       return;
     }
-    const protectedData = props.protectedData;
-    grantNewAccess({
-      protectedData,
-      authorizedApp: WEB3MAIL_IDAPPS_WHITELIST_SC,
-      authorizedUser: ethAddress,
-      numberOfAccess: NbOfAccess,
-    })
-      .unwrap()
-      .then(() => {
-        toast({
-          title: 'New access granted!',
-        });
-        setEthAddress('');
-        setNbOfAccess(1);
-        props.handleClose();
-      })
-      .catch((err) => {
-        toast({
-          variant: 'danger',
-          title: err || 'Failed to grant access!',
-        });
-      });
+
+    grantNewAccessMutation.mutate();
   };
 
   return (

@@ -6,69 +6,9 @@ import {
   RevokedAccess,
   GrantAccessParams,
 } from '@iexec/dataprotector';
-import {
-  IExecWeb3mail,
-  SendEmailParams,
-  SendEmailResponse,
-  Contact,
-} from '@iexec/web3mail';
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { type Connector } from 'wagmi';
+import { SendEmailParams, SendEmailResponse, Contact } from '@iexec/web3mail';
 import { WEB3MAIL_IDAPPS_WHITELIST_SC } from '../config/config';
 import { buildErrorData } from '../utils/errorForClient';
-import { api } from './api';
-import { RootState } from './store';
-
-// Configure iExec Data Protector & Web3Mail
-let iExecDataProtector: IExecDataProtector | null = null;
-let iExecWeb3Mail: IExecWeb3mail | null = null;
-
-export interface AppState {
-  status: 'Not Connected' | 'Connected' | 'Loading' | 'Failed';
-  error: string | null;
-}
-
-const initialState: AppState = {
-  status: 'Not Connected',
-  error: null,
-};
-
-export const initSDK = createAsyncThunk(
-  'app/initSDK',
-  async ({ connector }: { connector: Connector }) => {
-    const provider = await connector?.getProvider();
-    iExecDataProtector = new IExecDataProtector(provider);
-    iExecWeb3Mail = new IExecWeb3mail(provider);
-  }
-);
-
-export const appSlice = createSlice({
-  name: 'app',
-  initialState: initialState,
-  reducers: {
-    resetAppState: () => initialState,
-  },
-  extraReducers: (builder) => {
-    builder
-      .addCase(initSDK.pending, (state) => {
-        state.status = 'Loading';
-      })
-      .addCase(initSDK.fulfilled, (state) => {
-        state.status = 'Connected';
-      })
-      .addCase(initSDK.rejected, (state, action) => {
-        state.status = 'Failed';
-        state.error = String(action.error.message);
-      });
-  },
-});
-
-export default appSlice.reducer;
-
-export const selectAppIsConnected = (state: RootState) =>
-  state.app.status === 'Connected';
-
-export const { resetAppState } = appSlice.actions;
 
 export const homeApi = api.injectEndpoints({
   endpoints: (builder) => ({
@@ -237,13 +177,3 @@ export const homeApi = api.injectEndpoints({
     }),
   }),
 });
-
-export const {
-  useFetchProtectedDataQuery,
-  useCreateProtectedDataMutation,
-  useFetchGrantedAccessQuery,
-  useRevokeOneAccessMutation,
-  useFetchMyContactsQuery,
-  useGrantNewAccessMutation,
-  useSendEmailMutation,
-} = homeApi;

@@ -1,30 +1,23 @@
-import {
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-} from '@mui/material';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { type FormEvent, useRef, useState } from 'react';
 import { CheckCircle, ChevronLeft } from 'react-feather';
 import { Link } from 'react-router-dom';
-import { useCreateProtectedDataMutation } from '@/app/appSlice.ts';
 import { Alert } from '@/components/Alert.tsx';
 import { CircularLoader } from '@/components/CircularLoader.tsx';
 import { DocLink } from '@/components/DocLink.tsx';
 import { Button } from '@/components/ui/button.tsx';
 import { useToast } from '@/components/ui/use-toast.ts';
 import { PROTECTED_DATA } from '@/config/path.ts';
+import { getDataProtectorClient } from '@/externals/dataProtectorClient.ts';
 import { cn } from '@/utils/style.utils.ts';
 import { createArrayBufferFromFile } from '@/utils/utils.ts';
 
 export default function NewProtectedData() {
   const { toast } = useToast();
 
-  const fileInput = useRef<HTMLInputElement>(null);
+  const queryClient = useQueryClient();
 
-  //query RTK API as mutation hook
-  const [createProtectedData, result] = useCreateProtectedDataMutation();
+  const fileInput = useRef<HTMLInputElement>(null);
 
   //for name et dataType
   const [name, setName] = useState('');
@@ -57,6 +50,25 @@ export default function NewProtectedData() {
     setName(event.target.value);
   };
 
+  const createProtectedDataMutation = useMutation({
+    mutationFn: async ({
+      name,
+      data,
+    }: {
+      name: string;
+      data: {
+        email?: string;
+        file?: Uint8Array;
+      };
+    }) => {
+      const { dataProtector } = await getDataProtectorClient();
+      return dataProtector.protectData({ name, data });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['myProtectedData'] });
+    },
+  });
+
   //ask for confirmation before leaving the page
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
@@ -82,7 +94,7 @@ export default function NewProtectedData() {
         break;
     }
     if (dataType && name && ((isValidEmail && email) || file)) {
-      await createProtectedData({ data, name });
+      createProtectedDataMutation.mutate({ data, name });
       setTimeout(() => {
         setShowBackToListLink(true);
       }, 1500);

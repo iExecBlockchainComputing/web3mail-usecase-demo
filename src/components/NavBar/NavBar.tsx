@@ -1,10 +1,11 @@
+import { useUserStore } from '@/stores/user.store.ts';
 import '@fontsource/space-mono/700.css';
 import { useState, useEffect, useRef } from 'react';
 import { LogOut } from 'react-feather';
 import { NavLink, useLocation } from 'react-router-dom';
 import iExecLogo from '@/assets/iexec-logo.svg';
 import AddressChip from '@/components/NavBar/AddressChip.tsx';
-import { useUser } from '@/components/NavBar/useUser.ts';
+import { useLoginLogout } from '@/components/NavBar/useLoginLogout.ts';
 import { Button } from '@/components/ui/button.tsx';
 import { HOME, PROTECTED_DATA, SEND_EMAIL } from '@/config/path.ts';
 
@@ -12,7 +13,9 @@ const activeLinkIndicatorWidthRatio = 0.7;
 
 export default function NavBar() {
   const location = useLocation();
-  const { isConnected, address, isAccountConnected, login, logout } = useUser();
+
+  const { isConnected, address } = useUserStore();
+  const { login, logout } = useLoginLogout();
 
   const [tabIndicatorLeft, setTabIndicatorLeft] = useState('');
   const [tabIndicatorWidth, setTabIndicatorWidth] = useState('');
@@ -73,7 +76,7 @@ export default function NavBar() {
         ></div>
       </div>
 
-      {isConnected && isAccountConnected ? (
+      {isConnected ? (
         <div className="flex flex-1 items-center justify-end gap-x-1">
           <AddressChip address={address!} />
           <button

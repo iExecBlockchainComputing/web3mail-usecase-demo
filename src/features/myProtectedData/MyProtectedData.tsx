@@ -1,36 +1,35 @@
-import { Pagination } from '@mui/material';
+import { useUserStore } from '@/stores/user.store.ts';
+import { useQuery } from '@tanstack/react-query';
 import { useState, useRef } from 'react';
 import { Plus } from 'react-feather';
 import { useNavigate } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
-import { useAccount } from 'wagmi';
-import {
-  selectAppIsConnected,
-  useFetchProtectedDataQuery,
-} from '@/app/appSlice.ts';
-import { useAppSelector } from '@/app/hooks.ts';
 import { Alert } from '@/components/Alert.tsx';
 import { CircularLoader } from '@/components/CircularLoader.tsx';
 import { DocLink } from '@/components/DocLink.tsx';
 import { Button } from '@/components/ui/button.tsx';
 import { ITEMS_PER_PAGE } from '@/config/config.ts';
 import { CREATE } from '@/config/path.ts';
+import { getDataProtectorClient } from '@/externals/dataProtectorClient.ts';
+import { MyProtectedDataPagination } from '@/features/myProtectedData/MyProtectedDataPagination.tsx';
 import ProtectedDataCard from '@/features/myProtectedData/ProtectedDataCard.tsx';
 import { getLocalDateFromBlockchainTimestamp } from '@/utils/utils.ts';
 import img from '../../assets/noData.png';
 import './MyProtectedData.css';
 
 export default function MyProtectedData() {
-  const { address } = useAccount();
-  const isAccountConnected = useAppSelector(selectAppIsConnected);
+  const { address } = useUserStore();
 
-  //query RTK API as query hook
   const {
-    data: protectedData = [],
     isLoading,
     isError,
-  } = useFetchProtectedDataQuery(address as string, {
-    skip: !isAccountConnected,
+    data: protectedData,
+  } = useQuery({
+    queryKey: ['myProtectedData'],
+    queryFn: async () => {
+      const { dataProtector } = await getDataProtectorClient();
+      return dataProtector.getProtectedData({ owner: address });
+    },
   });
 
   //for pagination
@@ -40,7 +39,7 @@ export default function MyProtectedData() {
   };
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
-  const currentData = protectedData.slice(startIndex, endIndex);
+  const currentData = protectedData?.slice(startIndex, endIndex);
 
   const nodeRef = useRef(null);
 
@@ -61,7 +60,7 @@ export default function MyProtectedData() {
         </div>
       )}
 
-      {!isLoading && !isError && protectedData.length === 0 && (
+      {!isLoading && !isError && protectedData?.length === 0 && (
         <div className="-mt-8 text-center">
           <img
             src={img}
@@ -80,8 +79,8 @@ export default function MyProtectedData() {
       )}
 
       <CSSTransition
-        appear={!isLoading && protectedData.length > 0}
-        in={!isLoading && protectedData.length > 0}
+        appear={!isLoading && protectedData?.length > 0}
+        in={!isLoading && protectedData?.length > 0}
         nodeRef={nodeRef}
         timeout={200}
         classNames="fade"
@@ -130,8 +129,8 @@ export default function MyProtectedData() {
               )}
             </div>
             <div className="mt-16 flex justify-center">
-              <Pagination
-                count={Math.ceil(protectedData.length / ITEMS_PER_PAGE)}
+              <MyProtectedDataPagination
+                count={Math.ceil(protectedData?.length / ITEMS_PER_PAGE)}
                 page={currentPage}
                 onChange={handlePageChange}
               />

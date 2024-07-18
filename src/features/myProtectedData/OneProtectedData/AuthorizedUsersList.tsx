@@ -1,10 +1,9 @@
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Loader, Trash, User } from 'react-feather';
 import { useParams } from 'react-router-dom';
-import { useRevokeOneAccessMutation } from '@/app/appSlice.ts';
 import { Button } from '@/components/ui/button.tsx';
 import { useToast } from '@/components/ui/use-toast.ts';
-import './AuthorizedUsersList.css';
+import { getDataProtectorClient } from '@/externals/dataProtectorClient.ts';
 
 interface AuthorizedUsersListProps {
   authorizedUsers: string[];
@@ -16,7 +15,10 @@ interface AuthorizedUsersListProps {
 
 export default function AuthorizedUsersList(props: AuthorizedUsersListProps) {
   const { authorizedUsers, count, pageSize, page, onPageChanged } = props;
-  const { ProtectedDataId } = useParams();
+
+  const { protectedDataAddress } = useParams();
+
+  const queryClient = useQueryClient();
 
   const { toast } = useToast();
 
@@ -27,29 +29,34 @@ export default function AuthorizedUsersList(props: AuthorizedUsersListProps) {
 
   const users = authorizedUsers.map((user) => ({ id: user }));
 
-  //query RTK API as mutation hook
-  const [revokeOneAccess, result] = useRevokeOneAccessMutation();
+  const revokeOneAccessMutation = useMutation({
+    mutationFn: async ({ granteeAddress }: { granteeAddress: string }) => {
+      const { dataProtector } = await getDataProtectorClient();
+      return dataProtector.revokeOneAccess({
+        protectedData: protectedDataAddress,
+        authorizedUser: granteeAddress,
+      });
+    },
+    onSuccess: () => {
+      toast({
+        title: 'The granted access has been successfully revoked!',
+      });
+      queryClient.invalidateQueries({ queryKey: ['myProtectedData'] });
+    },
+    onError: (err) => {
+      toast({
+        variant: 'danger',
+        title: err || 'Failed to revoke access.',
+      });
+    },
+  });
 
   function handleRevoke(value: string) {
-    if (!ProtectedDataId) {
+    if (!protectedDataAddress) {
       return;
     }
-    revokeOneAccess({
-      protectedData: ProtectedDataId,
-      authorizedUser: value,
-    })
-      .unwrap()
-      .then(() => {
-        toast({
-          title: 'The granted access has been successfully revoked!',
-        });
-      })
-      .catch((err) => {
-        toast({
-          variant: 'danger',
-          title: err || 'Failed to revoke access.',
-        });
-      });
+
+    revokeOneAccessMutation.mutate({ granteeAddress: value });
   }
 
   const columns: GridColDef[] = [

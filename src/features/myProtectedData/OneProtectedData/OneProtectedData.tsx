@@ -1,17 +1,15 @@
+import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { AtSign, ChevronLeft, Link, Plus, Slash, User } from 'react-feather';
 import { useParams } from 'react-router-dom';
 import { useAccount } from 'wagmi';
-import {
-  useFetchGrantedAccessQuery,
-  useFetchProtectedDataQuery,
-} from '@/app/appSlice.ts';
 import { Alert } from '@/components/Alert.tsx';
 import { CircularLoader } from '@/components/CircularLoader.tsx';
 import { DocLink } from '@/components/DocLink.tsx';
 import { Badge } from '@/components/ui/badge.tsx';
 import { Button } from '@/components/ui/button.tsx';
 import { PROTECTED_DATA } from '@/config/path.ts';
+import { getDataProtectorClient } from '@/externals/dataProtectorClient.ts';
 import { getTypeOfProtectedData } from '@/utils/utils.ts';
 import AuthorizedUsersList from './AuthorizedUsersList';
 import GrantAccessModal from './GrantAccessModal';
@@ -21,27 +19,30 @@ import GrantAccessModal from './GrantAccessModal';
 const AUTHORIZED_ADDRESSES_PER_PAGE = 10;
 
 export default function OneProtectedData() {
-  const { ProtectedDataId } = useParams();
+  const { protectedDataAddress } = useParams();
   const { address } = useAccount();
 
   const [page, setPage] = useState(0);
 
-  //query RTK API as query hook
+  //modal state
+  const [modalOpen, setModalOpen] = useState(false);
+
   const {
-    data: { grantedAccessList = [], count = 0 } = {},
     isLoading,
     isError,
     error,
-  } = useFetchGrantedAccessQuery(
-    {
-      protectedData: ProtectedDataId!,
-      page,
-      pageSize: AUTHORIZED_ADDRESSES_PER_PAGE,
+    data: { grantedAccessList, count },
+  } = useQuery({
+    queryKey: ['grantedAccess', protectedDataAddress],
+    queryFn: async () => {
+      const { dataProtector } = await getDataProtectorClient();
+      return dataProtector.getGrantedAccess({
+        protectedData: protectedDataAddress,
+        page,
+        pageSize: AUTHORIZED_ADDRESSES_PER_PAGE,
+      });
     },
-    {
-      skip: !ProtectedDataId,
-    }
-  );
+  });
 
   const { data: protectedData = [] } = useFetchProtectedDataQuery(
     address as string
@@ -49,11 +50,8 @@ export default function OneProtectedData() {
 
   //process queries to get the data we need
   const protectedDataSelected = protectedData?.find(
-    (item) => item.address === ProtectedDataId
+    (item) => item.address === protectedDataAddress
   );
-
-  //modal state
-  const [modalOpen, setModalOpen] = useState(false);
 
   return (
     <div>
@@ -191,7 +189,7 @@ export default function OneProtectedData() {
 
         {modalOpen && (
           <GrantAccessModal
-            protectedData={ProtectedDataId as string}
+            protectedData={protectedDataAddress as string}
             open={modalOpen}
             handleClose={() => setModalOpen(false)}
           />

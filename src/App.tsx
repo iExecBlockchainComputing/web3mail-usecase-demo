@@ -27,7 +27,7 @@ function App() {
             }
           />
           <Route
-            path="/protected-data/consent/:ProtectedDataId"
+            path="/protected-data/consent/:protectedDataAddress"
             element={
               <LoginGuard>
                 <OneProtectedData />
