@@ -2,7 +2,7 @@ import { Address, Contact, TimeStamp } from '@iexec/web3mail';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { Search, Send, Slash } from 'react-feather';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Alert } from '@/components/Alert.tsx';
 import { CircularLoader } from '@/components/CircularLoader.tsx';
 import { DocLink } from '@/components/DocLink.tsx';
@@ -19,10 +19,9 @@ type Row = {
 };
 
 export default function SendEmail() {
-  const navigate = useNavigate();
-
   const {
     isLoading,
+    isSuccess,
     isError,
     data: myContacts,
   } = useQuery({
@@ -33,64 +32,32 @@ export default function SendEmail() {
         isUserStrict: true,
       });
     },
+    select: (contacts) => {
+      return contacts
+        .sort(
+          (a: Contact, b: Contact) =>
+            Date.parse(b.accessGrantTimestamp) -
+            Date.parse(a.accessGrantTimestamp)
+        )
+        .map((contact: Contact, index: number) => {
+          return {
+            id: index.toString(),
+            owner: contact.owner.toLowerCase(),
+            protectedDataAddress: contact.address.toLowerCase(),
+            accessGrantTimestamp: getLocalDateFromTimeStamp(
+              contact.accessGrantTimestamp
+            ),
+          };
+        });
+    },
   });
 
   //for search bar
   const [searchTerm, setSearchTerm] = useState('');
 
-  const columns: GridColDef[] = [
-    {
-      field: 'owner',
-      headerName: 'Owner address',
-      type: 'string',
-      flex: 2,
-    },
-    {
-      field: 'protectedDataAddress',
-      headerName: 'Protected data address',
-      type: 'string',
-      flex: 2,
-    },
-    { field: 'accessGrantTimestamp', headerName: 'Access granted on', flex: 1 },
-    {
-      field: 'Actions',
-      headerName: 'Actions',
-      sortable: false,
-      width: 175,
-      renderCell: (params) => (
-        <Button
-          size="sm"
-          className="pl-3.5"
-          onClick={() =>
-            navigate(`./${params.row.owner}/${params.row.protectedDataAddress}`)
-          }
-        >
-          <Send size="15" />
-          <span className="pl-2">Send web3 email</span>
-        </Button>
-      ),
-    },
-  ];
-
-  //modified the return of fetchMyContact in the web3Mail SDK to order them by timestamp
-  const rows: Row[] = [...myContacts]
-    .sort(
-      (a: Contact, b: Contact) =>
-        Date.parse(b.accessGrantTimestamp) - Date.parse(a.accessGrantTimestamp)
-    )
-    .map((contact: Contact, index: number) => {
-      return {
-        id: index.toString(),
-        owner: contact.owner.toLowerCase(),
-        protectedDataAddress: contact.address.toLowerCase(),
-        accessGrantTimestamp: getLocalDateFromTimeStamp(
-          contact.accessGrantTimestamp
-        ),
-      };
-    });
-
-  const filteredRows: Row[] = rows.filter((row: { owner: string }) =>
-    row.owner.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredRows: Row[] | undefined = myContacts?.filter(
+    (contact: { owner: string }) =>
+      contact.owner.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -137,23 +104,52 @@ export default function SendEmail() {
         </div>
       )}
 
-      {!isLoading && !isError && filteredRows.length === 0 && (
+      {isSuccess && filteredRows!.length === 0 && (
         <div className="my-10 flex items-center justify-center gap-x-2">
           <Slash size="18" className="inline" />
           So far, nobody shared their protected data with you.
         </div>
       )}
 
-      {filteredRows.length > 0 && !isLoading && (
-        <div className="mt-8 w-full">
-          <DataGrid
-            disableColumnMenu
-            rows={filteredRows}
-            columns={columns}
-            sx={{ border: 'none' }}
-          />
-        </div>
-      )}
+      <div
+        className="mt-10 grid w-full gap-x-3 px-2"
+        style={{
+          gridTemplateColumns: '2fr 2fr 1fr 175px',
+        }}
+      >
+        <div className="text-sm font-normal">Owner address</div>
+        <div className="text-sm font-normal">Protected data address</div>
+        <div className="text-sm font-normal">Access granted on</div>
+        <div className="text-sm font-normal"></div>
+        <div className="border-background-4 col-span-4 -mx-2 mt-2 border-t"></div>
+
+        {isSuccess &&
+          filteredRows!.length > 0 &&
+          filteredRows!.map(
+            ({ id, owner, protectedDataAddress, accessGrantTimestamp }) => (
+              <div
+                key={id}
+                className="contents [&>div]:flex [&>div]:items-center [&>div]:py-2 [&>div]:text-sm"
+              >
+                <div className="min-w-0">
+                  <span className="truncate">{owner}</span>
+                </div>
+                <div className="min-w-0">
+                  <span className="truncate">{protectedDataAddress}</span>
+                </div>
+                <div>{accessGrantTimestamp}</div>
+                <div>
+                  <Button asChild size="sm" className="pl-3.5">
+                    <Link to={`/send-email/${owner}/${protectedDataAddress}`}>
+                      <Send size="15" />
+                      <span className="pl-2">Send web3 email</span>
+                    </Link>
+                  </Button>
+                </div>
+              </div>
+            )
+          )}
+      </div>
 
       <DocLink className="mt-20">
         web3mail-sdk / Method called in this page:{' '}
