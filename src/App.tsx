@@ -1,14 +1,12 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import NavBar from '@/components/NavBar/NavBar.tsx';
+import LoginGuard from '@/features/loginGuard/LoginGuard.tsx';
+import MyProtectedData from '@/features/myProtectedData/MyProtectedData.tsx';
+import CreateProtectedData from '@/features/myProtectedData/createProtectedData/CreateProtectedData.tsx';
+import OneProtectedData from '@/features/myProtectedData/oneProtectedData/OneProtectedData.tsx';
+import MyEmailContacts from '@/features/sendEmail/SendEmail.tsx';
+import SendEmailForm from '@/features/sendEmail/SendEmailForm.tsx';
 import { useWatchWagmiAccount } from '@/utils/watchWagmiAccount.ts';
-import {
-  NewProtectedData,
-  MyProtectedData,
-  OneProtectedData,
-  SendEmail,
-  SendEmailForm,
-  LoginGuard,
-} from './features';
 
 function App() {
   useWatchWagmiAccount();
@@ -38,7 +36,7 @@ function App() {
             path="/protected-data/create"
             element={
               <LoginGuard>
-                <NewProtectedData />
+                <CreateProtectedData />
               </LoginGuard>
             }
           />
@@ -46,7 +44,7 @@ function App() {
             path="send-email"
             element={
               <LoginGuard>
-                <SendEmail />
+                <MyEmailContacts />
               </LoginGuard>
             }
           />

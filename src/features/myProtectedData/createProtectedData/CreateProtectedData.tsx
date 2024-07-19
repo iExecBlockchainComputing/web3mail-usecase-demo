@@ -6,12 +6,21 @@ import { Alert } from '@/components/Alert.tsx';
 import { CircularLoader } from '@/components/CircularLoader.tsx';
 import { DocLink } from '@/components/DocLink.tsx';
 import { Button } from '@/components/ui/button.tsx';
+import { Input } from '@/components/ui/input.tsx';
+import { Label } from '@/components/ui/label.tsx';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select.tsx';
 import { useToast } from '@/components/ui/use-toast.ts';
 import { getDataProtectorClient } from '@/externals/dataProtectorClient.ts';
 import { cn } from '@/utils/style.utils.ts';
 import { createArrayBufferFromFile } from '@/utils/utils.ts';
 
-export default function NewProtectedData() {
+export default function CreateProtectedData() {
   const { toast } = useToast();
 
   const queryClient = useQueryClient();
@@ -20,7 +29,7 @@ export default function NewProtectedData() {
 
   //for name et dataType
   const [name, setName] = useState('');
-  const [dataType, setDataType] = useState('');
+  const [dataType, setDataType] = useState<'email' | 'file'>();
 
   //for email
   const [email, setEmail] = useState('');
@@ -33,8 +42,8 @@ export default function NewProtectedData() {
   const [showBackToListLink, setShowBackToListLink] = useState(false);
 
   //handle functions
-  const handleDataTypeChange = (event: any) => {
-    setDataType(event.target.value);
+  const onChangeDataType = (chosenDataType: 'email' | 'file') => {
+    setDataType(chosenDataType);
   };
   const handleEmailChange = (event: any) => {
     setEmail(event.target.value);
@@ -105,10 +114,6 @@ export default function NewProtectedData() {
     }
   };
 
-  const dataTypes = [
-    { value: 'email', label: 'Email Address' },
-    { value: 'file', label: 'File' },
-  ];
   return (
     <div className="mx-auto mb-28 w-[70%]">
       <div className="text-left">
@@ -125,41 +130,32 @@ export default function NewProtectedData() {
         Protect new email or file: encrypt, monetize and control access.
       </p>
 
-      {(!result.data || result.error) && (
+      {(!createProtectedDataMutation.data ||
+        createProtectedDataMutation.error) && (
         <>
-          <form noValidate onSubmit={handleSubmit}>
-            <FormControl fullWidth sx={{ mt: '24px' }}>
-              <InputLabel>Select your data type</InputLabel>
-              <Select
-                fullWidth
-                value={dataType}
-                onChange={handleDataTypeChange}
-                label="Select your data type"
-                sx={{ textAlign: 'left' }}
-              >
-                {dataTypes.map((item) => (
-                  <MenuItem key={item.value} value={item.value}>
-                    {item.label}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+          <form noValidate className="mt-6 w-full" onSubmit={handleSubmit}>
+            <Label htmlFor="dataType">Select your data type *</Label>
+            <Select onValueChange={onChangeDataType}>
+              <SelectTrigger id="dataType" className="mt-1 w-full">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="email">Email Address</SelectItem>
+                <SelectItem value="file">File</SelectItem>
+              </SelectContent>
+            </Select>
+
             {dataType === 'email' && (
-              <TextField
-                required
-                fullWidth
-                id="email"
-                label="Email"
-                variant="outlined"
-                value={email}
-                type="email"
-                error={!isValidEmail}
-                helperText={
-                  !isValidEmail && 'Please enter a valid email address'
-                }
-                className="!mt-6"
-                onChange={handleEmailChange}
-              />
+              <div className="mt-6">
+                <Label htmlFor="emailAddress">Email *</Label>
+                <Input
+                  id="emailAddress"
+                  value={email}
+                  aria-label="Email Address"
+                  className="mt-1"
+                  onChange={handleEmailChange}
+                />
+              </div>
             )}
             {dataType === 'file' && (
               <Button
@@ -185,19 +181,21 @@ export default function NewProtectedData() {
             )}
 
             {dataType && (
-              <TextField
-                required
-                fullWidth
-                id="Name of your Protected Data"
-                label="Name of your Protected Data"
-                variant="outlined"
-                value={name}
-                className="!mt-6"
-                onChange={handleNameChange}
-              />
+              <div className="mt-6">
+                <Label htmlFor="protectedDataName">
+                  Name of your Protected Data *
+                </Label>
+                <Input
+                  id="protectedDataName"
+                  value={name}
+                  aria-label="Name of your Protected Data"
+                  className="mt-1"
+                  onChange={handleNameChange}
+                />
+              </div>
             )}
 
-            {dataType && !result.isLoading && (
+            {dataType && !createProtectedDataMutation.isPending && (
               <div className="text-center">
                 <Button type="submit" className="mt-6">
                   Create Protected Data
@@ -206,7 +204,7 @@ export default function NewProtectedData() {
             )}
           </form>
 
-          {result.isLoading && (
+          {createProtectedDataMutation.isPending && (
             <div className="flex flex-col items-center gap-y-4">
               <CircularLoader className="mt-10" />
               Your protected data is currently being created. Please wait a few
@@ -214,13 +212,15 @@ export default function NewProtectedData() {
             </div>
           )}
 
-          {result.error && (
+          {createProtectedDataMutation.error && (
             <div className="mb-3 mt-6 flex flex-col items-center">
               <Alert variant="error" fullWidth={true}>
                 <p>
                   Oops, something went wrong while creating your protected data.
                 </p>
-                <p className="text-orange-300">{result.error.toString()}</p>
+                <p className="text-orange-300">
+                  {createProtectedDataMutation.error.toString()}
+                </p>
               </Alert>
             </div>
           )}
@@ -239,37 +239,39 @@ export default function NewProtectedData() {
         </>
       )}
 
-      {result.data && !result.error && (
-        <>
-          <div className="my-6 flex flex-col items-center">
-            <Alert variant="success" fullWidth={true}>
-              <p>Your data has been protected!</p>
-              <a
-                href={`https://explorer.iex.ec/bellecour/dataset/${result.data}`}
-                target="_blank"
-                rel="noreferrer"
-                className="text-sm underline"
-              >
-                See Details
-              </a>
-              <p className="text-sm">
-                Your protected data address: {result.data}
-              </p>
-            </Alert>
-          </div>
+      {createProtectedDataMutation.data &&
+        !createProtectedDataMutation.error && (
+          <>
+            <div className="my-6 flex flex-col items-center">
+              <Alert variant="success" fullWidth={true}>
+                <p>Your data has been protected!</p>
+                <a
+                  href={`https://explorer.iex.ec/bellecour/dataset/${createProtectedDataMutation.data.address}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-sm underline"
+                >
+                  See Details
+                </a>
+                <p className="text-sm">
+                  Your protected data address:{' '}
+                  {createProtectedDataMutation.data.address}
+                </p>
+              </Alert>
+            </div>
 
-          <div
-            className={cn(
-              'text-center transition-opacity',
-              showBackToListLink ? 'opacity-1' : 'opacity-0'
-            )}
-          >
-            <Link to={`/protected-data`} className="p-2 underline">
-              See my protected data
-            </Link>
-          </div>
-        </>
-      )}
+            <div
+              className={cn(
+                'text-center transition-opacity',
+                showBackToListLink ? 'opacity-1' : 'opacity-0'
+              )}
+            >
+              <Link to={`/protected-data`} className="p-2 underline">
+                See my protected data
+              </Link>
+            </div>
+          </>
+        )}
     </div>
   );
 }

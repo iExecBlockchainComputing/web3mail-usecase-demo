@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 import { Alert } from '@/components/Alert.tsx';
 import { CircularLoader } from '@/components/CircularLoader.tsx';
 import { getDataProtectorClient } from '@/externals/dataProtectorClient.ts';
-import { RevokeAccessButton } from '@/features/myProtectedData/OneProtectedData/RevokeAccessButton.tsx';
+import { RevokeAccessButton } from '@/features/myProtectedData/oneProtectedData/RevokeAccessButton.tsx';
 
 export default function AuthorizedUsersList() {
   const { protectedDataAddress } = useParams();
