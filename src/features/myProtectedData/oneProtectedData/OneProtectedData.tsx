@@ -159,7 +159,11 @@ export default function OneProtectedData() {
           <GrantAccessModal
             protectedData={protectedDataAddress as string}
             open={modalOpen}
-            handleClose={() => setModalOpen(false)}
+            onOpenChange={(open: boolean) => {
+              if (!open) {
+                setModalOpen(false);
+              }
+            }}
           />
         )}
       </div>

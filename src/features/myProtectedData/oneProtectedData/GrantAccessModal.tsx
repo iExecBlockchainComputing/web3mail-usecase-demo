@@ -4,15 +4,17 @@ import { ZeroAddress } from 'ethers';
 import { type FormEvent, useState } from 'react';
 import { Loader } from 'react-feather';
 import { Button } from '@/components/ui/button.tsx';
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog.tsx';
+import { Input } from '@/components/ui/input.tsx';
+import { Label } from '@/components/ui/label.tsx';
 import { useToast } from '@/components/ui/use-toast.ts';
 import { WEB3MAIL_IDAPPS_WHITELIST_SC } from '@/config/config.ts';
 import { getDataProtectorClient } from '@/externals/dataProtectorClient.ts';
-import './GrantAccessModal.css';
 
 type GrantAccessModalParams = {
   protectedData: string;
   open: boolean;
-  handleClose: () => void;
+  onOpenChange: (open: boolean) => void;
 };
 
 export default function GrantAccessModal(props: GrantAccessModalParams) {
@@ -24,14 +26,12 @@ export default function GrantAccessModal(props: GrantAccessModalParams) {
 
   //for ethAddress
   const [ethAddress, setEthAddress] = useState('');
-  const [isValidEthAddress, setIsValidEthAddress] = useState(true);
   const handleEthAddressChange = (event: any) => {
     setEthAddress(event.target.value);
-    setIsValidEthAddress(event.target.validity.valid);
   };
 
   //for NbOfAccess
-  const [NbOfAccess, setNbOfAccess] = useState(1);
+  const [nbOfAccess, setNbOfAccess] = useState(1);
   const handleNbOfAccessChange = (event: any) => {
     setNbOfAccess(event.target.value);
   };
@@ -43,7 +43,7 @@ export default function GrantAccessModal(props: GrantAccessModalParams) {
         protectedData: props.protectedData,
         authorizedApp: WEB3MAIL_IDAPPS_WHITELIST_SC,
         authorizedUser: ethAddress,
-        numberOfAccess: NbOfAccess,
+        numberOfAccess: nbOfAccess,
       });
     },
     onSuccess: () => {
@@ -52,7 +52,7 @@ export default function GrantAccessModal(props: GrantAccessModalParams) {
       });
       setEthAddress('');
       setNbOfAccess(1);
-      props.handleClose();
+      props.onOpenChange(false);
       queryClient.invalidateQueries({ queryKey: ['myProtectedData'] });
     },
     onError: (err) => {
@@ -78,35 +78,23 @@ export default function GrantAccessModal(props: GrantAccessModalParams) {
   };
 
   return (
-    <Modal open={props.open} onClose={props.handleClose}>
-      <div id="modalBox" className="w-[520px] rounded-md bg-white p-8">
-        <Typography
-          component="h1"
-          variant="h5"
-          sx={{ alignSelf: 'flex-start' }}
-        >
-          New user
-        </Typography>
+    <Dialog open={props.open} onOpenChange={props.onOpenChange}>
+      <DialogContent className="w-[520px] rounded-md bg-white p-8">
+        <DialogTitle>New user</DialogTitle>
+
         <form
           noValidate
-          className="flex w-full flex-col gap-4"
+          className="mt-6 flex w-full flex-col"
           onSubmit={handleGrantAccess}
         >
           <div>
-            <TextField
-              required
-              fullWidth
-              id="ethAddress"
-              label="Ethereum Address"
-              variant="outlined"
-              sx={{ mt: 3 }}
+            <Label htmlFor="userEthereumAddress">User Ethereum Address *</Label>
+            <Input
+              id="userEthereumAddress"
               value={ethAddress}
+              aria-label="User Ethereum Address"
+              className="mt-1"
               onChange={handleEthAddressChange}
-              type="ethAddress"
-              error={!isValidEthAddress}
-              helperText={
-                !isValidEthAddress && 'Please enter a valid ethereum Address'
-              }
             />
             <div className="ml-0.5 mt-1">
               <span className="text-xs">Authorize any user: </span>
@@ -115,7 +103,6 @@ export default function GrantAccessModal(props: GrantAccessModalParams) {
                 className="bg-transparent text-xs underline"
                 onClick={() => {
                   setEthAddress(ZeroAddress);
-                  setIsValidEthAddress(true);
                 }}
               >
                 {ZeroAddress}
@@ -129,7 +116,6 @@ export default function GrantAccessModal(props: GrantAccessModalParams) {
                   className="bg-transparent text-xs underline"
                   onClick={() => {
                     setEthAddress(address);
-                    setIsValidEthAddress(true);
                   }}
                 >
                   {address}
@@ -137,27 +123,28 @@ export default function GrantAccessModal(props: GrantAccessModalParams) {
               </div>
             )}
           </div>
-          <TextField
-            fullWidth
-            type="NbOfAccess"
-            id="age"
-            label="Number of Access"
-            variant="outlined"
-            value={NbOfAccess}
-            InputProps={{ inputProps: { min: 1 } }}
-            onChange={handleNbOfAccessChange}
-            sx={{ mt: 2 }}
-          />
-          <div className="mt-2 flex justify-center">
-            <Button type="submit" disabled={result.isLoading}>
-              {result.isLoading && (
+
+          <div className="mt-4">
+            <Label htmlFor="numberOfAccess">Number of Access *</Label>
+            <Input
+              id="numberOfAccess"
+              value={nbOfAccess}
+              aria-label="Number of Access"
+              className="mt-1"
+              onChange={handleNbOfAccessChange}
+            />
+          </div>
+
+          <div className="mt-6 flex justify-center">
+            <Button type="submit" disabled={grantNewAccessMutation.isPending}>
+              {grantNewAccessMutation.isPending && (
                 <Loader className="-ml-1 mr-2 animate-spin-slow" size="16" />
               )}
               <span>Validate</span>
             </Button>
           </div>
         </form>
-      </div>
-    </Modal>
+      </DialogContent>
+    </Dialog>
   );
 }
