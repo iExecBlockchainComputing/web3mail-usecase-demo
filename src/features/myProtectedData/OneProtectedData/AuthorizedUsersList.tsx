@@ -1,121 +1,89 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { Loader, Trash, User } from 'react-feather';
+import { useQuery } from '@tanstack/react-query';
+import { clsx } from 'clsx';
+import { Slash, User } from 'react-feather';
 import { useParams } from 'react-router-dom';
-import { Button } from '@/components/ui/button.tsx';
-import { useToast } from '@/components/ui/use-toast.ts';
+import { Alert } from '@/components/Alert.tsx';
+import { CircularLoader } from '@/components/CircularLoader.tsx';
 import { getDataProtectorClient } from '@/externals/dataProtectorClient.ts';
+import { RevokeAccessButton } from '@/features/myProtectedData/OneProtectedData/RevokeAccessButton.tsx';
 
-interface AuthorizedUsersListProps {
-  authorizedUsers: string[];
-  count: number;
-  pageSize: number;
-  page: number;
-  onPageChanged: (newPage: number) => void;
-}
-
-export default function AuthorizedUsersList(props: AuthorizedUsersListProps) {
-  const { authorizedUsers, count, pageSize, page, onPageChanged } = props;
-
+export default function AuthorizedUsersList() {
   const { protectedDataAddress } = useParams();
 
-  const queryClient = useQueryClient();
-
-  const { toast } = useToast();
-
-  const paginationModel = {
-    pageSize,
-    page,
-  };
-
-  const users = authorizedUsers.map((user) => ({ id: user }));
-
-  const revokeOneAccessMutation = useMutation({
-    mutationFn: async ({ granteeAddress }: { granteeAddress: string }) => {
+  const {
+    isLoading,
+    isError,
+    data: grantedAccessResponse,
+  } = useQuery({
+    queryKey: ['grantedAccess', protectedDataAddress],
+    queryFn: async () => {
       const { dataProtector } = await getDataProtectorClient();
-      return dataProtector.revokeOneAccess({
+      return dataProtector.getGrantedAccess({
         protectedData: protectedDataAddress,
-        authorizedUser: granteeAddress,
-      });
-    },
-    onSuccess: () => {
-      toast({
-        title: 'The granted access has been successfully revoked!',
-      });
-      queryClient.invalidateQueries({ queryKey: ['myProtectedData'] });
-    },
-    onError: (err) => {
-      toast({
-        variant: 'danger',
-        title: err || 'Failed to revoke access.',
       });
     },
   });
 
-  function handleRevoke(value: string) {
-    if (!protectedDataAddress) {
-      return;
-    }
-
-    revokeOneAccessMutation.mutate({ granteeAddress: value });
-  }
-
-  const columns: GridColDef[] = [
-    {
-      field: 'avatar',
-      sortable: false,
-      width: 56,
-      renderHeader: () => null,
-      renderCell: () => (
-        <div className="rounded-full bg-grey-300 p-2">
-          <User size="20" aria-label="user-icon" className="text-white" />
-        </div>
-      ),
-    },
-    {
-      field: 'id',
-      sortable: false,
-      type: 'string',
-      flex: 1,
-    },
-    {
-      field: 'Actions',
-      sortable: false,
-      width: 170,
-      renderCell: (params) => (
-        <Button
-          size="sm"
-          variant="secondary"
-          className="pl-4"
-          disabled={result.isLoading}
-          onClick={() => handleRevoke(params.value)}
-        >
-          {result.isLoading ? (
-            <Loader size="16" className="animate-spin-slow" />
-          ) : (
-            <Trash size="16" aria-label="delete" />
-          )}
-          <span className="pl-2">Revoke access</span>
-        </Button>
-      ),
-    },
-  ];
-
   return (
-    <div className="mt-6">
-      <DataGrid
-        disableColumnMenu
-        autoHeight
-        rows={users}
-        columns={columns}
-        paginationMode="server"
-        paginationModel={paginationModel}
-        pageSizeOptions={[pageSize]}
-        rowCount={count}
-        onPaginationModelChange={({ page: newPage }) => onPageChanged(newPage)}
-        sx={{ border: 'none' }}
-        disableRowSelectionOnClick={true}
-        className="authorized-users-list"
-      />
-    </div>
+    <>
+      {isLoading && (
+        <div className="flex flex-col items-center gap-y-4">
+          <CircularLoader />
+          Fetching authorized users...
+        </div>
+      )}
+
+      {isError && (
+        <div className="mt-10 flex flex-col items-center">
+          <Alert variant="error">
+            <p>Oops, something went wrong while fetching authorized users.</p>
+            <p className="text-orange-300">{error.toString()}</p>
+          </Alert>
+        </div>
+      )}
+
+      {!isLoading &&
+        !isError &&
+        grantedAccessResponse?.grantedAccess.length === 0 && (
+          <div className="my-10 flex items-center justify-center gap-x-2">
+            <Slash size="18" className="inline" />
+            Nobody is allowed to access this protected data.
+          </div>
+        )}
+
+      {!!grantedAccessResponse?.grantedAccess &&
+        grantedAccessResponse.grantedAccess.length > 0 && (
+          <>
+            <h2>Authorized users</h2>
+            <h3 className="-mt-4">
+              These are the users who you allowed to access this protected data.
+            </h3>
+            <div className="mt-6 grid grid-cols-[min-content_1fr_min-content]">
+              {grantedAccessResponse.grantedAccess.map((authorizedUser) => (
+                <div
+                  key={authorizedUser.requesterrestrict}
+                  className={clsx(
+                    'contents bg-grey-100 text-sm [&>div]:flex [&>div]:items-center [&>div]:px-3 [&>div]:py-2'
+                  )}
+                >
+                  <div>
+                    <div className="rounded-full bg-grey-300 p-2">
+                      <User
+                        size="20"
+                        aria-label="user-icon"
+                        className="text-white"
+                      />
+                    </div>
+                  </div>
+                  <div>{authorizedUser.requesterrestrict}</div>
+                  <div>
+                    <RevokeAccessButton grantedAccess={authorizedUser} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
+    </>
   );
 }

@@ -4,7 +4,6 @@ import { Link, useParams, useNavigate } from 'react-router-dom';
 import { DocLink } from '@/components/DocLink.tsx';
 import { Button } from '@/components/ui/button.tsx';
 import { useToast } from '@/components/ui/use-toast.ts';
-import { SEND_EMAIL } from '@/config/path.ts';
 import './SendEmailForm.css';
 
 const MAX_CHARACTERS_SENDER_NAME = 20;
@@ -60,7 +59,7 @@ export default function SendEmailForm() {
           title: 'The email is being sent',
         });
         setTimeout(() => {
-          navigate(`/${SEND_EMAIL}`);
+          navigate(`/send-email`);
         }, 250);
       })
       .catch((err) => {
@@ -84,7 +83,7 @@ export default function SendEmailForm() {
     <div className="mx-auto mb-28 w-[70%]">
       <div className="text-left">
         <Button asChild variant="text" size="sm">
-          <Link to={`/${SEND_EMAIL}`} className="pl-2">
+          <Link to={`/send-email`} className="pl-2">
             <ChevronLeft size="22" />
             <span className="pl-1">Back</span>
           </Link>

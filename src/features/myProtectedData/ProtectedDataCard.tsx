@@ -1,7 +1,6 @@
 import { DataSchema } from '@iexec/dataprotector';
 import { Link } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge.tsx';
-import { CONSENT, PROTECTED_DATA } from '@/config/path.ts';
 import { getTypeOfProtectedData } from '@/utils/utils.ts';
 
 export interface ProtectedDataProps {
@@ -13,7 +12,7 @@ export interface ProtectedDataProps {
 
 export default function ProtectedDataCard(props: ProtectedDataProps) {
   return (
-    <Link to={`/${PROTECTED_DATA}/${CONSENT}/${props.id}`}>
+    <Link to={`/protected-data/consent/${props.id}`}>
       <div className="rounded shadow-md transition-colors hover:bg-gray-50">
         <div className="p-3 text-right">
           <Badge

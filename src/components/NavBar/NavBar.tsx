@@ -7,7 +7,6 @@ import iExecLogo from '@/assets/iexec-logo.svg';
 import AddressChip from '@/components/NavBar/AddressChip.tsx';
 import { useLoginLogout } from '@/components/NavBar/useLoginLogout.ts';
 import { Button } from '@/components/ui/button.tsx';
-import { HOME, PROTECTED_DATA, SEND_EMAIL } from '@/config/path.ts';
 
 const activeLinkIndicatorWidthRatio = 0.7;
 
@@ -43,7 +42,10 @@ export default function NavBar() {
 
   return (
     <header className="dark flex h-[64px] items-center bg-grey-900 px-8 text-white">
-      <NavLink to={`/${HOME}`} className="-mx-2 flex h-full items-center p-2">
+      <NavLink
+        to={`/protected-data`}
+        className="-mx-2 flex h-full items-center p-2"
+      >
         <img src={iExecLogo} width="25" height="30" alt="iExec logo" />
 
         <div
@@ -59,13 +61,13 @@ export default function NavBar() {
         className="relative ml-20 flex h-full items-center gap-x-8 pr-2 text-base"
       >
         <NavLink
-          to={`/${PROTECTED_DATA}`}
+          to={`/protected-data`}
           className="-mx-2 flex h-full items-center p-2"
         >
           My Protected Data
         </NavLink>
         <NavLink
-          to={`/${SEND_EMAIL}`}
+          to={`/send-email`}
           className="-mx-2 flex h-full items-center p-2"
         >
           Send Email

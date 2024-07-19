@@ -7,7 +7,6 @@ import { CircularLoader } from '@/components/CircularLoader.tsx';
 import { DocLink } from '@/components/DocLink.tsx';
 import { Button } from '@/components/ui/button.tsx';
 import { useToast } from '@/components/ui/use-toast.ts';
-import { PROTECTED_DATA } from '@/config/path.ts';
 import { getDataProtectorClient } from '@/externals/dataProtectorClient.ts';
 import { cn } from '@/utils/style.utils.ts';
 import { createArrayBufferFromFile } from '@/utils/utils.ts';
@@ -114,7 +113,7 @@ export default function NewProtectedData() {
     <div className="mx-auto mb-28 w-[70%]">
       <div className="text-left">
         <Button asChild variant="text" size="sm">
-          <Link to={`/${PROTECTED_DATA}`} className="pl-2">
+          <Link to={`/protected-data`} className="pl-2">
             <ChevronLeft size="22" />
             <span className="pl-1">Back</span>
           </Link>
@@ -265,7 +264,7 @@ export default function NewProtectedData() {
               showBackToListLink ? 'opacity-1' : 'opacity-0'
             )}
           >
-            <Link to={`/${PROTECTED_DATA}`} className="p-2 underline">
+            <Link to={`/protected-data`} className="p-2 underline">
               See my protected data
             </Link>
           </div>
