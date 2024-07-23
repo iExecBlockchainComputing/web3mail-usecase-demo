@@ -78,7 +78,12 @@ export default function MyProtectedData() {
       <FadeIn>
         <div className="flex flex-row justify-between gap-x-12">
           <div>
-            <h2 className="mt-0">My Protected Data</h2>
+            <div>
+              <h2 className="mt-0 inline-block">My Protected Data</h2>
+              {!!protectedData?.length && (
+                <span className="ml-3">({protectedData.length} items)</span>
+              )}
+            </div>
             <p className="-mt-3">
               Confidentially manage your protected data. Easily create, review,
               authorize, and revoke access.
