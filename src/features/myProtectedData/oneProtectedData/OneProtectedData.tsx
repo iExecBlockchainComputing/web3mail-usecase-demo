@@ -1,8 +1,14 @@
 import { ProtectedData } from '@iexec/dataprotector';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
-import { AtSign, ChevronLeft, Link, Plus, User } from 'react-feather';
-import { useParams } from 'react-router-dom';
+import {
+  AtSign,
+  ChevronLeft,
+  Link as LinkIcon,
+  Plus,
+  User,
+} from 'react-feather';
+import { Link, useParams } from 'react-router-dom';
 import { CircularLoader } from '@/components/CircularLoader.tsx';
 import { DocLink } from '@/components/DocLink.tsx';
 import { Badge } from '@/components/ui/badge.tsx';
@@ -95,7 +101,7 @@ export default function OneProtectedData() {
               Owned by: <strong>{protectedData?.owner}</strong>
             </li>
             <li className="flex items-center gap-x-1.5">
-              <Link size="18" aria-label="user-icon" />
+              <LinkIcon size="18" aria-label="user-icon" />
               IPFS link:{' '}
               <i>{'Will be provided with the next version of subgraph'}</i>
               {/*<strong>*/}

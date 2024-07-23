@@ -2,8 +2,8 @@ import { useQuery } from '@tanstack/react-query';
 import { clsx } from 'clsx';
 import { Slash, User } from 'react-feather';
 import { useParams } from 'react-router-dom';
-import { Alert } from '@/components/Alert.tsx';
 import { CircularLoader } from '@/components/CircularLoader.tsx';
+import { Alert } from '@/components/ui/alert.tsx';
 import { getDataProtectorClient } from '@/externals/dataProtectorClient.ts';
 import { RevokeAccessButton } from '@/features/myProtectedData/oneProtectedData/RevokeAccessButton.tsx';
 

@@ -2,9 +2,9 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { type FormEvent, useRef, useState } from 'react';
 import { CheckCircle, ChevronLeft } from 'react-feather';
 import { Link } from 'react-router-dom';
-import { Alert } from '@/components/Alert.tsx';
 import { CircularLoader } from '@/components/CircularLoader.tsx';
 import { DocLink } from '@/components/DocLink.tsx';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert.tsx';
 import { Button } from '@/components/ui/button.tsx';
 import { Input } from '@/components/ui/input.tsx';
 import { Label } from '@/components/ui/label.tsx';
@@ -214,7 +214,7 @@ export default function CreateProtectedData() {
 
           {createProtectedDataMutation.error && (
             <div className="mb-3 mt-6 flex flex-col items-center">
-              <Alert variant="error" fullWidth={true}>
+              <Alert variant="error">
                 <p>
                   Oops, something went wrong while creating your protected data.
                 </p>
@@ -243,20 +243,22 @@ export default function CreateProtectedData() {
         !createProtectedDataMutation.error && (
           <>
             <div className="my-6 flex flex-col items-center">
-              <Alert variant="success" fullWidth={true}>
-                <p>Your data has been protected!</p>
-                <a
-                  href={`https://explorer.iex.ec/bellecour/dataset/${createProtectedDataMutation.data.address}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-sm underline"
-                >
-                  See Details
-                </a>
-                <p className="text-sm">
-                  Your protected data address:{' '}
-                  {createProtectedDataMutation.data.address}
-                </p>
+              <Alert variant="success" className="mt-6">
+                <AlertTitle>Your data has been protected!</AlertTitle>
+                <AlertDescription>
+                  <a
+                    href={`https://explorer.iex.ec/bellecour/dataset/${createProtectedDataMutation.data.address}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-sm underline"
+                  >
+                    See Details
+                  </a>
+                  <p className="text-sm">
+                    Your protected data address:{' '}
+                    {createProtectedDataMutation.data.address}
+                  </p>
+                </AlertDescription>
               </Alert>
             </div>
 

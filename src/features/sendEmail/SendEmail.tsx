@@ -3,9 +3,9 @@ import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { Search, Send, Slash } from 'react-feather';
 import { Link } from 'react-router-dom';
-import { Alert } from '@/components/Alert.tsx';
 import { CircularLoader } from '@/components/CircularLoader.tsx';
 import { DocLink } from '@/components/DocLink.tsx';
+import { Alert } from '@/components/ui/alert.tsx';
 import { Button } from '@/components/ui/button.tsx';
 import { Input } from '@/components/ui/input.tsx';
 import { getWeb3mailClient } from '@/externals/web3mailClient.ts';
@@ -111,21 +111,20 @@ export default function SendEmail() {
         </div>
       )}
 
-      <div
-        className="mt-10 grid w-full gap-x-3 px-2"
-        style={{
-          gridTemplateColumns: '2fr 2fr 1fr 175px',
-        }}
-      >
-        <div className="text-sm font-normal">Owner address</div>
-        <div className="text-sm font-normal">Protected data address</div>
-        <div className="text-sm font-normal">Access granted on</div>
-        <div className="text-sm font-normal"></div>
-        <div className="border-background-4 col-span-4 -mx-2 mt-2 border-t"></div>
+      {isSuccess && filteredRows!.length > 0 && (
+        <div
+          className="mt-10 grid w-full gap-x-3 px-2"
+          style={{
+            gridTemplateColumns: '2fr 2fr 1fr 175px',
+          }}
+        >
+          <div className="text-sm font-normal">Owner address</div>
+          <div className="text-sm font-normal">Protected data address</div>
+          <div className="text-sm font-normal">Access granted on</div>
+          <div className="text-sm font-normal"></div>
+          <div className="border-background-4 col-span-4 -mx-2 mt-2 border-t"></div>
 
-        {isSuccess &&
-          filteredRows!.length > 0 &&
-          filteredRows!.map(
+          {filteredRows!.map(
             ({ id, owner, protectedDataAddress, accessGrantTimestamp }) => (
               <div
                 key={id}
@@ -149,7 +148,8 @@ export default function SendEmail() {
               </div>
             )
           )}
-      </div>
+        </div>
+      )}
 
       <DocLink className="mt-20">
         web3mail-sdk / Method called in this page:{' '}

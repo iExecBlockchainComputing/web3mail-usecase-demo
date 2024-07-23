@@ -1,45 +1,108 @@
+import { useState } from 'react';
+import { ChevronsLeft } from 'react-feather';
 import {
   Pagination,
   PaginationContent,
   PaginationEllipsis,
+  PaginationFirst,
   PaginationItem,
+  PaginationLast,
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from '@/components/ui/pagination';
+} from '@/components/ui/pagination.tsx';
 
-export function MyProtectedDataPagination(props: {
-  count: number;
+export function MyProtectedDataPagination({
+  totalPages,
+  currentPage,
+  onPageChange,
+}: {
+  totalPages: number;
   currentPage: number;
   onPageChange: (page: number) => void;
 }) {
-  const pages = Array.from({ length: props.count + 1 }, (_, i) => i + 1);
+  const getPageNumbers = () => {
+    const pageNumbers = [];
+    const maxVisiblePages = 5;
+
+    if (totalPages <= maxVisiblePages) {
+      for (let i = 1; i <= totalPages; i++) {
+        pageNumbers.push(i);
+      }
+      return pageNumbers;
+    }
+
+    if (currentPage <= 3) {
+      for (let i = 1; i <= 4; i++) {
+        pageNumbers.push(i);
+      }
+      pageNumbers.push('ellipsis');
+      pageNumbers.push(totalPages);
+    } else if (currentPage >= totalPages - 2) {
+      pageNumbers.push(1);
+      pageNumbers.push('ellipsis');
+      for (let i = totalPages - 3; i <= totalPages; i++) {
+        pageNumbers.push(i);
+      }
+    } else {
+      pageNumbers.push(1);
+      pageNumbers.push('ellipsis');
+      for (let i = currentPage - 1; i <= currentPage + 1; i++) {
+        pageNumbers.push(i);
+      }
+      pageNumbers.push('ellipsis');
+      pageNumbers.push(totalPages);
+    }
+
+    return pageNumbers;
+  };
+
+  const pageNumbers = getPageNumbers();
+  const hasTwoEllipsis =
+    pageNumbers.filter((item) => item === 'ellipsis').length === 2;
 
   return (
     <Pagination>
       <PaginationContent>
         <PaginationItem>
-          <PaginationPrevious href="#" />
+          <PaginationFirst
+            onClick={() => onPageChange(1)}
+            disabled={currentPage === 1}
+          />
+        </PaginationItem>
+        <PaginationItem className={!hasTwoEllipsis ? 'pr-5' : ''}>
+          <PaginationPrevious
+            onClick={() => onPageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+          />
         </PaginationItem>
 
-        {pages.map((page) => (
-          <PaginationItem key={page} className="size-8">
-            <PaginationLink
-              isActive={page === props.currentPage}
-              onClick={() => {
-                props.onPageChange(page);
-              }}
-            >
-              {page}
-            </PaginationLink>
+        {pageNumbers.map((pageNumber, index) => (
+          <PaginationItem key={index}>
+            {pageNumber === 'ellipsis' ? (
+              <PaginationEllipsis />
+            ) : (
+              <PaginationLink
+                isActive={pageNumber === currentPage}
+                onClick={() => onPageChange(pageNumber)}
+              >
+                {pageNumber}
+              </PaginationLink>
+            )}
           </PaginationItem>
         ))}
 
-        <PaginationItem>
-          <PaginationEllipsis />
+        <PaginationItem className={!hasTwoEllipsis ? 'pl-5' : ''}>
+          <PaginationNext
+            onClick={() => onPageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+          />
         </PaginationItem>
         <PaginationItem>
-          <PaginationNext href="#" />
+          <PaginationLast
+            onClick={() => onPageChange(totalPages)}
+            disabled={currentPage === totalPages}
+          />
         </PaginationItem>
       </PaginationContent>
     </Pagination>

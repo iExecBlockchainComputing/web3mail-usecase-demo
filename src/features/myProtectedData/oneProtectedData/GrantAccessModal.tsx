@@ -2,7 +2,9 @@ import { useUserStore } from '@/stores/user.store.ts';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { ZeroAddress } from 'ethers';
 import { type FormEvent, useState } from 'react';
-import { Loader } from 'react-feather';
+import { AlertCircle, Loader } from 'react-feather';
+// import { Alert } from '@/components/ui/alert.tsx';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert.tsx';
 import { Button } from '@/components/ui/button.tsx';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog.tsx';
 import { Input } from '@/components/ui/input.tsx';
@@ -23,6 +25,9 @@ export default function GrantAccessModal(props: GrantAccessModalParams) {
   const { toast } = useToast();
 
   const queryClient = useQueryClient();
+
+  const [error, setError] = useState('');
+  const [subError, setSubError] = useState('');
 
   //for ethAddress
   const [ethAddress, setEthAddress] = useState('');
@@ -56,10 +61,20 @@ export default function GrantAccessModal(props: GrantAccessModalParams) {
       queryClient.invalidateQueries({ queryKey: ['myProtectedData'] });
     },
     onError: (err) => {
+      console.error('[grantAccess] ERROR', err);
+      if (err.cause) {
+        console.error(err.cause);
+      }
       toast({
         variant: 'danger',
-        title: err || 'Failed to grant access!',
+        title: err?.message || 'Failed to grant access!',
       });
+      if (err?.message === 'Failed to sign data access') {
+        setError((err.cause as Error).message);
+        // setSubError(
+        //   'Are you sure your protected data was created in the same environment?'
+        // );
+      }
     },
   });
 
@@ -134,6 +149,14 @@ export default function GrantAccessModal(props: GrantAccessModalParams) {
               onChange={handleNbOfAccessChange}
             />
           </div>
+
+          {!!error && !!subError && (
+            <Alert variant="error" className="mt-6">
+              <AlertCircle className="size-4" />
+              <AlertTitle>{error}</AlertTitle>
+              <AlertDescription>{subError}</AlertDescription>
+            </Alert>
+          )}
 
           <div className="mt-6 flex justify-center">
             <Button type="submit" disabled={grantNewAccessMutation.isPending}>

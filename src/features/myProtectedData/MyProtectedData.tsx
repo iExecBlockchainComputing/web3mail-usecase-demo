@@ -3,10 +3,10 @@ import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { Plus } from 'react-feather';
 import { useNavigate } from 'react-router-dom';
-import { Alert } from '@/components/Alert.tsx';
 import { CircularLoader } from '@/components/CircularLoader.tsx';
 import { DocLink } from '@/components/DocLink.tsx';
 import { FadeIn } from '@/components/FadeIn.tsx';
+import { Alert } from '@/components/ui/alert.tsx';
 import { Button } from '@/components/ui/button.tsx';
 import { ITEMS_PER_PAGE } from '@/config/config.ts';
 import { getDataProtectorClient } from '@/externals/dataProtectorClient.ts';
@@ -115,10 +115,10 @@ export default function MyProtectedData() {
             )}
           </div>
 
-          {protectedData?.length > ITEMS_PER_PAGE && (
+          {!!protectedData?.length && protectedData.length > ITEMS_PER_PAGE && (
             <div className="mt-16 flex justify-center">
               <MyProtectedDataPagination
-                count={Math.ceil(protectedData?.length / ITEMS_PER_PAGE)}
+                totalPages={Math.ceil(protectedData?.length / ITEMS_PER_PAGE)}
                 currentPage={currentPage}
                 onPageChange={handlePageChange}
               />
