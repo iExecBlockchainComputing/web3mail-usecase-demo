@@ -76,79 +76,82 @@ export default function MyProtectedData() {
         </div>
       )}
 
-      <FadeIn>
-        <div className="flex flex-row justify-between gap-x-12">
-          <div>
+      {!!protectedData?.length && (
+        <FadeIn>
+          <div className="flex flex-row justify-between gap-x-12">
             <div>
-              <h2 className="mt-0 inline-block">My Protected Data</h2>
-              {!!protectedData?.length && (
+              <div>
+                <h2 className="mt-0 inline-block">My Protected Data</h2>
                 <span className="ml-3">({protectedData.length} items)</span>
+              </div>
+              <p className="-mt-3">
+                Confidentially manage your protected data. Easily create,
+                review, authorize, and revoke access.
+              </p>
+            </div>
+            <NewProtectedDataButton />
+          </div>
+
+          <div className="mb-28 mt-14">
+            <div
+              className="mx-6 grid gap-7"
+              style={{
+                gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+              }}
+            >
+              {currentData?.map(
+                ({
+                  address: protectedDataAddress,
+                  name,
+                  schema,
+                  creationTimestamp,
+                }) => (
+                  <div
+                    key={protectedDataAddress}
+                    className="flex w-full items-center justify-center"
+                  >
+                    <div className="max-w-[300px] flex-1">
+                      <ProtectedDataCard
+                        id={protectedDataAddress}
+                        title={name || '(No name)'}
+                        schema={schema}
+                        date={getLocalDateFromBlockchainTimestamp(
+                          creationTimestamp
+                        )}
+                      />
+                    </div>
+                  </div>
+                )
               )}
             </div>
-            <p className="-mt-3">
-              Confidentially manage your protected data. Easily create, review,
-              authorize, and revoke access.
-            </p>
-          </div>
-          <NewProtectedDataButton />
-        </div>
 
-        <div className="mb-28 mt-14">
-          <div
-            className="mx-6 grid gap-7"
-            style={{
-              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-            }}
-          >
-            {currentData?.map(
-              ({
-                address: protectedDataAddress,
-                name,
-                schema,
-                creationTimestamp,
-              }) => (
-                <div
-                  key={protectedDataAddress}
-                  className="flex w-full items-center justify-center"
-                >
-                  <div className="max-w-[300px] flex-1">
-                    <ProtectedDataCard
-                      id={protectedDataAddress}
-                      title={name || '(No name)'}
-                      schema={schema}
-                      date={getLocalDateFromBlockchainTimestamp(
-                        creationTimestamp
-                      )}
-                    />
-                  </div>
+            {!!protectedData?.length &&
+              protectedData.length > ITEMS_PER_PAGE && (
+                <div className="mt-16 flex justify-center">
+                  <MyProtectedDataPagination
+                    totalPages={Math.ceil(
+                      protectedData?.length / ITEMS_PER_PAGE
+                    )}
+                    currentPage={currentPage}
+                    onPageChange={handlePageChange}
+                  />
                 </div>
-              )
-            )}
+              )}
           </div>
 
-          {!!protectedData?.length && protectedData.length > ITEMS_PER_PAGE && (
-            <div className="mt-16 flex justify-center">
-              <MyProtectedDataPagination
-                totalPages={Math.ceil(protectedData?.length / ITEMS_PER_PAGE)}
-                currentPage={currentPage}
-                onPageChange={handlePageChange}
-              />
-            </div>
-          )}
-        </div>
-
-        <DocLink>
-          dataprotector-sdk / Method called in this page:{' '}
-          <a
-            href="https://beta.tools.docs.iex.ec/tools/dataProtector/dataProtectorCore/getProtectedData.html"
-            target="_blank"
-            rel="noreferrer"
-            className="text-link hover:underline"
-          >
-            getProtectedData()
-          </a>
-        </DocLink>
-      </FadeIn>
+          <DocLink>
+            dataprotector-sdk / Method called in this page:{' '}
+            <a
+              href="https://beta.tools.docs.iex.ec/tools/dataProtector/dataProtectorCore/getProtectedData.html"
+              target="_blank"
+              rel="noreferrer"
+              className="text-link hover:underline"
+            >
+              getProtectedData()
+            </a>
+          </DocLink>
+        </FadeIn>
+      )}
     </>
   );
 }

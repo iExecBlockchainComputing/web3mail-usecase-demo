@@ -1,4 +1,4 @@
-import { ValidationError } from '@iexec/web3mail';
+// import { ValidationError } from '@iexec/web3mail';
 import { useMutation } from '@tanstack/react-query';
 import { type FormEvent, useState } from 'react';
 import { ChevronLeft, Loader } from 'react-feather';
@@ -17,6 +17,7 @@ import {
 import { Textarea } from '@/components/ui/textarea.tsx';
 import { useToast } from '@/components/ui/use-toast.ts';
 import { getWeb3mailClient } from '@/externals/web3mailClient.ts';
+import { pluralize } from '@/utils/pluralize.ts';
 
 const MAX_CHARACTERS_SENDER_NAME = 20;
 const MAX_CHARACTERS_MESSAGE_SUBJECT = 78;
@@ -51,11 +52,6 @@ export default function SendEmailForm() {
   const sendEmailMutation = useMutation({
     mutationFn: async () => {
       const { web3mail } = await getWeb3mailClient();
-      console.log('senderName', senderName);
-      console.log('contentType', contentType);
-      console.log('messageSubject', messageSubject);
-      console.log('message', message);
-      console.log('protectedDataAddress', protectedDataAddress);
       return web3mail.sendEmail({
         senderName,
         contentType,
@@ -66,21 +62,22 @@ export default function SendEmailForm() {
     },
     onSuccess: () => {
       toast({
-        title: 'Your email is being sent',
+        title: 'Your email is being sent.',
       });
       setTimeout(() => {
         navigate(`/send-email`);
       }, 250);
     },
     onError: (err) => {
-      if (err instanceof ValidationError) {
-        console.log('err.errors', (err as ValidationError).errors);
-        toast({
-          variant: 'danger',
-          title: err.message,
-        });
-        return;
-      }
+      // TODO Export yup ValidationError from SDKs
+      // if (err instanceof ValidationError) {
+      //   console.log('err.errors', (err as ValidationError).errors);
+      //   toast({
+      //     variant: 'danger',
+      //     title: err.message,
+      //   });
+      //   return;
+      // }
       console.error('[sendEmail] ERROR', err);
       toast({
         variant: 'danger',
@@ -135,9 +132,12 @@ export default function SendEmailForm() {
       <h2>Send email to {receiverAddress}</h2>
 
       <form noValidate onSubmit={handleSendEmail} className="flex flex-col">
-        <Label htmlFor="senderName">Sender name *</Label>
+        <Label htmlFor="sender-name">
+          Sender name * <span className="text-xs">(min 3 chars)</span>
+        </Label>
         <Input
-          id="senderName"
+          id="sender-name"
+          data-cy="sender-name-input"
           required
           value={senderName}
           maxLength={MAX_CHARACTERS_SENDER_NAME}
@@ -145,18 +145,15 @@ export default function SendEmailForm() {
           onChange={handleSenderNameChange}
         />
         <p className="my-2 text-sm italic">
-          {charactersRemainingSenderName >= 0
-            ? charactersRemainingSenderName
-            : 0}{' '}
-          {charactersRemainingSenderName > 1 ? 'characters' : 'character'}{' '}
-          remaining
+          {pluralize(charactersRemainingSenderName, 'character')} remaining
         </p>
 
-        <Label htmlFor="senderName" className="mt-4">
+        <Label htmlFor="message-subject" className="mt-4">
           Message subject *
         </Label>
         <Input
-          id="Message subject"
+          id="message-subject"
+          data-cy="message-subject-input"
           required
           value={messageSubject}
           maxLength={MAX_CHARACTERS_MESSAGE_SUBJECT}
@@ -164,19 +161,21 @@ export default function SendEmailForm() {
           onChange={handleMessageSubjectChange}
         />
         <p className="my-2 text-sm italic">
-          {charactersRemainingSubject >= 0 ? charactersRemainingSubject : 0}{' '}
-          {charactersRemainingSubject > 1 ? 'characters' : 'character'}{' '}
-          remaining
+          {pluralize(charactersRemainingSubject, 'character')} remaining
         </p>
 
-        <Label htmlFor="contentType" className="mt-4">
+        <Label
+          htmlFor="content-type"
+          data-cy="email-content-type-select"
+          className="mt-4"
+        >
           Content Type *
         </Label>
         <Select
           defaultValue="text/plain"
           onValueChange={handleSelectContentType}
         >
-          <SelectTrigger id="contentType" className="mt-1 w-full">
+          <SelectTrigger id="content-type" className="mt-1 w-full">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -186,6 +185,7 @@ export default function SendEmailForm() {
         </Select>
 
         <Textarea
+          data-cy="message-content-textarea"
           required
           rows={6}
           placeholder="Enter email content *"
@@ -195,7 +195,7 @@ export default function SendEmailForm() {
           className="mt-6 w-full border p-3"
         />
         <p className="my-2 text-sm italic">
-          {charactersRemainingMessage} characters remaining
+          {pluralize(charactersRemainingMessage, 'character')} remaining
         </p>
 
         <div className="text-right">

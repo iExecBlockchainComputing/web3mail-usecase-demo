@@ -1,5 +1,3 @@
-import { useState } from 'react';
-import { ChevronsLeft } from 'react-feather';
 import {
   Pagination,
   PaginationContent,

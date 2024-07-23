@@ -74,12 +74,17 @@ export default function CreateProtectedData() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['myProtectedData'] });
+
+      setTimeout(() => {
+        setShowBackToListLink(true);
+      }, 1500);
     },
   });
 
   //ask for confirmation before leaving the page
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
+
     const data: {
       email?: string;
       file?: Uint8Array;
@@ -101,17 +106,30 @@ export default function CreateProtectedData() {
         data.file = bufferFile;
         break;
     }
-    if (dataType && name && ((isValidEmail && email) || file)) {
-      createProtectedDataMutation.mutate({ data, name });
-      setTimeout(() => {
-        setShowBackToListLink(true);
-      }, 1500);
-    } else {
+
+    if (
+      !dataType ||
+      !name ||
+      (dataType === 'email' && !email.trim()) ||
+      (dataType === 'file' && !file)
+    ) {
       toast({
         variant: 'danger',
         title: 'Please fill in all required fields.',
       });
+      return;
     }
+
+    console.log('dataType', dataType);
+    if (dataType === 'email' && !!email && !isValidEmail) {
+      toast({
+        variant: 'danger',
+        title: 'Please enter a valid email address',
+      });
+      return;
+    }
+
+    createProtectedDataMutation.mutate({ data, name });
   };
 
   return (
@@ -140,16 +158,22 @@ export default function CreateProtectedData() {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="email">Email Address</SelectItem>
-                <SelectItem value="file">File</SelectItem>
+                <SelectItem value="email" data-cy="email-address-select-item">
+                  Email Address
+                </SelectItem>
+                <SelectItem value="file" data-cy="file-select-item">
+                  File
+                </SelectItem>
               </SelectContent>
             </Select>
 
             {dataType === 'email' && (
               <div className="mt-6">
-                <Label htmlFor="emailAddress">Email *</Label>
+                <Label htmlFor="email-address">Email *</Label>
                 <Input
-                  id="emailAddress"
+                  id="email-address"
+                  data-cy="email-address-input"
+                  type="email"
                   value={email}
                   aria-label="Email Address"
                   className="mt-1"
@@ -182,11 +206,12 @@ export default function CreateProtectedData() {
 
             {dataType && (
               <div className="mt-6">
-                <Label htmlFor="protectedDataName">
+                <Label htmlFor="protected-data-name">
                   Name of your Protected Data *
                 </Label>
                 <Input
-                  id="protectedDataName"
+                  id="protected-data-name"
+                  data-cy="protected-data-name-input"
                   value={name}
                   aria-label="Name of your Protected Data"
                   className="mt-1"
@@ -197,7 +222,7 @@ export default function CreateProtectedData() {
 
             {dataType && !createProtectedDataMutation.isPending && (
               <div className="text-center">
-                <Button type="submit" className="mt-6">
+                <Button type="submit" data-cy="create-button" className="mt-6">
                   Create Protected Data
                 </Button>
               </div>

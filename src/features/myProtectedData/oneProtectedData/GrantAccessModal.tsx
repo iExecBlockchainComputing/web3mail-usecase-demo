@@ -112,9 +112,11 @@ export default function GrantAccessModal(props: GrantAccessModalParams) {
           onSubmit={handleGrantAccess}
         >
           <div>
-            <Label htmlFor="userEthereumAddress">User Ethereum Address *</Label>
+            <Label htmlFor="user-ethereum-address">
+              User Ethereum Address *
+            </Label>
             <Input
-              id="userEthereumAddress"
+              id="user-ethereum-address"
               value={ethAddress}
               aria-label="User Ethereum Address"
               className="mt-1"

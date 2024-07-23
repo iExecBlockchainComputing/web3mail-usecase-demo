@@ -76,11 +76,9 @@ export default function OneProtectedData() {
         <div className="mt-4 rounded-md border border-grey-800/40 py-6 pl-3 pr-5 text-left">
           <ul className="flex flex-col gap-y-4 pl-6">
             {protectedData?.name && (
-              <li className="-mb-1">
-                <h2 className="inline">{protectedData?.name}</h2>
-              </li>
+              <h2 className="m-0 -mb-1">{protectedData.name}</h2>
             )}
-            <li>
+            <div>
               <Badge
                 variant={
                   getTypeOfProtectedData(protectedData?.schema) ===
@@ -91,12 +89,18 @@ export default function OneProtectedData() {
               >
                 {getTypeOfProtectedData(protectedData?.schema)}
               </Badge>
-            </li>
-            <li className="flex items-center gap-x-1.5">
+            </div>
+            <li
+              className="flex items-center gap-x-1.5"
+              data-cy="protected-data-address"
+            >
               <AtSign size="18" aria-label="user-icon" />
               Protected Data Address: <strong>{protectedData?.address}</strong>
             </li>
-            <li className="flex items-center gap-x-1.5">
+            <li
+              className="flex items-center gap-x-1.5"
+              data-cy="protected-data-owner"
+            >
               <User size="18" aria-label="user-icon" />
               Owned by: <strong>{protectedData?.owner}</strong>
             </li>
@@ -117,7 +121,11 @@ export default function OneProtectedData() {
         <AuthorizedUsersList />
 
         <div className="mt-10 text-center">
-          <Button onClick={() => setModalOpen(true)} className="pl-4">
+          <Button
+            data-cy="authorize-new-user-button"
+            onClick={() => setModalOpen(true)}
+            className="pl-4"
+          >
             <Plus size="19" />
             <span className="pl-2">Authorize a new user</span>
           </Button>

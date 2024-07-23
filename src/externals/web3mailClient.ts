@@ -1,6 +1,6 @@
+import { useUserStore } from '@/stores/user.store.ts';
 import { IExecWeb3mail } from '@iexec/web3mail';
 import { type Connector } from 'wagmi';
-import { useUserStore } from '../stores/user.store.ts';
 
 let web3mail: IExecWeb3mail | null = null;
 

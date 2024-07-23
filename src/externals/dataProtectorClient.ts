@@ -1,10 +1,10 @@
+import { useUserStore } from '@/stores/user.store.ts';
 import {
   IExecDataProtector,
   IExecDataProtectorCore,
   IExecDataProtectorSharing,
 } from '@iexec/dataprotector';
 import { type Connector } from 'wagmi';
-import { useUserStore } from '../stores/user.store.ts';
 
 let dataProtector: IExecDataProtectorCore | null = null;
 let dataProtectorSharing: IExecDataProtectorSharing | null = null;
