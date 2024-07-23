@@ -1,12 +1,12 @@
+import { useUserStore } from '@/stores/user.store.ts';
+import { useQueryClient } from '@tanstack/react-query';
+import { useEffect } from 'react';
+import { useAccount, useNetwork } from 'wagmi';
 import {
   cleanDataProtectorSDK,
   initDataProtectorSDK,
 } from '@/externals/dataProtectorClient.ts';
 import { initWeb3mailSDK } from '@/externals/web3mailClient.ts';
-import { useUserStore } from '@/stores/user.store.ts';
-import { useQueryClient } from '@tanstack/react-query';
-import { useEffect } from 'react';
-import { useAccount, useNetwork } from 'wagmi';
 
 export function useWatchWagmiAccount() {
   const { connector, isConnected, address, status } = useAccount();
@@ -26,10 +26,11 @@ export function useWatchWagmiAccount() {
     if (connector) {
       initDataProtectorSDK({ connector });
       initWeb3mailSDK({ connector });
+      queryClient.removeQueries();
       return;
     }
-    cleanDataProtectorSDK();
 
+    cleanDataProtectorSDK();
     queryClient.removeQueries();
   }, [connector, status, isConnected, address, chain]);
 }
