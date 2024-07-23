@@ -22,6 +22,7 @@ describe('Send an email using web3mail', () => {
     cy.contains('See Detail').should('be.visible');
 
     // Give queryClient.invalidateQueries a bit of time
+    // TODO Handle this differently
     cy.wait(500);
 
     // authorize the TEST wallet to send an email

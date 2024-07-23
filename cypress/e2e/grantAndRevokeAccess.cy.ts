@@ -36,6 +36,10 @@ describe('Grant and revoke access to a protected data plus verify the property o
 
     cy.contains('New access granted!').should('be.visible');
 
+    // Give queryClient.invalidateQueries a bit of time
+    // TODO Handle this differently
+    cy.wait(500);
+
     // --- Revoke access to my protected data
     cy.contains('Revoke access').click();
 

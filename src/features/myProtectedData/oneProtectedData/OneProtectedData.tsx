@@ -40,7 +40,7 @@ export default function OneProtectedData() {
 
   const {
     isLoading: isFetchingProtectedData,
-    isError: isFetchProtectedDataError,
+    // isError: isFetchProtectedDataError,
   } = useQuery({
     queryKey: ['oneProtectedData', protectedDataAddress],
     queryFn: async () => {
