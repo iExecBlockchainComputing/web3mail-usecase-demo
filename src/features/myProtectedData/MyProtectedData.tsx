@@ -100,14 +100,19 @@ export default function MyProtectedData() {
             }}
           >
             {currentData?.map(
-              ({ address, name, schema, creationTimestamp }) => (
+              ({
+                address: protectedDataAddress,
+                name,
+                schema,
+                creationTimestamp,
+              }) => (
                 <div
-                  key={address}
+                  key={protectedDataAddress}
                   className="flex w-full items-center justify-center"
                 >
                   <div className="max-w-[300px] flex-1">
                     <ProtectedDataCard
-                      id={address}
+                      id={protectedDataAddress}
                       title={name || '(No name)'}
                       schema={schema}
                       date={getLocalDateFromBlockchainTimestamp(
