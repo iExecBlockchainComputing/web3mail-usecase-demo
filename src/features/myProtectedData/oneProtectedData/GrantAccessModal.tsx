@@ -1,4 +1,5 @@
 import { useUserStore } from '@/stores/user.store.ts';
+import { WorkflowError } from '@iexec/dataprotector';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { ZeroAddress } from 'ethers';
 import { type FormEvent, useState } from 'react';
@@ -60,20 +61,28 @@ export default function GrantAccessModal(props: GrantAccessModalParams) {
       props.onOpenChange(false);
       queryClient.invalidateQueries({ queryKey: ['myProtectedData'] });
     },
-    onError: (err) => {
+    // TODO When ValidationError will be exposed by SDKs
+    // onError: (err: ValidationError | WorkflowError | Error) => {
+    onError: (err: WorkflowError | Error) => {
       console.error('[grantAccess] ERROR', err);
       if (err.cause) {
-        console.error(err.cause);
+        console.error('err.cause', err.cause);
       }
       toast({
         variant: 'danger',
-        title: err?.message || 'Failed to grant access!',
+        title:
+          (err.cause as Error)?.message ||
+          err?.message ||
+          'Failed to grant access!',
       });
-      if (err?.message === 'Failed to sign data access') {
+      if (
+        err.message === 'Failed to sign data access' &&
+        !(err.cause as Error).message.startsWith('ethers-user-denied')
+      ) {
         setError((err.cause as Error).message);
-        // setSubError(
-        //   'Are you sure your protected data was created in the same environment?'
-        // );
+        setSubError(
+          'Are you sure your protected data was created in the same environment?'
+        );
       }
     },
   });
