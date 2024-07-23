@@ -28,7 +28,7 @@ const LoginGuard: FC<{ children: ReactNode }> = ({ children }) => {
             onClick={() => switchNetwork?.(chains[0]?.id)}
             className="mt-4"
           >
-            Switch to {chains[0].name}
+            Switch to {chains?.[0]?.name}
             {isLoading && pendingChainId === chains[0]?.id && ' (switching)'}
           </Button>
           {error && (
