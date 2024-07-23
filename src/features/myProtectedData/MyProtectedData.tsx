@@ -1,6 +1,6 @@
+import { usePageStore } from '@/stores/page.store.ts';
 import { useUserStore } from '@/stores/user.store.ts';
 import { useQuery } from '@tanstack/react-query';
-import { useState } from 'react';
 import { Plus } from 'react-feather';
 import { useNavigate } from 'react-router-dom';
 import { CircularLoader } from '@/components/CircularLoader.tsx';
@@ -19,6 +19,8 @@ import './MyProtectedData.css';
 export default function MyProtectedData() {
   const { address } = useUserStore();
 
+  const { currentPage, setCurrentPage } = usePageStore();
+
   const {
     isLoading,
     isError,
@@ -32,7 +34,6 @@ export default function MyProtectedData() {
   });
 
   //for pagination
-  const [currentPage, setCurrentPage] = useState(1);
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
