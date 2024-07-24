@@ -59,7 +59,9 @@ export default function GrantAccessModal(props: GrantAccessModalParams) {
       setEthAddress('');
       setNbOfAccess(1);
       props.onOpenChange(false);
-      queryClient.invalidateQueries({ queryKey: ['myProtectedData'] });
+      queryClient.invalidateQueries({
+        queryKey: ['grantedAccess', props.protectedData],
+      });
     },
     // TODO When ValidationError will be exposed by SDKs
     // onError: (err: ValidationError | WorkflowError | Error) => {
