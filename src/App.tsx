@@ -4,7 +4,7 @@ import LoginGuard from '@/features/loginGuard/LoginGuard.tsx';
 import MyProtectedData from '@/features/myProtectedData/MyProtectedData.tsx';
 import CreateProtectedData from '@/features/myProtectedData/createProtectedData/CreateProtectedData.tsx';
 import OneProtectedData from '@/features/myProtectedData/oneProtectedData/OneProtectedData.tsx';
-import MyEmailContacts from '@/features/sendEmail/SendEmail.tsx';
+import MyEmailContacts from '@/features/sendEmail/MyEmailContacts.tsx';
 import SendEmailForm from '@/features/sendEmail/SendEmailForm.tsx';
 import { useWatchWagmiAccount } from '@/utils/watchWagmiAccount.ts';
 

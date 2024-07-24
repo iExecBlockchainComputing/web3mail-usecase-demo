@@ -18,7 +18,7 @@ type Row = {
   accessGrantTimestamp: TimeStamp;
 };
 
-export default function SendEmail() {
+export default function MyEmailContacts() {
   const {
     isLoading,
     isSuccess,
