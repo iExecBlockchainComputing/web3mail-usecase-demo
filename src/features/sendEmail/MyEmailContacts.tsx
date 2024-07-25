@@ -11,14 +11,18 @@ import { Input } from '@/components/ui/input.tsx';
 import { getWeb3mailClient } from '@/externals/web3mailClient.ts';
 import { getLocalDateFromTimeStamp } from '@/utils/utils.ts';
 
-type Row = {
+type OneEmailContact = {
   id: string;
   owner: Address;
   protectedDataAddress: Address;
   accessGrantTimestamp: TimeStamp;
+  // isUserStrict: boolean;
 };
 
 export default function MyEmailContacts() {
+  const [searchTerm, setSearchTerm] = useState('');
+  // const [showZeroAddressGrants, setShowZeroAddressGrants] = useState(false);
+
   const {
     isLoading,
     isSuccess,
@@ -26,11 +30,15 @@ export default function MyEmailContacts() {
     data: myContacts,
   } = useQuery({
     queryKey: ['myWeb3mailContacts'],
+    // queryKey: ['myWeb3mailContacts', showZeroAddressGrants],
     queryFn: async () => {
       const { web3mail } = await getWeb3mailClient();
-      return web3mail.fetchMyContacts({
+      const myEmailContacts = await web3mail.fetchMyContacts({
         isUserStrict: true,
+        // isUserStrict: !showZeroAddressGrants,
       });
+      console.log('myEmailContacts', myEmailContacts);
+      return myEmailContacts;
     },
     select: (contacts) => {
       return contacts
@@ -47,22 +55,20 @@ export default function MyEmailContacts() {
             accessGrantTimestamp: getLocalDateFromTimeStamp(
               contact.accessGrantTimestamp
             ),
+            // isUserStrict: contact.isUserStrict,
           };
         });
     },
   });
 
-  //for search bar
-  const [searchTerm, setSearchTerm] = useState('');
-
-  const filteredRows: Row[] | undefined = myContacts?.filter(
+  const filteredRows: OneEmailContact[] | undefined = myContacts?.filter(
     (contact: { owner: string }) =>
       contact.owner.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  function handleSearchChange(e: React.ChangeEvent<HTMLInputElement>) {
     setSearchTerm(e.target.value);
-  };
+  }
 
   return (
     <>
@@ -85,8 +91,17 @@ export default function MyEmailContacts() {
         />
       </div>
 
-      {/*<label>Show grants to Zero address</label>*/}
-      {/*<Checkbox />*/}
+      {/*<div className="mt-6 flex items-center space-x-2">*/}
+      {/*  <Switch*/}
+      {/*    id="show-all-grants"*/}
+      {/*    onCheckedChange={(isChecked) => {*/}
+      {/*      setShowZeroAddressGrants(isChecked);*/}
+      {/*    }}*/}
+      {/*  />*/}
+      {/*  <Label htmlFor="show-all-grants" className="cursor-pointer">*/}
+      {/*    Show grants to Zero address*/}
+      {/*  </Label>*/}
+      {/*</div>*/}
 
       {isLoading && (
         <div className="flex flex-col items-center gap-y-4">
@@ -125,12 +140,30 @@ export default function MyEmailContacts() {
           <div className="border-background-4 col-span-4 -mx-2 mt-2 border-t"></div>
 
           {filteredRows!.map(
-            ({ id, owner, protectedDataAddress, accessGrantTimestamp }) => (
+            ({
+              id,
+              owner,
+              protectedDataAddress,
+              accessGrantTimestamp,
+              // isUserStrict,
+            }) => (
               <div
                 key={id}
                 className="contents [&>div]:flex [&>div]:items-center [&>div]:py-2 [&>div]:text-sm"
               >
-                <div className="min-w-0">
+                <div className="relative min-w-0">
+                  {/*{showZeroAddressGrants && !isUserStrict && (*/}
+                  {/*  <TooltipProvider delayDuration={0}>*/}
+                  {/*    <Tooltip>*/}
+                  {/*      <TooltipTrigger className="absolute -left-7 top-4 cursor-default">*/}
+                  {/*        <Users size="18" />*/}
+                  {/*      </TooltipTrigger>*/}
+                  {/*      <TooltipContent>*/}
+                  {/*        <p>Email address shared with anyone.</p>*/}
+                  {/*      </TooltipContent>*/}
+                  {/*    </Tooltip>*/}
+                  {/*  </TooltipProvider>*/}
+                  {/*)}*/}
                   <span className="truncate">{owner}</span>
                 </div>
                 <div className="min-w-0">
