@@ -12,7 +12,7 @@ export interface ProtectedDataProps {
 
 export default function ProtectedDataCard(props: ProtectedDataProps) {
   return (
-    <Link to={`/protected-data/consent/${props.id}`}>
+    <Link to={`/protectedData/consent/${props.id}`}>
       <div className="min-h-[190px] rounded shadow-md transition-colors hover:bg-gray-50">
         <div className="p-3 text-right">
           <Badge

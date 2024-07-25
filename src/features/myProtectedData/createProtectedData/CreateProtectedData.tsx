@@ -136,7 +136,7 @@ export default function CreateProtectedData() {
     <div className="mx-auto mb-28 w-[70%]">
       <div className="text-left">
         <Button asChild variant="text" size="sm">
-          <Link to={`/protected-data`} className="pl-2">
+          <Link to={`/protectedData`} className="pl-2">
             <ChevronLeft size="22" />
             <span className="pl-1">Back</span>
           </Link>
@@ -293,7 +293,7 @@ export default function CreateProtectedData() {
                 showBackToListLink ? 'opacity-1' : 'opacity-0'
               )}
             >
-              <Link to={`/protected-data`} className="p-2 underline">
+              <Link to={`/protectedData`} className="p-2 underline">
                 See my protected data
               </Link>
             </div>

@@ -139,7 +139,7 @@ export default function MyEmailContacts() {
                 <div>{accessGrantTimestamp}</div>
                 <div>
                   <Button asChild size="sm" className="pl-3.5">
-                    <Link to={`/send-email/${owner}/${protectedDataAddress}`}>
+                    <Link to={`/sendEmail/${owner}/${protectedDataAddress}`}>
                       <Send size="15" />
                       <span className="pl-2">Send web3 email</span>
                     </Link>

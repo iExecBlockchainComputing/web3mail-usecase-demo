@@ -43,7 +43,7 @@ export default function NavBar() {
   return (
     <header className="dark flex h-[64px] items-center bg-grey-900 px-8 text-white">
       <NavLink
-        to={`/protected-data`}
+        to={`/protectedData`}
         className="-mx-2 flex h-full items-center p-2"
       >
         <img src={iExecLogo} width="25" height="30" alt="iExec logo" />
@@ -61,13 +61,13 @@ export default function NavBar() {
         className="relative ml-20 flex h-full items-center gap-x-8 pr-2 text-base"
       >
         <NavLink
-          to={`/protected-data`}
+          to={`/protectedData`}
           className="-mx-2 flex h-full items-center p-2"
         >
           My Protected Data
         </NavLink>
         <NavLink
-          to={`/send-email`}
+          to={`/sendEmail`}
           className="-mx-2 flex h-full items-center p-2"
         >
           Send Email

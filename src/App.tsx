@@ -17,7 +17,7 @@ function App() {
       <div className="mx-auto mt-12 w-[80%] max-w-6xl">
         <Routes>
           <Route
-            path="protected-data"
+            path="protectedData"
             element={
               <LoginGuard>
                 <MyProtectedData />
@@ -25,7 +25,7 @@ function App() {
             }
           />
           <Route
-            path="/protected-data/consent/:protectedDataAddress"
+            path="/protectedData/consent/:protectedDataAddress"
             element={
               <LoginGuard>
                 <OneProtectedData />
@@ -33,7 +33,7 @@ function App() {
             }
           />
           <Route
-            path="/protected-data/create"
+            path="/protectedData/create"
             element={
               <LoginGuard>
                 <CreateProtectedData />
@@ -41,7 +41,7 @@ function App() {
             }
           />
           <Route
-            path="send-email"
+            path="sendEmail"
             element={
               <LoginGuard>
                 <MyEmailContacts />
@@ -49,7 +49,7 @@ function App() {
             }
           />
           <Route
-            path="/send-email/:receiverAddress/:protectedDataAddress"
+            path="/sendEmail/:receiverAddress/:protectedDataAddress"
             element={
               <LoginGuard>
                 <SendEmailForm />
@@ -57,7 +57,7 @@ function App() {
             }
           />
           {/* default redirect */}
-          <Route path="*" element={<Navigate to="protected-data" />} />
+          <Route path="*" element={<Navigate to="protectedData" />} />
         </Routes>
       </div>
     </div>

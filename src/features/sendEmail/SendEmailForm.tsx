@@ -65,7 +65,7 @@ export default function SendEmailForm() {
         title: 'Your email is being sent.',
       });
       setTimeout(() => {
-        navigate(`/send-email`);
+        navigate(`/sendEmail`);
       }, 250);
     },
     onError: (err) => {
@@ -123,7 +123,7 @@ export default function SendEmailForm() {
     <div className="mx-auto mb-28 w-[70%]">
       <div className="text-left">
         <Button asChild variant="text" size="sm">
-          <Link to={`/send-email`} className="pl-2">
+          <Link to={`/sendEmail`} className="pl-2">
             <ChevronLeft size="22" />
             <span className="pl-1">Back</span>
           </Link>
