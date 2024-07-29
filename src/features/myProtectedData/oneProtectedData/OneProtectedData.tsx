@@ -11,6 +11,7 @@ import {
 import { Link, useParams } from 'react-router-dom';
 import { CircularLoader } from '@/components/CircularLoader.tsx';
 import { DocLink } from '@/components/DocLink.tsx';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert.tsx';
 import { Badge } from '@/components/ui/badge.tsx';
 import { Button } from '@/components/ui/button.tsx';
 import { getDataProtectorClient } from '@/externals/dataProtectorClient.ts';
@@ -40,7 +41,8 @@ export default function OneProtectedData() {
 
   const {
     isLoading: isFetchingProtectedData,
-    // isError: isFetchProtectedDataError,
+    isError: isGetProtectedDataError,
+    error: getProtectedDataError,
   } = useQuery({
     queryKey: ['oneProtectedData', protectedDataAddress],
     queryFn: async () => {
@@ -70,6 +72,17 @@ export default function OneProtectedData() {
           <CircularLoader className="mt-10"></CircularLoader>
           Fetching your protected data...
         </div>
+      )}
+
+      {isGetProtectedDataError && (
+        <Alert variant="error" className="mt-6">
+          <AlertTitle>
+            Oops, something went wrong while fetching your protected data.
+          </AlertTitle>
+          <AlertDescription>
+            {getProtectedDataError.toString()}
+          </AlertDescription>
+        </Alert>
       )}
 
       {protectedData && (
