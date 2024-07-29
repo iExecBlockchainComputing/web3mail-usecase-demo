@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { CircularLoader } from '@/components/CircularLoader.tsx';
 import { DocLink } from '@/components/DocLink.tsx';
 import { FadeIn } from '@/components/FadeIn.tsx';
-import { Alert } from '@/components/ui/alert.tsx';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert.tsx';
 import { Button } from '@/components/ui/button.tsx';
 import { ITEMS_PER_PAGE } from '@/config/config.ts';
 import { getDataProtectorClient } from '@/externals/dataProtectorClient.ts';
@@ -24,6 +24,7 @@ export default function MyProtectedData() {
   const {
     isLoading,
     isError,
+    error,
     data: protectedData,
   } = useQuery({
     queryKey: ['myProtectedData'],
@@ -51,11 +52,12 @@ export default function MyProtectedData() {
       )}
 
       {isError && (
-        <div className="flex flex-col items-center">
-          <Alert variant="error">
+        <Alert variant="error">
+          <AlertTitle>
             Oops, something went wrong while fetching your protected data.
-          </Alert>
-        </div>
+          </AlertTitle>
+          <AlertDescription>{error.toString()}</AlertDescription>
+        </Alert>
       )}
 
       {!isLoading && !isError && protectedData?.length === 0 && (

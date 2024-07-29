@@ -50,6 +50,7 @@ export default function SendEmailForm() {
   };
 
   const sendEmailMutation = useMutation({
+    mutationKey: ['sendEmail'],
     mutationFn: async () => {
       const { web3mail } = await getWeb3mailClient();
       return web3mail.sendEmail({
@@ -78,14 +79,11 @@ export default function SendEmailForm() {
       //   });
       //   return;
       // }
-      console.error('[sendEmail] ERROR', err);
+      // logs and rollbar alert handled by tanstack query config in initQueryClient()
       toast({
         variant: 'danger',
         title: err?.message || 'Failed to send email.',
       });
-      if (err.cause) {
-        console.error(err.cause);
-      }
     },
   });
 

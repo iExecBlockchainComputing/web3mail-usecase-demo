@@ -3,8 +3,7 @@ import { WorkflowError } from '@iexec/dataprotector';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { ZeroAddress } from 'ethers';
 import { type FormEvent, useState } from 'react';
-import { AlertCircle, Loader } from 'react-feather';
-// import { Alert } from '@/components/ui/alert.tsx';
+import { Loader } from 'react-feather';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert.tsx';
 import { Button } from '@/components/ui/button.tsx';
 import {
@@ -48,6 +47,7 @@ export default function GrantAccessModal(props: GrantAccessModalParams) {
   };
 
   const grantNewAccessMutation = useMutation({
+    mutationKey: ['grantAccess'],
     mutationFn: async () => {
       const { dataProtector } = await getDataProtectorClient();
       return dataProtector.grantAccess({
@@ -71,10 +71,7 @@ export default function GrantAccessModal(props: GrantAccessModalParams) {
     // TODO When ValidationError will be exposed by SDKs
     // onError: (err: ValidationError | WorkflowError | Error) => {
     onError: (err: WorkflowError | Error) => {
-      console.error('[grantAccess] ERROR', err);
-      if (err.cause) {
-        console.error('err.cause', err.cause);
-      }
+      // logs and rollbar alert handled by tanstack query config in initQueryClient()
       toast({
         variant: 'danger',
         title:
@@ -175,7 +172,6 @@ export default function GrantAccessModal(props: GrantAccessModalParams) {
 
           {!!error && !!subError && (
             <Alert variant="error" className="mt-6">
-              <AlertCircle className="size-4" />
               <AlertTitle>{error}</AlertTitle>
               <AlertDescription>{subError}</AlertDescription>
             </Alert>

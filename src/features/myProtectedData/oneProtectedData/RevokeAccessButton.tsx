@@ -15,9 +15,9 @@ export function RevokeAccessButton({
   const queryClient = useQueryClient();
 
   const revokeOneAccessMutation = useMutation({
+    mutationKey: ['revokeOneAccess'],
     mutationFn: async () => {
       const { dataProtector } = await getDataProtectorClient();
-      // TODO Need to fetch grantedAccess first?!
       return dataProtector.revokeOneAccess(grantedAccess);
     },
     onSuccess: () => {
@@ -29,6 +29,7 @@ export function RevokeAccessButton({
       });
     },
     onError: (err) => {
+      // logs and rollbar alert handled by tanstack query config in initQueryClient()
       toast({
         variant: 'danger',
         title: err?.message || 'Failed to revoke access.',

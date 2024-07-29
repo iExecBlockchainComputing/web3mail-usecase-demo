@@ -3,7 +3,7 @@ import { clsx } from 'clsx';
 import { Slash, User } from 'react-feather';
 import { useParams } from 'react-router-dom';
 import { CircularLoader } from '@/components/CircularLoader.tsx';
-import { Alert } from '@/components/ui/alert.tsx';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert.tsx';
 import { getDataProtectorClient } from '@/externals/dataProtectorClient.ts';
 import { RevokeAccessButton } from '@/features/myProtectedData/oneProtectedData/RevokeAccessButton.tsx';
 
@@ -22,6 +22,7 @@ export default function AuthorizedUsersList() {
       return dataProtector.getGrantedAccess({
         protectedData: protectedDataAddress,
       });
+      // In case of error, logs and rollbar alert handled by tanstack query config in main.tsx
     },
   });
 
@@ -35,12 +36,12 @@ export default function AuthorizedUsersList() {
       )}
 
       {isError && (
-        <div className="mt-10 flex flex-col items-center">
-          <Alert variant="error">
-            <p>Oops, something went wrong while fetching authorized users.</p>
-            <p className="text-orange-300">{error.toString()}</p>
-          </Alert>
-        </div>
+        <Alert variant="error" className="mt-10">
+          <AlertTitle>
+            Oops, something went wrong while fetching authorized users.
+          </AlertTitle>
+          <AlertDescription>{error.toString()}</AlertDescription>
+        </Alert>
       )}
 
       {!isLoading &&
