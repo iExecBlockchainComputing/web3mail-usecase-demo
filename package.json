@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:no-cache": "vite --force",
     "build": "vite build",
     "check-types": "tsc --noEmit",
     "check-format": "prettier --check src",
