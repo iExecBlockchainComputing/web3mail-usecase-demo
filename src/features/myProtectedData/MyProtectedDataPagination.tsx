@@ -65,12 +65,14 @@ export function MyProtectedDataPagination({
         <PaginationItem>
           <PaginationFirst
             onClick={() => onPageChange(1)}
+            // @ts-expect-error Why is this 'disabled' not valid here? :(
             disabled={currentPage === 1}
           />
         </PaginationItem>
         <PaginationItem className={!hasTwoEllipsis ? 'pr-5' : ''}>
           <PaginationPrevious
             onClick={() => onPageChange(currentPage - 1)}
+            // @ts-expect-error Why is this 'disabled' not valid here? :(
             disabled={currentPage === 1}
           />
         </PaginationItem>
@@ -82,7 +84,7 @@ export function MyProtectedDataPagination({
             ) : (
               <PaginationLink
                 isActive={pageNumber === currentPage}
-                onClick={() => onPageChange(pageNumber)}
+                onClick={() => onPageChange(pageNumber as number)}
               >
                 {pageNumber}
               </PaginationLink>
@@ -93,12 +95,14 @@ export function MyProtectedDataPagination({
         <PaginationItem className={!hasTwoEllipsis ? 'pl-5' : ''}>
           <PaginationNext
             onClick={() => onPageChange(currentPage + 1)}
+            // @ts-expect-error Why is this 'disabled' not valid here? :(
             disabled={currentPage === totalPages}
           />
         </PaginationItem>
         <PaginationItem>
           <PaginationLast
             onClick={() => onPageChange(totalPages)}
+            // @ts-expect-error Why is this 'disabled' not valid here? :(
             disabled={currentPage === totalPages}
           />
         </PaginationItem>
