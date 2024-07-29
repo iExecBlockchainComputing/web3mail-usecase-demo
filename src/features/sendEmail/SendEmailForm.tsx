@@ -1,17 +1,23 @@
-import { useState } from 'react';
-import { Link, useParams, useNavigate } from 'react-router-dom';
-import { Box, TextField, TextareaAutosize } from '@mui/material';
-import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import InputLabel from '@mui/material/InputLabel';
+// import { ValidationError } from '@iexec/web3mail';
+import { useMutation } from '@tanstack/react-query';
+import { type FormEvent, useState } from 'react';
 import { ChevronLeft, Loader } from 'react-feather';
-import { Button } from '@/components/ui/button.tsx';
-import { useToast } from '@/components/ui/use-toast.ts';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import { DocLink } from '@/components/DocLink.tsx';
-import { useSendEmailMutation } from '@/app/appSlice.ts';
-import { SEND_EMAIL } from '@/config/path.ts';
-import './SendEmailForm.css';
+import { Button } from '@/components/ui/button.tsx';
+import { Input } from '@/components/ui/input.tsx';
+import { Label } from '@/components/ui/label.tsx';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select.tsx';
+import { Textarea } from '@/components/ui/textarea.tsx';
+import { useToast } from '@/components/ui/use-toast.ts';
+import { getWeb3mailClient } from '@/externals/web3mailClient.ts';
+import { pluralize } from '@/utils/pluralize.ts';
 
 const MAX_CHARACTERS_SENDER_NAME = 20;
 const MAX_CHARACTERS_MESSAGE_SUBJECT = 78;
@@ -21,9 +27,6 @@ export default function SendEmailForm() {
 
   const navigate = useNavigate();
   const { toast } = useToast();
-
-  //RTK Mutation hook
-  const [sendEmail, result] = useSendEmailMutation();
 
   //for textarea
   const [message, setMessage] = useState('');
@@ -46,39 +49,53 @@ export default function SendEmailForm() {
     setMessageSubject(inputValue);
   };
 
+  const sendEmailMutation = useMutation({
+    mutationKey: ['sendEmail'],
+    mutationFn: async () => {
+      const { web3mail } = await getWeb3mailClient();
+      return web3mail.sendEmail({
+        senderName,
+        contentType,
+        emailSubject: messageSubject,
+        emailContent: message,
+        protectedData: protectedDataAddress!,
+      });
+    },
+    onSuccess: () => {
+      toast({
+        title: 'Your email is being sent.',
+      });
+      setTimeout(() => {
+        navigate(`/sendEmail`);
+      }, 250);
+    },
+    onError: (err) => {
+      // TODO Export yup ValidationError from SDKs
+      // if (err instanceof ValidationError) {
+      //   console.log('err.errors', (err as ValidationError).errors);
+      //   toast({
+      //     variant: 'danger',
+      //     title: err.message,
+      //   });
+      //   return;
+      // }
+      // logs and rollbar alert handled by tanstack query config in initQueryClient()
+      toast({
+        variant: 'danger',
+        title: err?.message || 'Failed to send email.',
+      });
+    },
+  });
+
   const handleChange = (event: any) => {
     const inputValue = event.target.value;
     setMessage(inputValue);
   };
 
-  const sendEmailHandle = () => {
-    if (!protectedDataAddress) return;
-    sendEmail({
-      senderName,
-      contentType,
-      emailSubject: messageSubject,
-      emailContent: message,
-      protectedData: protectedDataAddress,
-    })
-      .unwrap()
-      .then(() => {
-        toast({
-          title: 'The email is being sent',
-        });
-        setTimeout(() => {
-          navigate(`/${SEND_EMAIL}`);
-        }, 250);
-      })
-      .catch((err) => {
-        toast({
-          variant: 'danger',
-          title: err || 'Failed to send email.',
-        });
-      });
-  };
-
-  const handleSelectContentType = (event: SelectChangeEvent) => {
-    setContentType(event.target.value as string);
+  const handleSelectContentType = (
+    contentTypeValue: 'text/plain' | 'text/html'
+  ) => {
+    setContentType(contentTypeValue);
   };
 
   const handleSenderNameChange = (event: any) => {
@@ -86,91 +103,112 @@ export default function SendEmailForm() {
     setSenderName(inputValue);
   };
 
+  const handleSendEmail = (event: FormEvent) => {
+    event.preventDefault();
+
+    if (!senderName.trim() || !messageSubject.trim() || !message.trim()) {
+      toast({
+        variant: 'danger',
+        title: 'Please fill in all required fields.',
+      });
+      return;
+    }
+
+    sendEmailMutation.mutate();
+  };
+
   return (
     <div className="mx-auto mb-28 w-[70%]">
       <div className="text-left">
         <Button asChild variant="text" size="sm">
-          <Link to={`/${SEND_EMAIL}`} className="pl-2">
+          <Link to={`/sendEmail`} className="pl-2">
             <ChevronLeft size="22" />
             <span className="pl-1">Back</span>
           </Link>
         </Button>
       </div>
       <h2>Send email to {receiverAddress}</h2>
-      <Box sx={{ my: 2, display: 'flex', flexDirection: 'column' }}>
-        <TextField
-          fullWidth
+
+      <form noValidate onSubmit={handleSendEmail} className="flex flex-col">
+        <Label htmlFor="sender-name">
+          Sender name * <span className="text-xs">(min 3 chars)</span>
+        </Label>
+        <Input
           id="sender-name"
-          label="Sender name"
-          variant="outlined"
+          data-cy="sender-name-input"
           required
           value={senderName}
+          maxLength={MAX_CHARACTERS_SENDER_NAME}
+          className="mt-1"
           onChange={handleSenderNameChange}
-          className="mt-6"
-          inputProps={{ maxLength: MAX_CHARACTERS_SENDER_NAME }}
         />
         <p className="my-2 text-sm italic">
-          {charactersRemainingSenderName >= 0
-            ? charactersRemainingSenderName
-            : 0}{' '}
-          {charactersRemainingSenderName > 1 ? 'characters' : 'character'}{' '}
-          remaining
+          {pluralize(charactersRemainingSenderName, 'character')} remaining
         </p>
-        <TextField
-          fullWidth
-          id="Message subject"
-          label="Message subject"
-          variant="outlined"
+
+        <Label htmlFor="message-subject" className="mt-4">
+          Message subject *
+        </Label>
+        <Input
+          id="message-subject"
+          data-cy="message-subject-input"
           required
           value={messageSubject}
+          maxLength={MAX_CHARACTERS_MESSAGE_SUBJECT}
+          className="mt-1"
           onChange={handleMessageSubjectChange}
-          inputProps={{ maxLength: MAX_CHARACTERS_MESSAGE_SUBJECT }}
-          className="mt-6"
         />
         <p className="my-2 text-sm italic">
-          {charactersRemainingSubject >= 0 ? charactersRemainingSubject : 0}{' '}
-          {charactersRemainingSubject > 1 ? 'characters' : 'character'}{' '}
-          remaining
+          {pluralize(charactersRemainingSubject, 'character')} remaining
         </p>
-        <FormControl sx={{ textAlign: 'left', mt: 3 }} fullWidth>
-          <InputLabel id="content-type-label">Content Type</InputLabel>
-          <Select
-            labelId="content-type-label"
-            id="content-type-select"
-            value={contentType}
-            label="Content type"
-            onChange={handleSelectContentType}
-          >
-            <MenuItem value="text/plain">text/plain</MenuItem>
-            <MenuItem value="text/html">text/html</MenuItem>
-          </Select>
-        </FormControl>
-        <TextareaAutosize
+
+        <Label
+          htmlFor="content-type"
+          data-cy="email-content-type-select"
+          className="mt-4"
+        >
+          Content Type *
+        </Label>
+        <Select
+          defaultValue="text/plain"
+          onValueChange={handleSelectContentType}
+        >
+          <SelectTrigger id="content-type" className="mt-1 w-full">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="text/plain">text/plain</SelectItem>
+            <SelectItem value="text/html">text/html</SelectItem>
+          </SelectContent>
+        </Select>
+
+        <Textarea
+          data-cy="message-content-textarea"
           required
-          minRows={8}
-          maxRows={10}
+          rows={6}
           placeholder="Enter email content *"
           value={message}
           onChange={handleChange}
           id="textArea"
-          className="mt-4 w-full border p-3"
+          className="mt-6 w-full border p-3"
         />
         <p className="my-2 text-sm italic">
-          {charactersRemainingMessage} characters remaining
+          {pluralize(charactersRemainingMessage, 'character')} remaining
         </p>
+
         <div className="text-right">
           <Button
-            disabled={result.isLoading}
-            onClick={sendEmailHandle}
+            type="submit"
+            disabled={sendEmailMutation.isPending}
             data-cy="send-email-button"
           >
-            {result.isLoading && (
+            {sendEmailMutation.isPending && (
               <Loader className="-ml-1 mr-2 animate-spin-slow" size="16" />
             )}
             <span>Send</span>
           </Button>
         </div>
-      </Box>
+      </form>
 
       <DocLink className="mt-20">
         web3mail-sdk / Method called in this page:{' '}
