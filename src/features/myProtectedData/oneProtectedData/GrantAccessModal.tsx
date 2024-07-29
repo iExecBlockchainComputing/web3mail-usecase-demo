@@ -7,7 +7,12 @@ import { AlertCircle, Loader } from 'react-feather';
 // import { Alert } from '@/components/ui/alert.tsx';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert.tsx';
 import { Button } from '@/components/ui/button.tsx';
-import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog.tsx';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+} from '@/components/ui/dialog.tsx';
 import { Input } from '@/components/ui/input.tsx';
 import { Label } from '@/components/ui/label.tsx';
 import { useToast } from '@/components/ui/use-toast.ts';
@@ -107,6 +112,11 @@ export default function GrantAccessModal(props: GrantAccessModalParams) {
     <Dialog open={props.open} onOpenChange={props.onOpenChange}>
       <DialogContent className="w-[520px] rounded-md bg-white p-8">
         <DialogTitle>New user</DialogTitle>
+
+        {/* Description for accessibility */}
+        <DialogDescription className="hidden">
+          Allow a new user to access your protected data
+        </DialogDescription>
 
         <form
           noValidate
