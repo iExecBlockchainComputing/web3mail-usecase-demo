@@ -59,6 +59,7 @@ export default function CreateProtectedData() {
   };
 
   const createProtectedDataMutation = useMutation({
+    mutationKey: ['protectData'],
     mutationFn: async ({
       name,
       data,
@@ -81,7 +82,6 @@ export default function CreateProtectedData() {
     },
   });
 
-  //ask for confirmation before leaving the page
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
 
@@ -120,7 +120,6 @@ export default function CreateProtectedData() {
       return;
     }
 
-    console.log('dataType', dataType);
     if (dataType === 'email' && !!email && !isValidEmail) {
       toast({
         variant: 'danger',
@@ -238,16 +237,14 @@ export default function CreateProtectedData() {
           )}
 
           {createProtectedDataMutation.error && (
-            <div className="mb-3 mt-6 flex flex-col items-center">
-              <Alert variant="error">
-                <p>
-                  Oops, something went wrong while creating your protected data.
-                </p>
-                <p className="text-orange-300">
-                  {createProtectedDataMutation.error.toString()}
-                </p>
-              </Alert>
-            </div>
+            <Alert variant="error" className="mb-3 mt-6">
+              <AlertTitle>
+                Oops, something went wrong while creating your protected data.
+              </AlertTitle>
+              <AlertDescription>
+                {createProtectedDataMutation.error.toString()}
+              </AlertDescription>
+            </Alert>
           )}
 
           <DocLink className="mt-20">

@@ -4,7 +4,7 @@ import { CheckCircle, Info } from 'react-feather';
 import { cn } from '@/utils/style.utils.ts';
 
 const alertVariants = cva(
-  'relative w-full rounded-lg border p-4 [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg]:text-foreground [&>svg~*]:pl-7',
+  'relative w-full rounded-lg border p-4 [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-[1.05rem] [&>svg]:text-foreground [&>svg~*]:pl-7',
   {
     variants: {
       variant: {
@@ -43,7 +43,7 @@ const AlertTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <h5
     ref={ref}
-    className={cn('mb-1 font-medium leading-5 tracking-tight', className)}
+    className={cn('font-medium leading-5 tracking-tight', className)}
     {...props}
   />
 ));
@@ -55,7 +55,7 @@ const AlertDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn('text-sm [&_p]:leading-relaxed', className)}
+    className={cn('mt-1 text-sm [&_p]:leading-relaxed', className)}
     {...props}
   />
 ));

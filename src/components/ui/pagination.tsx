@@ -51,6 +51,7 @@ const PaginationLink = ({
   ...props
 }: PaginationLinkProps) => (
   <button
+    // @ts-expect-error Why is this 'type' not valid? :(
     type="button"
     aria-current={isActive ? 'page' : undefined}
     className={cn(

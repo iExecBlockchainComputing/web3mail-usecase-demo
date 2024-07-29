@@ -5,7 +5,7 @@ import { Search, Send, Slash } from 'react-feather';
 import { Link } from 'react-router-dom';
 import { CircularLoader } from '@/components/CircularLoader.tsx';
 import { DocLink } from '@/components/DocLink.tsx';
-import { Alert } from '@/components/ui/alert.tsx';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert.tsx';
 import { Button } from '@/components/ui/button.tsx';
 import { Input } from '@/components/ui/input.tsx';
 import { getWeb3mailClient } from '@/externals/web3mailClient.ts';
@@ -27,6 +27,7 @@ export default function MyEmailContacts() {
     isLoading,
     isSuccess,
     isError,
+    error,
     data: myContacts,
   } = useQuery({
     queryKey: ['myWeb3mailContacts'],
@@ -111,12 +112,13 @@ export default function MyEmailContacts() {
       )}
 
       {isError && (
-        <div className="mt-10 flex flex-col items-center">
-          <Alert variant="error">
+        <Alert variant="error" className="mt-10">
+          <AlertTitle>
             Oops, something went wrong while fetching protected data shared with
             you.
-          </Alert>
-        </div>
+          </AlertTitle>
+          <AlertDescription>{error.toString()}</AlertDescription>
+        </Alert>
       )}
 
       {isSuccess && filteredRows!.length === 0 && (
