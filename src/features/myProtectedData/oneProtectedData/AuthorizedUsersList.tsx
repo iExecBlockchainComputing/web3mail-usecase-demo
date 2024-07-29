@@ -13,6 +13,7 @@ export default function AuthorizedUsersList() {
   const {
     isLoading,
     isError,
+    error,
     data: grantedAccessResponse,
   } = useQuery({
     queryKey: ['grantedAccess', protectedDataAddress],
