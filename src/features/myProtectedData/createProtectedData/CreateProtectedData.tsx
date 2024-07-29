@@ -81,7 +81,6 @@ export default function CreateProtectedData() {
     },
   });
 
-  //ask for confirmation before leaving the page
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
 
@@ -120,7 +119,6 @@ export default function CreateProtectedData() {
       return;
     }
 
-    console.log('dataType', dataType);
     if (dataType === 'email' && !!email && !isValidEmail) {
       toast({
         variant: 'danger',
