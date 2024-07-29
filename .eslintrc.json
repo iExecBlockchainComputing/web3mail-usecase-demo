@@ -16,7 +16,7 @@
     "prettier"
   ],
   "rules": {
-    "no-console": "warn",
+    "no-console": "off",
     "sonarjs/cognitive-complexity": "warn",
     "react/react-in-jsx-scope": "off",
     // Already using TypeScript. Not sure we should also do runtime props validation, disabling this rule for now
