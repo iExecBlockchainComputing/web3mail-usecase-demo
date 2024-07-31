@@ -15,7 +15,10 @@ export function initQueryClient({ rollbar }: { rollbar: Rollbar | undefined }) {
         if (err.cause) {
           console.error(`[${query.queryKey[0]}] ERROR cause`, err.cause);
         }
-        rollbar?.error(`${query.queryKey[0]} ERROR cause`, err.cause || err);
+        rollbar?.error(
+          `Query ${query.queryKey[0]} ERROR ${(err.cause as Error)?.message || err.message}`,
+          err.cause || err
+        );
       },
     }),
     // https://tanstack.com/query/latest/docs/reference/MutationCache
@@ -32,7 +35,10 @@ export function initQueryClient({ rollbar }: { rollbar: Rollbar | undefined }) {
         if (err.cause) {
           console.error(`[${mutationKey}] ERROR cause`, err.cause);
         }
-        rollbar?.error(`${mutationKey} ERROR cause`, err.cause || err);
+        rollbar?.error(
+          `Mutation ${mutationKey} ERROR ${(err.cause as Error)?.message || err.message}`,
+          err.cause || err
+        );
       },
     }),
   });
