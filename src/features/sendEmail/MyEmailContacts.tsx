@@ -38,7 +38,6 @@ export default function MyEmailContacts() {
         isUserStrict: true,
         // isUserStrict: !showZeroAddressGrants,
       });
-      console.log('myEmailContacts', myEmailContacts);
       return myEmailContacts;
     },
     select: (contacts) => {
