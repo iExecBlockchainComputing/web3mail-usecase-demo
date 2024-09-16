@@ -62,7 +62,7 @@ preservedAvailableProviderDetails.forEach((providerDetails) => {
           id: providerDetails.info.rdns,
           name: providerDetails.info.name,
           icon: providerDetails.info.icon,
-          provider: providerDetails.provider,
+          provider: providerDetails.provider as any,
         };
       },
     })

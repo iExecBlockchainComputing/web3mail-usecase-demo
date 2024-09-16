@@ -1,5 +1,6 @@
 import { useUserStore } from '@/stores/user.store.ts';
 import { IExecWeb3mail } from '@iexec/web3mail';
+import { Eip1193Provider } from 'ethers';
 import { type Connector } from 'wagmi';
 
 let web3mail: IExecWeb3mail | null = null;
@@ -13,7 +14,7 @@ export async function initWeb3mailSDK({
 }: {
   connector?: Connector;
 }) {
-  const provider = await connector?.getProvider();
+  const provider = (await connector?.getProvider()) as Eip1193Provider;
   if (!provider) {
     cleanWeb3mailSDK();
     return;
