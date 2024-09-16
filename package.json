@@ -33,7 +33,7 @@
     "@rollbar/react": "^0.12.0-beta",
     "@tanstack/react-query": "^5.51.11",
     "@vercel/analytics": "^1.2.2",
-    "@web3modal/wagmi": "^3.5.7",
+    "@web3modal/wagmi": "^5.1.8",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "ethers": "^6.9.0",
@@ -44,8 +44,7 @@
     "rollbar": "^2.26.4",
     "tailwind-merge": "^2.0.0",
     "tailwindcss-animate": "^1.0.7",
-    "viem": "^1.21.4",
-    "wagmi": "^1.4.13",
+    "wagmi": "^2.12.11",
     "zustand": "^4.5.4"
   },
   "devDependencies": {

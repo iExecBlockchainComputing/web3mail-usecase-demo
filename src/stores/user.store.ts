@@ -1,4 +1,4 @@
-import type { Address, Connector } from 'wagmi';
+import type { Connector } from 'wagmi';
 import { create } from 'zustand';
 
 type UserState = {
