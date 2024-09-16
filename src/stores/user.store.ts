@@ -1,3 +1,4 @@
+import { Address } from '@/types.ts';
 import type { Connector } from 'wagmi';
 import { create } from 'zustand';
 
