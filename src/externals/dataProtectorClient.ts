@@ -4,6 +4,7 @@ import {
   IExecDataProtectorCore,
   IExecDataProtectorSharing,
 } from '@iexec/dataprotector';
+import { Eip1193Provider } from 'ethers';
 import { type Connector } from 'wagmi';
 
 let dataProtector: IExecDataProtectorCore | null = null;
@@ -18,7 +19,7 @@ export async function initDataProtectorSDK({
 }: {
   connector?: Connector;
 }) {
-  const provider = await connector?.getProvider();
+  const provider = (await connector?.getProvider()) as Eip1193Provider;
   if (!provider) {
     cleanDataProtectorSDK();
     return;
