@@ -22,7 +22,7 @@ export function useWatchWagmiAccount() {
     setAddress(address);
 
     // Update dataProtector client
-    if (connector) {
+    if (status === 'connected') {
       initDataProtectorSDK({ connector });
       initWeb3mailSDK({ connector });
       queryClient.removeQueries();
