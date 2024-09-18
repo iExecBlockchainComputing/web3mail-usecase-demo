@@ -56,6 +56,8 @@ export default function OneProtectedData() {
     enabled: !protectedData,
   });
 
+  const cid = protectedData?.multiaddr.replace('/p2p/', '')
+
   return (
     <div>
       <div className="text-left">
@@ -120,11 +122,12 @@ export default function OneProtectedData() {
             <li className="flex items-center gap-x-1.5">
               <LinkIcon size="18" aria-label="user-icon" />
               IPFS link:{' '}
-              <i>{'Will be provided with the next version of subgraph'}</i>
-              {/*<strong>*/}
-              {/*  {protectedData?.multiaddr}*/}
-              {/*</strong>{' '}*/}
-              {/*(encrypted content)*/}
+              <a href={`https://ipfs-gateway.v8-bellecour.iex.ec/ipfs/${cid}`} className='group'>
+                <span className='text-link truncate group-hover:underline'>
+                {protectedData?.multiaddr}
+                </span>{' '}
+                (encrypted content)
+              </a>
             </li>
           </ul>
         </div>
