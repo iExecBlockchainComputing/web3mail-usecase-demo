@@ -12,6 +12,7 @@ import { ITEMS_PER_PAGE } from '@/config/config.ts';
 import { getDataProtectorClient } from '@/externals/dataProtectorClient.ts';
 import { MyProtectedDataPagination } from '@/features/myProtectedData/MyProtectedDataPagination.tsx';
 import ProtectedDataCard from '@/features/myProtectedData/ProtectedDataCard.tsx';
+import { pluralize } from '@/utils/pluralize.ts';
 import { getLocalDateFromBlockchainTimestamp } from '@/utils/utils.ts';
 import img from '../../assets/noData.png';
 import './MyProtectedData.css';
@@ -84,7 +85,9 @@ export default function MyProtectedData() {
             <div>
               <div>
                 <h2 className="mt-0 inline-block">My Protected Data</h2>
-                <span className="ml-3">({protectedData.length} items)</span>
+                <span className="ml-3">
+                  ({pluralize(protectedData.length, 'item')})
+                </span>
               </div>
               <p className="-mt-3">
                 Confidentially manage your protected data. Easily create,
