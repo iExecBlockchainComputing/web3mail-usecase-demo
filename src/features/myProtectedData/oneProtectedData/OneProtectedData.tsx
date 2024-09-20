@@ -123,15 +123,15 @@ export default function OneProtectedData() {
               <LinkIcon size="18" aria-label="user-icon" />
               IPFS link:{' '}
               {protectedData?.multiaddr ? (
-                <a
-                  href={`https://ipfs-gateway.v8-bellecour.iex.ec/ipfs/${cid}`}
-                  className="group"
-                >
-                  <span className="truncate text-link group-hover:underline">
+                <>
+                  <a
+                    href={`https://ipfs-gateway.v8-bellecour.iex.ec/ipfs/${cid}`}
+                    className="truncate text-link hover:underline"
+                  >
                     {protectedData.multiaddr}
-                  </span>{' '}
+                  </a>
                   (encrypted content)
-                </a>
+                </>
               ) : (
                 <span>Multiaddr is undefined</span>
               )}
