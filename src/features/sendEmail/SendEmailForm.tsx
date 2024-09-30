@@ -64,7 +64,7 @@ export default function SendEmailForm() {
          * this resource is shared and may be throttled, it should not be used for production applications
          * remove the `workerpoolAddressOrEns` option to switch back to a production ready workerpool
          */
-        workerpoolAddressOrEns: 'v8-learn-prod.main.pools.iexec.eth',
+        workerpoolAddressOrEns: 'prod-v8-learn.main.pools.iexec.eth',
       });
     },
     onSuccess: () => {
