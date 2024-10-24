@@ -60,11 +60,10 @@ export default function SendEmailForm() {
         emailContent: message,
         protectedData: protectedDataAddress!,
         /**
-         * this demo uses a workerpool offering free computing power dedicated to learning
-         * this resource is shared and may be throttled, it should not be used for production applications
-         * remove the `workerpoolAddressOrEns` option to switch back to a production ready workerpool
+         * Don't override workerpoolAddressOrEns, use default value
          */
-        workerpoolAddressOrEns: 'prod-v8-learn.main.pools.iexec.eth',
+        // workerpoolAddressOrEns: '...',
+        useVoucher: true,
       });
     },
     onSuccess: () => {
