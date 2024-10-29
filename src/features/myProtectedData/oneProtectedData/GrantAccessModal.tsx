@@ -107,7 +107,7 @@ export default function GrantAccessModal(props: GrantAccessModalParams) {
 
   return (
     <Dialog open={props.open} onOpenChange={props.onOpenChange}>
-      <DialogContent className="w-[520px] rounded-md bg-white p-8">
+      <DialogContent className="max-w-[550px] rounded-md bg-white p-8">
         <DialogTitle>New user</DialogTitle>
 
         {/* Description for accessibility */}
@@ -132,7 +132,7 @@ export default function GrantAccessModal(props: GrantAccessModalParams) {
               onChange={handleEthAddressChange}
             />
             <div className="ml-0.5 mt-1">
-              <span className="text-xs">Authorize any user: </span>
+              <span className="text-sm">Authorize any user: </span>
               <button
                 type="button"
                 className="bg-transparent text-xs underline"
@@ -145,7 +145,7 @@ export default function GrantAccessModal(props: GrantAccessModalParams) {
             </div>
             {address && (
               <div className="ml-0.5">
-                <span className="text-xs">Authorize myself: </span>
+                <span className="text-sm">Authorize myself: </span>
                 <button
                   type="button"
                   className="bg-transparent text-xs underline"
