@@ -42,6 +42,7 @@ injectedWalletProvider.requestProviders();
 // Preserved wallet providers IDs
 const preservedId = [
   'io.metamask', // Metamask
+  'io.metamask.flask', // MetaMask Flask
   'com.coinbase.wallet', // Coinbase Wallet
   'com.brave.wallet', // Brave Wallet
   'walletConnect', // WalletConnect
