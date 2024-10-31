@@ -133,28 +133,28 @@ export default function GrantAccessModal(props: GrantAccessModalParams) {
             />
             <div className="ml-0.5 mt-1">
               <span className="text-sm">Authorize any user: </span>
-              <button
-                type="button"
-                className="bg-transparent text-xs underline"
+              <Button
+                variant="chip"
+                size="xs"
                 onClick={() => {
                   setEthAddress(ZeroAddress);
                 }}
               >
                 {ZeroAddress}
-              </button>
+              </Button>
             </div>
             {address && (
-              <div className="ml-0.5">
+              <div className="ml-0.5 mt-1">
                 <span className="text-sm">Authorize myself: </span>
-                <button
-                  type="button"
-                  className="bg-transparent text-xs underline"
+                <Button
+                  variant="chip"
+                  size="xs"
                   onClick={() => {
                     setEthAddress(address);
                   }}
                 >
                   {address}
-                </button>
+                </Button>
               </div>
             )}
           </div>
