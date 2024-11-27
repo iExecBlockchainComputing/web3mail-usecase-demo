@@ -2,6 +2,7 @@ import { ProtectedData } from '@iexec/dataprotector';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import {
+  AlertOctagon,
   AtSign,
   ChevronLeft,
   Link as LinkIcon,
@@ -14,6 +15,12 @@ import { DocLink } from '@/components/DocLink.tsx';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert.tsx';
 import { Badge } from '@/components/ui/badge.tsx';
 import { Button } from '@/components/ui/button.tsx';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip.tsx';
 import { getDataProtectorClient } from '@/externals/dataProtectorClient.ts';
 import { getTypeOfProtectedData } from '@/utils/utils.ts';
 import AuthorizedUsersList from './AuthorizedUsersList';
@@ -23,6 +30,7 @@ export default function OneProtectedData() {
   const { protectedDataAddress } = useParams();
 
   const [protectedData, setProtectedData] = useState<ProtectedData>();
+  const [goFetchProtectedData, setGoFetchProtectedData] = useState(false);
 
   //modal state
   const [modalOpen, setModalOpen] = useState(false);
@@ -36,7 +44,11 @@ export default function OneProtectedData() {
     const cachedProtectedData = allProtectedData?.find(
       (oneProtectedData) => oneProtectedData.address === protectedDataAddress
     );
-    setProtectedData(cachedProtectedData);
+    if (cachedProtectedData) {
+      setProtectedData(cachedProtectedData);
+    } else {
+      setGoFetchProtectedData(true);
+    }
   }, []);
 
   const {
@@ -53,7 +65,19 @@ export default function OneProtectedData() {
       setProtectedData(oneProtectedData?.[0]);
       return oneProtectedData;
     },
-    enabled: !protectedData,
+    enabled: goFetchProtectedData,
+  });
+
+  const { data: hasSmsSecret, isError: isCheckSmsSecretError } = useQuery({
+    queryKey: ['oneProtectedDataSmsSecret', protectedDataAddress],
+    queryFn: async () => {
+      const { dataProtector } = await getDataProtectorClient();
+      // @ts-expect-error 'iexec' is a protected field but that's fine
+      return dataProtector.iexec.dataset.checkDatasetSecretExists(
+        protectedData!.address
+      );
+    },
+    enabled: !!protectedData,
   });
 
   const cid = protectedData?.multiaddr?.replace('/p2p/', '');
@@ -90,9 +114,28 @@ export default function OneProtectedData() {
       {protectedData && (
         <div className="mt-4 rounded-md border border-grey-800/40 py-6 pl-3 pr-5 text-left">
           <ul className="flex flex-col gap-y-4 pl-6">
-            {protectedData?.name && (
-              <h2 className="m-0 -mb-1">{protectedData.name}</h2>
-            )}
+            <div className="flex items-center">
+              <h2 className="m-0 -mb-1 flex-1">{protectedData.name}</h2>
+              {!hasSmsSecret && !isCheckSmsSecretError && (
+                <div className="-mt-3">
+                  <TooltipProvider delayDuration={0}>
+                    <Tooltip>
+                      <TooltipTrigger className="cursor-default">
+                        <AlertOctagon size="24" className="text-red-500" />
+                      </TooltipTrigger>
+                      <TooltipContent side="left">
+                        This protected data is probably unusable as{' '}
+                        <strong>
+                          its secret encryption key was
+                          <br /> not found
+                        </strong>{' '}
+                        in the iExec Secret Management Service (SMS).
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </div>
+              )}
+            </div>
             <div>
               <Badge
                 variant={
