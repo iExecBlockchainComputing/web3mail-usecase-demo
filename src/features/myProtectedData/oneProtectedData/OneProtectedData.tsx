@@ -68,7 +68,11 @@ export default function OneProtectedData() {
     enabled: goFetchProtectedData,
   });
 
-  const { data: hasSmsSecret, isError: isCheckSmsSecretError } = useQuery({
+  const {
+    data: hasSmsSecret,
+    isSuccess: isSmsRequestSuccess,
+    isError: isCheckSmsSecretError,
+  } = useQuery({
     queryKey: ['oneProtectedDataSmsSecret', protectedDataAddress],
     queryFn: async () => {
       const { dataProtector } = await getDataProtectorClient();
@@ -116,25 +120,27 @@ export default function OneProtectedData() {
           <ul className="flex flex-col gap-y-4 pl-6">
             <div className="flex items-center">
               <h2 className="m-0 -mb-1 flex-1">{protectedData.name}</h2>
-              {!hasSmsSecret && !isCheckSmsSecretError && (
-                <div className="-mt-3">
-                  <TooltipProvider delayDuration={0}>
-                    <Tooltip>
-                      <TooltipTrigger className="cursor-default">
-                        <AlertOctagon size="24" className="text-red-500" />
-                      </TooltipTrigger>
-                      <TooltipContent side="left">
-                        This protected data is probably unusable as{' '}
-                        <strong>
-                          its secret encryption key was
-                          <br /> not found
-                        </strong>{' '}
-                        in the iExec Secret Management Service (SMS).
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                </div>
-              )}
+              {isSmsRequestSuccess &&
+                !hasSmsSecret &&
+                !isCheckSmsSecretError && (
+                  <div className="-mt-3">
+                    <TooltipProvider delayDuration={0}>
+                      <Tooltip>
+                        <TooltipTrigger className="cursor-default">
+                          <AlertOctagon size="24" className="text-red-500" />
+                        </TooltipTrigger>
+                        <TooltipContent side="left">
+                          This protected data is probably unusable as{' '}
+                          <strong>
+                            its secret encryption key was
+                            <br /> not found
+                          </strong>{' '}
+                          in the iExec Secret Management Service (SMS).
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </div>
+                )}
             </div>
             <div>
               <Badge
