@@ -1,48 +1,47 @@
-import { useState, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAccount } from 'wagmi';
-import { Pagination } from '@mui/material';
+import { usePageStore } from '@/stores/page.store.ts';
+import { useUserStore } from '@/stores/user.store.ts';
+import { useQuery } from '@tanstack/react-query';
 import { Plus } from 'react-feather';
-import { CSSTransition } from 'react-transition-group';
-import { Button } from '@/components/ui/button.tsx';
-import { Alert } from '@/components/Alert.tsx';
+import { useNavigate } from 'react-router-dom';
 import { CircularLoader } from '@/components/CircularLoader.tsx';
 import { DocLink } from '@/components/DocLink.tsx';
-import {
-  selectAppIsConnected,
-  useFetchProtectedDataQuery,
-} from '@/app/appSlice.ts';
-import { useAppSelector } from '@/app/hooks.ts';
-import img from '../../assets/noData.png';
-import ProtectedDataCard from '@/features/myProtectedData/ProtectedDataCard.tsx';
+import { FadeIn } from '@/components/FadeIn.tsx';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert.tsx';
+import { Button } from '@/components/ui/button.tsx';
 import { ITEMS_PER_PAGE } from '@/config/config.ts';
-import { CREATE } from '@/config/path.ts';
+import { getDataProtectorClient } from '@/externals/dataProtectorClient.ts';
+import { MyProtectedDataPagination } from '@/features/myProtectedData/MyProtectedDataPagination.tsx';
+import ProtectedDataCard from '@/features/myProtectedData/ProtectedDataCard.tsx';
+import { pluralize } from '@/utils/pluralize.ts';
 import { getLocalDateFromBlockchainTimestamp } from '@/utils/utils.ts';
+import img from '../../assets/noData.png';
 import './MyProtectedData.css';
 
 export default function MyProtectedData() {
-  const { address } = useAccount();
-  const isAccountConnected = useAppSelector(selectAppIsConnected);
+  const { address } = useUserStore();
 
-  //query RTK API as query hook
+  const { currentPage, setCurrentPage } = usePageStore();
+
   const {
-    data: protectedData = [],
     isLoading,
     isError,
-  } = useFetchProtectedDataQuery(address as string, {
-    skip: !isAccountConnected,
+    error,
+    data: protectedData,
+  } = useQuery({
+    queryKey: ['myProtectedData'],
+    queryFn: async () => {
+      const { dataProtector } = await getDataProtectorClient();
+      return dataProtector.getProtectedData({ owner: address });
+    },
   });
 
   //for pagination
-  const [currentPage, setCurrentPage] = useState(1);
-  const handlePageChange = (_: React.ChangeEvent<unknown>, value: number) => {
-    setCurrentPage(value);
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
   };
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
-  const currentData = protectedData.slice(startIndex, endIndex);
-
-  const nodeRef = useRef(null);
+  const currentData = protectedData?.slice(startIndex, endIndex);
 
   return (
     <>
@@ -54,14 +53,15 @@ export default function MyProtectedData() {
       )}
 
       {isError && (
-        <div className="flex flex-col items-center">
-          <Alert variant="error">
+        <Alert variant="error">
+          <AlertTitle>
             Oops, something went wrong while fetching your protected data.
-          </Alert>
-        </div>
+          </AlertTitle>
+          <AlertDescription>{error.toString()}</AlertDescription>
+        </Alert>
       )}
 
-      {!isLoading && !isError && protectedData.length === 0 && (
+      {!isLoading && !isError && protectedData?.length === 0 && (
         <div className="-mt-8 text-center">
           <img
             src={img}
@@ -79,21 +79,16 @@ export default function MyProtectedData() {
         </div>
       )}
 
-      <CSSTransition
-        appear={!isLoading && protectedData.length > 0}
-        in={!isLoading && protectedData.length > 0}
-        nodeRef={nodeRef}
-        timeout={200}
-        classNames="fade"
-        onEntered={() => {
-          // @ts-ignore
-          nodeRef.current?.classList.remove('opacity-0');
-        }}
-      >
-        <div ref={nodeRef} className="opacity-0">
+      {!!protectedData?.length && (
+        <FadeIn>
           <div className="flex flex-row justify-between gap-x-12">
             <div>
-              <h2 className="mt-0">My Protected Data</h2>
+              <div>
+                <h2 className="mt-0 inline-block">My Protected Data</h2>
+                <span className="ml-3">
+                  ({pluralize(protectedData.length, 'item')})
+                </span>
+              </div>
               <p className="-mt-3">
                 Confidentially manage your protected data. Easily create,
                 review, authorize, and revoke access.
@@ -110,14 +105,19 @@ export default function MyProtectedData() {
               }}
             >
               {currentData?.map(
-                ({ address, name, schema, creationTimestamp }) => (
+                ({
+                  address: protectedDataAddress,
+                  name,
+                  schema,
+                  creationTimestamp,
+                }) => (
                   <div
-                    key={address}
+                    key={protectedDataAddress}
                     className="flex w-full items-center justify-center"
                   >
                     <div className="max-w-[300px] flex-1">
                       <ProtectedDataCard
-                        id={address}
+                        id={protectedDataAddress}
                         title={name || '(No name)'}
                         schema={schema}
                         date={getLocalDateFromBlockchainTimestamp(
@@ -129,13 +129,19 @@ export default function MyProtectedData() {
                 )
               )}
             </div>
-            <div className="mt-16 flex justify-center">
-              <Pagination
-                count={Math.ceil(protectedData.length / ITEMS_PER_PAGE)}
-                page={currentPage}
-                onChange={handlePageChange}
-              />
-            </div>
+
+            {!!protectedData?.length &&
+              protectedData.length > ITEMS_PER_PAGE && (
+                <div className="mt-16 flex justify-center">
+                  <MyProtectedDataPagination
+                    totalPages={Math.ceil(
+                      protectedData?.length / ITEMS_PER_PAGE
+                    )}
+                    currentPage={currentPage}
+                    onPageChange={handlePageChange}
+                  />
+                </div>
+              )}
           </div>
 
           <DocLink>
@@ -149,8 +155,8 @@ export default function MyProtectedData() {
               getProtectedData()
             </a>
           </DocLink>
-        </div>
-      </CSSTransition>
+        </FadeIn>
+      )}
     </>
   );
 }
@@ -158,7 +164,7 @@ export default function MyProtectedData() {
 function NewProtectedDataButton() {
   const navigate = useNavigate();
   return (
-    <Button onClick={() => navigate(`./${CREATE}`)} className="pl-4">
+    <Button onClick={() => navigate('./create')} className="pl-4">
       <Plus size="19" />
       <span className="whitespace-nowrap pl-2">Add new</span>
     </Button>

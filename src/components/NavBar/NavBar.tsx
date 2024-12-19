@@ -1,23 +1,20 @@
-import { useState, useEffect, useRef } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
-import { LogOut } from 'react-feather';
+import { useUserStore } from '@/stores/user.store.ts';
 import '@fontsource/space-mono/700.css';
+import { useState, useEffect, useRef } from 'react';
+import { LogOut } from 'react-feather';
+import { NavLink, useLocation } from 'react-router-dom';
 import iExecLogo from '@/assets/iexec-logo.svg';
-import {
-  HOME,
-  PROTECTED_DATA,
-  SEND_EMAIL,
-  SEND_TELEGRAM,
-} from '@/config/path.ts';
-import { useUser } from '@/components/NavBar/useUser.ts';
 import AddressChip from '@/components/NavBar/AddressChip.tsx';
+import { useLoginLogout } from '@/components/NavBar/useLoginLogout.ts';
 import { Button } from '@/components/ui/button.tsx';
 
 const activeLinkIndicatorWidthRatio = 0.7;
 
 export default function NavBar() {
   const location = useLocation();
-  const { isConnected, address, isAccountConnected, login, logout } = useUser();
+
+  const { isConnected, address } = useUserStore();
+  const { login, logout } = useLoginLogout();
 
   const [tabIndicatorLeft, setTabIndicatorLeft] = useState('');
   const [tabIndicatorWidth, setTabIndicatorWidth] = useState('');
@@ -45,7 +42,10 @@ export default function NavBar() {
 
   return (
     <header className="dark flex h-[64px] items-center bg-grey-900 px-8 text-white">
-      <NavLink to={`/${HOME}`} className="-mx-2 flex h-full items-center p-2">
+      <NavLink
+        to={`/protectedData`}
+        className="-mx-2 flex h-full items-center p-2"
+      >
         <img src={iExecLogo} width="25" height="30" alt="iExec logo" />
 
         <div
@@ -61,19 +61,19 @@ export default function NavBar() {
         className="relative ml-20 flex h-full items-center gap-x-8 pr-2 text-base"
       >
         <NavLink
-          to={`/${PROTECTED_DATA}`}
+          to={`/protectedData`}
           className="-mx-2 flex h-full items-center p-2"
         >
           My Protected Data
         </NavLink>
         <NavLink
-          to={`/${SEND_EMAIL}`}
+          to={`/sendEmail`}
           className="-mx-2 flex h-full items-center p-2"
         >
           Send Email
         </NavLink>
         <NavLink
-          to={`/${SEND_TELEGRAM}`}
+          to={`/sendTelegram`}
           className="-mx-2 flex h-full items-center p-2"
         >
           Send Telegram
@@ -84,7 +84,7 @@ export default function NavBar() {
         ></div>
       </div>
 
-      {isConnected && isAccountConnected ? (
+      {isConnected ? (
         <div className="flex flex-1 items-center justify-end gap-x-1">
           <AddressChip address={address!} />
           <button

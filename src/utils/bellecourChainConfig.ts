@@ -1,10 +1,8 @@
-import { type Chain } from 'wagmi';
+import { type Chain } from 'viem';
 
-// https://wagmi.sh/react/chains#build-your-own
 export const bellecour = {
   id: 0x86,
   name: 'iExec Sidechain',
-  network: 'bellecour',
   nativeCurrency: {
     decimals: 18,
     name: 'xRLC',

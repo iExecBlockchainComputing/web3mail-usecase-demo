@@ -25,11 +25,13 @@ export function Toaster() {
         return (
           <Toast key={id} variant={variant} {...props}>
             <div className="flex items-center gap-x-3">
-              {variant === 'danger' ? (
-                <Info size="20" />
-              ) : (
-                <CheckCircle size="20" />
-              )}
+              <div className="shrink-0">
+                {variant === 'danger' ? (
+                  <Info size="20" />
+                ) : (
+                  <CheckCircle size="20" />
+                )}
+              </div>
               <div>
                 {title && <ToastTitle>{title}</ToastTitle>}
                 {description && (

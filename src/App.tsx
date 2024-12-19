@@ -1,38 +1,15 @@
-import { useEffect } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { useAccount, useNetwork } from 'wagmi';
 import NavBar from '@/components/NavBar/NavBar.tsx';
-import {
-  NewProtectedData,
-  MyProtectedData,
-  OneProtectedData,
-  SendEmail,
-  SendEmailForm,
-  LoginGuard,
-  SendTelegram,
-  SendTelegramForm,
-} from './features';
-import {
-  PROTECTED_DATA,
-  CONSENT,
-  SEND_EMAIL,
-  SEND_TELEGRAM,
-  CREATE,
-  HOME,
-} from './config/path';
-import { store } from '@/app/store.ts';
-import { initSDK } from '@/app/appSlice.ts';
+import LoginGuard from '@/features/loginGuard/LoginGuard.tsx';
+import MyProtectedData from '@/features/myProtectedData/MyProtectedData.tsx';
+import CreateProtectedData from '@/features/myProtectedData/createProtectedData/CreateProtectedData.tsx';
+import OneProtectedData from '@/features/myProtectedData/oneProtectedData/OneProtectedData.tsx';
+import MyEmailContacts from '@/features/sendEmail/MyEmailContacts.tsx';
+import SendEmailForm from '@/features/sendEmail/SendEmailForm.tsx';
+import { useWatchWagmiAccount } from '@/utils/watchWagmiAccount.ts';
 
 function App() {
-  const { connector } = useAccount();
-  const { chain } = useNetwork();
-
-  useEffect(() => {
-    if (!connector) {
-      return;
-    }
-    store.dispatch(initSDK({ connector }));
-  }, [connector, chain]);
+  useWatchWagmiAccount();
 
   return (
     <div className="App">
@@ -40,7 +17,7 @@ function App() {
       <div className="mx-auto mt-12 w-[80%] max-w-6xl">
         <Routes>
           <Route
-            path={`/${PROTECTED_DATA}`}
+            path="protectedData"
             element={
               <LoginGuard>
                 <MyProtectedData />
@@ -48,7 +25,7 @@ function App() {
             }
           />
           <Route
-            path={`/${PROTECTED_DATA}/${CONSENT}/:protectedDataAddress`}
+            path="/protectedData/consent/:protectedDataAddress"
             element={
               <LoginGuard>
                 <OneProtectedData />
@@ -56,23 +33,23 @@ function App() {
             }
           />
           <Route
-            path={`/${PROTECTED_DATA}/${CREATE}`}
+            path="/protectedData/create"
             element={
               <LoginGuard>
-                <NewProtectedData />
+                <CreateProtectedData />
               </LoginGuard>
             }
           />
           <Route
-            path={`/${SEND_EMAIL}`}
+            path="sendEmail"
             element={
               <LoginGuard>
-                <SendEmail />
+                <MyEmailContacts />
               </LoginGuard>
             }
           />
           <Route
-            path={`/${SEND_EMAIL}/:receiverAddress/:protectedDataAddress`}
+            path="/sendEmail/:receiverAddress/:protectedDataAddress"
             element={
               <LoginGuard>
                 <SendEmailForm />
@@ -96,7 +73,7 @@ function App() {
             }
           />
           {/* default redirect */}
-          <Route path="*" element={<Navigate to={`/${HOME}`} />} />
+          <Route path="*" element={<Navigate to="protectedData" />} />
         </Routes>
       </div>
     </div>
