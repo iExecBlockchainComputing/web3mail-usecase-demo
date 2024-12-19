@@ -56,6 +56,22 @@ function App() {
               </LoginGuard>
             }
           />
+          <Route
+            path={`/${SEND_TELEGRAM}`}
+            element={
+              <LoginGuard>
+                <SendTelegram />
+              </LoginGuard>
+            }
+          />
+          <Route
+            path={`/${SEND_TELEGRAM}/:receiverAddress/:protectedDataAddress`}
+            element={
+              <LoginGuard>
+                <SendTelegramForm />
+              </LoginGuard>
+            }
+          />
           {/* default redirect */}
           <Route path="*" element={<Navigate to="protectedData" />} />
         </Routes>
