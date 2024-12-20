@@ -20,7 +20,16 @@ export async function initWeb3telegramSDK({
     return;
   }
 
-  web3telegram = new IExecWeb3telegram(provider);
+  // --- With debug SMS
+  const iexecOptions = {
+    smsURL: 'https://sms.scone-debug.v8-bellecour.iex.ec',
+  };
+  web3telegram = new IExecWeb3telegram(provider, { iexecOptions });
+  console.log('👉 Using debug SMS');
+
+  // --- With prod SMS
+  // web3telegram = new IExecWeb3telegram(provider);
+  // console.log('👉 Using prod SMS');
 }
 
 export async function getWeb3telegramClient(): Promise<{
