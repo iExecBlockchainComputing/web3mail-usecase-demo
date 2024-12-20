@@ -29,7 +29,6 @@ type GrantAccessModalParams = {
 };
 
 export default function GrantAccessModal(props: GrantAccessModalParams) {
-  console.log('props', props);
   const { address } = useUserStore();
 
   const { toast } = useToast();
@@ -57,7 +56,6 @@ export default function GrantAccessModal(props: GrantAccessModalParams) {
       const { dataProtector } = await getDataProtectorClient();
 
       let appOrWhitelistAddress = '';
-      console.log('props.protectedData', props.protectedData);
       if (isKeyInDataSchema(props.protectedData.schema, 'email')) {
         appOrWhitelistAddress = WEB3MAIL_IAPPS_WHITELIST_SC;
       } else if (isKeyInDataSchema(props.protectedData.schema, 'chatId')) {
