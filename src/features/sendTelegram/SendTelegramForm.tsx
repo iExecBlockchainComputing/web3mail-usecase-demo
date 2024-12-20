@@ -35,11 +35,10 @@ export default function SendTelegramForm() {
         telegramContent: message,
         protectedData: protectedDataAddress!,
         /**
-         * this demo uses a workerpool offering free computing power dedicated to learning
-         * this resource is shared and may be throttled, it should not be used for production applications
-         * remove the `workerpoolAddressOrEns` option to switch back to a production ready workerpool
+         * web3telegram iApp not yet published to prod (missing Intel private key signing)
+         * Hence using debug learn workerpool
          */
-        workerpoolAddressOrEns: 'prod-v8-learn.main.pools.iexec.eth',
+        workerpoolAddressOrEns: 'debug-v8-learn.main.pools.iexec.eth',
       });
     },
     onSuccess: () => {
