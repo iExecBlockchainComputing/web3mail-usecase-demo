@@ -39,7 +39,7 @@ export default function MyTelegramContacts() {
     queryFn: async () => {
       const { web3telegram } = await getWeb3telegramClient();
       const myTelegramContacts = await web3telegram.fetchMyContacts({
-        isUserStrict: true,
+        isUserStrict: false,
       });
       return myTelegramContacts;
     },
