@@ -23,7 +23,7 @@ const MAX_CHARACTERS_SENDER_NAME = 20;
 const MAX_CHARACTERS_MESSAGE_SUBJECT = 78;
 
 export default function SendEmailForm() {
-  const { receiverAddress, protectedDataAddress } = useParams(); //recupère l'address de la portected data depuis l'url
+  const { receiverAddress, protectedDataAddress } = useParams();
 
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -42,12 +42,6 @@ export default function SendEmailForm() {
   const [senderName, setSenderName] = useState('');
   const charactersRemainingSenderName =
     MAX_CHARACTERS_SENDER_NAME - senderName.length;
-
-  //handle functions
-  const handleMessageSubjectChange = (event: any) => {
-    const inputValue = event.target.value;
-    setMessageSubject(inputValue);
-  };
 
   const sendEmailMutation = useMutation({
     mutationKey: ['sendEmail'],
@@ -72,7 +66,7 @@ export default function SendEmailForm() {
         title: 'Your email is being sent.',
       });
       setTimeout(() => {
-        navigate(`/sendEmail`);
+        navigate('/sendEmail');
       }, 250);
     },
     onError: (err) => {
@@ -92,6 +86,11 @@ export default function SendEmailForm() {
       });
     },
   });
+
+  const handleMessageSubjectChange = (event: any) => {
+    const inputValue = event.target.value;
+    setMessageSubject(inputValue);
+  };
 
   const handleChange = (event: any) => {
     const inputValue = event.target.value;
@@ -189,14 +188,13 @@ export default function SendEmailForm() {
         </Select>
 
         <Textarea
-          data-cy="message-content-textarea"
           required
           rows={6}
           placeholder="Enter email content *"
           value={message}
-          onChange={handleChange}
-          id="textArea"
+          data-cy="message-content-textarea"
           className="mt-6 w-full border p-3"
+          onChange={handleChange}
         />
         <p className="my-2 text-sm italic">
           {pluralize(charactersRemainingMessage, 'character')} remaining
