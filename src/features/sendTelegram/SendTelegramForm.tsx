@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input.tsx';
 import { Label } from '@/components/ui/label.tsx';
 import { Textarea } from '@/components/ui/textarea.tsx';
 import { useToast } from '@/components/ui/use-toast.ts';
+import { PROD_WORKERPOOL_ADDRESS } from '@/config/config.ts';
 import { getWeb3telegramClient } from '@/externals/web3telegramClient.ts';
 import { pluralize } from '@/utils/pluralize.ts';
 
@@ -38,7 +39,7 @@ export default function SendTelegramForm() {
          * web3telegram iApp not yet published to prod (missing Intel private key signing)
          * Hence using debug learn workerpool
          */
-        workerpoolAddressOrEns: 'debug-v8-learn.main.pools.iexec.eth',
+        workerpoolAddressOrEns: PROD_WORKERPOOL_ADDRESS,
       });
     },
     onSuccess: () => {

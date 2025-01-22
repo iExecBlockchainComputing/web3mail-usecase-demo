@@ -16,6 +16,7 @@ import {
 } from '@/components/ui/select.tsx';
 import { Textarea } from '@/components/ui/textarea.tsx';
 import { useToast } from '@/components/ui/use-toast.ts';
+import { PROD_WORKERPOOL_ADDRESS } from '@/config/config.ts';
 import { getWeb3mailClient } from '@/externals/web3mailClient.ts';
 import { pluralize } from '@/utils/pluralize.ts';
 
@@ -58,7 +59,7 @@ export default function SendEmailForm() {
          * this resource is shared and may be throttled, it should not be used for production applications
          * remove the `workerpoolAddressOrEns` option to switch back to a production ready workerpool
          */
-        workerpoolAddressOrEns: 'prod-v8-learn.main.pools.iexec.eth',
+        workerpoolAddressOrEns: PROD_WORKERPOOL_ADDRESS, //'debug-v8-learn.main.pools.iexec.eth',
       });
     },
     onSuccess: () => {
