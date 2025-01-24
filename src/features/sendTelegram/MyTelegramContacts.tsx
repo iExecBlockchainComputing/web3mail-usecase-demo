@@ -1,4 +1,4 @@
-import { Address, Contact, TimeStamp } from '@iexec/web3telegram';
+import { Address, Contact, TimeStamp } from '@abn_06/web3telegram';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { Search, Send, Slash, Users } from 'react-feather';

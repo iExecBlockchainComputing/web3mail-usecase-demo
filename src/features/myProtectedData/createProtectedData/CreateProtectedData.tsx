@@ -16,6 +16,7 @@ import {
   SelectValue,
 } from '@/components/ui/select.tsx';
 import { useToast } from '@/components/ui/use-toast.ts';
+import { CHAT_ID_BOT, IEXEC_BOT } from '@/config/config.ts';
 import { getDataProtectorClient } from '@/externals/dataProtectorClient.ts';
 import { cn } from '@/utils/style.utils.ts';
 import { createArrayBufferFromFile } from '@/utils/utils.ts';
@@ -227,7 +228,7 @@ export default function CreateProtectedData() {
                     <span className="">
                       Initiate a conversation with the bot
                       <Link
-                        to="https://t.me/Web3Telegram_Bot"
+                        to={IEXEC_BOT}
                         className="font-semibold text-blue-700"
                       >
                         {' '}
@@ -242,7 +243,7 @@ export default function CreateProtectedData() {
                       <span className="font-semibold">chat ID</span> using the
                       following bot :
                       <Link
-                        to="https://t.me/getmyid_bot"
+                        to={CHAT_ID_BOT}
                         className="font-semibold text-blue-700"
                       >
                         {' '}

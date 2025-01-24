@@ -1,5 +1,5 @@
 import { useUserStore } from '@/stores/user.store.ts';
-import { IExecWeb3telegram } from '@iexec/web3telegram';
+import { IExecWeb3telegram } from '@abn_06/web3telegram';
 import { Eip1193Provider } from 'ethers';
 import { type Connector } from 'wagmi';
 
@@ -21,15 +21,15 @@ export async function initWeb3telegramSDK({
   }
 
   // --- With debug SMS
-  const iexecOptions = {
-    smsURL: 'https://sms.scone-debug.v8-bellecour.iex.ec',
-  };
-  web3telegram = new IExecWeb3telegram(provider, { iexecOptions });
-  console.log('👉 Using debug SMS');
+  // const iexecOptions = {
+  //   smsURL: 'https://sms.scone-debug.v8-bellecour.iex.ec',
+  // };
+  // web3telegram = new IExecWeb3telegram(provider, { iexecOptions });
+  // console.log('👉 Using debug SMS');
 
   // --- With prod SMS
-  // web3telegram = new IExecWeb3telegram(provider);
-  // console.log('👉 Using prod SMS');
+  web3telegram = new IExecWeb3telegram(provider);
+  console.log('👉 Using prod SMS');
 }
 
 export async function getWeb3telegramClient(): Promise<{
