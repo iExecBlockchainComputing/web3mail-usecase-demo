@@ -46,7 +46,7 @@ export const createArrayBufferFromFile = async (
       reject(new DOMException('Error parsing input file.'));
     };
     fileReader.onload = () => {
-      resolve(fileReader.result as Uint8Array);
+      resolve(new Uint8Array(fileReader.result as ArrayBuffer));
     };
     fileReader.readAsArrayBuffer(file);
   });
