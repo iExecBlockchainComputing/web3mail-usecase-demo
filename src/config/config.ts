@@ -10,11 +10,10 @@ export const ITEMS_PER_PAGE = 6;
 export const WEB3MAIL_IAPPS_WHITELIST_SC =
   '0x781482c39cce25546583eac4957fb7bf04c277d2';
 
-export const WEB3TELEGRAM_IAPP_ADDRESS =
-  '0x90CE3811b8BE4E09A1e9DfdCC83DEc819D5c4F5a';
+export const WEB3TELEGRAM_IAPP_ADDRESS = 'web3telegram.apps.iexec.eth';
 
-// TODO Later we'll have a whitelist for all web3telegram iApps
-// export const WEB3TELEGRAM_IAPPS_WHITELIST_SC = '0x...';
+export const WEB3TELEGRAM_IAPP_WHITELIST_SC =
+  '0x0745eDe758C25365392DFD94890972f419876f1A';
 
 export const PROD_WORKERPOOL_ADDRESS = 'prod-v8-learn.main.pools.iexec.eth';
 

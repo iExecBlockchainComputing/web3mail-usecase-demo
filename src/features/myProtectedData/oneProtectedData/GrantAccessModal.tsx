@@ -59,6 +59,7 @@ export default function GrantAccessModal(props: GrantAccessModalParams) {
       if (isKeyInDataSchema(props.protectedData.schema, 'email')) {
         appOrWhitelistAddress = WEB3MAIL_IAPPS_WHITELIST_SC;
       } else if (isKeyInDataSchema(props.protectedData.schema, 'chatId')) {
+        // TODO Replace with WEB3TELEGRAM_IAPP_WHITELIST_SC when iapp is deployed on prod and added to it (promote add-resource-to-whitelist-prod with params params: CONTRACT_ADDRESS & ADDRESS_TO_ADD on https://drone-product.iex.ec/iExecBlockchainComputing/whitelist-smart-contract/169)
         appOrWhitelistAddress = WEB3TELEGRAM_IAPP_ADDRESS;
       } else {
         // appOrWhitelistAddress = ''; // TODO Put delivery iApp here?
