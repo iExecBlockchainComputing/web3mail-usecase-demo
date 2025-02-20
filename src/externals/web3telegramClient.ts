@@ -1,5 +1,5 @@
 import { useUserStore } from '@/stores/user.store.ts';
-import { IExecWeb3telegram } from '@abn_06/web3telegram';
+import { IExecWeb3telegram } from '@iexec/web3telegram';
 import { Eip1193Provider } from 'ethers';
 import { type Connector } from 'wagmi';
 
