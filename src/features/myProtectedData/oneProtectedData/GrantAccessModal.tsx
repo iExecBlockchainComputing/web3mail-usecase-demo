@@ -17,7 +17,7 @@ import { Label } from '@/components/ui/label.tsx';
 import { useToast } from '@/components/ui/use-toast.ts';
 import {
   WEB3MAIL_IAPPS_WHITELIST_SC,
-  WEB3TELEGRAM_IAPP_ADDRESS,
+  WEB3TELEGRAM_IAPP_WHITELIST_SC,
 } from '@/config/config.ts';
 import { getDataProtectorClient } from '@/externals/dataProtectorClient.ts';
 import { isKeyInDataSchema } from '@/utils/utils.ts';
@@ -59,7 +59,7 @@ export default function GrantAccessModal(props: GrantAccessModalParams) {
       if (isKeyInDataSchema(props.protectedData.schema, 'email')) {
         appOrWhitelistAddress = WEB3MAIL_IAPPS_WHITELIST_SC;
       } else if (isKeyInDataSchema(props.protectedData.schema, 'chatId')) {
-        appOrWhitelistAddress = WEB3TELEGRAM_IAPP_ADDRESS;
+        appOrWhitelistAddress = WEB3TELEGRAM_IAPP_WHITELIST_SC;
       } else {
         // appOrWhitelistAddress = ''; // TODO Put delivery iApp here?
         throw new Error(
