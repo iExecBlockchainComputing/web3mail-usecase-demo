@@ -16,7 +16,7 @@ import {
   SelectValue,
 } from '@/components/ui/select.tsx';
 import { useToast } from '@/components/ui/use-toast.ts';
-import { CHAT_ID_BOT, IEXEC_BOT } from '@/config/config.ts';
+import { IEXEC_BOT } from '@/config/config.ts';
 import { getDataProtectorClient } from '@/externals/dataProtectorClient.ts';
 import { cn } from '@/utils/style.utils.ts';
 import { createArrayBufferFromFile } from '@/utils/utils.ts';
@@ -73,18 +73,14 @@ export default function CreateProtectedData() {
   const createProtectedDataMutation = useMutation({
     mutationKey: ['protectData'],
     mutationFn: async ({
-      name,
+      name: dataName,
       data,
     }: {
       name: string;
-      data: {
-        email?: string;
-        chatId?: string;
-        file?: Uint8Array;
-      };
+      data: { email?: string; chatId?: string; file?: Uint8Array };
     }) => {
       const { dataProtector } = await getDataProtectorClient();
-      return dataProtector.protectData({ name, data });
+      return dataProtector.protectData({ name: dataName, data });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['myProtectedData'] });
@@ -98,11 +94,7 @@ export default function CreateProtectedData() {
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
 
-    const data: {
-      email?: string;
-      chatId?: string;
-      file?: Uint8Array;
-    } = {};
+    const data: { email?: string; chatId?: string; file?: Uint8Array } = {};
     let bufferFile: Uint8Array;
     switch (dataType) {
       case 'email':
@@ -113,10 +105,7 @@ export default function CreateProtectedData() {
         break;
       case 'file':
         if (!file) {
-          toast({
-            variant: 'danger',
-            title: 'Please upload a file.',
-          });
+          toast({ variant: 'danger', title: 'Please upload a file.' });
           return;
         }
         bufferFile = await createArrayBufferFromFile(file);
@@ -139,10 +128,7 @@ export default function CreateProtectedData() {
     }
 
     if (dataType === 'email' && !!email && !isValidEmail) {
-      toast({
-        variant: 'danger',
-        title: 'Please enter a valid email address',
-      });
+      toast({ variant: 'danger', title: 'Please enter a valid email address' });
       return;
     }
 
@@ -212,6 +198,30 @@ export default function CreateProtectedData() {
 
             {dataType === 'telegram' && (
               <div className="mt-6">
+                <div className="relative flex justify-between pb-2">
+                  <span className="">
+                    Open
+                    <Link
+                      to={IEXEC_BOT}
+                      className="font-semibold text-blue-700"
+                    >
+                      {' '}
+                      @Web3Telegram_Bot{' '}
+                    </Link>
+                    and send /start to the bot to get your Chat ID
+                  </span>
+
+                  <a
+                    href="https://beta.tools.docs.iex.ec/tools/web3telegram/getting-started.html"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <span className="absolute bottom-0 right-0 rounded-xl bg-primary p-2">
+                      {' '}
+                      Learn more{' '}
+                    </span>
+                  </a>
+                </div>
                 <Label htmlFor="telegram">Telegram Chat ID *</Label>
                 <Input
                   id="telegram"
@@ -223,45 +233,6 @@ export default function CreateProtectedData() {
                   className="mt-1"
                   onChange={handleTelegramChange}
                 />
-                <div className="relative flex justify-between p-4">
-                  <div>
-                    <span className="">
-                      Initiate a conversation with the bot
-                      <Link
-                        to={IEXEC_BOT}
-                        className="font-semibold text-blue-700"
-                      >
-                        {' '}
-                        @Web3Telegram_Bot{' '}
-                      </Link>
-                      or you will be unable to receive messages.
-                    </span>
-                    <br />
-                    <br />
-                    <span className="">
-                      You can retrieve your{' '}
-                      <span className="font-semibold">chat ID</span> using the
-                      following bot :
-                      <Link
-                        to={CHAT_ID_BOT}
-                        className="font-semibold text-blue-700"
-                      >
-                        {' '}
-                        @getmyid_bot{' '}
-                      </Link>
-                      on Telegram.
-                    </span>
-                  </div>
-                  <a
-                    href="https://beta.tools.docs.iex.ec/tools/web3mail/getting-started.html"
-                    target="_blank"
-                  >
-                    <span className="absolute bottom-0 right-0 rounded-xl bg-primary p-2">
-                      {' '}
-                      Learn more{' '}
-                    </span>
-                  </a>
-                </div>
               </div>
             )}
 
