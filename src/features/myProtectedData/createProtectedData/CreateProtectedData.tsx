@@ -16,6 +16,7 @@ import {
   SelectValue,
 } from '@/components/ui/select.tsx';
 import { useToast } from '@/components/ui/use-toast.ts';
+import { IEXEC_BOT } from '@/config/config.ts';
 import { getDataProtectorClient } from '@/externals/dataProtectorClient.ts';
 import { cn } from '@/utils/style.utils.ts';
 import { createArrayBufferFromFile } from '@/utils/utils.ts';
@@ -29,11 +30,15 @@ export default function CreateProtectedData() {
 
   //for name et dataType
   const [name, setName] = useState('');
-  const [dataType, setDataType] = useState<'email' | 'file'>();
+  const [dataType, setDataType] = useState<'email' | 'telegram' | 'file'>();
 
   //for email
   const [email, setEmail] = useState('');
   const [isValidEmail, setIsValidEmail] = useState(true);
+
+  //for telegram chat id
+  const [telegram, setTelegram] = useState('');
+  const [isValidTelegram, setIsValidTelegram] = useState(true);
 
   //for file
   const [filePath, setFilePath] = useState('');
@@ -45,15 +50,22 @@ export default function CreateProtectedData() {
   const onChangeDataType = (chosenDataType: 'email' | 'file') => {
     setDataType(chosenDataType);
   };
+
   const handleEmailChange = (event: any) => {
     setEmail(event.target.value);
     setIsValidEmail(event.target.validity.valid);
+  };
+
+  const handleTelegramChange = (event: any) => {
+    setTelegram(event.target.value);
+    setIsValidTelegram(event.target.validity.valid);
   };
 
   const handleFileChange = (event: any) => {
     setFilePath(event.target.value);
     setFile(event.target.files?.[0]);
   };
+
   const handleNameChange = (event: any) => {
     setName(event.target.value);
   };
@@ -61,17 +73,14 @@ export default function CreateProtectedData() {
   const createProtectedDataMutation = useMutation({
     mutationKey: ['protectData'],
     mutationFn: async ({
-      name,
+      name: dataName,
       data,
     }: {
       name: string;
-      data: {
-        email?: string;
-        file?: Uint8Array;
-      };
+      data: { email?: string; telegram_chatId?: string; file?: Uint8Array };
     }) => {
       const { dataProtector } = await getDataProtectorClient();
-      return dataProtector.protectData({ name, data });
+      return dataProtector.protectData({ name: dataName, data });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['myProtectedData'] });
@@ -85,21 +94,18 @@ export default function CreateProtectedData() {
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
 
-    const data: {
-      email?: string;
-      file?: Uint8Array;
-    } = {};
+    const data: { email?: string; telegram_chatId?: string; file?: Uint8Array } = {};
     let bufferFile: Uint8Array;
     switch (dataType) {
       case 'email':
         data.email = email;
         break;
+      case 'telegram':
+        data.telegram_chatId = telegram;
+        break;
       case 'file':
         if (!file) {
-          toast({
-            variant: 'danger',
-            title: 'Please upload a file.',
-          });
+          toast({ variant: 'danger', title: 'Please upload a file.' });
           return;
         }
         bufferFile = await createArrayBufferFromFile(file);
@@ -111,6 +117,7 @@ export default function CreateProtectedData() {
       !dataType ||
       !name ||
       (dataType === 'email' && !email.trim()) ||
+      (dataType === 'telegram' && !telegram.trim()) ||
       (dataType === 'file' && !file)
     ) {
       toast({
@@ -121,9 +128,14 @@ export default function CreateProtectedData() {
     }
 
     if (dataType === 'email' && !!email && !isValidEmail) {
+      toast({ variant: 'danger', title: 'Please enter a valid email address' });
+      return;
+    }
+
+    if (dataType === 'telegram' && !!telegram && !isValidTelegram) {
       toast({
         variant: 'danger',
-        title: 'Please enter a valid email address',
+        title: 'Please enter a valid telegram chat ID',
       });
       return;
     }
@@ -160,6 +172,9 @@ export default function CreateProtectedData() {
                 <SelectItem value="email" data-cy="email-address-select-item">
                   Email Address
                 </SelectItem>
+                <SelectItem value="telegram" data-cy="telegram-select-item">
+                  Telegram
+                </SelectItem>
                 <SelectItem value="file" data-cy="file-select-item">
                   File
                 </SelectItem>
@@ -180,6 +195,47 @@ export default function CreateProtectedData() {
                 />
               </div>
             )}
+
+            {dataType === 'telegram' && (
+              <div className="mt-6">
+                <div className="relative flex justify-between pb-2">
+                  <span className="">
+                    Open
+                    <Link
+                      to={IEXEC_BOT}
+                      className="font-semibold text-blue-700"
+                    >
+                      {' '}
+                      @Web3Telegram_Bot{' '}
+                    </Link>
+                    and send /start to the bot to get your Chat ID
+                  </span>
+
+                  <a
+                    href="https://beta.tools.docs.iex.ec/tools/web3telegram/getting-started.html"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <span className="absolute bottom-0 right-0 rounded-xl bg-primary p-2">
+                      {' '}
+                      Learn more{' '}
+                    </span>
+                  </a>
+                </div>
+                <Label htmlFor="telegram">Telegram Chat ID *</Label>
+                <Input
+                  id="telegram"
+                  data-cy="telegram-input"
+                  type="text"
+                  value={telegram}
+                  placeholder="0123456789"
+                  aria-label="Telegram Chat ID"
+                  className="mt-1"
+                  onChange={handleTelegramChange}
+                />
+              </div>
+            )}
+
             {dataType === 'file' && (
               <Button
                 variant="secondary"
