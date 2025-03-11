@@ -77,7 +77,7 @@ export default function CreateProtectedData() {
       data,
     }: {
       name: string;
-      data: { email?: string; chatId?: string; file?: Uint8Array };
+      data: { email?: string; telegram_chatId?: string; file?: Uint8Array };
     }) => {
       const { dataProtector } = await getDataProtectorClient();
       return dataProtector.protectData({ name: dataName, data });
@@ -94,14 +94,14 @@ export default function CreateProtectedData() {
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
 
-    const data: { email?: string; chatId?: string; file?: Uint8Array } = {};
+    const data: { email?: string; telegram_chatId?: string; file?: Uint8Array } = {};
     let bufferFile: Uint8Array;
     switch (dataType) {
       case 'email':
         data.email = email;
         break;
       case 'telegram':
-        data.chatId = telegram;
+        data.telegram_chatId = telegram;
         break;
       case 'file':
         if (!file) {

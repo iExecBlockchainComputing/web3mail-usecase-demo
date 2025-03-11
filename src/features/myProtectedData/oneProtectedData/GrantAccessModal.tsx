@@ -58,7 +58,7 @@ export default function GrantAccessModal(props: GrantAccessModalParams) {
       let appOrWhitelistAddress = '';
       if (isKeyInDataSchema(props.protectedData.schema, 'email')) {
         appOrWhitelistAddress = WEB3MAIL_IAPPS_WHITELIST_SC;
-      } else if (isKeyInDataSchema(props.protectedData.schema, 'chatId')) {
+      } else if (isKeyInDataSchema(props.protectedData.schema, 'telegram_chatId')) {
         appOrWhitelistAddress = WEB3TELEGRAM_IAPP_WHITELIST_SC;
       } else {
         // appOrWhitelistAddress = ''; // TODO Put delivery iApp here?

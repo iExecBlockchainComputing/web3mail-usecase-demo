@@ -23,7 +23,7 @@
     "@fontsource/space-mono": "^5.0.20",
     "@iexec/dataprotector": "^2.0.0-beta.10",
     "@iexec/web3mail": "^1.1.0",
-    "@iexec/web3telegram": "^0.0.1-alpha-nightly-f52f60eb6a15b46cc2d7765f28e18ca53d3a2fe9",
+    "@iexec/web3telegram": "^0.0.2-alpha-nightly-007c638ee9c0f886a4a7d1568147a32c1e758908",
     "@radix-ui/react-dialog": "^1.1.1",
     "@radix-ui/react-label": "^2.1.0",
     "@radix-ui/react-select": "^2.1.1",
