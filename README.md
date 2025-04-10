@@ -4,6 +4,11 @@
 
 <h1 align="center">Web3Mail demo</h1>
 
+## This Project is Archived
+
+This project has been archived as it has been replaced by [iExecBlockchainComputing/web3-messaging-usecase-demo](https://github.com/iExecBlockchainComputing/web3-messaging-usecase-demo iExecBlockchainComputing/privacypass-campaign-ui) repository.
+
+
 In the Web3 ecosystem, users often rely on blockchain wallets for storing and managing their digital assets. At the same time, these wallets are envisioned to represent users’ digital identity based on their personal information. This means that if a wallet address is linked to a user's identity, their transaction history and holdings can be tracked, posing a huge privacy risk.
 
 We introduce Privacy-enhancing marketing, a novel approach designed to enable communication between Web3 users and decentralized applications (dApps) while prioritizing user privacy and consent. This approach leverages a combination of features that allow for targeted marketing and user engagement without compromising the privacy of individuals. Additionally, these tools empower users to monetize direct marketing actions, creating a more equitable and user-centric ecosystem.
