@@ -6,7 +6,7 @@
 
 ## This Project is Archived
 
-This project has been archived as it has been replaced by [iExecBlockchainComputing/web3-messaging-usecase-demo](https://github.com/iExecBlockchainComputing/web3-messaging-usecase-demo iExecBlockchainComputing/privacypass-campaign-ui) repository.
+This project has been archived as it has been replaced by [iExecBlockchainComputing/web3-messaging-usecase-demo](https://github.com/iExecBlockchainComputing/web3-messaging-usecase-demo) repository.
 
 
 In the Web3 ecosystem, users often rely on blockchain wallets for storing and managing their digital assets. At the same time, these wallets are envisioned to represent users’ digital identity based on their personal information. This means that if a wallet address is linked to a user's identity, their transaction history and holdings can be tracked, posing a huge privacy risk.
